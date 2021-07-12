@@ -1,0 +1,27 @@
+﻿<Properties StartupConfiguration="{781677F0-06D3-4BD6-81F2-9FE04672C677}|Default">
+  <MonoDevelop.Ide.Workbench>
+    <Files>
+      <File FileName="MainActivity.cs" Line="71" Column="29" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Pt2AndroidApp" expanded="True">
+            <Node name="CardScanBindingLib" expanded="True" />
+            <Node name="PaymentSDK.Binding" expanded="True" />
+            <Node name="Pt2AndroidApp" expanded="True">
+              <Node name="References" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Pt2AndroidApp PreferredExecutionTarget="Android.Pixel_4_API_30" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

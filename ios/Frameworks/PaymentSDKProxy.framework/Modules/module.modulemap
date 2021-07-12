@@ -1,0 +1,11 @@
+framework module PaymentSDKProxy {
+  umbrella header "PaymentSDKProxy.h"
+
+  export *
+  module * { export * }
+}
+
+module PaymentSDKProxy.Swift {
+    header "PaymentSDKProxy-Swift.h"
+    requires objc
+}

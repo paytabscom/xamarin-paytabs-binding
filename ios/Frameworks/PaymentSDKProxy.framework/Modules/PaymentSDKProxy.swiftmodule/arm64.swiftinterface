@@ -1,0 +1,169 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.4.2 (swiftlang-1205.0.28.2 clang-1205.0.19.57)
+// swift-module-flags: -target arm64-apple-ios10.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name PaymentSDKProxy
+import Foundation
+import PassKit
+import PaymentSDK
+@_exported import PaymentSDKProxy
+import Swift
+import UIKit
+@_inheritsConvenienceInitializers @objc public class PaymentConfiguration : ObjectiveC.NSObject {
+  @objc public var profileID: Swift.String
+  @objc public var serverKey: Swift.String
+  @objc public var clientKey: Swift.String
+  @objc public var transactionType: Swift.String?
+  @objc public var transactionClass: Swift.String?
+  @objc public var cartID: Swift.String
+  @objc public var currency: Swift.String
+  @objc public var amount: Swift.Double
+  @objc public var cartDescription: Swift.String
+  @objc public var languageCode: Swift.String?
+  @objc public var theme: PaymentSDKProxy.PaymentTheme?
+  @objc public var forceShippingInfo: Swift.Bool
+  @objc public var showBillingInfo: Swift.Bool
+  @objc public var showShippingInfo: Swift.Bool
+  @objc public var billingDetails: PaymentSDKProxy.PaymentBillingDetails?
+  @objc public var shippingDetails: PaymentSDKProxy.PaymentShippingDetails?
+  @objc public var merchantApplePayIdentifier: Swift.String?
+  @objc public var paymentNetworks: [Swift.String]?
+  @objc public var merchantCountryCode: Swift.String
+  @objc public var serverIP: Swift.String?
+  @objc public var tokeniseType: Swift.Int
+  @objc public var tokenFormat: Swift.String
+  @objc public var token: Swift.String?
+  @objc public var transactionReference: Swift.String?
+  @objc public var screenTitle: Swift.String?
+  @objc public var merchantName: Swift.String?
+  @objc public var hideCardScanner: Swift.Bool
+  @objc public var simplifyApplePayValidation: Swift.Bool
+  @objc public var alternativePaymentMethods: [Swift.String]?
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class TransactionType : ObjectiveC.NSObject {
+  @objc public static let sale: Swift.String
+  @objc public static let authorize: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class TransactionClass : ObjectiveC.NSObject {
+  @objc public static let ecom: Swift.String
+  @objc public static let recur: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class TokenFormat : ObjectiveC.NSObject {
+  @objc public static let none: Swift.String
+  @objc public static let hex32: Swift.String
+  @objc public static let alphaNum20: Swift.String
+  @objc public static let digit22: Swift.String
+  @objc public static let digit16: Swift.String
+  @objc public static let alphaNum32: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class TokeniseType : ObjectiveC.NSObject {
+  @objc public static let none: Swift.Int
+  @objc public static let merchantMandatory: Swift.Int
+  @objc public static let userMandatory: Swift.Int
+  @objc public static let userOptinoal: Swift.Int
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class AlternativePaymentMethod : ObjectiveC.NSObject {
+  @objc public static let unionPay: Swift.String
+  @objc public static let stcPay: Swift.String
+  @objc public static let valu: Swift.String
+  @objc public static let meezaQR: Swift.String
+  @objc public static let omannet: Swift.String
+  @objc public static let knetCredit: Swift.String
+  @objc public static let knetDebit: Swift.String
+  @objc public static let fawry: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class PaymentSDKProxy : ObjectiveC.NSObject {
+  @objc public func startCardPayment(configuration: PaymentSDKProxy.PaymentConfiguration, deleagte: PaymentSDKProxy.PaymentCallback)
+  @objc public func startApplePayPayment(configuration: PaymentSDKProxy.PaymentConfiguration, deleagte: PaymentSDKProxy.PaymentCallback)
+  @objc public func startAlternativePaymentMehtod(configuration: PaymentSDKProxy.PaymentConfiguration, deleagte: PaymentSDKProxy.PaymentCallback)
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension PaymentSDKProxy : PaymentSDK.PaymentManagerDelegate {
+  @objc dynamic public func paymentManager(didFinishTransaction transactionDetails: PaymentSDK.PaymentSDKTransactionDetails?, error: Swift.Error?)
+  @objc dynamic public func paymentManager(didCancelPayment error: Swift.Error?)
+  @objc dynamic public func paymentManager(didStartPaymentTransaction rootViewController: UIKit.UIViewController)
+}
+@objc public protocol PaymentCallback {
+  @objc func paymentManager(didFinishTransaction transactionDetails: PaymentSDKProxy.PaymentTransactionDetails?, error: Swift.Error?)
+  @objc func paymentManager(didCancelPayment error: Swift.Error?)
+  @objc func paymentManager(didStartPaymentTransaction rootViewController: UIKit.UIViewController)
+}
+@_inheritsConvenienceInitializers @objc public class PaymentTheme : ObjectiveC.NSObject {
+  @objc public var logoImage: UIKit.UIImage?
+  @objc public var primaryColor: UIKit.UIColor?
+  @objc public var primaryFontColor: UIKit.UIColor?
+  @objc public var primaryFont: UIKit.UIFont?
+  @objc public var secondaryColor: UIKit.UIColor?
+  @objc public var secondaryFontColor: UIKit.UIColor?
+  @objc public var secondaryFont: UIKit.UIFont?
+  @objc public var strokeColor: UIKit.UIColor?
+  @objc public var strokeThinckness: Foundation.NSNumber?
+  @objc public var inputsCornerRadius: Foundation.NSNumber?
+  @objc public var buttonColor: UIKit.UIColor?
+  @objc public var buttonFontColor: UIKit.UIColor?
+  @objc public var buttonFont: UIKit.UIFont?
+  @objc public var titleFontColor: UIKit.UIColor?
+  @objc public var titleFont: UIKit.UIFont?
+  @objc public var backgroundColor: UIKit.UIColor?
+  @objc public var placeholderColor: UIKit.UIColor?
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc public class PaymentTransactionDetails : ObjectiveC.NSObject {
+  @objc public var token: Swift.String?, transactionReference: Swift.String?
+  @objc public var transactionType: Swift.String?, cartID: Swift.String?, cartDescription: Swift.String?
+  @objc public var cartCurrency: Swift.String?, cartAmount: Swift.String?
+  @objc public var paymentResult: PaymentSDKProxy.PaymentResultViewModel?
+  @objc public var paymentInfo: PaymentSDKProxy.PaymentInfoViewModel?
+  @objc public var billingDetails: PaymentSDKProxy.PaymentBillingDetails?
+  @objc public var shippingDetails: PaymentSDKProxy.PaymentShippingDetails?
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc public class PaymentResultViewModel : ObjectiveC.NSObject {
+  @objc public var responseStatus: Swift.String?, responseCode: Swift.String?, responseMessage: Swift.String?
+  @objc public var transactionTime: Swift.String?, acquirerMessage: Swift.String?, acquirerRRN: Swift.String?
+  public init(viewModel: PaymentSDK.PaymentResultViewModel?)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc public class PaymentInfoViewModel : ObjectiveC.NSObject {
+  @objc public var cardType: Swift.String?, cardScheme: Swift.String?, paymentDescription: Swift.String?
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc public class PaymentBillingDetails : ObjectiveC.NSObject {
+  @objc public var name: Swift.String?
+  @objc public var email: Swift.String?
+  @objc public var phone: Swift.String?
+  @objc public var addressLine: Swift.String?
+  @objc public var city: Swift.String?
+  @objc public var state: Swift.String?
+  @objc public var countryCode: Swift.String?
+  @objc public var zip: Swift.String?
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc public class PaymentShippingDetails : ObjectiveC.NSObject {
+  @objc public var name: Swift.String?
+  @objc public var email: Swift.String?
+  @objc public var phone: Swift.String?
+  @objc public var addressLine: Swift.String?
+  @objc public var city: Swift.String?
+  @objc public var state: Swift.String?
+  @objc public var countryCode: Swift.String?
+  @objc public var zip: Swift.String?
+  @objc override dynamic public init()
+  @objc deinit
+}

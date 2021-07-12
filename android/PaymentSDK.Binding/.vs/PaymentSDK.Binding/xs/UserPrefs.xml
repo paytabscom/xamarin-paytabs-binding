@@ -1,0 +1,20 @@
+﻿<Properties StartupConfiguration="{EC12A75E-67BC-4D5A-8E29-FB955E34BA4F}|Default">
+  <MonoDevelop.Ide.ItemProperties.PaymentSDK.Binding PreferredExecutionTarget="Android.Pixel_4_API_30" />
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="PaymentSDK.Binding" expanded="True">
+            <Node name="PaymentSDK.Binding" expanded="True" selected="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
