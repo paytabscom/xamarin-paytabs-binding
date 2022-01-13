@@ -25,15 +25,11 @@ Library Support:
 We created a binding for each platform (iOS & Android)
 
 ### iOS
-1. Donwload the binding library from [here][iosbindinglibrary].
-2. Add the library to the app referneces as a **Project** or as **.Net Assembly**
+ Install-Package Paytabs.Xamarin.Ios -Version 1.0.0
 	
 ### Android
-1. Donwload the `PaymentSDK` binding library from [here][androidbindinglibrary].
-2. Donwload the `Card Scanning` binding library from [here][cardscanbindinglibrary].
-3. Add the libraries to the app referneces as a **Project** or as **.Net Assembly**
+ Install-Package Paytabs.Xamarin.Android -Version 1.0.0
 
-<img src="https://user-images.githubusercontent.com/13621658/125300577-7706d480-e32a-11eb-8573-c2e2e5100ecf.png" width="500">
 
 ## Usage (iOS)
 

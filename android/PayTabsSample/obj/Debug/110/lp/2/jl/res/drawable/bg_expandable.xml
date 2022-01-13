@@ -1,0 +1,1 @@
+<shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android"><solid android:color="@color/payment_sdk_button_background_color" /></shape>

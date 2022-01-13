@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        style="@style/bt_field_container"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/payment_sdk_primary_font"
+            android:text="@string/payment_sdk_card_name_on_card_title"
+            android:textColor="@color/payment_sdk_primary_font_color"
+            android:textSize="@dimen/payment_sdk_primary_font_size" />
+
+        <com.payment.paymentsdk.creditcard.view.cardform.view.CardholderNameEditText
+            android:id="@+id/bt_card_form_cardholder_name"
+            style="@style/bt_card_form_field"
+            android:layout_gravity="center"
+            android:fontFamily="@font/payment_sdk_primary_font"
+            android:gravity="start|center"
+            android:hint="@string/payment_sdk_card_name_on_card_hint" />
+
+        <TextView
+            android:id="@+id/bt_card_form_cardholder_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:visibility="gone"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/payment_sdk_primary_font"
+            android:gravity="start"
+            android:textColor="@color/payment_sdk_error_text_color"
+            android:textSize="@dimen/payment_sdk_error_font_size"
+            tools:text="label" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/bt_field_container"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/payment_sdk_primary_font"
+            android:text="@string/payment_sdk_card_number"
+            android:textColor="@color/payment_sdk_primary_font_color"
+            android:textSize="@dimen/payment_sdk_primary_font_size" />
+
+        <com.payment.paymentsdk.creditcard.view.cardform.view.CardEditText
+            android:id="@+id/bt_card_form_card_number"
+            style="@style/bt_card_form_field"
+
+            android:drawablePadding="5dp"
+            android:fontFamily="@font/payment_sdk_primary_font"
+            android:hint="@string/payment_sdk_card_number_hint"
+            android:inputType="number"
+            android:layoutDirection="ltr"
+            android:textAlignment="viewStart" />
+
+        <TextView
+            android:id="@+id/bt_card_form_card_number_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/payment_sdk_primary_font"
+            android:gravity="start"
+            android:visibility="gone"
+
+            android:textColor="@color/payment_sdk_error_text_color"
+            android:textSize="@dimen/payment_sdk_error_font_size"
+            tools:text="label" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/bt_field_container"
+        android:baselineAligned="false"
+        android:paddingEnd="0dp"
+        android:weightSum="2"
+        android:layout_marginTop="8dp"
+        tools:ignore="RtlCompat">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="4dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/payment_sdk_primary_font"
+                android:text="@string/payment_sdk_card_expiry_date"
+                android:textColor="@color/payment_sdk_primary_font_color"
+                android:textSize="@dimen/payment_sdk_primary_font_size" />
+
+            <com.payment.paymentsdk.creditcard.view.cardform.view.ExpirationDateEditText
+                android:id="@+id/bt_card_form_expiration"
+                style="@style/bt_card_form_field"
+                android:fontFamily="@font/payment_sdk_primary_font"
+                android:hint="@string/payment_sdk_card_expiry_date_hint"
+                android:layoutDirection="ltr"
+                android:textAlignment="viewStart" />
+
+            <TextView
+                android:id="@+id/bt_card_form_expiration_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/payment_sdk_primary_font"
+                android:gravity="start"
+                android:visibility="gone"
+
+                android:textColor="@color/payment_sdk_error_text_color"
+                android:textSize="@dimen/payment_sdk_error_font_size"
+                tools:text="label" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/payment_sdk_primary_font"
+                android:text="@string/payment_sdk_hint_cvv"
+                android:textColor="@color/payment_sdk_primary_font_color"
+                android:textSize="@dimen/payment_sdk_primary_font_size" />
+
+            <com.payment.paymentsdk.creditcard.view.cardform.view.CvvEditText
+                android:id="@+id/bt_card_form_cvv"
+                style="@style/bt_card_form_field"
+                android:textAlignment="viewStart"
+                android:layoutDirection="ltr"
+                android:inputType="numberPassword"
+                android:fontFamily="@font/payment_sdk_primary_font"
+                android:hint="@string/payment_sdk_hint_cvv" />
+
+            <TextView
+                android:id="@+id/bt_card_form_cvv_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/payment_sdk_primary_font"
+                android:gravity="start"
+                android:visibility="gone"
+                android:textColor="@color/payment_sdk_error_text_color"
+                android:textSize="@dimen/payment_sdk_error_font_size"
+                tools:text="label" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</merge>
