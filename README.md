@@ -25,14 +25,14 @@ Library Support:
 We created a binding for each platform (iOS & Android)
 
 ### iOS
- Install-Package Paytabs.Xamarin.Ios -Version 1.0.0
+ Install-Package Paytabs.Xamarin.Ios -Version 1.1.0
 	
 ### Android
  Install-Package Paytabs.Xamarin.Android -Version 1.0.0
 
 
 ## Usage (iOS)
-
+in your project info.plist add <strong>Privacy - Photo Library Usage Description</strong> key .. we use camera to enable camera card scanning
 
 ### Pay with Card
 
