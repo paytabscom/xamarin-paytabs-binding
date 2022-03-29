@@ -28,7 +28,11 @@ We created a binding for each platform (iOS & Android)
  Install-Package Paytabs.Xamarin.Ios -Version 1.1.0
 	
 ### Android
- Install-Package Paytabs.Xamarin.Android -Version 1.0.0
+ 1. Install-Package Paytabs.Xamarin.Android -Version 1.0.5
+ 2. Install-Package Xamarin.Android.Device.YearClass
+ 3. donwload [CardScanBindingLib.dll](android/CardScanBindingLib.dll) and add it as a reference in your project
+![Example](https://user-images.githubusercontent.com/95287975/160606885-1976507d-cc3f-4459-95e3-22edd220e527.png)
+
 
 
 ## Usage (iOS)
