@@ -15,6 +15,8 @@ namespace Com.Payment.Paymentsdk.Creditcard
 
     public sealed partial class StringArrayBottomSheetListAdapter : global::AndroidX.RecyclerView.Widget.RecyclerView.Adapter
     {
+        public override int ItemCount => throw new NotImplementedException();
+
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             throw new NotImplementedException();
