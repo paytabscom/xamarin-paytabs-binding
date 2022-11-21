@@ -1,7 +1,7 @@
 
 # xamarin-paytabs-binding
 
-![Version](https://img.shields.io/badge/Xamarin%20PayTabs%20Binding%20Library-v1.0.0_beta-green)
+![Version](https://img.shields.io/badge/Xamarin%20PayTabs%20Binding%20Library-v1.0.8-green)
 
 Xamarin PayTabs binding library is a wrapper for the native PayTabs Android and iOS SDKs, It helps you integrate your Xamarin project with PayTabs.
 
@@ -28,7 +28,7 @@ We created a binding for each platform (iOS & Android)
  Install-Package Paytabs.Xamarin.Ios -Version 1.1.0
 	
 ### Android
- 1. Install-Package Paytabs.Xamarin.Android -Version 1.0.7
+ 1. Install-Package Paytabs.Xamarin.Android -Version 1.0.8
  2. Install-Package Xamarin.Android.Device.YearClass
  3. donwload [CardScanBindingLib.dll](android/CardScanBindingLib.dll) and add it as a reference in your project
 ![Example](https://user-images.githubusercontent.com/95287975/160606885-1976507d-cc3f-4459-95e3-22edd220e527.png)
