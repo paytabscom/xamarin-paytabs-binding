@@ -7,19 +7,7 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 
 	// Metadata.xml XPath class reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']"
 	[global::Android.Runtime.Register ("com/payment/paymentsdk/creditcard/view/cardform/view/CardForm", DoNotGenerateAcw=true)]
-	public partial class CardForm : global::Android.Widget.LinearLayout, global::Android.Text.ITextWatcher, global::Android.Views.View.IOnClickListener, global::Android.Views.View.IOnFocusChangeListener, global::Android.Widget.TextView.IOnEditorActionListener, global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText.IOnCardTypeChangedListener {
-		// Metadata.xml XPath field reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/field[@name='FIELD_DISABLED']"
-		[Register ("FIELD_DISABLED")]
-		public const int FieldDisabled = (int) 0;
-
-		// Metadata.xml XPath field reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/field[@name='FIELD_OPTIONAL']"
-		[Register ("FIELD_OPTIONAL")]
-		public const int FieldOptional = (int) 1;
-
-		// Metadata.xml XPath field reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/field[@name='FIELD_REQUIRED']"
-		[Register ("FIELD_REQUIRED")]
-		public const int FieldRequired = (int) 2;
-
+	public partial class CardForm : global::Android.Widget.LinearLayout, global::Android.Text.ITextWatcher, global::Android.Views.View.IOnClickListener, global::Android.Views.View.IOnFocusChangeListener, global::Android.Widget.TextView.IOnEditorActionListener {
 		static readonly JniPeerMembers _members = new XAPeerMembers ("com/payment/paymentsdk/creditcard/view/cardform/view/CardForm", typeof (CardForm));
 
 		internal static IntPtr class_ref {
@@ -50,7 +38,7 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/constructor[@name='CardForm' and count(parameter)=1 and parameter[1][@type='android.content.Context']]"
 		[Register (".ctor", "(Landroid/content/Context;)V", "")]
-		public unsafe CardForm (global::Android.Content.Context context) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe CardForm (global::Android.Content.Context p0) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Landroid/content/Context;)V";
 
@@ -59,18 +47,18 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((context == null) ? IntPtr.Zero : ((global::Java.Lang.Object) context).Handle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (context);
+				global::System.GC.KeepAlive (p0);
 			}
 		}
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/constructor[@name='CardForm' and count(parameter)=2 and parameter[1][@type='android.content.Context'] and parameter[2][@type='android.util.AttributeSet']]"
 		[Register (".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;)V", "")]
-		public unsafe CardForm (global::Android.Content.Context context, global::Android.Util.IAttributeSet attrs) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe CardForm (global::Android.Content.Context p0, global::Android.Util.IAttributeSet p1) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Landroid/content/Context;Landroid/util/AttributeSet;)V";
 
@@ -79,20 +67,20 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [2];
-				__args [0] = new JniArgumentValue ((context == null) ? IntPtr.Zero : ((global::Java.Lang.Object) context).Handle);
-				__args [1] = new JniArgumentValue ((attrs == null) ? IntPtr.Zero : ((global::Java.Lang.Object) attrs).Handle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
+				__args [1] = new JniArgumentValue ((p1 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p1).Handle);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (context);
-				global::System.GC.KeepAlive (attrs);
+				global::System.GC.KeepAlive (p0);
+				global::System.GC.KeepAlive (p1);
 			}
 		}
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/constructor[@name='CardForm' and count(parameter)=3 and parameter[1][@type='android.content.Context'] and parameter[2][@type='android.util.AttributeSet'] and parameter[3][@type='int']]"
 		[Register (".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;I)V", "")]
-		public unsafe CardForm (global::Android.Content.Context context, global::Android.Util.IAttributeSet attrs, int defStyleAttr) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe CardForm (global::Android.Content.Context p0, global::Android.Util.IAttributeSet p1, int p2) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Landroid/content/Context;Landroid/util/AttributeSet;I)V";
 
@@ -101,21 +89,21 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [3];
-				__args [0] = new JniArgumentValue ((context == null) ? IntPtr.Zero : ((global::Java.Lang.Object) context).Handle);
-				__args [1] = new JniArgumentValue ((attrs == null) ? IntPtr.Zero : ((global::Java.Lang.Object) attrs).Handle);
-				__args [2] = new JniArgumentValue (defStyleAttr);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
+				__args [1] = new JniArgumentValue ((p1 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p1).Handle);
+				__args [2] = new JniArgumentValue (p2);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (context);
-				global::System.GC.KeepAlive (attrs);
+				global::System.GC.KeepAlive (p0);
+				global::System.GC.KeepAlive (p1);
 			}
 		}
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/constructor[@name='CardForm' and count(parameter)=4 and parameter[1][@type='android.content.Context'] and parameter[2][@type='android.util.AttributeSet'] and parameter[3][@type='int'] and parameter[4][@type='int']]"
 		[Register (".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;II)V", "")]
-		public unsafe CardForm (global::Android.Content.Context context, global::Android.Util.IAttributeSet attrs, int defStyleAttr, int defStyleRes) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe CardForm (global::Android.Content.Context p0, global::Android.Util.IAttributeSet p1, int p2, int p3) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Landroid/content/Context;Landroid/util/AttributeSet;II)V";
 
@@ -124,45 +112,16 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [4];
-				__args [0] = new JniArgumentValue ((context == null) ? IntPtr.Zero : ((global::Java.Lang.Object) context).Handle);
-				__args [1] = new JniArgumentValue ((attrs == null) ? IntPtr.Zero : ((global::Java.Lang.Object) attrs).Handle);
-				__args [2] = new JniArgumentValue (defStyleAttr);
-				__args [3] = new JniArgumentValue (defStyleRes);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
+				__args [1] = new JniArgumentValue ((p1 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p1).Handle);
+				__args [2] = new JniArgumentValue (p2);
+				__args [3] = new JniArgumentValue (p3);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (context);
-				global::System.GC.KeepAlive (attrs);
-			}
-		}
-
-		static Delegate cb_getCardEditText;
-#pragma warning disable 0169
-		static Delegate GetGetCardEditTextHandler ()
-		{
-			if (cb_getCardEditText == null)
-				cb_getCardEditText = JNINativeWrapper.CreateDelegate ((_JniMarshal_PP_L) n_GetCardEditText);
-			return cb_getCardEditText;
-		}
-
-		static IntPtr n_GetCardEditText (IntPtr jnienv, IntPtr native__this)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			return JNIEnv.ToLocalJniHandle (__this.CardEditText);
-		}
-#pragma warning restore 0169
-
-		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText CardEditText {
-			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='getCardEditText' and count(parameter)=0]"
-			[Register ("getCardEditText", "()Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardEditText;", "GetGetCardEditTextHandler")]
-			get {
-				const string __id = "getCardEditText.()Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardEditText;";
-				try {
-					var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, null);
-					return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-				} finally {
-				}
+				global::System.GC.KeepAlive (p0);
+				global::System.GC.KeepAlive (p1);
 			}
 		}
 
@@ -224,35 +183,6 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 			}
 		}
 
-		static Delegate cb_getCardholderNameEditText;
-#pragma warning disable 0169
-		static Delegate GetGetCardholderNameEditTextHandler ()
-		{
-			if (cb_getCardholderNameEditText == null)
-				cb_getCardholderNameEditText = JNINativeWrapper.CreateDelegate ((_JniMarshal_PP_L) n_GetCardholderNameEditText);
-			return cb_getCardholderNameEditText;
-		}
-
-		static IntPtr n_GetCardholderNameEditText (IntPtr jnienv, IntPtr native__this)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			return JNIEnv.ToLocalJniHandle (__this.CardholderNameEditText);
-		}
-#pragma warning restore 0169
-
-		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardholderNameEditText CardholderNameEditText {
-			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='getCardholderNameEditText' and count(parameter)=0]"
-			[Register ("getCardholderNameEditText", "()Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardholderNameEditText;", "GetGetCardholderNameEditTextHandler")]
-			get {
-				const string __id = "getCardholderNameEditText.()Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardholderNameEditText;";
-				try {
-					var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, null);
-					return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardholderNameEditText> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-				} finally {
-				}
-			}
-		}
-
 		static Delegate cb_getCvv;
 #pragma warning disable 0169
 		static Delegate GetGetCvvHandler ()
@@ -277,64 +207,6 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 				try {
 					var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, null);
 					return JNIEnv.GetString (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-				} finally {
-				}
-			}
-		}
-
-		static Delegate cb_getCvvEditText;
-#pragma warning disable 0169
-		static Delegate GetGetCvvEditTextHandler ()
-		{
-			if (cb_getCvvEditText == null)
-				cb_getCvvEditText = JNINativeWrapper.CreateDelegate ((_JniMarshal_PP_L) n_GetCvvEditText);
-			return cb_getCvvEditText;
-		}
-
-		static IntPtr n_GetCvvEditText (IntPtr jnienv, IntPtr native__this)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			return JNIEnv.ToLocalJniHandle (__this.CvvEditText);
-		}
-#pragma warning restore 0169
-
-		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CvvEditText CvvEditText {
-			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='getCvvEditText' and count(parameter)=0]"
-			[Register ("getCvvEditText", "()Lcom/payment/paymentsdk/creditcard/view/cardform/view/CvvEditText;", "GetGetCvvEditTextHandler")]
-			get {
-				const string __id = "getCvvEditText.()Lcom/payment/paymentsdk/creditcard/view/cardform/view/CvvEditText;";
-				try {
-					var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, null);
-					return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CvvEditText> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-				} finally {
-				}
-			}
-		}
-
-		static Delegate cb_getExpirationDateEditText;
-#pragma warning disable 0169
-		static Delegate GetGetExpirationDateEditTextHandler ()
-		{
-			if (cb_getExpirationDateEditText == null)
-				cb_getExpirationDateEditText = JNINativeWrapper.CreateDelegate ((_JniMarshal_PP_L) n_GetExpirationDateEditText);
-			return cb_getExpirationDateEditText;
-		}
-
-		static IntPtr n_GetExpirationDateEditText (IntPtr jnienv, IntPtr native__this)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			return JNIEnv.ToLocalJniHandle (__this.ExpirationDateEditText);
-		}
-#pragma warning restore 0169
-
-		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.ExpirationDateEditText ExpirationDateEditText {
-			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='getExpirationDateEditText' and count(parameter)=0]"
-			[Register ("getExpirationDateEditText", "()Lcom/payment/paymentsdk/creditcard/view/cardform/view/ExpirationDateEditText;", "GetGetExpirationDateEditTextHandler")]
-			get {
-				const string __id = "getExpirationDateEditText.()Lcom/payment/paymentsdk/creditcard/view/cardform/view/ExpirationDateEditText;";
-				try {
-					var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, null);
-					return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.ExpirationDateEditText> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 				} finally {
 				}
 			}
@@ -398,32 +270,63 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 			}
 		}
 
-		static Delegate cb_isValid;
+		static Delegate cb_a_Z;
 #pragma warning disable 0169
-		static Delegate GetIsValidHandler ()
+		static Delegate GetA_ZHandler ()
 		{
-			if (cb_isValid == null)
-				cb_isValid = JNINativeWrapper.CreateDelegate ((_JniMarshal_PP_Z) n_IsValid);
-			return cb_isValid;
+			if (cb_a_Z == null)
+				cb_a_Z = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPZ_L) n_A_Z);
+			return cb_a_Z;
 		}
 
-		static bool n_IsValid (IntPtr jnienv, IntPtr native__this)
+		static IntPtr n_A_Z (IntPtr jnienv, IntPtr native__this, bool p0)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			return __this.IsValid;
+			return JNIEnv.ToLocalJniHandle (__this.A (p0));
 		}
 #pragma warning restore 0169
 
-		public virtual unsafe bool IsValid {
-			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='isValid' and count(parameter)=0]"
-			[Register ("isValid", "()Z", "GetIsValidHandler")]
-			get {
-				const string __id = "isValid.()Z";
-				try {
-					var __rm = _members.InstanceMethods.InvokeVirtualBooleanMethod (__id, this, null);
-					return __rm;
-				} finally {
-				}
+		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='a' and count(parameter)=1 and parameter[1][@type='boolean']]"
+		[Register ("a", "(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;", "GetA_ZHandler")]
+		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm A (bool p0)
+		{
+			const string __id = "a.(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;";
+			try {
+				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
+				__args [0] = new JniArgumentValue (p0);
+				var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, __args);
+				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
+			} finally {
+			}
+		}
+
+		static Delegate cb_a_I;
+#pragma warning disable 0169
+		static Delegate GetA_IHandler ()
+		{
+			if (cb_a_I == null)
+				cb_a_I = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPI_L) n_A_I);
+			return cb_a_I;
+		}
+
+		static IntPtr n_A_I (IntPtr jnienv, IntPtr native__this, int p0)
+		{
+			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
+			return JNIEnv.ToLocalJniHandle (__this.A (p0));
+		}
+#pragma warning restore 0169
+
+		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='a' and count(parameter)=1 and parameter[1][@type='int']]"
+		[Register ("a", "(I)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;", "GetA_IHandler")]
+		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm A (int p0)
+		{
+			const string __id = "a.(I)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;";
+			try {
+				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
+				__args [0] = new JniArgumentValue (p0);
+				var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, __args);
+				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
+			} finally {
 			}
 		}
 
@@ -436,25 +339,83 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 			return cb_afterTextChanged_Landroid_text_Editable_;
 		}
 
-		static void n_AfterTextChanged_Landroid_text_Editable_ (IntPtr jnienv, IntPtr native__this, IntPtr native_s)
+		static void n_AfterTextChanged_Landroid_text_Editable_ (IntPtr jnienv, IntPtr native__this, IntPtr native_p0)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var s = (global::Android.Text.IEditable)global::Java.Lang.Object.GetObject<global::Android.Text.IEditable> (native_s, JniHandleOwnership.DoNotTransfer);
-			__this.AfterTextChanged (s);
+			var p0 = (global::Android.Text.IEditable)global::Java.Lang.Object.GetObject<global::Android.Text.IEditable> (native_p0, JniHandleOwnership.DoNotTransfer);
+			__this.AfterTextChanged (p0);
 		}
 #pragma warning restore 0169
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='afterTextChanged' and count(parameter)=1 and parameter[1][@type='android.text.Editable']]"
 		[Register ("afterTextChanged", "(Landroid/text/Editable;)V", "GetAfterTextChanged_Landroid_text_Editable_Handler")]
-		public virtual unsafe void AfterTextChanged (global::Android.Text.IEditable s)
+		public virtual unsafe void AfterTextChanged (global::Android.Text.IEditable p0)
 		{
 			const string __id = "afterTextChanged.(Landroid/text/Editable;)V";
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((s == null) ? IntPtr.Zero : ((global::Java.Lang.Object) s).Handle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
 				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (s);
+				global::System.GC.KeepAlive (p0);
+			}
+		}
+
+		static Delegate cb_b;
+#pragma warning disable 0169
+		static Delegate GetBHandler ()
+		{
+			if (cb_b == null)
+				cb_b = JNINativeWrapper.CreateDelegate ((_JniMarshal_PP_Z) n_B);
+			return cb_b;
+		}
+
+		static bool n_B (IntPtr jnienv, IntPtr native__this)
+		{
+			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
+			return __this.B ();
+		}
+#pragma warning restore 0169
+
+		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='b' and count(parameter)=0]"
+		[Register ("b", "()Z", "GetBHandler")]
+		public virtual unsafe bool B ()
+		{
+			const string __id = "b.()Z";
+			try {
+				var __rm = _members.InstanceMethods.InvokeVirtualBooleanMethod (__id, this, null);
+				return __rm;
+			} finally {
+			}
+		}
+
+		static Delegate cb_b_Z;
+#pragma warning disable 0169
+		static Delegate GetB_ZHandler ()
+		{
+			if (cb_b_Z == null)
+				cb_b_Z = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPZ_L) n_B_Z);
+			return cb_b_Z;
+		}
+
+		static IntPtr n_B_Z (IntPtr jnienv, IntPtr native__this, bool p0)
+		{
+			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
+			return JNIEnv.ToLocalJniHandle (__this.B (p0));
+		}
+#pragma warning restore 0169
+
+		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='b' and count(parameter)=1 and parameter[1][@type='boolean']]"
+		[Register ("b", "(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;", "GetB_ZHandler")]
+		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm B (bool p0)
+		{
+			const string __id = "b.(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;";
+			try {
+				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
+				__args [0] = new JniArgumentValue (p0);
+				var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, __args);
+				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
+			} finally {
 			}
 		}
 
@@ -467,275 +428,97 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 			return cb_beforeTextChanged_Ljava_lang_CharSequence_III;
 		}
 
-		static void n_BeforeTextChanged_Ljava_lang_CharSequence_III (IntPtr jnienv, IntPtr native__this, IntPtr native_s, int start, int count, int after)
+		static void n_BeforeTextChanged_Ljava_lang_CharSequence_III (IntPtr jnienv, IntPtr native__this, IntPtr native_p0, int p1, int p2, int p3)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var s = global::Java.Lang.Object.GetObject<global::Java.Lang.ICharSequence> (native_s, JniHandleOwnership.DoNotTransfer);
-			__this.BeforeTextChanged (s, start, count, after);
+			var p0 = global::Java.Lang.Object.GetObject<global::Java.Lang.ICharSequence> (native_p0, JniHandleOwnership.DoNotTransfer);
+			__this.BeforeTextChanged (p0, p1, p2, p3);
 		}
 #pragma warning restore 0169
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='beforeTextChanged' and count(parameter)=4 and parameter[1][@type='java.lang.CharSequence'] and parameter[2][@type='int'] and parameter[3][@type='int'] and parameter[4][@type='int']]"
 		[Register ("beforeTextChanged", "(Ljava/lang/CharSequence;III)V", "GetBeforeTextChanged_Ljava_lang_CharSequence_IIIHandler")]
-		public virtual unsafe void BeforeTextChanged (global::Java.Lang.ICharSequence s, int start, int count, int after)
+		public virtual unsafe void BeforeTextChanged (global::Java.Lang.ICharSequence p0, int p1, int p2, int p3)
 		{
 			const string __id = "beforeTextChanged.(Ljava/lang/CharSequence;III)V";
-			IntPtr native_s = CharSequence.ToLocalJniHandle (s);
+			IntPtr native_p0 = CharSequence.ToLocalJniHandle (p0);
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [4];
-				__args [0] = new JniArgumentValue (native_s);
-				__args [1] = new JniArgumentValue (start);
-				__args [2] = new JniArgumentValue (count);
-				__args [3] = new JniArgumentValue (after);
+				__args [0] = new JniArgumentValue (native_p0);
+				__args [1] = new JniArgumentValue (p1);
+				__args [2] = new JniArgumentValue (p2);
+				__args [3] = new JniArgumentValue (p3);
 				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
 			} finally {
-				JNIEnv.DeleteLocalRef (native_s);
-				global::System.GC.KeepAlive (s);
+				JNIEnv.DeleteLocalRef (native_p0);
+				global::System.GC.KeepAlive (p0);
 			}
 		}
 
-		public void BeforeTextChanged (string s, int start, int count, int after)
+		public void BeforeTextChanged (string p0, int p1, int p2, int p3)
 		{
-			var jls_s = s == null ? null : new global::Java.Lang.String (s);
-			BeforeTextChanged (jls_s, start, count, after);
-			jls_s?.Dispose ();
+			var jls_p0 = p0 == null ? null : new global::Java.Lang.String (p0);
+			BeforeTextChanged (jls_p0, p1, p2, p3);
+			jls_p0?.Dispose ();
 		}
 
-		static Delegate cb_cardRequired_Z;
+		static Delegate cb_c_Z;
 #pragma warning disable 0169
-		static Delegate GetCardRequired_ZHandler ()
+		static Delegate GetC_ZHandler ()
 		{
-			if (cb_cardRequired_Z == null)
-				cb_cardRequired_Z = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPZ_L) n_CardRequired_Z);
-			return cb_cardRequired_Z;
+			if (cb_c_Z == null)
+				cb_c_Z = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPZ_L) n_C_Z);
+			return cb_c_Z;
 		}
 
-		static IntPtr n_CardRequired_Z (IntPtr jnienv, IntPtr native__this, bool required)
+		static IntPtr n_C_Z (IntPtr jnienv, IntPtr native__this, bool p0)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			return JNIEnv.ToLocalJniHandle (__this.CardRequired (required));
+			return JNIEnv.ToLocalJniHandle (__this.C (p0));
 		}
 #pragma warning restore 0169
 
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='cardRequired' and count(parameter)=1 and parameter[1][@type='boolean']]"
-		[Register ("cardRequired", "(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;", "GetCardRequired_ZHandler")]
-		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm CardRequired (bool required)
+		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='c' and count(parameter)=1 and parameter[1][@type='boolean']]"
+		[Register ("c", "(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;", "GetC_ZHandler")]
+		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm C (bool p0)
 		{
-			const string __id = "cardRequired.(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;";
+			const string __id = "c.(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;";
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue (required);
+				__args [0] = new JniArgumentValue (p0);
 				var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, __args);
 				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 			} finally {
 			}
 		}
 
-		static Delegate cb_cardholderName_I;
+		static Delegate cb_d_Z;
 #pragma warning disable 0169
-		static Delegate GetInvokeCardholderName_IHandler ()
+		static Delegate GetD_ZHandler ()
 		{
-			if (cb_cardholderName_I == null)
-				cb_cardholderName_I = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPI_L) n_InvokeCardholderName_I);
-			return cb_cardholderName_I;
+			if (cb_d_Z == null)
+				cb_d_Z = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPZ_L) n_D_Z);
+			return cb_d_Z;
 		}
 
-		static IntPtr n_InvokeCardholderName_I (IntPtr jnienv, IntPtr native__this, int cardHolderNameStatus)
+		static IntPtr n_D_Z (IntPtr jnienv, IntPtr native__this, bool p0)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			return JNIEnv.ToLocalJniHandle (__this.InvokeCardholderName (cardHolderNameStatus));
+			return JNIEnv.ToLocalJniHandle (__this.D (p0));
 		}
 #pragma warning restore 0169
 
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='cardholderName' and count(parameter)=1 and parameter[1][@type='int']]"
-		[Register ("cardholderName", "(I)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;", "GetInvokeCardholderName_IHandler")]
-		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm InvokeCardholderName (int cardHolderNameStatus)
+		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='d' and count(parameter)=1 and parameter[1][@type='boolean']]"
+		[Register ("d", "(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;", "GetD_ZHandler")]
+		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm D (bool p0)
 		{
-			const string __id = "cardholderName.(I)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;";
+			const string __id = "d.(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;";
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue (cardHolderNameStatus);
+				__args [0] = new JniArgumentValue (p0);
 				var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, __args);
 				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 			} finally {
-			}
-		}
-
-		static Delegate cb_closeSoftKeyboard;
-#pragma warning disable 0169
-		static Delegate GetCloseSoftKeyboardHandler ()
-		{
-			if (cb_closeSoftKeyboard == null)
-				cb_closeSoftKeyboard = JNINativeWrapper.CreateDelegate ((_JniMarshal_PP_V) n_CloseSoftKeyboard);
-			return cb_closeSoftKeyboard;
-		}
-
-		static void n_CloseSoftKeyboard (IntPtr jnienv, IntPtr native__this)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			__this.CloseSoftKeyboard ();
-		}
-#pragma warning restore 0169
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='closeSoftKeyboard' and count(parameter)=0]"
-		[Register ("closeSoftKeyboard", "()V", "GetCloseSoftKeyboardHandler")]
-		public virtual unsafe void CloseSoftKeyboard ()
-		{
-			const string __id = "closeSoftKeyboard.()V";
-			try {
-				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, null);
-			} finally {
-			}
-		}
-
-		static Delegate cb_cvvRequired_Z;
-#pragma warning disable 0169
-		static Delegate GetCvvRequired_ZHandler ()
-		{
-			if (cb_cvvRequired_Z == null)
-				cb_cvvRequired_Z = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPZ_L) n_CvvRequired_Z);
-			return cb_cvvRequired_Z;
-		}
-
-		static IntPtr n_CvvRequired_Z (IntPtr jnienv, IntPtr native__this, bool required)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			return JNIEnv.ToLocalJniHandle (__this.CvvRequired (required));
-		}
-#pragma warning restore 0169
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='cvvRequired' and count(parameter)=1 and parameter[1][@type='boolean']]"
-		[Register ("cvvRequired", "(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;", "GetCvvRequired_ZHandler")]
-		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm CvvRequired (bool required)
-		{
-			const string __id = "cvvRequired.(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;";
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue (required);
-				var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, __args);
-				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-			} finally {
-			}
-		}
-
-		static Delegate cb_expirationRequired_Z;
-#pragma warning disable 0169
-		static Delegate GetExpirationRequired_ZHandler ()
-		{
-			if (cb_expirationRequired_Z == null)
-				cb_expirationRequired_Z = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPZ_L) n_ExpirationRequired_Z);
-			return cb_expirationRequired_Z;
-		}
-
-		static IntPtr n_ExpirationRequired_Z (IntPtr jnienv, IntPtr native__this, bool required)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			return JNIEnv.ToLocalJniHandle (__this.ExpirationRequired (required));
-		}
-#pragma warning restore 0169
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='expirationRequired' and count(parameter)=1 and parameter[1][@type='boolean']]"
-		[Register ("expirationRequired", "(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;", "GetExpirationRequired_ZHandler")]
-		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm ExpirationRequired (bool required)
-		{
-			const string __id = "expirationRequired.(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;";
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue (required);
-				var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, __args);
-				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-			} finally {
-			}
-		}
-
-		static Delegate cb_maskCardNumber_Z;
-#pragma warning disable 0169
-		static Delegate GetMaskCardNumber_ZHandler ()
-		{
-			if (cb_maskCardNumber_Z == null)
-				cb_maskCardNumber_Z = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPZ_L) n_MaskCardNumber_Z);
-			return cb_maskCardNumber_Z;
-		}
-
-		static IntPtr n_MaskCardNumber_Z (IntPtr jnienv, IntPtr native__this, bool mask)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			return JNIEnv.ToLocalJniHandle (__this.MaskCardNumber (mask));
-		}
-#pragma warning restore 0169
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='maskCardNumber' and count(parameter)=1 and parameter[1][@type='boolean']]"
-		[Register ("maskCardNumber", "(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;", "GetMaskCardNumber_ZHandler")]
-		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm MaskCardNumber (bool mask)
-		{
-			const string __id = "maskCardNumber.(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;";
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue (mask);
-				var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, __args);
-				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-			} finally {
-			}
-		}
-
-		static Delegate cb_maskCvv_Z;
-#pragma warning disable 0169
-		static Delegate GetMaskCvv_ZHandler ()
-		{
-			if (cb_maskCvv_Z == null)
-				cb_maskCvv_Z = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPZ_L) n_MaskCvv_Z);
-			return cb_maskCvv_Z;
-		}
-
-		static IntPtr n_MaskCvv_Z (IntPtr jnienv, IntPtr native__this, bool mask)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			return JNIEnv.ToLocalJniHandle (__this.MaskCvv (mask));
-		}
-#pragma warning restore 0169
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='maskCvv' and count(parameter)=1 and parameter[1][@type='boolean']]"
-		[Register ("maskCvv", "(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;", "GetMaskCvv_ZHandler")]
-		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm MaskCvv (bool mask)
-		{
-			const string __id = "maskCvv.(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;";
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue (mask);
-				var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, __args);
-				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-			} finally {
-			}
-		}
-
-		static Delegate cb_onCardTypeChanged_Lcom_payment_paymentsdk_creditcard_view_cardform_utils_CardType_;
-#pragma warning disable 0169
-		static Delegate GetOnCardTypeChanged_Lcom_payment_paymentsdk_creditcard_view_cardform_utils_CardType_Handler ()
-		{
-			if (cb_onCardTypeChanged_Lcom_payment_paymentsdk_creditcard_view_cardform_utils_CardType_ == null)
-				cb_onCardTypeChanged_Lcom_payment_paymentsdk_creditcard_view_cardform_utils_CardType_ = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPL_V) n_OnCardTypeChanged_Lcom_payment_paymentsdk_creditcard_view_cardform_utils_CardType_);
-			return cb_onCardTypeChanged_Lcom_payment_paymentsdk_creditcard_view_cardform_utils_CardType_;
-		}
-
-		static void n_OnCardTypeChanged_Lcom_payment_paymentsdk_creditcard_view_cardform_utils_CardType_ (IntPtr jnienv, IntPtr native__this, IntPtr native_cardType)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var cardType = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.Utils.CardType> (native_cardType, JniHandleOwnership.DoNotTransfer);
-			__this.OnCardTypeChanged (cardType);
-		}
-#pragma warning restore 0169
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='onCardTypeChanged' and count(parameter)=1 and parameter[1][@type='com.payment.paymentsdk.creditcard.view.cardform.utils.CardType']]"
-		[Register ("onCardTypeChanged", "(Lcom/payment/paymentsdk/creditcard/view/cardform/utils/CardType;)V", "GetOnCardTypeChanged_Lcom_payment_paymentsdk_creditcard_view_cardform_utils_CardType_Handler")]
-		public virtual unsafe void OnCardTypeChanged (global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.Utils.CardType cardType)
-		{
-			const string __id = "onCardTypeChanged.(Lcom/payment/paymentsdk/creditcard/view/cardform/utils/CardType;)V";
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((cardType == null) ? IntPtr.Zero : ((global::Java.Lang.Object) cardType).Handle);
-				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
-			} finally {
-				global::System.GC.KeepAlive (cardType);
 			}
 		}
 
@@ -748,25 +531,25 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 			return cb_onClick_Landroid_view_View_;
 		}
 
-		static void n_OnClick_Landroid_view_View_ (IntPtr jnienv, IntPtr native__this, IntPtr native_v)
+		static void n_OnClick_Landroid_view_View_ (IntPtr jnienv, IntPtr native__this, IntPtr native_p0)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var v = global::Java.Lang.Object.GetObject<global::Android.Views.View> (native_v, JniHandleOwnership.DoNotTransfer);
-			__this.OnClick (v);
+			var p0 = global::Java.Lang.Object.GetObject<global::Android.Views.View> (native_p0, JniHandleOwnership.DoNotTransfer);
+			__this.OnClick (p0);
 		}
 #pragma warning restore 0169
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='onClick' and count(parameter)=1 and parameter[1][@type='android.view.View']]"
 		[Register ("onClick", "(Landroid/view/View;)V", "GetOnClick_Landroid_view_View_Handler")]
-		public virtual unsafe void OnClick (global::Android.Views.View v)
+		public virtual unsafe void OnClick (global::Android.Views.View p0)
 		{
 			const string __id = "onClick.(Landroid/view/View;)V";
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((v == null) ? IntPtr.Zero : ((global::Java.Lang.Object) v).Handle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
 				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (v);
+				global::System.GC.KeepAlive (p0);
 			}
 		}
 
@@ -779,32 +562,32 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 			return cb_onEditorAction_Landroid_widget_TextView_ILandroid_view_KeyEvent_;
 		}
 
-		static bool n_OnEditorAction_Landroid_widget_TextView_ILandroid_view_KeyEvent_ (IntPtr jnienv, IntPtr native__this, IntPtr native_v, int native_actionId, IntPtr native_e)
+		static bool n_OnEditorAction_Landroid_widget_TextView_ILandroid_view_KeyEvent_ (IntPtr jnienv, IntPtr native__this, IntPtr native_p0, int native_p1, IntPtr native_p2)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var v = global::Java.Lang.Object.GetObject<global::Android.Widget.TextView> (native_v, JniHandleOwnership.DoNotTransfer);
-			var actionId = (global::Android.Views.InputMethods.ImeAction) native_actionId;
-			var e = global::Java.Lang.Object.GetObject<global::Android.Views.KeyEvent> (native_e, JniHandleOwnership.DoNotTransfer);
-			bool __ret = __this.OnEditorAction (v, actionId, e);
+			var p0 = global::Java.Lang.Object.GetObject<global::Android.Widget.TextView> (native_p0, JniHandleOwnership.DoNotTransfer);
+			var p1 = (global::Android.Views.InputMethods.ImeAction) native_p1;
+			var p2 = global::Java.Lang.Object.GetObject<global::Android.Views.KeyEvent> (native_p2, JniHandleOwnership.DoNotTransfer);
+			bool __ret = __this.OnEditorAction (p0, p1, p2);
 			return __ret;
 		}
 #pragma warning restore 0169
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='onEditorAction' and count(parameter)=3 and parameter[1][@type='android.widget.TextView'] and parameter[2][@type='int'] and parameter[3][@type='android.view.KeyEvent']]"
 		[Register ("onEditorAction", "(Landroid/widget/TextView;ILandroid/view/KeyEvent;)Z", "GetOnEditorAction_Landroid_widget_TextView_ILandroid_view_KeyEvent_Handler")]
-		public virtual unsafe bool OnEditorAction (global::Android.Widget.TextView v, [global::Android.Runtime.GeneratedEnum] global::Android.Views.InputMethods.ImeAction actionId, global::Android.Views.KeyEvent e)
+		public virtual unsafe bool OnEditorAction (global::Android.Widget.TextView p0, [global::Android.Runtime.GeneratedEnum] global::Android.Views.InputMethods.ImeAction p1, global::Android.Views.KeyEvent p2)
 		{
 			const string __id = "onEditorAction.(Landroid/widget/TextView;ILandroid/view/KeyEvent;)Z";
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [3];
-				__args [0] = new JniArgumentValue ((v == null) ? IntPtr.Zero : ((global::Java.Lang.Object) v).Handle);
-				__args [1] = new JniArgumentValue ((int) actionId);
-				__args [2] = new JniArgumentValue ((e == null) ? IntPtr.Zero : ((global::Java.Lang.Object) e).Handle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
+				__args [1] = new JniArgumentValue ((int) p1);
+				__args [2] = new JniArgumentValue ((p2 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p2).Handle);
 				var __rm = _members.InstanceMethods.InvokeVirtualBooleanMethod (__id, this, __args);
 				return __rm;
 			} finally {
-				global::System.GC.KeepAlive (v);
-				global::System.GC.KeepAlive (e);
+				global::System.GC.KeepAlive (p0);
+				global::System.GC.KeepAlive (p2);
 			}
 		}
 
@@ -817,26 +600,26 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 			return cb_onFocusChange_Landroid_view_View_Z;
 		}
 
-		static void n_OnFocusChange_Landroid_view_View_Z (IntPtr jnienv, IntPtr native__this, IntPtr native_v, bool hasFocus)
+		static void n_OnFocusChange_Landroid_view_View_Z (IntPtr jnienv, IntPtr native__this, IntPtr native_p0, bool p1)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var v = global::Java.Lang.Object.GetObject<global::Android.Views.View> (native_v, JniHandleOwnership.DoNotTransfer);
-			__this.OnFocusChange (v, hasFocus);
+			var p0 = global::Java.Lang.Object.GetObject<global::Android.Views.View> (native_p0, JniHandleOwnership.DoNotTransfer);
+			__this.OnFocusChange (p0, p1);
 		}
 #pragma warning restore 0169
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='onFocusChange' and count(parameter)=2 and parameter[1][@type='android.view.View'] and parameter[2][@type='boolean']]"
 		[Register ("onFocusChange", "(Landroid/view/View;Z)V", "GetOnFocusChange_Landroid_view_View_ZHandler")]
-		public virtual unsafe void OnFocusChange (global::Android.Views.View v, bool hasFocus)
+		public virtual unsafe void OnFocusChange (global::Android.Views.View p0, bool p1)
 		{
 			const string __id = "onFocusChange.(Landroid/view/View;Z)V";
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [2];
-				__args [0] = new JniArgumentValue ((v == null) ? IntPtr.Zero : ((global::Java.Lang.Object) v).Handle);
-				__args [1] = new JniArgumentValue (hasFocus);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
+				__args [1] = new JniArgumentValue (p1);
 				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (v);
+				global::System.GC.KeepAlive (p0);
 			}
 		}
 
@@ -849,38 +632,38 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 			return cb_onTextChanged_Ljava_lang_CharSequence_III;
 		}
 
-		static void n_OnTextChanged_Ljava_lang_CharSequence_III (IntPtr jnienv, IntPtr native__this, IntPtr native_s, int start, int before, int count)
+		static void n_OnTextChanged_Ljava_lang_CharSequence_III (IntPtr jnienv, IntPtr native__this, IntPtr native_p0, int p1, int p2, int p3)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var s = global::Java.Lang.Object.GetObject<global::Java.Lang.ICharSequence> (native_s, JniHandleOwnership.DoNotTransfer);
-			__this.OnTextChanged (s, start, before, count);
+			var p0 = global::Java.Lang.Object.GetObject<global::Java.Lang.ICharSequence> (native_p0, JniHandleOwnership.DoNotTransfer);
+			__this.OnTextChanged (p0, p1, p2, p3);
 		}
 #pragma warning restore 0169
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='onTextChanged' and count(parameter)=4 and parameter[1][@type='java.lang.CharSequence'] and parameter[2][@type='int'] and parameter[3][@type='int'] and parameter[4][@type='int']]"
 		[Register ("onTextChanged", "(Ljava/lang/CharSequence;III)V", "GetOnTextChanged_Ljava_lang_CharSequence_IIIHandler")]
-		public virtual unsafe void OnTextChanged (global::Java.Lang.ICharSequence s, int start, int before, int count)
+		public virtual unsafe void OnTextChanged (global::Java.Lang.ICharSequence p0, int p1, int p2, int p3)
 		{
 			const string __id = "onTextChanged.(Ljava/lang/CharSequence;III)V";
-			IntPtr native_s = CharSequence.ToLocalJniHandle (s);
+			IntPtr native_p0 = CharSequence.ToLocalJniHandle (p0);
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [4];
-				__args [0] = new JniArgumentValue (native_s);
-				__args [1] = new JniArgumentValue (start);
-				__args [2] = new JniArgumentValue (before);
-				__args [3] = new JniArgumentValue (count);
+				__args [0] = new JniArgumentValue (native_p0);
+				__args [1] = new JniArgumentValue (p1);
+				__args [2] = new JniArgumentValue (p2);
+				__args [3] = new JniArgumentValue (p3);
 				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
 			} finally {
-				JNIEnv.DeleteLocalRef (native_s);
-				global::System.GC.KeepAlive (s);
+				JNIEnv.DeleteLocalRef (native_p0);
+				global::System.GC.KeepAlive (p0);
 			}
 		}
 
-		public void OnTextChanged (string s, int start, int before, int count)
+		public void OnTextChanged (string p0, int p1, int p2, int p3)
 		{
-			var jls_s = s == null ? null : new global::Java.Lang.String (s);
-			OnTextChanged (jls_s, start, before, count);
-			jls_s?.Dispose ();
+			var jls_p0 = p0 == null ? null : new global::Java.Lang.String (p0);
+			OnTextChanged (jls_p0, p1, p2, p3);
+			jls_p0?.Dispose ();
 		}
 
 		static Delegate cb_setCardNumberError_Ljava_lang_String_;
@@ -892,26 +675,26 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 			return cb_setCardNumberError_Ljava_lang_String_;
 		}
 
-		static void n_SetCardNumberError_Ljava_lang_String_ (IntPtr jnienv, IntPtr native__this, IntPtr native_errorMessage)
+		static void n_SetCardNumberError_Ljava_lang_String_ (IntPtr jnienv, IntPtr native__this, IntPtr native_p0)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var errorMessage = JNIEnv.GetString (native_errorMessage, JniHandleOwnership.DoNotTransfer);
-			__this.SetCardNumberError (errorMessage);
+			var p0 = JNIEnv.GetString (native_p0, JniHandleOwnership.DoNotTransfer);
+			__this.SetCardNumberError (p0);
 		}
 #pragma warning restore 0169
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='setCardNumberError' and count(parameter)=1 and parameter[1][@type='java.lang.String']]"
 		[Register ("setCardNumberError", "(Ljava/lang/String;)V", "GetSetCardNumberError_Ljava_lang_String_Handler")]
-		public virtual unsafe void SetCardNumberError (string errorMessage)
+		public virtual unsafe void SetCardNumberError (string p0)
 		{
 			const string __id = "setCardNumberError.(Ljava/lang/String;)V";
-			IntPtr native_errorMessage = JNIEnv.NewString (errorMessage);
+			IntPtr native_p0 = JNIEnv.NewString (p0);
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue (native_errorMessage);
+				__args [0] = new JniArgumentValue (native_p0);
 				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
 			} finally {
-				JNIEnv.DeleteLocalRef (native_errorMessage);
+				JNIEnv.DeleteLocalRef (native_p0);
 			}
 		}
 
@@ -924,26 +707,26 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 			return cb_setCardholderNameError_Ljava_lang_String_;
 		}
 
-		static void n_SetCardholderNameError_Ljava_lang_String_ (IntPtr jnienv, IntPtr native__this, IntPtr native_errorMessage)
+		static void n_SetCardholderNameError_Ljava_lang_String_ (IntPtr jnienv, IntPtr native__this, IntPtr native_p0)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var errorMessage = JNIEnv.GetString (native_errorMessage, JniHandleOwnership.DoNotTransfer);
-			__this.SetCardholderNameError (errorMessage);
+			var p0 = JNIEnv.GetString (native_p0, JniHandleOwnership.DoNotTransfer);
+			__this.SetCardholderNameError (p0);
 		}
 #pragma warning restore 0169
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='setCardholderNameError' and count(parameter)=1 and parameter[1][@type='java.lang.String']]"
 		[Register ("setCardholderNameError", "(Ljava/lang/String;)V", "GetSetCardholderNameError_Ljava_lang_String_Handler")]
-		public virtual unsafe void SetCardholderNameError (string errorMessage)
+		public virtual unsafe void SetCardholderNameError (string p0)
 		{
 			const string __id = "setCardholderNameError.(Ljava/lang/String;)V";
-			IntPtr native_errorMessage = JNIEnv.NewString (errorMessage);
+			IntPtr native_p0 = JNIEnv.NewString (p0);
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue (native_errorMessage);
+				__args [0] = new JniArgumentValue (native_p0);
 				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
 			} finally {
-				JNIEnv.DeleteLocalRef (native_errorMessage);
+				JNIEnv.DeleteLocalRef (native_p0);
 			}
 		}
 
@@ -956,26 +739,26 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 			return cb_setCvvError_Ljava_lang_String_;
 		}
 
-		static void n_SetCvvError_Ljava_lang_String_ (IntPtr jnienv, IntPtr native__this, IntPtr native_errorMessage)
+		static void n_SetCvvError_Ljava_lang_String_ (IntPtr jnienv, IntPtr native__this, IntPtr native_p0)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var errorMessage = JNIEnv.GetString (native_errorMessage, JniHandleOwnership.DoNotTransfer);
-			__this.SetCvvError (errorMessage);
+			var p0 = JNIEnv.GetString (native_p0, JniHandleOwnership.DoNotTransfer);
+			__this.SetCvvError (p0);
 		}
 #pragma warning restore 0169
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='setCvvError' and count(parameter)=1 and parameter[1][@type='java.lang.String']]"
 		[Register ("setCvvError", "(Ljava/lang/String;)V", "GetSetCvvError_Ljava_lang_String_Handler")]
-		public virtual unsafe void SetCvvError (string errorMessage)
+		public virtual unsafe void SetCvvError (string p0)
 		{
 			const string __id = "setCvvError.(Ljava/lang/String;)V";
-			IntPtr native_errorMessage = JNIEnv.NewString (errorMessage);
+			IntPtr native_p0 = JNIEnv.NewString (p0);
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue (native_errorMessage);
+				__args [0] = new JniArgumentValue (native_p0);
 				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
 			} finally {
-				JNIEnv.DeleteLocalRef (native_errorMessage);
+				JNIEnv.DeleteLocalRef (native_p0);
 			}
 		}
 
@@ -988,180 +771,26 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 			return cb_setExpirationError_Ljava_lang_String_;
 		}
 
-		static void n_SetExpirationError_Ljava_lang_String_ (IntPtr jnienv, IntPtr native__this, IntPtr native_errorMessage)
+		static void n_SetExpirationError_Ljava_lang_String_ (IntPtr jnienv, IntPtr native__this, IntPtr native_p0)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var errorMessage = JNIEnv.GetString (native_errorMessage, JniHandleOwnership.DoNotTransfer);
-			__this.SetExpirationError (errorMessage);
+			var p0 = JNIEnv.GetString (native_p0, JniHandleOwnership.DoNotTransfer);
+			__this.SetExpirationError (p0);
 		}
 #pragma warning restore 0169
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='setExpirationError' and count(parameter)=1 and parameter[1][@type='java.lang.String']]"
 		[Register ("setExpirationError", "(Ljava/lang/String;)V", "GetSetExpirationError_Ljava_lang_String_Handler")]
-		public virtual unsafe void SetExpirationError (string errorMessage)
+		public virtual unsafe void SetExpirationError (string p0)
 		{
 			const string __id = "setExpirationError.(Ljava/lang/String;)V";
-			IntPtr native_errorMessage = JNIEnv.NewString (errorMessage);
+			IntPtr native_p0 = JNIEnv.NewString (p0);
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue (native_errorMessage);
+				__args [0] = new JniArgumentValue (native_p0);
 				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
 			} finally {
-				JNIEnv.DeleteLocalRef (native_errorMessage);
-			}
-		}
-
-		static Delegate cb_setHideScanDrawable_Z;
-#pragma warning disable 0169
-		static Delegate GetSetHideScanDrawable_ZHandler ()
-		{
-			if (cb_setHideScanDrawable_Z == null)
-				cb_setHideScanDrawable_Z = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPZ_L) n_SetHideScanDrawable_Z);
-			return cb_setHideScanDrawable_Z;
-		}
-
-		static IntPtr n_SetHideScanDrawable_Z (IntPtr jnienv, IntPtr native__this, bool hideScanDrawable)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			return JNIEnv.ToLocalJniHandle (__this.SetHideScanDrawable (hideScanDrawable));
-		}
-#pragma warning restore 0169
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='setHideScanDrawable' and count(parameter)=1 and parameter[1][@type='boolean']]"
-		[Register ("setHideScanDrawable", "(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;", "GetSetHideScanDrawable_ZHandler")]
-		public virtual unsafe global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm SetHideScanDrawable (bool hideScanDrawable)
-		{
-			const string __id = "setHideScanDrawable.(Z)Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardForm;";
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue (hideScanDrawable);
-				var __rm = _members.InstanceMethods.InvokeVirtualObjectMethod (__id, this, __args);
-				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-			} finally {
-			}
-		}
-
-		static Delegate cb_setOnCardFormSubmitListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormSubmitListener_;
-#pragma warning disable 0169
-		static Delegate GetSetOnCardFormSubmitListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormSubmitListener_Handler ()
-		{
-			if (cb_setOnCardFormSubmitListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormSubmitListener_ == null)
-				cb_setOnCardFormSubmitListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormSubmitListener_ = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPL_V) n_SetOnCardFormSubmitListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormSubmitListener_);
-			return cb_setOnCardFormSubmitListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormSubmitListener_;
-		}
-
-		static void n_SetOnCardFormSubmitListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormSubmitListener_ (IntPtr jnienv, IntPtr native__this, IntPtr native_listener)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var listener = (global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormSubmitListener)global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormSubmitListener> (native_listener, JniHandleOwnership.DoNotTransfer);
-			__this.SetOnCardFormSubmitListener (listener);
-		}
-#pragma warning restore 0169
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='setOnCardFormSubmitListener' and count(parameter)=1 and parameter[1][@type='com.payment.paymentsdk.creditcard.view.cardform.OnCardFormSubmitListener']]"
-		[Register ("setOnCardFormSubmitListener", "(Lcom/payment/paymentsdk/creditcard/view/cardform/OnCardFormSubmitListener;)V", "GetSetOnCardFormSubmitListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormSubmitListener_Handler")]
-		public virtual unsafe void SetOnCardFormSubmitListener (global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormSubmitListener listener)
-		{
-			const string __id = "setOnCardFormSubmitListener.(Lcom/payment/paymentsdk/creditcard/view/cardform/OnCardFormSubmitListener;)V";
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((listener == null) ? IntPtr.Zero : ((global::Java.Lang.Object) listener).Handle);
-				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
-			} finally {
-				global::System.GC.KeepAlive (listener);
-			}
-		}
-
-		static Delegate cb_setOnCardFormValidListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormValidListener_;
-#pragma warning disable 0169
-		static Delegate GetSetOnCardFormValidListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormValidListener_Handler ()
-		{
-			if (cb_setOnCardFormValidListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormValidListener_ == null)
-				cb_setOnCardFormValidListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormValidListener_ = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPL_V) n_SetOnCardFormValidListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormValidListener_);
-			return cb_setOnCardFormValidListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormValidListener_;
-		}
-
-		static void n_SetOnCardFormValidListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormValidListener_ (IntPtr jnienv, IntPtr native__this, IntPtr native_listener)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var listener = (global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormValidListener)global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormValidListener> (native_listener, JniHandleOwnership.DoNotTransfer);
-			__this.SetOnCardFormValidListener (listener);
-		}
-#pragma warning restore 0169
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='setOnCardFormValidListener' and count(parameter)=1 and parameter[1][@type='com.payment.paymentsdk.creditcard.view.cardform.OnCardFormValidListener']]"
-		[Register ("setOnCardFormValidListener", "(Lcom/payment/paymentsdk/creditcard/view/cardform/OnCardFormValidListener;)V", "GetSetOnCardFormValidListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormValidListener_Handler")]
-		public virtual unsafe void SetOnCardFormValidListener (global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormValidListener listener)
-		{
-			const string __id = "setOnCardFormValidListener.(Lcom/payment/paymentsdk/creditcard/view/cardform/OnCardFormValidListener;)V";
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((listener == null) ? IntPtr.Zero : ((global::Java.Lang.Object) listener).Handle);
-				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
-			} finally {
-				global::System.GC.KeepAlive (listener);
-			}
-		}
-
-		static Delegate cb_setOnCardTypeChangedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_view_CardEditText_OnCardTypeChangedListener_;
-#pragma warning disable 0169
-		static Delegate GetSetOnCardTypeChangedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_view_CardEditText_OnCardTypeChangedListener_Handler ()
-		{
-			if (cb_setOnCardTypeChangedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_view_CardEditText_OnCardTypeChangedListener_ == null)
-				cb_setOnCardTypeChangedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_view_CardEditText_OnCardTypeChangedListener_ = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPL_V) n_SetOnCardTypeChangedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_view_CardEditText_OnCardTypeChangedListener_);
-			return cb_setOnCardTypeChangedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_view_CardEditText_OnCardTypeChangedListener_;
-		}
-
-		static void n_SetOnCardTypeChangedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_view_CardEditText_OnCardTypeChangedListener_ (IntPtr jnienv, IntPtr native__this, IntPtr native_listener)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var listener = (global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText.IOnCardTypeChangedListener)global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText.IOnCardTypeChangedListener> (native_listener, JniHandleOwnership.DoNotTransfer);
-			__this.SetOnCardTypeChangedListener (listener);
-		}
-#pragma warning restore 0169
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='setOnCardTypeChangedListener' and count(parameter)=1 and parameter[1][@type='com.payment.paymentsdk.creditcard.view.cardform.view.CardEditText.OnCardTypeChangedListener']]"
-		[Register ("setOnCardTypeChangedListener", "(Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardEditText$OnCardTypeChangedListener;)V", "GetSetOnCardTypeChangedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_view_CardEditText_OnCardTypeChangedListener_Handler")]
-		public virtual unsafe void SetOnCardTypeChangedListener (global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText.IOnCardTypeChangedListener listener)
-		{
-			const string __id = "setOnCardTypeChangedListener.(Lcom/payment/paymentsdk/creditcard/view/cardform/view/CardEditText$OnCardTypeChangedListener;)V";
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((listener == null) ? IntPtr.Zero : ((global::Java.Lang.Object) listener).Handle);
-				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
-			} finally {
-				global::System.GC.KeepAlive (listener);
-			}
-		}
-
-		static Delegate cb_setOnFormFieldFocusedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormFieldFocusedListener_;
-#pragma warning disable 0169
-		static Delegate GetSetOnFormFieldFocusedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormFieldFocusedListener_Handler ()
-		{
-			if (cb_setOnFormFieldFocusedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormFieldFocusedListener_ == null)
-				cb_setOnFormFieldFocusedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormFieldFocusedListener_ = JNINativeWrapper.CreateDelegate ((_JniMarshal_PPL_V) n_SetOnFormFieldFocusedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormFieldFocusedListener_);
-			return cb_setOnFormFieldFocusedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormFieldFocusedListener_;
-		}
-
-		static void n_SetOnFormFieldFocusedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormFieldFocusedListener_ (IntPtr jnienv, IntPtr native__this, IntPtr native_listener)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var listener = (global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormFieldFocusedListener)global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormFieldFocusedListener> (native_listener, JniHandleOwnership.DoNotTransfer);
-			__this.SetOnFormFieldFocusedListener (listener);
-		}
-#pragma warning restore 0169
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='setOnFormFieldFocusedListener' and count(parameter)=1 and parameter[1][@type='com.payment.paymentsdk.creditcard.view.cardform.OnCardFormFieldFocusedListener']]"
-		[Register ("setOnFormFieldFocusedListener", "(Lcom/payment/paymentsdk/creditcard/view/cardform/OnCardFormFieldFocusedListener;)V", "GetSetOnFormFieldFocusedListener_Lcom_payment_paymentsdk_creditcard_view_cardform_OnCardFormFieldFocusedListener_Handler")]
-		public virtual unsafe void SetOnFormFieldFocusedListener (global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormFieldFocusedListener listener)
-		{
-			const string __id = "setOnFormFieldFocusedListener.(Lcom/payment/paymentsdk/creditcard/view/cardform/OnCardFormFieldFocusedListener;)V";
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((listener == null) ? IntPtr.Zero : ((global::Java.Lang.Object) listener).Handle);
-				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
-			} finally {
-				global::System.GC.KeepAlive (listener);
+				JNIEnv.DeleteLocalRef (native_p0);
 			}
 		}
 
@@ -1174,166 +803,27 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Cardform.View {
 			return cb_setup_Landroidx_fragment_app_FragmentActivity_;
 		}
 
-		static void n_Setup_Landroidx_fragment_app_FragmentActivity_ (IntPtr jnienv, IntPtr native__this, IntPtr native_activity)
+		static void n_Setup_Landroidx_fragment_app_FragmentActivity_ (IntPtr jnienv, IntPtr native__this, IntPtr native_p0)
 		{
 			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			var activity = global::Java.Lang.Object.GetObject<global::AndroidX.Fragment.App.FragmentActivity> (native_activity, JniHandleOwnership.DoNotTransfer);
-			__this.Setup (activity);
+			var p0 = global::Java.Lang.Object.GetObject<global::AndroidX.Fragment.App.FragmentActivity> (native_p0, JniHandleOwnership.DoNotTransfer);
+			__this.Setup (p0);
 		}
 #pragma warning restore 0169
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='setup' and count(parameter)=1 and parameter[1][@type='androidx.fragment.app.FragmentActivity']]"
 		[Register ("setup", "(Landroidx/fragment/app/FragmentActivity;)V", "GetSetup_Landroidx_fragment_app_FragmentActivity_Handler")]
-		public virtual unsafe void Setup (global::AndroidX.Fragment.App.FragmentActivity activity)
+		public virtual unsafe void Setup (global::AndroidX.Fragment.App.FragmentActivity p0)
 		{
 			const string __id = "setup.(Landroidx/fragment/app/FragmentActivity;)V";
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((activity == null) ? IntPtr.Zero : ((global::Java.Lang.Object) activity).Handle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
 				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (activity);
+				global::System.GC.KeepAlive (p0);
 			}
 		}
-
-		static Delegate cb_validate;
-#pragma warning disable 0169
-		static Delegate GetValidateHandler ()
-		{
-			if (cb_validate == null)
-				cb_validate = JNINativeWrapper.CreateDelegate ((_JniMarshal_PP_V) n_Validate);
-			return cb_validate;
-		}
-
-		static void n_Validate (IntPtr jnienv, IntPtr native__this)
-		{
-			var __this = global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardForm> (jnienv, native__this, JniHandleOwnership.DoNotTransfer);
-			__this.Validate ();
-		}
-#pragma warning restore 0169
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.cardform.view']/class[@name='CardForm']/method[@name='validate' and count(parameter)=0]"
-		[Register ("validate", "()V", "GetValidateHandler")]
-		public virtual unsafe void Validate ()
-		{
-			const string __id = "validate.()V";
-			try {
-				_members.InstanceMethods.InvokeVirtualVoidMethod (__id, this, null);
-			} finally {
-			}
-		}
-
-		#region "Event implementation for Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormSubmitListener"
-
-		public event EventHandler CardFormSubmit {
-			add {
-				global::Java.Interop.EventHelper.AddEventHandler<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormSubmitListener, global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormSubmitListenerImplementor>(
-				ref weak_implementor_SetOnCardFormSubmitListener,
-				__CreateIOnCardFormSubmitListenerImplementor,
-				SetOnCardFormSubmitListener,
-				__h => __h.Handler += value);
-			}
-			remove {
-				global::Java.Interop.EventHelper.RemoveEventHandler<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormSubmitListener, global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormSubmitListenerImplementor>(
-				ref weak_implementor_SetOnCardFormSubmitListener,
-				global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormSubmitListenerImplementor.__IsEmpty,
-				__v => SetOnCardFormSubmitListener (null),
-				__h => __h.Handler -= value);
-			}
-		}
-
-		WeakReference weak_implementor_SetOnCardFormSubmitListener;
-
-		global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormSubmitListenerImplementor __CreateIOnCardFormSubmitListenerImplementor ()
-		{
-			return new global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormSubmitListenerImplementor (this);
-		}
-
-		#endregion
-
-		#region "Event implementation for Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormValidListener"
-
-		public event EventHandler<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.CardFormValidEventArgs> CardFormValid {
-			add {
-				global::Java.Interop.EventHelper.AddEventHandler<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormValidListener, global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormValidListenerImplementor>(
-				ref weak_implementor_SetOnCardFormValidListener,
-				__CreateIOnCardFormValidListenerImplementor,
-				SetOnCardFormValidListener,
-				__h => __h.Handler += value);
-			}
-			remove {
-				global::Java.Interop.EventHelper.RemoveEventHandler<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormValidListener, global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormValidListenerImplementor>(
-				ref weak_implementor_SetOnCardFormValidListener,
-				global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormValidListenerImplementor.__IsEmpty,
-				__v => SetOnCardFormValidListener (null),
-				__h => __h.Handler -= value);
-			}
-		}
-
-		WeakReference weak_implementor_SetOnCardFormValidListener;
-
-		global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormValidListenerImplementor __CreateIOnCardFormValidListenerImplementor ()
-		{
-			return new global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormValidListenerImplementor (this);
-		}
-
-		#endregion
-
-		#region "Event implementation for Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText.IOnCardTypeChangedListener"
-
-		public event EventHandler<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText.CardTypeChangedEventArgs> CardTypeChanged {
-			add {
-				global::Java.Interop.EventHelper.AddEventHandler<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText.IOnCardTypeChangedListener, global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText.IOnCardTypeChangedListenerImplementor>(
-				ref weak_implementor_SetOnCardTypeChangedListener,
-				__CreateIOnCardTypeChangedListenerImplementor,
-				SetOnCardTypeChangedListener,
-				__h => __h.Handler += value);
-			}
-			remove {
-				global::Java.Interop.EventHelper.RemoveEventHandler<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText.IOnCardTypeChangedListener, global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText.IOnCardTypeChangedListenerImplementor>(
-				ref weak_implementor_SetOnCardTypeChangedListener,
-				global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText.IOnCardTypeChangedListenerImplementor.__IsEmpty,
-				__v => SetOnCardTypeChangedListener (null),
-				__h => __h.Handler -= value);
-			}
-		}
-
-		WeakReference weak_implementor_SetOnCardTypeChangedListener;
-
-		global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText.IOnCardTypeChangedListenerImplementor __CreateIOnCardTypeChangedListenerImplementor ()
-		{
-			return new global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.View.CardEditText.IOnCardTypeChangedListenerImplementor (this);
-		}
-
-		#endregion
-
-		#region "Event implementation for Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormFieldFocusedListener"
-
-		public event EventHandler<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.CardFormFieldFocusedEventArgs> FormFieldFocused {
-			add {
-				global::Java.Interop.EventHelper.AddEventHandler<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormFieldFocusedListener, global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormFieldFocusedListenerImplementor>(
-				ref weak_implementor_SetOnFormFieldFocusedListener,
-				__CreateIOnCardFormFieldFocusedListenerImplementor,
-				SetOnFormFieldFocusedListener,
-				__h => __h.Handler += value);
-			}
-			remove {
-				global::Java.Interop.EventHelper.RemoveEventHandler<global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormFieldFocusedListener, global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormFieldFocusedListenerImplementor>(
-				ref weak_implementor_SetOnFormFieldFocusedListener,
-				global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormFieldFocusedListenerImplementor.__IsEmpty,
-				__v => SetOnFormFieldFocusedListener (null),
-				__h => __h.Handler -= value);
-			}
-		}
-
-		WeakReference weak_implementor_SetOnFormFieldFocusedListener;
-
-		global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormFieldFocusedListenerImplementor __CreateIOnCardFormFieldFocusedListenerImplementor ()
-		{
-			return new global::Com.Payment.Paymentsdk.Creditcard.View.Cardform.IOnCardFormFieldFocusedListenerImplementor (this);
-		}
-
-		#endregion
 
 	}
 }

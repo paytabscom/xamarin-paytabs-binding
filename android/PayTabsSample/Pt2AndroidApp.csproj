@@ -110,7 +110,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CardScanBindingLib\CardScanBindingLib.csproj">
-      <Project>{AD6B3757-1C74-4B74-B494-67AEE4E86FFE}</Project>
+      <Project>{ad6b3757-1c74-4b74-b494-67aee4e86ffe}</Project>
       <Name>CardScanBindingLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\PaymentSDK.Binding\PaymentSDK.Binding.csproj">

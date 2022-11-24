@@ -1,0 +1,11 @@
+C:\Users\Lenovo\Downloads\xamarin-paytabs-binding\android\CardScanBindingLib\bin\Release\CardScanBindingLib.dll
+C:\Users\Lenovo\Downloads\xamarin-paytabs-binding\android\CardScanBindingLib\bin\Release\CardScanBindingLib.pdb
+C:\Users\Lenovo\Downloads\xamarin-paytabs-binding\android\CardScanBindingLib\bin\Release\Xamarin.Android.Device.YearClass.dll
+C:\Users\Lenovo\Downloads\xamarin-paytabs-binding\android\CardScanBindingLib\obj\Release\__AndroidLibraryProjects__.zip
+C:\Users\Lenovo\Downloads\xamarin-paytabs-binding\android\CardScanBindingLib\obj\Release\MonoAndroid,Version=v11.0.AssemblyAttributes.cs
+C:\Users\Lenovo\Downloads\xamarin-paytabs-binding\android\CardScanBindingLib\obj\Release\CardScanBindingLib.csproj.AssemblyReference.cache
+C:\Users\Lenovo\Downloads\xamarin-paytabs-binding\android\CardScanBindingLib\obj\Release\stamp\_BuildLibraryImportsCache.stamp
+C:\Users\Lenovo\Downloads\xamarin-paytabs-binding\android\CardScanBindingLib\obj\Release\CardScanBindingLib.csproj.CoreCompileInputs.cache
+C:\Users\Lenovo\Downloads\xamarin-paytabs-binding\android\CardScanBindingLib\obj\Release\CardScanBindingLib.csproj.CopyComplete
+C:\Users\Lenovo\Downloads\xamarin-paytabs-binding\android\CardScanBindingLib\obj\Release\CardScanBindingLib.dll
+C:\Users\Lenovo\Downloads\xamarin-paytabs-binding\android\CardScanBindingLib\obj\Release\CardScanBindingLib.pdb

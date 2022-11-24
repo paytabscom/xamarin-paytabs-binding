@@ -38,24 +38,24 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkError']/constructor[@name='PaymentSdkError' and count(parameter)=2 and parameter[1][@type='java.lang.Integer'] and parameter[2][@type='java.lang.String']]"
 		[Register (".ctor", "(Ljava/lang/Integer;Ljava/lang/String;)V", "")]
-		public unsafe PaymentSdkError (global::Java.Lang.Integer code, string msg) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe PaymentSdkError (global::Java.Lang.Integer p0, string p1) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Ljava/lang/Integer;Ljava/lang/String;)V";
 
 			if (((global::Java.Lang.Object) this).Handle != IntPtr.Zero)
 				return;
 
-			IntPtr native_msg = JNIEnv.NewString (msg);
+			IntPtr native_p1 = JNIEnv.NewString (p1);
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [2];
-				__args [0] = new JniArgumentValue ((code == null) ? IntPtr.Zero : ((global::Java.Lang.Object) code).Handle);
-				__args [1] = new JniArgumentValue (native_msg);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
+				__args [1] = new JniArgumentValue (native_p1);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				JNIEnv.DeleteLocalRef (native_msg);
-				global::System.GC.KeepAlive (code);
+				JNIEnv.DeleteLocalRef (native_p1);
+				global::System.GC.KeepAlive (p0);
 			}
 		}
 
@@ -111,19 +111,19 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkError']/method[@name='copy' and count(parameter)=2 and parameter[1][@type='java.lang.Integer'] and parameter[2][@type='java.lang.String']]"
 		[Register ("copy", "(Ljava/lang/Integer;Ljava/lang/String;)Lcom/payment/paymentsdk/integrationmodels/PaymentSdkError;", "")]
-		public unsafe global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkError Copy (global::Java.Lang.Integer code, string msg)
+		public unsafe global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkError Copy (global::Java.Lang.Integer p0, string p1)
 		{
 			const string __id = "copy.(Ljava/lang/Integer;Ljava/lang/String;)Lcom/payment/paymentsdk/integrationmodels/PaymentSdkError;";
-			IntPtr native_msg = JNIEnv.NewString (msg);
+			IntPtr native_p1 = JNIEnv.NewString (p1);
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [2];
-				__args [0] = new JniArgumentValue ((code == null) ? IntPtr.Zero : ((global::Java.Lang.Object) code).Handle);
-				__args [1] = new JniArgumentValue (native_msg);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
+				__args [1] = new JniArgumentValue (native_p1);
 				var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, __args);
 				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkError> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 			} finally {
-				JNIEnv.DeleteLocalRef (native_msg);
-				global::System.GC.KeepAlive (code);
+				JNIEnv.DeleteLocalRef (native_p1);
+				global::System.GC.KeepAlive (p0);
 			}
 		}
 

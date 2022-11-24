@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "ad6b3757-1c74-4b74-b494-67aee4e86ffe": {
+      "ProjectGuid": "ad6b3757-1c74-4b74-b494-67aee4e86ffe",
+      "DisplayName": "CardScanBindingLib",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

@@ -110,3 +110,4 @@ androidx.lifecycle.lifecycle-extensions.aar
 androidx.core.core-ktx.aar
 androidx.activity.activity-ktx.aar
 androidx.fragment.fragment-ktx.aar
+CardScanBindingLib.dll

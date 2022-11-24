@@ -1,6 +1,3 @@
-com.payment.paymentsdk.creditcard.view.cardform.utils.CardType:Com.Payment.Paymentsdk.Creditcard.View.Cardform.Utils:CardType
-com.payment.paymentsdk.creditcard.view.cardform.utils.ExpirationDateDialogTheme:Com.Payment.Paymentsdk.Creditcard.View.Cardform.Utils:ExpirationDateDialogTheme
-com.payment.paymentsdk.creditcard.view.customs.EditTextsEnum:Com.Payment.Paymentsdk.Creditcard.View.Customs:EditTextsEnum
 com.payment.paymentsdk.integrationmodels.PaymentSdkApms:Com.Payment.Paymentsdk.Integrationmodels:PaymentSdkApms
 com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCode:Com.Payment.Paymentsdk.Integrationmodels:PaymentSdkLanguageCode
 com.payment.paymentsdk.integrationmodels.PaymentSdkRegion:Com.Payment.Paymentsdk.Integrationmodels:PaymentSdkRegion

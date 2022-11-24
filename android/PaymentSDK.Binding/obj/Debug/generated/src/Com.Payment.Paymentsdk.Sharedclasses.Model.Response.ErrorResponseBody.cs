@@ -38,25 +38,25 @@ namespace Com.Payment.Paymentsdk.Sharedclasses.Model.Response {
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.sharedclasses.model.response']/class[@name='ErrorResponseBody']/constructor[@name='ErrorResponseBody' and count(parameter)=2 and parameter[1][@type='java.lang.String'] and parameter[2][@type='java.lang.String']]"
 		[Register (".ctor", "(Ljava/lang/String;Ljava/lang/String;)V", "")]
-		public unsafe ErrorResponseBody (string code, string msg) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe ErrorResponseBody (string p0, string p1) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Ljava/lang/String;Ljava/lang/String;)V";
 
 			if (((global::Java.Lang.Object) this).Handle != IntPtr.Zero)
 				return;
 
-			IntPtr native_code = JNIEnv.NewString (code);
-			IntPtr native_msg = JNIEnv.NewString (msg);
+			IntPtr native_p0 = JNIEnv.NewString (p0);
+			IntPtr native_p1 = JNIEnv.NewString (p1);
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [2];
-				__args [0] = new JniArgumentValue (native_code);
-				__args [1] = new JniArgumentValue (native_msg);
+				__args [0] = new JniArgumentValue (native_p0);
+				__args [1] = new JniArgumentValue (native_p1);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				JNIEnv.DeleteLocalRef (native_code);
-				JNIEnv.DeleteLocalRef (native_msg);
+				JNIEnv.DeleteLocalRef (native_p0);
+				JNIEnv.DeleteLocalRef (native_p1);
 			}
 		}
 

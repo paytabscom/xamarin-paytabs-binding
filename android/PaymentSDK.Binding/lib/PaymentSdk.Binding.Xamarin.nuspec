@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
         <metadata>
           <id>Paytabs.Xamarin.Android</id>
-          <version>1.0.8</version>
+          <version>1.0.9</version>
           <authors>paytabs</authors>
           <owners>Paytabs.com</owners>
           <requireLicenseAcceptance>false</requireLicenseAcceptance>

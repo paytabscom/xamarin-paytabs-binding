@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@+id/payment_sdk_tv_input_field_label"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:fontFamily="@font/payment_sdk_primary_font"

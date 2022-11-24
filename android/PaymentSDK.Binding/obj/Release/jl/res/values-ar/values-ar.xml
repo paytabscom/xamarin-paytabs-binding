@@ -8,17 +8,20 @@
     <string name="bt_postal_code_required">Postal code is required</string>
     <string name="bt_save_card_checkbox_name">Save card</string>
     <string name="bt_year">Year</string>
+    <string name="done">تم</string>
+    <string name="edit">تعديل</string>
+    <string name="pay_with_new_card">الدفع ببطاقة جديدة</string>
     <string name="payment_sdk_3d_secure_title">"نظام الأمان الثلاثي الأبعاد"</string>
     <string name="payment_sdk_apple_pay_error_missing_country_code">"رمز بلد Apple Pay فارغ!"</string>
     <string name="payment_sdk_apple_pay_error_missing_merchant_identifier">"معرف Apple Pay فارغ!"</string>
     <string name="payment_sdk_apple_pay_error_unauthorized_networks">"شبكات Apple Pay غير المصرح بها"</string>
-    <string name="payment_sdk_billing_address_city">"مدينة"</string>
-    <string name="payment_sdk_billing_address_country">"بلد"</string>
+    <string name="payment_sdk_billing_address_city">" مدينة "</string>
+    <string name="payment_sdk_billing_address_country">" بلد "</string>
     <string name="payment_sdk_billing_address_email">"البريد الإلكتروني"</string>
     <string name="payment_sdk_billing_address_full_name">"الاسم بالكامل"</string>
-    <string name="payment_sdk_billing_address_phone">"رقم الهاتف"</string>
-    <string name="payment_sdk_billing_address_state">"ولاية"</string>
-    <string name="payment_sdk_billing_address_stree">"شارع"</string>
+    <string name="payment_sdk_billing_address_phone">" رقم الهاتف "</string>
+    <string name="payment_sdk_billing_address_state">" ولاية "</string>
+    <string name="payment_sdk_billing_address_stree">" شارع "</string>
     <string name="payment_sdk_billing_address_zip">"الرمز البريدي"</string>
     <string name="payment_sdk_billing_details">"تفاصيل الفاتورة"</string>
     <string name="payment_sdk_billing_select_country">"حدد الدولة"</string>
@@ -39,11 +42,11 @@
     <string name="payment_sdk_card_error_invalid_cvv">"CVV غير صالح!"</string>
     <string name="payment_sdk_card_error_invalid_expiry_date">"تاريخ انتهاء الصلاحية غير صالح"</string>
     <string name="payment_sdk_card_error_invalid_name_on_card">"اسم حامل البطاقة غير صالح"</string>
-    <string name="payment_sdk_card_expiry_date">"تاريخ الانتهاء"</string>
+    <string name="payment_sdk_card_expiry_date">" تاريخ الانتهاء"</string>
     <string name="payment_sdk_card_expiry_date_hint">"شهر / سنة"</string>
     <string name="payment_sdk_card_name_on_card_hint">"John Smith"</string>
     <string name="payment_sdk_card_name_on_card_title">"الاسم على البطاقة"</string>
-    <string name="payment_sdk_card_number">"رقم البطاقة"</string>
+    <string name="payment_sdk_card_number"> " رقم البطاقة "</string>
     <string name="payment_sdk_card_number_hint">"0000 0000 0000 0000"</string>
     <string name="payment_sdk_card_pay_button">"دفع"</string>
     <string name="payment_sdk_card_scanner_camera_permission_dismiss">"ليس الان"</string>
@@ -98,6 +101,7 @@
     <string name="payment_sdk_error_invalid_shipping_state">"حالة الشحن غير صالحة"</string>
     <string name="payment_sdk_error_invalid_shipping_zip_code">"رمز بريدي للشحن غير صالح"</string>
     <string name="payment_sdk_error_missing_billing_info">"يرجى تقديم بيانات الفوترة"</string>
+    <string name="payment_sdk_error_missing_card_token">يرجى تقديم الرمز</string>
     <string name="payment_sdk_error_missing_cart_description">"وصف عربة التسوق فارغ!"</string>
     <string name="payment_sdk_error_missing_cart_id">"معرف عربة التسوق فارغ!"</string>
     <string name="payment_sdk_error_missing_client_key">"مفتاح العميل مفقود!"</string>
@@ -107,6 +111,7 @@
     <string name="payment_sdk_error_missing_merchant_country_code">"رمز بلد التاجر مفقود!"</string>
     <string name="payment_sdk_error_missing_payment_callback">Missing Payment Callback</string>
     <string name="payment_sdk_error_missing_profile_id">"معرف الملف الشخصي فارغ!"</string>
+    <string name="payment_sdk_error_missing_saved_card_info">يرجى تقديم بيانات البطاقة المستخدمة</string>
     <string name="payment_sdk_error_missing_server_ip">"IP الخادم غير صالح"</string>
     <string name="payment_sdk_error_missing_server_key">"مفتاح الخادم مفقود!"</string>
     <string name="payment_sdk_error_missing_shipping_info">"يرجى تقديم بيانات الشحن"</string>
@@ -132,4 +137,5 @@
     <string name="payment_sdk_shipping_details">"تفاصيل الشحن"</string>
     <string name="payment_sdk_shipping_select_country">"حدد الدولة"</string>
     <string name="payment_sdk_yes">نعم</string>
+    <string name="saved_cards">الكروت المحفوظة</string>
 </resources>

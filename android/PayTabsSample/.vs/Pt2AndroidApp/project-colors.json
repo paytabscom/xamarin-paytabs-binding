@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "ad6b3757-1c74-4b74-b494-67aee4e86ffe": {
+      "ProjectGuid": "ad6b3757-1c74-4b74-b494-67aee4e86ffe",
+      "DisplayName": "CardScanBindingLib",
+      "ColorIndex": 0
+    },
+    "ec12a75e-67bc-4d5a-8e29-fb955e34ba4f": {
+      "ProjectGuid": "ec12a75e-67bc-4d5a-8e29-fb955e34ba4f",
+      "DisplayName": "PaymentSDK.Binding",
+      "ColorIndex": 1
+    },
+    "781677f0-06d3-4bd6-81f2-9fe04672c677": {
+      "ProjectGuid": "781677f0-06d3-4bd6-81f2-9fe04672c677",
+      "DisplayName": "Pt2AndroidApp",
+      "ColorIndex": 2
+    }
+  },
+  "NextColorIndex": 3
+}

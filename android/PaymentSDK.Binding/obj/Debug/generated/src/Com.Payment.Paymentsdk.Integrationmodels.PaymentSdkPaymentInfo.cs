@@ -38,28 +38,28 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkPaymentInfo']/constructor[@name='PaymentSdkPaymentInfo' and count(parameter)=3 and parameter[1][@type='java.lang.String'] and parameter[2][@type='java.lang.String'] and parameter[3][@type='java.lang.String']]"
 		[Register (".ctor", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", "")]
-		public unsafe PaymentSdkPaymentInfo (string cardScheme, string cardType, string paymentDescription) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe PaymentSdkPaymentInfo (string p0, string p1, string p2) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V";
 
 			if (((global::Java.Lang.Object) this).Handle != IntPtr.Zero)
 				return;
 
-			IntPtr native_cardScheme = JNIEnv.NewString (cardScheme);
-			IntPtr native_cardType = JNIEnv.NewString (cardType);
-			IntPtr native_paymentDescription = JNIEnv.NewString (paymentDescription);
+			IntPtr native_p0 = JNIEnv.NewString (p0);
+			IntPtr native_p1 = JNIEnv.NewString (p1);
+			IntPtr native_p2 = JNIEnv.NewString (p2);
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [3];
-				__args [0] = new JniArgumentValue (native_cardScheme);
-				__args [1] = new JniArgumentValue (native_cardType);
-				__args [2] = new JniArgumentValue (native_paymentDescription);
+				__args [0] = new JniArgumentValue (native_p0);
+				__args [1] = new JniArgumentValue (native_p1);
+				__args [2] = new JniArgumentValue (native_p2);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				JNIEnv.DeleteLocalRef (native_cardScheme);
-				JNIEnv.DeleteLocalRef (native_cardType);
-				JNIEnv.DeleteLocalRef (native_paymentDescription);
+				JNIEnv.DeleteLocalRef (native_p0);
+				JNIEnv.DeleteLocalRef (native_p1);
+				JNIEnv.DeleteLocalRef (native_p2);
 			}
 		}
 

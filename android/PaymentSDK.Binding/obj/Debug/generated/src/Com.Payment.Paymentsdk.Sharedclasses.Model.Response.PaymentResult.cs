@@ -38,31 +38,31 @@ namespace Com.Payment.Paymentsdk.Sharedclasses.Model.Response {
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.sharedclasses.model.response']/class[@name='PaymentResult']/constructor[@name='PaymentResult' and count(parameter)=4 and parameter[1][@type='java.lang.String'] and parameter[2][@type='java.lang.String'] and parameter[3][@type='java.lang.String'] and parameter[4][@type='java.lang.String']]"
 		[Register (".ctor", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", "")]
-		public unsafe PaymentResult (string responseCode, string responseMessage, string responseStatus, string transactionTime) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe PaymentResult (string p0, string p1, string p2, string p3) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V";
 
 			if (((global::Java.Lang.Object) this).Handle != IntPtr.Zero)
 				return;
 
-			IntPtr native_responseCode = JNIEnv.NewString (responseCode);
-			IntPtr native_responseMessage = JNIEnv.NewString (responseMessage);
-			IntPtr native_responseStatus = JNIEnv.NewString (responseStatus);
-			IntPtr native_transactionTime = JNIEnv.NewString (transactionTime);
+			IntPtr native_p0 = JNIEnv.NewString (p0);
+			IntPtr native_p1 = JNIEnv.NewString (p1);
+			IntPtr native_p2 = JNIEnv.NewString (p2);
+			IntPtr native_p3 = JNIEnv.NewString (p3);
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [4];
-				__args [0] = new JniArgumentValue (native_responseCode);
-				__args [1] = new JniArgumentValue (native_responseMessage);
-				__args [2] = new JniArgumentValue (native_responseStatus);
-				__args [3] = new JniArgumentValue (native_transactionTime);
+				__args [0] = new JniArgumentValue (native_p0);
+				__args [1] = new JniArgumentValue (native_p1);
+				__args [2] = new JniArgumentValue (native_p2);
+				__args [3] = new JniArgumentValue (native_p3);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				JNIEnv.DeleteLocalRef (native_responseCode);
-				JNIEnv.DeleteLocalRef (native_responseMessage);
-				JNIEnv.DeleteLocalRef (native_responseStatus);
-				JNIEnv.DeleteLocalRef (native_transactionTime);
+				JNIEnv.DeleteLocalRef (native_p0);
+				JNIEnv.DeleteLocalRef (native_p1);
+				JNIEnv.DeleteLocalRef (native_p2);
+				JNIEnv.DeleteLocalRef (native_p3);
 			}
 		}
 

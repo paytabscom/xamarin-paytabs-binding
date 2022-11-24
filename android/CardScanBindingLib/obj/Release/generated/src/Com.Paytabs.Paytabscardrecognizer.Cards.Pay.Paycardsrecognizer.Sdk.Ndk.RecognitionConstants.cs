@@ -143,7 +143,7 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk
 #pragma warning restore 0169
 
 			IntPtr id_equals_Ljava_lang_Object_;
-			public unsafe global::System.Boolean Equals (global::Java.Lang.Object obj)
+			public unsafe bool Equals (global::Java.Lang.Object obj)
 			{
 				if (id_equals_Ljava_lang_Object_ == IntPtr.Zero)
 					id_equals_Ljava_lang_Object_ = JNIEnv.GetMethodID (class_ref, "equals", "(Ljava/lang/Object;)Z");
@@ -170,7 +170,7 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk
 #pragma warning restore 0169
 
 			IntPtr id_hashCode;
-			public unsafe global::System.Int32 GetHashCode ()
+			public unsafe int GetHashCode ()
 			{
 				if (id_hashCode == IntPtr.Zero)
 					id_hashCode = JNIEnv.GetMethodID (class_ref, "hashCode", "()I");
@@ -194,7 +194,7 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk
 #pragma warning restore 0169
 
 			IntPtr id_toString;
-			public unsafe global::System.String ToString ()
+			public unsafe string ToString ()
 			{
 				if (id_toString == IntPtr.Zero)
 					id_toString = JNIEnv.GetMethodID (class_ref, "toString", "()Ljava/lang/String;");
@@ -306,7 +306,7 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk
 #pragma warning restore 0169
 
 			IntPtr id_equals_Ljava_lang_Object_;
-			public unsafe global::System.Boolean Equals (global::Java.Lang.Object obj)
+			public unsafe bool Equals (global::Java.Lang.Object obj)
 			{
 				if (id_equals_Ljava_lang_Object_ == IntPtr.Zero)
 					id_equals_Ljava_lang_Object_ = JNIEnv.GetMethodID (class_ref, "equals", "(Ljava/lang/Object;)Z");
@@ -333,7 +333,7 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk
 #pragma warning restore 0169
 
 			IntPtr id_hashCode;
-			public unsafe global::System.Int32 GetHashCode ()
+			public unsafe int GetHashCode ()
 			{
 				if (id_hashCode == IntPtr.Zero)
 					id_hashCode = JNIEnv.GetMethodID (class_ref, "hashCode", "()I");
@@ -357,7 +357,7 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk
 #pragma warning restore 0169
 
 			IntPtr id_toString;
-			public unsafe global::System.String ToString ()
+			public unsafe string ToString ()
 			{
 				if (id_toString == IntPtr.Zero)
 					id_toString = JNIEnv.GetMethodID (class_ref, "toString", "()Ljava/lang/String;");

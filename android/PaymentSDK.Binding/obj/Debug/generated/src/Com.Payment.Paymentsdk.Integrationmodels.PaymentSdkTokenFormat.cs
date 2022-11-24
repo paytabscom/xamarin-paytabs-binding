@@ -338,24 +338,24 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkTokenFormat']/constructor[@name='PaymentSdkTokenFormat' and count(parameter)=2 and parameter[1][@type='java.lang.String'] and parameter[2][@type='kotlin.jvm.internal.DefaultConstructorMarker']]"
 		[Register (".ctor", "(Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V", "")]
-		public unsafe PaymentSdkTokenFormat (string value, global::Kotlin.Jvm.Internal.DefaultConstructorMarker _constructor_marker) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe PaymentSdkTokenFormat (string p0, global::Kotlin.Jvm.Internal.DefaultConstructorMarker p1) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V";
 
 			if (((global::Java.Lang.Object) this).Handle != IntPtr.Zero)
 				return;
 
-			IntPtr native_value = JNIEnv.NewString (value);
+			IntPtr native_p0 = JNIEnv.NewString (p0);
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [2];
-				__args [0] = new JniArgumentValue (native_value);
-				__args [1] = new JniArgumentValue ((_constructor_marker == null) ? IntPtr.Zero : ((global::Java.Lang.Object) _constructor_marker).Handle);
+				__args [0] = new JniArgumentValue (native_p0);
+				__args [1] = new JniArgumentValue ((p1 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p1).Handle);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				JNIEnv.DeleteLocalRef (native_value);
-				global::System.GC.KeepAlive (_constructor_marker);
+				JNIEnv.DeleteLocalRef (native_p0);
+				global::System.GC.KeepAlive (p1);
 			}
 		}
 
