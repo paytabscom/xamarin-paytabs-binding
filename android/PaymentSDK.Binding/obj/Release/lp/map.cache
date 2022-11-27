@@ -31,6 +31,7 @@ androidx.appcompat.appcompat.aar
 androidx.constraintlayout.constraintlayout.aar
 androidx.cardview.cardview.aar
 com.google.android.material.material.aar
+androidx.security.security-crypto.aar
 androidx.savedstate.savedstate-ktx.aar
 androidx.lifecycle.lifecycle-viewmodel-ktx.aar
 androidx.lifecycle.lifecycle-service.aar

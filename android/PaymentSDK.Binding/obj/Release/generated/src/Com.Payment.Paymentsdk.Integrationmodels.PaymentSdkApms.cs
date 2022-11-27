@@ -9,6 +9,18 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 	[global::Android.Runtime.Register ("com/payment/paymentsdk/integrationmodels/PaymentSdkApms", DoNotGenerateAcw=true)]
 	public sealed partial class PaymentSdkApms : global::Java.Lang.Enum {
 
+		// Metadata.xml XPath field reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkApms']/field[@name='AMAN']"
+		[Register ("AMAN")]
+		public static global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms Aman {
+			get {
+				const string __id = "AMAN.Lcom/payment/paymentsdk/integrationmodels/PaymentSdkApms;";
+
+				var __v = _members.StaticFields.GetObjectValue (__id);
+				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms> (__v.Handle, JniHandleOwnership.TransferLocalRef);
+			}
+		}
+
+
 		// Metadata.xml XPath field reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkApms']/field[@name='FAWRY']"
 		[Register ("FAWRY")]
 		public static global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms Fawry {
@@ -86,6 +98,18 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 		public static global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms UnionPay {
 			get {
 				const string __id = "UNION_PAY.Lcom/payment/paymentsdk/integrationmodels/PaymentSdkApms;";
+
+				var __v = _members.StaticFields.GetObjectValue (__id);
+				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms> (__v.Handle, JniHandleOwnership.TransferLocalRef);
+			}
+		}
+
+
+		// Metadata.xml XPath field reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkApms']/field[@name='URPAY']"
+		[Register ("URPAY")]
+		public static global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms Urpay {
+			get {
+				const string __id = "URPAY.Lcom/payment/paymentsdk/integrationmodels/PaymentSdkApms;";
 
 				var __v = _members.StaticFields.GetObjectValue (__id);
 				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms> (__v.Handle, JniHandleOwnership.TransferLocalRef);

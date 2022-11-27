@@ -38,7 +38,7 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Customs {
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.customs']/class[@name='ExpandableShippingInfo']/constructor[@name='ExpandableShippingInfo' and count(parameter)=1 and parameter[1][@type='android.content.Context']]"
 		[Register (".ctor", "(Landroid/content/Context;)V", "")]
-		public unsafe ExpandableShippingInfo (global::Android.Content.Context context) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe ExpandableShippingInfo (global::Android.Content.Context p0) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Landroid/content/Context;)V";
 
@@ -47,18 +47,18 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Customs {
 
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((context == null) ? IntPtr.Zero : ((global::Java.Lang.Object) context).Handle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (context);
+				global::System.GC.KeepAlive (p0);
 			}
 		}
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.customs']/class[@name='ExpandableShippingInfo']/constructor[@name='ExpandableShippingInfo' and count(parameter)=2 and parameter[1][@type='android.content.Context'] and parameter[2][@type='android.util.AttributeSet']]"
 		[Register (".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;)V", "")]
-		public unsafe ExpandableShippingInfo (global::Android.Content.Context context, global::Android.Util.IAttributeSet attrs) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe ExpandableShippingInfo (global::Android.Content.Context p0, global::Android.Util.IAttributeSet p1) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Landroid/content/Context;Landroid/util/AttributeSet;)V";
 
@@ -67,20 +67,20 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Customs {
 
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [2];
-				__args [0] = new JniArgumentValue ((context == null) ? IntPtr.Zero : ((global::Java.Lang.Object) context).Handle);
-				__args [1] = new JniArgumentValue ((attrs == null) ? IntPtr.Zero : ((global::Java.Lang.Object) attrs).Handle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
+				__args [1] = new JniArgumentValue ((p1 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p1).Handle);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (context);
-				global::System.GC.KeepAlive (attrs);
+				global::System.GC.KeepAlive (p0);
+				global::System.GC.KeepAlive (p1);
 			}
 		}
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.customs']/class[@name='ExpandableShippingInfo']/constructor[@name='ExpandableShippingInfo' and count(parameter)=3 and parameter[1][@type='android.content.Context'] and parameter[2][@type='android.util.AttributeSet'] and parameter[3][@type='int']]"
 		[Register (".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;I)V", "")]
-		public unsafe ExpandableShippingInfo (global::Android.Content.Context context, global::Android.Util.IAttributeSet attrs, int defStyle) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe ExpandableShippingInfo (global::Android.Content.Context p0, global::Android.Util.IAttributeSet p1, int p2) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Landroid/content/Context;Landroid/util/AttributeSet;I)V";
 
@@ -89,74 +89,53 @@ namespace Com.Payment.Paymentsdk.Creditcard.View.Customs {
 
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [3];
-				__args [0] = new JniArgumentValue ((context == null) ? IntPtr.Zero : ((global::Java.Lang.Object) context).Handle);
-				__args [1] = new JniArgumentValue ((attrs == null) ? IntPtr.Zero : ((global::Java.Lang.Object) attrs).Handle);
-				__args [2] = new JniArgumentValue (defStyle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
+				__args [1] = new JniArgumentValue ((p1 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p1).Handle);
+				__args [2] = new JniArgumentValue (p2);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (context);
-				global::System.GC.KeepAlive (attrs);
+				global::System.GC.KeepAlive (p0);
+				global::System.GC.KeepAlive (p1);
 			}
 		}
 
-		public unsafe bool IsValid {
-			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.customs']/class[@name='ExpandableShippingInfo']/method[@name='isValid' and count(parameter)=0]"
-			[Register ("isValid", "()Z", "")]
-			get {
-				const string __id = "isValid.()Z";
-				try {
-					var __rm = _members.InstanceMethods.InvokeNonvirtualBooleanMethod (__id, this, null);
-					return __rm;
-				} finally {
-				}
+		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.customs']/class[@name='ExpandableShippingInfo']/method[@name='a' and count(parameter)=0]"
+		[Register ("a", "()Z", "")]
+		public unsafe bool A ()
+		{
+			const string __id = "a.()Z";
+			try {
+				var __rm = _members.InstanceMethods.InvokeNonvirtualBooleanMethod (__id, this, null);
+				return __rm;
+			} finally {
+			}
+		}
+
+		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.customs']/class[@name='ExpandableShippingInfo']/method[@name='c' and count(parameter)=0]"
+		[Register ("c", "()V", "")]
+		public unsafe void C ()
+		{
+			const string __id = "c.()V";
+			try {
+				_members.InstanceMethods.InvokeNonvirtualVoidMethod (__id, this, null);
+			} finally {
 			}
 		}
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.customs']/class[@name='ExpandableShippingInfo']/method[@name='setCountry' and count(parameter)=1 and parameter[1][@type='java.lang.String']]"
 		[Register ("setCountry", "(Ljava/lang/String;)V", "")]
-		public unsafe void SetCountry (string countryIso)
+		public unsafe void SetCountry (string p0)
 		{
 			const string __id = "setCountry.(Ljava/lang/String;)V";
-			IntPtr native_countryIso = JNIEnv.NewString (countryIso);
+			IntPtr native_p0 = JNIEnv.NewString (p0);
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue (native_countryIso);
+				__args [0] = new JniArgumentValue (native_p0);
 				_members.InstanceMethods.InvokeNonvirtualVoidMethod (__id, this, __args);
 			} finally {
-				JNIEnv.DeleteLocalRef (native_countryIso);
-			}
-		}
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.customs']/class[@name='ExpandableShippingInfo']/method[@name='setData' and count(parameter)=4 and parameter[1][@type='com.payment.paymentsdk.sharedclasses.base.BaseBillingShippingDetails'] and parameter[2][@type='androidx.lifecycle.LifecycleOwner'] and parameter[3][@type='java.lang.Boolean'] and parameter[4][@type='kotlin.jvm.functions.Function0&lt;kotlin.Unit&gt;']]"
-		[Register ("setData", "(Lcom/payment/paymentsdk/sharedclasses/base/BaseBillingShippingDetails;Landroidx/lifecycle/LifecycleOwner;Ljava/lang/Boolean;Lkotlin/jvm/functions/Function0;)V", "")]
-		public unsafe void SetData (global::Com.Payment.Paymentsdk.Sharedclasses.Base.BaseBillingShippingDetails data, global::AndroidX.Lifecycle.ILifecycleOwner lifecycleOwner, global::Java.Lang.Boolean shouldValidate, global::Kotlin.Jvm.Functions.IFunction0 onCountryClicked)
-		{
-			const string __id = "setData.(Lcom/payment/paymentsdk/sharedclasses/base/BaseBillingShippingDetails;Landroidx/lifecycle/LifecycleOwner;Ljava/lang/Boolean;Lkotlin/jvm/functions/Function0;)V";
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [4];
-				__args [0] = new JniArgumentValue ((data == null) ? IntPtr.Zero : ((global::Java.Lang.Object) data).Handle);
-				__args [1] = new JniArgumentValue ((lifecycleOwner == null) ? IntPtr.Zero : ((global::Java.Lang.Object) lifecycleOwner).Handle);
-				__args [2] = new JniArgumentValue ((shouldValidate == null) ? IntPtr.Zero : ((global::Java.Lang.Object) shouldValidate).Handle);
-				__args [3] = new JniArgumentValue ((onCountryClicked == null) ? IntPtr.Zero : ((global::Java.Lang.Object) onCountryClicked).Handle);
-				_members.InstanceMethods.InvokeNonvirtualVoidMethod (__id, this, __args);
-			} finally {
-				global::System.GC.KeepAlive (data);
-				global::System.GC.KeepAlive (lifecycleOwner);
-				global::System.GC.KeepAlive (shouldValidate);
-				global::System.GC.KeepAlive (onCountryClicked);
-			}
-		}
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.creditcard.view.customs']/class[@name='ExpandableShippingInfo']/method[@name='validate' and count(parameter)=0]"
-		[Register ("validate", "()V", "")]
-		public unsafe void Validate ()
-		{
-			const string __id = "validate.()V";
-			try {
-				_members.InstanceMethods.InvokeNonvirtualVoidMethod (__id, this, null);
-			} finally {
+				JNIEnv.DeleteLocalRef (native_p0);
 			}
 		}
 

@@ -4,8 +4,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidX.AppCompat.App;
-using Com.Payment.Paymentsdk;
 using Com.Payment.Paymentsdk.Integrationmodels;
+using Com.Payment.Paymentsdk;
 using Com.Payment.Paymentsdk.Sharedclasses.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -30,16 +30,21 @@ namespace Pt2AndroidApp
         }
         public PaymentSdkConfigurationDetails GetConfigurationDetails()
         {
+            //PaymentSdkBillingDetails
+
+
+
             IList<PaymentSdkApms> apms = new List<PaymentSdkApms>();
             apms.Add(PaymentSdkApms.StcPay);
             return new PaymentSdkConfigBuilder("*Profile ID*", "*Server Key*", "*Client Key*", 44.0, "USD")
                 .SetCartId("123")
                 .SetCartDescription("yyif")
                 .SetMerchantCountryCode("AE")
-                .SetBillingData(new PaymentSdkBillingDetails("Dubai","AE","email@domain.com","John Smith", "+971111111111", "Dubai","Address line","12345"))
-                .SetShippingData(new PaymentSdkShippingDetails("Dubai", "AE", "email@domain.com", "John Smith", "+971111111111", "Dubai", "Address line", "12345"))
                 .SetAlternativePaymentMethods(apms)
+                //.SetBillingData(new PaymentSdkBillingDetails("Dubai", "AE", "email@domain.com", "John Smith", "+971111111111", "Dubai", "Address line", "12345"))
+                //.SetShippingData(new PaymentSdkShippingDetails("Dubai", "AE", "email@domain.com", "John Smith", "+971111111111", "Dubai", "Address line", "12345"))
                 .Build();
+
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
@@ -69,7 +74,7 @@ namespace Pt2AndroidApp
             PaymentSdkActivity.StartCardPayment(this,GetConfigurationDetails(), this);
             else if(v.Id == Resource.Id.apms_btn)
             PaymentSdkActivity.StartAlternativePaymentMethods(this, GetConfigurationDetails(), this);
-           
+            PaymentSdkActivity.Start3DSecureTokenizedCardPayment(); 
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Com.Payment.Paymentsdk.D3s.View {
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.d3s.view']/class[@name='D3SView']/constructor[@name='D3SView' and count(parameter)=1 and parameter[1][@type='android.content.Context']]"
 		[Register (".ctor", "(Landroid/content/Context;)V", "")]
-		public unsafe D3SView (global::Android.Content.Context activity) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe D3SView (global::Android.Content.Context p0) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Landroid/content/Context;)V";
 
@@ -47,18 +47,18 @@ namespace Com.Payment.Paymentsdk.D3s.View {
 
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((activity == null) ? IntPtr.Zero : ((global::Java.Lang.Object) activity).Handle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (activity);
+				global::System.GC.KeepAlive (p0);
 			}
 		}
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.d3s.view']/class[@name='D3SView']/constructor[@name='D3SView' and count(parameter)=2 and parameter[1][@type='android.content.Context'] and parameter[2][@type='android.util.AttributeSet']]"
 		[Register (".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;)V", "")]
-		public unsafe D3SView (global::Android.Content.Context context, global::Android.Util.IAttributeSet attrs) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe D3SView (global::Android.Content.Context p0, global::Android.Util.IAttributeSet p1) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Landroid/content/Context;Landroid/util/AttributeSet;)V";
 
@@ -67,20 +67,20 @@ namespace Com.Payment.Paymentsdk.D3s.View {
 
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [2];
-				__args [0] = new JniArgumentValue ((context == null) ? IntPtr.Zero : ((global::Java.Lang.Object) context).Handle);
-				__args [1] = new JniArgumentValue ((attrs == null) ? IntPtr.Zero : ((global::Java.Lang.Object) attrs).Handle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
+				__args [1] = new JniArgumentValue ((p1 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p1).Handle);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (context);
-				global::System.GC.KeepAlive (attrs);
+				global::System.GC.KeepAlive (p0);
+				global::System.GC.KeepAlive (p1);
 			}
 		}
 
 		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.d3s.view']/class[@name='D3SView']/constructor[@name='D3SView' and count(parameter)=3 and parameter[1][@type='android.content.Context'] and parameter[2][@type='android.util.AttributeSet'] and parameter[3][@type='int']]"
 		[Register (".ctor", "(Landroid/content/Context;Landroid/util/AttributeSet;I)V", "")]
-		public unsafe D3SView (global::Android.Content.Context context, global::Android.Util.IAttributeSet attrs, int defStyle) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
+		public unsafe D3SView (global::Android.Content.Context p0, global::Android.Util.IAttributeSet p1, int p2) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
 		{
 			const string __id = "(Landroid/content/Context;Landroid/util/AttributeSet;I)V";
 
@@ -89,35 +89,15 @@ namespace Com.Payment.Paymentsdk.D3s.View {
 
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [3];
-				__args [0] = new JniArgumentValue ((context == null) ? IntPtr.Zero : ((global::Java.Lang.Object) context).Handle);
-				__args [1] = new JniArgumentValue ((attrs == null) ? IntPtr.Zero : ((global::Java.Lang.Object) attrs).Handle);
-				__args [2] = new JniArgumentValue (defStyle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
+				__args [1] = new JniArgumentValue ((p1 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p1).Handle);
+				__args [2] = new JniArgumentValue (p2);
 				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
 				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
 				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
 			} finally {
-				global::System.GC.KeepAlive (context);
-				global::System.GC.KeepAlive (attrs);
-			}
-		}
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.d3s.view']/class[@name='D3SView']/method[@name='authorize' and count(parameter)=3 and parameter[1][@type='java.lang.String'] and parameter[2][@type='java.lang.String'] and parameter[3][@type='com.payment.paymentsdk.d3s.model.interfaces.D3SSViewAuthorizationListener']]"
-		[Register ("authorize", "(Ljava/lang/String;Ljava/lang/String;Lcom/payment/paymentsdk/d3s/model/interfaces/D3SSViewAuthorizationListener;)V", "")]
-		public unsafe void Authorize (string redirectURL, string returnUrl, global::Com.Payment.Paymentsdk.D3s.Model.Interfaces.ID3SSViewAuthorizationListener listener)
-		{
-			const string __id = "authorize.(Ljava/lang/String;Ljava/lang/String;Lcom/payment/paymentsdk/d3s/model/interfaces/D3SSViewAuthorizationListener;)V";
-			IntPtr native_redirectURL = JNIEnv.NewString (redirectURL);
-			IntPtr native_returnUrl = JNIEnv.NewString (returnUrl);
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [3];
-				__args [0] = new JniArgumentValue (native_redirectURL);
-				__args [1] = new JniArgumentValue (native_returnUrl);
-				__args [2] = new JniArgumentValue ((listener == null) ? IntPtr.Zero : ((global::Java.Lang.Object) listener).Handle);
-				_members.InstanceMethods.InvokeNonvirtualVoidMethod (__id, this, __args);
-			} finally {
-				JNIEnv.DeleteLocalRef (native_redirectURL);
-				JNIEnv.DeleteLocalRef (native_returnUrl);
-				global::System.GC.KeepAlive (listener);
+				global::System.GC.KeepAlive (p0);
+				global::System.GC.KeepAlive (p1);
 			}
 		}
 

@@ -136,6 +136,7 @@
     <string name="payment_sdk_shipping_address_zip">"الرمز البريدي"</string>
     <string name="payment_sdk_shipping_details">"تفاصيل الشحن"</string>
     <string name="payment_sdk_shipping_select_country">"حدد الدولة"</string>
+    <string name="payment_sdk_ssl_error">اتصال غير امن.</string>
     <string name="payment_sdk_yes">نعم</string>
     <string name="saved_cards">الكروت المحفوظة</string>
 </resources>

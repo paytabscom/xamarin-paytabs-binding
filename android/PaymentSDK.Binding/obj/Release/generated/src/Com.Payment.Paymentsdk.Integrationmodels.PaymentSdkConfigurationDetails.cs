@@ -58,27 +58,27 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 
 			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
 			[Register ("createFromParcel", "(Landroid/os/Parcel;)Lcom/payment/paymentsdk/integrationmodels/PaymentSdkConfigurationDetails;", "")]
-			public unsafe global::Java.Lang.Object CreateFromParcel (global::Android.OS.Parcel @in)
+			public unsafe global::Java.Lang.Object CreateFromParcel (global::Android.OS.Parcel p0)
 			{
 				const string __id = "createFromParcel.(Landroid/os/Parcel;)Lcom/payment/paymentsdk/integrationmodels/PaymentSdkConfigurationDetails;";
 				try {
 					JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-					__args [0] = new JniArgumentValue ((@in == null) ? IntPtr.Zero : ((global::Java.Lang.Object) @in).Handle);
+					__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
 					var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, __args);
 					return global::Java.Lang.Object.GetObject<global::Java.Lang.Object> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 				} finally {
-					global::System.GC.KeepAlive (@in);
+					global::System.GC.KeepAlive (p0);
 				}
 			}
 
 			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
 			[Register ("newArray", "(I)[Lcom/payment/paymentsdk/integrationmodels/PaymentSdkConfigurationDetails;", "")]
-			public unsafe global::Java.Lang.Object[] NewArray (int size)
+			public unsafe global::Java.Lang.Object[] NewArray (int p0)
 			{
 				const string __id = "newArray.(I)[Lcom/payment/paymentsdk/integrationmodels/PaymentSdkConfigurationDetails;";
 				try {
 					JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-					__args [0] = new JniArgumentValue (size);
+					__args [0] = new JniArgumentValue (p0);
 					var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, __args);
 					return (global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkConfigurationDetails[]) JNIEnv.GetArray (__rm.Handle, JniHandleOwnership.TransferLocalRef, typeof (global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkConfigurationDetails));
 				} finally {
@@ -115,89 +115,6 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 		{
 		}
 
-		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/constructor[@name='PaymentSdkConfigurationDetails' and count(parameter)=25 and parameter[1][@type='java.lang.String'] and parameter[2][@type='java.lang.String'] and parameter[3][@type='java.lang.String'] and parameter[4][@type='com.payment.paymentsdk.integrationmodels.PaymentSdkBillingDetails'] and parameter[5][@type='com.payment.paymentsdk.integrationmodels.PaymentSdkShippingDetails'] and parameter[6][@type='com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCode'] and parameter[7][@type='java.lang.String'] and parameter[8][@type='java.lang.String'] and parameter[9][@type='java.lang.String'] and parameter[10][@type='java.lang.String'] and parameter[11][@type='java.lang.String'] and parameter[12][@type='java.lang.Double'] and parameter[13][@type='java.lang.String'] and parameter[14][@type='java.lang.String'] and parameter[15][@type='com.payment.paymentsdk.integrationmodels.PaymentSdkTokenise'] and parameter[16][@type='java.lang.String'] and parameter[17][@type='java.lang.String'] and parameter[18][@type='java.lang.String'] and parameter[19][@type='android.graphics.Bitmap'] and parameter[20][@type='java.lang.Boolean'] and parameter[21][@type='java.lang.Boolean'] and parameter[22][@type='java.lang.Boolean'] and parameter[23][@type='java.lang.String'] and parameter[24][@type='boolean'] and parameter[25][@type='java.util.List&lt;? extends com.payment.paymentsdk.integrationmodels.PaymentSdkApms&gt;']]"
-		[Register (".ctor", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkBillingDetails;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkShippingDetails;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkLanguageCode;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Double;Ljava/lang/String;Ljava/lang/String;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkTokenise;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/String;ZLjava/util/List;)V", "")]
-		public unsafe PaymentSdkConfigurationDetails (string profileId, string serverKey, string clientKey, global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkBillingDetails billingDetails, global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkShippingDetails shippingDetails, global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkLanguageCode locale, string cartId, string currencyCode, string cartDescription, string transactionType, string transactionClass, global::Java.Lang.Double amount, string screenTitle, string customerIp, global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkTokenise tokeniseType, string tokenFormat, string token, string transactionReference, global::Android.Graphics.Bitmap logo, global::Java.Lang.Boolean showBillingInfo, global::Java.Lang.Boolean showShippingInfo, global::Java.Lang.Boolean forceShippingInfoValidation, string merchantCountry, bool hideCardScanner, global::System.Collections.Generic.IList<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms> alternativePaymentMethods) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
-		{
-			const string __id = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkBillingDetails;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkShippingDetails;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkLanguageCode;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Double;Ljava/lang/String;Ljava/lang/String;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkTokenise;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/String;ZLjava/util/List;)V";
-
-			if (((global::Java.Lang.Object) this).Handle != IntPtr.Zero)
-				return;
-
-			IntPtr native_profileId = JNIEnv.NewString (profileId);
-			IntPtr native_serverKey = JNIEnv.NewString (serverKey);
-			IntPtr native_clientKey = JNIEnv.NewString (clientKey);
-			IntPtr native_cartId = JNIEnv.NewString (cartId);
-			IntPtr native_currencyCode = JNIEnv.NewString (currencyCode);
-			IntPtr native_cartDescription = JNIEnv.NewString (cartDescription);
-			IntPtr native_transactionType = JNIEnv.NewString (transactionType);
-			IntPtr native_transactionClass = JNIEnv.NewString (transactionClass);
-			IntPtr native_screenTitle = JNIEnv.NewString (screenTitle);
-			IntPtr native_customerIp = JNIEnv.NewString (customerIp);
-			IntPtr native_tokenFormat = JNIEnv.NewString (tokenFormat);
-			IntPtr native_token = JNIEnv.NewString (token);
-			IntPtr native_transactionReference = JNIEnv.NewString (transactionReference);
-			IntPtr native_merchantCountry = JNIEnv.NewString (merchantCountry);
-			IntPtr native_alternativePaymentMethods = global::Android.Runtime.JavaList<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms>.ToLocalJniHandle (alternativePaymentMethods);
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [25];
-				__args [0] = new JniArgumentValue (native_profileId);
-				__args [1] = new JniArgumentValue (native_serverKey);
-				__args [2] = new JniArgumentValue (native_clientKey);
-				__args [3] = new JniArgumentValue ((billingDetails == null) ? IntPtr.Zero : ((global::Java.Lang.Object) billingDetails).Handle);
-				__args [4] = new JniArgumentValue ((shippingDetails == null) ? IntPtr.Zero : ((global::Java.Lang.Object) shippingDetails).Handle);
-				__args [5] = new JniArgumentValue ((locale == null) ? IntPtr.Zero : ((global::Java.Lang.Object) locale).Handle);
-				__args [6] = new JniArgumentValue (native_cartId);
-				__args [7] = new JniArgumentValue (native_currencyCode);
-				__args [8] = new JniArgumentValue (native_cartDescription);
-				__args [9] = new JniArgumentValue (native_transactionType);
-				__args [10] = new JniArgumentValue (native_transactionClass);
-				__args [11] = new JniArgumentValue ((amount == null) ? IntPtr.Zero : ((global::Java.Lang.Object) amount).Handle);
-				__args [12] = new JniArgumentValue (native_screenTitle);
-				__args [13] = new JniArgumentValue (native_customerIp);
-				__args [14] = new JniArgumentValue ((tokeniseType == null) ? IntPtr.Zero : ((global::Java.Lang.Object) tokeniseType).Handle);
-				__args [15] = new JniArgumentValue (native_tokenFormat);
-				__args [16] = new JniArgumentValue (native_token);
-				__args [17] = new JniArgumentValue (native_transactionReference);
-				__args [18] = new JniArgumentValue ((logo == null) ? IntPtr.Zero : ((global::Java.Lang.Object) logo).Handle);
-				__args [19] = new JniArgumentValue ((showBillingInfo == null) ? IntPtr.Zero : ((global::Java.Lang.Object) showBillingInfo).Handle);
-				__args [20] = new JniArgumentValue ((showShippingInfo == null) ? IntPtr.Zero : ((global::Java.Lang.Object) showShippingInfo).Handle);
-				__args [21] = new JniArgumentValue ((forceShippingInfoValidation == null) ? IntPtr.Zero : ((global::Java.Lang.Object) forceShippingInfoValidation).Handle);
-				__args [22] = new JniArgumentValue (native_merchantCountry);
-				__args [23] = new JniArgumentValue (hideCardScanner);
-				__args [24] = new JniArgumentValue (native_alternativePaymentMethods);
-				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
-				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
-				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
-			} finally {
-				JNIEnv.DeleteLocalRef (native_profileId);
-				JNIEnv.DeleteLocalRef (native_serverKey);
-				JNIEnv.DeleteLocalRef (native_clientKey);
-				JNIEnv.DeleteLocalRef (native_cartId);
-				JNIEnv.DeleteLocalRef (native_currencyCode);
-				JNIEnv.DeleteLocalRef (native_cartDescription);
-				JNIEnv.DeleteLocalRef (native_transactionType);
-				JNIEnv.DeleteLocalRef (native_transactionClass);
-				JNIEnv.DeleteLocalRef (native_screenTitle);
-				JNIEnv.DeleteLocalRef (native_customerIp);
-				JNIEnv.DeleteLocalRef (native_tokenFormat);
-				JNIEnv.DeleteLocalRef (native_token);
-				JNIEnv.DeleteLocalRef (native_transactionReference);
-				JNIEnv.DeleteLocalRef (native_merchantCountry);
-				JNIEnv.DeleteLocalRef (native_alternativePaymentMethods);
-				global::System.GC.KeepAlive (billingDetails);
-				global::System.GC.KeepAlive (shippingDetails);
-				global::System.GC.KeepAlive (locale);
-				global::System.GC.KeepAlive (amount);
-				global::System.GC.KeepAlive (tokeniseType);
-				global::System.GC.KeepAlive (logo);
-				global::System.GC.KeepAlive (showBillingInfo);
-				global::System.GC.KeepAlive (showShippingInfo);
-				global::System.GC.KeepAlive (forceShippingInfoValidation);
-				global::System.GC.KeepAlive (alternativePaymentMethods);
-			}
-		}
-
 		public unsafe global::System.Collections.Generic.IList<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms> AlternativePaymentMethods {
 			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='getAlternativePaymentMethods' and count(parameter)=0]"
 			[Register ("getAlternativePaymentMethods", "()Ljava/util/List;", "")]
@@ -224,15 +141,28 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 			}
 		}
 
-		public unsafe global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkBillingDetails BillingDetails {
-			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='getBillingDetails' and count(parameter)=0]"
-			[Register ("getBillingDetails", "()Lcom/payment/paymentsdk/integrationmodels/PaymentSdkBillingDetails;", "")]
+		public unsafe string Callback {
+			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='getCallback' and count(parameter)=0]"
+			[Register ("getCallback", "()Ljava/lang/String;", "")]
 			get {
-				const string __id = "getBillingDetails.()Lcom/payment/paymentsdk/integrationmodels/PaymentSdkBillingDetails;";
+				const string __id = "getCallback.()Ljava/lang/String;";
 				try {
 					var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
-					return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkBillingDetails> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
+					return JNIEnv.GetString (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 				} finally {
+				}
+			}
+			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='setCallback' and count(parameter)=1 and parameter[1][@type='java.lang.String']]"
+			[Register ("setCallback", "(Ljava/lang/String;)V", "")]
+			set {
+				const string __id = "setCallback.(Ljava/lang/String;)V";
+				IntPtr native_value = JNIEnv.NewString (value);
+				try {
+					JniArgumentValue* __args = stackalloc JniArgumentValue [1];
+					__args [0] = new JniArgumentValue (native_value);
+					_members.InstanceMethods.InvokeNonvirtualVoidMethod (__id, this, __args);
+				} finally {
+					JNIEnv.DeleteLocalRef (native_value);
 				}
 			}
 		}
@@ -328,6 +258,31 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 			}
 		}
 
+		public unsafe global::Java.Lang.Boolean LinkBillingNameWithCardHolderName {
+			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='getLinkBillingNameWithCardHolderName' and count(parameter)=0]"
+			[Register ("getLinkBillingNameWithCardHolderName", "()Ljava/lang/Boolean;", "")]
+			get {
+				const string __id = "getLinkBillingNameWithCardHolderName.()Ljava/lang/Boolean;";
+				try {
+					var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
+					return global::Java.Lang.Object.GetObject<global::Java.Lang.Boolean> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
+				} finally {
+				}
+			}
+			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='setLinkBillingNameWithCardHolderName' and count(parameter)=1 and parameter[1][@type='java.lang.Boolean']]"
+			[Register ("setLinkBillingNameWithCardHolderName", "(Ljava/lang/Boolean;)V", "")]
+			set {
+				const string __id = "setLinkBillingNameWithCardHolderName.(Ljava/lang/Boolean;)V";
+				try {
+					JniArgumentValue* __args = stackalloc JniArgumentValue [1];
+					__args [0] = new JniArgumentValue ((value == null) ? IntPtr.Zero : ((global::Java.Lang.Object) value).Handle);
+					_members.InstanceMethods.InvokeNonvirtualVoidMethod (__id, this, __args);
+				} finally {
+					global::System.GC.KeepAlive (value);
+				}
+			}
+		}
+
 		public unsafe global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkLanguageCode Locale {
 			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='getLocale' and count(parameter)=0]"
 			[Register ("getLocale", "()Lcom/payment/paymentsdk/integrationmodels/PaymentSdkLanguageCode;", "")]
@@ -341,14 +296,27 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 			}
 		}
 
-		public unsafe global::Android.Graphics.Bitmap Logo {
-			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='getLogo' and count(parameter)=0]"
-			[Register ("getLogo", "()Landroid/graphics/Bitmap;", "")]
+		public unsafe global::Android.Graphics.Bitmap LogoBitmap {
+			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='getLogoBitmap' and count(parameter)=0]"
+			[Register ("getLogoBitmap", "()Landroid/graphics/Bitmap;", "")]
 			get {
-				const string __id = "getLogo.()Landroid/graphics/Bitmap;";
+				const string __id = "getLogoBitmap.()Landroid/graphics/Bitmap;";
 				try {
 					var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
 					return global::Java.Lang.Object.GetObject<global::Android.Graphics.Bitmap> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
+				} finally {
+				}
+			}
+		}
+
+		public unsafe string LogoUrl {
+			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='getLogoUrl' and count(parameter)=0]"
+			[Register ("getLogoUrl", "()Ljava/lang/String;", "")]
+			get {
+				const string __id = "getLogoUrl.()Ljava/lang/String;";
+				try {
+					var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
+					return JNIEnv.GetString (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 				} finally {
 				}
 			}
@@ -401,19 +369,6 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 				try {
 					var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
 					return JNIEnv.GetString (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-				} finally {
-				}
-			}
-		}
-
-		public unsafe global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkShippingDetails ShippingDetails {
-			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='getShippingDetails' and count(parameter)=0]"
-			[Register ("getShippingDetails", "()Lcom/payment/paymentsdk/integrationmodels/PaymentSdkShippingDetails;", "")]
-			get {
-				const string __id = "getShippingDetails.()Lcom/payment/paymentsdk/integrationmodels/PaymentSdkShippingDetails;";
-				try {
-					var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
-					return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkShippingDetails> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 				} finally {
 				}
 			}
@@ -692,13 +647,13 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 		}
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='component20' and count(parameter)=0]"
-		[Register ("component20", "()Ljava/lang/Boolean;", "")]
-		public unsafe global::Java.Lang.Boolean Component20 ()
+		[Register ("component20", "()Ljava/lang/String;", "")]
+		public unsafe string Component20 ()
 		{
-			const string __id = "component20.()Ljava/lang/Boolean;";
+			const string __id = "component20.()Ljava/lang/String;";
 			try {
 				var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
-				return global::Java.Lang.Object.GetObject<global::Java.Lang.Boolean> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
+				return JNIEnv.GetString (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 			} finally {
 			}
 		}
@@ -728,10 +683,22 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 		}
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='component23' and count(parameter)=0]"
-		[Register ("component23", "()Ljava/lang/String;", "")]
-		public unsafe string Component23 ()
+		[Register ("component23", "()Ljava/lang/Boolean;", "")]
+		public unsafe global::Java.Lang.Boolean Component23 ()
 		{
-			const string __id = "component23.()Ljava/lang/String;";
+			const string __id = "component23.()Ljava/lang/Boolean;";
+			try {
+				var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
+				return global::Java.Lang.Object.GetObject<global::Java.Lang.Boolean> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
+			} finally {
+			}
+		}
+
+		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='component24' and count(parameter)=0]"
+		[Register ("component24", "()Ljava/lang/String;", "")]
+		public unsafe string Component24 ()
+		{
+			const string __id = "component24.()Ljava/lang/String;";
 			try {
 				var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
 				return JNIEnv.GetString (__rm.Handle, JniHandleOwnership.TransferLocalRef);
@@ -739,11 +706,11 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 			}
 		}
 
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='component24' and count(parameter)=0]"
-		[Register ("component24", "()Z", "")]
-		public unsafe bool Component24 ()
+		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='component25' and count(parameter)=0]"
+		[Register ("component25", "()Z", "")]
+		public unsafe bool Component25 ()
 		{
-			const string __id = "component24.()Z";
+			const string __id = "component25.()Z";
 			try {
 				var __rm = _members.InstanceMethods.InvokeNonvirtualBooleanMethod (__id, this, null);
 				return __rm;
@@ -751,14 +718,38 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 			}
 		}
 
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='component25' and count(parameter)=0]"
-		[Register ("component25", "()Ljava/util/List;", "")]
-		public unsafe global::System.Collections.Generic.IList<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms> Component25 ()
+		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='component26' and count(parameter)=0]"
+		[Register ("component26", "()Ljava/util/List;", "")]
+		public unsafe global::System.Collections.Generic.IList<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms> Component26 ()
 		{
-			const string __id = "component25.()Ljava/util/List;";
+			const string __id = "component26.()Ljava/util/List;";
 			try {
 				var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
 				return global::Android.Runtime.JavaList<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms>.FromJniHandle (__rm.Handle, JniHandleOwnership.TransferLocalRef);
+			} finally {
+			}
+		}
+
+		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='component27' and count(parameter)=0]"
+		[Register ("component27", "()Ljava/lang/Boolean;", "")]
+		public unsafe global::Java.Lang.Boolean Component27 ()
+		{
+			const string __id = "component27.()Ljava/lang/Boolean;";
+			try {
+				var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
+				return global::Java.Lang.Object.GetObject<global::Java.Lang.Boolean> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
+			} finally {
+			}
+		}
+
+		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='component28' and count(parameter)=0]"
+		[Register ("component28", "()Ljava/lang/String;", "")]
+		public unsafe string Component28 ()
+		{
+			const string __id = "component28.()Ljava/lang/String;";
+			try {
+				var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
+				return JNIEnv.GetString (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 			} finally {
 			}
 		}
@@ -771,30 +762,6 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 			try {
 				var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
 				return JNIEnv.GetString (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-			} finally {
-			}
-		}
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='component4' and count(parameter)=0]"
-		[Register ("component4", "()Lcom/payment/paymentsdk/integrationmodels/PaymentSdkBillingDetails;", "")]
-		public unsafe global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkBillingDetails Component4 ()
-		{
-			const string __id = "component4.()Lcom/payment/paymentsdk/integrationmodels/PaymentSdkBillingDetails;";
-			try {
-				var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
-				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkBillingDetails> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-			} finally {
-			}
-		}
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='component5' and count(parameter)=0]"
-		[Register ("component5", "()Lcom/payment/paymentsdk/integrationmodels/PaymentSdkShippingDetails;", "")]
-		public unsafe global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkShippingDetails Component5 ()
-		{
-			const string __id = "component5.()Lcom/payment/paymentsdk/integrationmodels/PaymentSdkShippingDetails;";
-			try {
-				var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
-				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkShippingDetails> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 			} finally {
 			}
 		}
@@ -844,84 +811,6 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 				var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, null);
 				return JNIEnv.GetString (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 			} finally {
-			}
-		}
-
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails']/method[@name='copy' and count(parameter)=25 and parameter[1][@type='java.lang.String'] and parameter[2][@type='java.lang.String'] and parameter[3][@type='java.lang.String'] and parameter[4][@type='com.payment.paymentsdk.integrationmodels.PaymentSdkBillingDetails'] and parameter[5][@type='com.payment.paymentsdk.integrationmodels.PaymentSdkShippingDetails'] and parameter[6][@type='com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCode'] and parameter[7][@type='java.lang.String'] and parameter[8][@type='java.lang.String'] and parameter[9][@type='java.lang.String'] and parameter[10][@type='java.lang.String'] and parameter[11][@type='java.lang.String'] and parameter[12][@type='java.lang.Double'] and parameter[13][@type='java.lang.String'] and parameter[14][@type='java.lang.String'] and parameter[15][@type='com.payment.paymentsdk.integrationmodels.PaymentSdkTokenise'] and parameter[16][@type='java.lang.String'] and parameter[17][@type='java.lang.String'] and parameter[18][@type='java.lang.String'] and parameter[19][@type='android.graphics.Bitmap'] and parameter[20][@type='java.lang.Boolean'] and parameter[21][@type='java.lang.Boolean'] and parameter[22][@type='java.lang.Boolean'] and parameter[23][@type='java.lang.String'] and parameter[24][@type='boolean'] and parameter[25][@type='java.util.List&lt;? extends com.payment.paymentsdk.integrationmodels.PaymentSdkApms&gt;']]"
-		[Register ("copy", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkBillingDetails;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkShippingDetails;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkLanguageCode;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Double;Ljava/lang/String;Ljava/lang/String;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkTokenise;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/String;ZLjava/util/List;)Lcom/payment/paymentsdk/integrationmodels/PaymentSdkConfigurationDetails;", "")]
-		public unsafe global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkConfigurationDetails Copy (string profileId, string serverKey, string clientKey, global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkBillingDetails billingDetails, global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkShippingDetails shippingDetails, global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkLanguageCode locale, string cartId, string currencyCode, string cartDescription, string transactionType, string transactionClass, global::Java.Lang.Double amount, string screenTitle, string customerIp, global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkTokenise tokeniseType, string tokenFormat, string token, string transactionReference, global::Android.Graphics.Bitmap logo, global::Java.Lang.Boolean showBillingInfo, global::Java.Lang.Boolean showShippingInfo, global::Java.Lang.Boolean forceShippingInfoValidation, string merchantCountry, bool hideCardScanner, global::System.Collections.Generic.IList<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms> alternativePaymentMethods)
-		{
-			const string __id = "copy.(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkBillingDetails;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkShippingDetails;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkLanguageCode;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Double;Ljava/lang/String;Ljava/lang/String;Lcom/payment/paymentsdk/integrationmodels/PaymentSdkTokenise;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/Boolean;Ljava/lang/String;ZLjava/util/List;)Lcom/payment/paymentsdk/integrationmodels/PaymentSdkConfigurationDetails;";
-			IntPtr native_profileId = JNIEnv.NewString (profileId);
-			IntPtr native_serverKey = JNIEnv.NewString (serverKey);
-			IntPtr native_clientKey = JNIEnv.NewString (clientKey);
-			IntPtr native_cartId = JNIEnv.NewString (cartId);
-			IntPtr native_currencyCode = JNIEnv.NewString (currencyCode);
-			IntPtr native_cartDescription = JNIEnv.NewString (cartDescription);
-			IntPtr native_transactionType = JNIEnv.NewString (transactionType);
-			IntPtr native_transactionClass = JNIEnv.NewString (transactionClass);
-			IntPtr native_screenTitle = JNIEnv.NewString (screenTitle);
-			IntPtr native_customerIp = JNIEnv.NewString (customerIp);
-			IntPtr native_tokenFormat = JNIEnv.NewString (tokenFormat);
-			IntPtr native_token = JNIEnv.NewString (token);
-			IntPtr native_transactionReference = JNIEnv.NewString (transactionReference);
-			IntPtr native_merchantCountry = JNIEnv.NewString (merchantCountry);
-			IntPtr native_alternativePaymentMethods = global::Android.Runtime.JavaList<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms>.ToLocalJniHandle (alternativePaymentMethods);
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [25];
-				__args [0] = new JniArgumentValue (native_profileId);
-				__args [1] = new JniArgumentValue (native_serverKey);
-				__args [2] = new JniArgumentValue (native_clientKey);
-				__args [3] = new JniArgumentValue ((billingDetails == null) ? IntPtr.Zero : ((global::Java.Lang.Object) billingDetails).Handle);
-				__args [4] = new JniArgumentValue ((shippingDetails == null) ? IntPtr.Zero : ((global::Java.Lang.Object) shippingDetails).Handle);
-				__args [5] = new JniArgumentValue ((locale == null) ? IntPtr.Zero : ((global::Java.Lang.Object) locale).Handle);
-				__args [6] = new JniArgumentValue (native_cartId);
-				__args [7] = new JniArgumentValue (native_currencyCode);
-				__args [8] = new JniArgumentValue (native_cartDescription);
-				__args [9] = new JniArgumentValue (native_transactionType);
-				__args [10] = new JniArgumentValue (native_transactionClass);
-				__args [11] = new JniArgumentValue ((amount == null) ? IntPtr.Zero : ((global::Java.Lang.Object) amount).Handle);
-				__args [12] = new JniArgumentValue (native_screenTitle);
-				__args [13] = new JniArgumentValue (native_customerIp);
-				__args [14] = new JniArgumentValue ((tokeniseType == null) ? IntPtr.Zero : ((global::Java.Lang.Object) tokeniseType).Handle);
-				__args [15] = new JniArgumentValue (native_tokenFormat);
-				__args [16] = new JniArgumentValue (native_token);
-				__args [17] = new JniArgumentValue (native_transactionReference);
-				__args [18] = new JniArgumentValue ((logo == null) ? IntPtr.Zero : ((global::Java.Lang.Object) logo).Handle);
-				__args [19] = new JniArgumentValue ((showBillingInfo == null) ? IntPtr.Zero : ((global::Java.Lang.Object) showBillingInfo).Handle);
-				__args [20] = new JniArgumentValue ((showShippingInfo == null) ? IntPtr.Zero : ((global::Java.Lang.Object) showShippingInfo).Handle);
-				__args [21] = new JniArgumentValue ((forceShippingInfoValidation == null) ? IntPtr.Zero : ((global::Java.Lang.Object) forceShippingInfoValidation).Handle);
-				__args [22] = new JniArgumentValue (native_merchantCountry);
-				__args [23] = new JniArgumentValue (hideCardScanner);
-				__args [24] = new JniArgumentValue (native_alternativePaymentMethods);
-				var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, __args);
-				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkConfigurationDetails> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-			} finally {
-				JNIEnv.DeleteLocalRef (native_profileId);
-				JNIEnv.DeleteLocalRef (native_serverKey);
-				JNIEnv.DeleteLocalRef (native_clientKey);
-				JNIEnv.DeleteLocalRef (native_cartId);
-				JNIEnv.DeleteLocalRef (native_currencyCode);
-				JNIEnv.DeleteLocalRef (native_cartDescription);
-				JNIEnv.DeleteLocalRef (native_transactionType);
-				JNIEnv.DeleteLocalRef (native_transactionClass);
-				JNIEnv.DeleteLocalRef (native_screenTitle);
-				JNIEnv.DeleteLocalRef (native_customerIp);
-				JNIEnv.DeleteLocalRef (native_tokenFormat);
-				JNIEnv.DeleteLocalRef (native_token);
-				JNIEnv.DeleteLocalRef (native_transactionReference);
-				JNIEnv.DeleteLocalRef (native_merchantCountry);
-				JNIEnv.DeleteLocalRef (native_alternativePaymentMethods);
-				global::System.GC.KeepAlive (billingDetails);
-				global::System.GC.KeepAlive (shippingDetails);
-				global::System.GC.KeepAlive (locale);
-				global::System.GC.KeepAlive (amount);
-				global::System.GC.KeepAlive (tokeniseType);
-				global::System.GC.KeepAlive (logo);
-				global::System.GC.KeepAlive (showBillingInfo);
-				global::System.GC.KeepAlive (showShippingInfo);
-				global::System.GC.KeepAlive (forceShippingInfoValidation);
-				global::System.GC.KeepAlive (alternativePaymentMethods);
 			}
 		}
 

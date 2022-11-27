@@ -38,16 +38,16 @@ namespace Com.Payment.Paymentsdk.Sharedclasses.Model.Response {
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.sharedclasses.model.response']/class[@name='PaymentResultKt']/method[@name='toPaymentSdkPaymentResult' and count(parameter)=1 and parameter[1][@type='com.payment.paymentsdk.sharedclasses.model.response.PaymentResult']]"
 		[Register ("toPaymentSdkPaymentResult", "(Lcom/payment/paymentsdk/sharedclasses/model/response/PaymentResult;)Lcom/payment/paymentsdk/integrationmodels/PaymentSdkPaymentResult;", "")]
-		public static unsafe global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkPaymentResult ToPaymentSdkPaymentResult (global::Com.Payment.Paymentsdk.Sharedclasses.Model.Response.PaymentResult obj)
+		public static unsafe global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkPaymentResult ToPaymentSdkPaymentResult (global::Com.Payment.Paymentsdk.Sharedclasses.Model.Response.PaymentResult p0)
 		{
 			const string __id = "toPaymentSdkPaymentResult.(Lcom/payment/paymentsdk/sharedclasses/model/response/PaymentResult;)Lcom/payment/paymentsdk/integrationmodels/PaymentSdkPaymentResult;";
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((obj == null) ? IntPtr.Zero : ((global::Java.Lang.Object) obj).Handle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
 				var __rm = _members.StaticMethods.InvokeObjectMethod (__id, __args);
 				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkPaymentResult> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 			} finally {
-				global::System.GC.KeepAlive (obj);
+				global::System.GC.KeepAlive (p0);
 			}
 		}
 

@@ -36,25 +36,5 @@ namespace Com.Payment.Paymentsdk.Helper.UI {
 		{
 		}
 
-		// Metadata.xml XPath constructor reference: path="/api/package[@name='com.payment.paymentsdk.helper.ui']/class[@name='NonScrollingLinearLayoutManager']/constructor[@name='NonScrollingLinearLayoutManager' and count(parameter)=1 and parameter[1][@type='android.content.Context']]"
-		[Register (".ctor", "(Landroid/content/Context;)V", "")]
-		public unsafe NonScrollingLinearLayoutManager (global::Android.Content.Context context) : base (IntPtr.Zero, JniHandleOwnership.DoNotTransfer)
-		{
-			const string __id = "(Landroid/content/Context;)V";
-
-			if (((global::Java.Lang.Object) this).Handle != IntPtr.Zero)
-				return;
-
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((context == null) ? IntPtr.Zero : ((global::Java.Lang.Object) context).Handle);
-				var __r = _members.InstanceMethods.StartCreateInstance (__id, ((object) this).GetType (), __args);
-				SetHandle (__r.Handle, JniHandleOwnership.TransferLocalRef);
-				_members.InstanceMethods.FinishCreateInstance (__id, this, __args);
-			} finally {
-				global::System.GC.KeepAlive (context);
-			}
-		}
-
 	}
 }

@@ -1,11 +1,23 @@
 ﻿<Properties StartupConfiguration="{AD6B3757-1C74-4B74-B494-67AEE4E86FFE}|Default">
-  <MonoDevelop.Ide.ItemProperties.CardScanBindingLib PreferredExecutionTarget="Android.Pixel_4_API_30" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.CardScanBindingLib PreferredExecutionTarget="Android.Nexus_4_API_21" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Additions/AboutAdditions.txt">
+    <Files>
+      <File FileName="Additions/AboutAdditions.txt" Line="1" Column="1" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="CardScanBindingLib" expanded="True">
-            <Node name="CardScanBindingLib" selected="True" />
+            <Node name="CardScanBindingLib" expanded="True">
+              <Node name="References" expanded="True" />
+              <Node name="Packages" expanded="True" />
+              <Node name="Additions" expanded="True">
+                <Node name="AboutAdditions.txt" selected="True" />
+              </Node>
+              <Node name="Jars" expanded="True" />
+              <Node name="Properties" expanded="True" />
+              <Node name="Transforms" expanded="True" />
+            </Node>
           </Node>
         </State>
       </Pad>

@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "aOtDSO6N/IxmHUOpMQ7uFZCypRyElZLcQFRTuyeeALwqB9AofSNUNMpJbBHHMn1CxEL1aP0Wc4nGmLID8TsFlg==",
+  "dgSpecHash": "/LC/B9Z4HYtHnXOWqFc+L+fRJPjl+D+McE2HCubSHMTB6o5Z+aj/GlKYBarQ6McVas2NHatVmt9vMkdCIDigpQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Lenovo\\Downloads\\xamarin-paytabs-binding\\android\\CardScanBindingLib\\CardScanBindingLib.csproj",
+  "projectFilePath": "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/CardScanBindingLib/CardScanBindingLib.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Lenovo\\.nuget\\packages\\xamarin.android.device.yearclass\\1.0.1\\xamarin.android.device.yearclass.1.0.1.nupkg.sha512"
+    "/Users/mohamedadly/.nuget/packages/xamarin.android.device.yearclass/1.0.1/xamarin.android.device.yearclass.1.0.1.nupkg.sha512"
   ],
   "logs": []
 }

@@ -36,26 +36,5 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 		{
 		}
 
-		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkBillingDetailsKt']/method[@name='customerDetails' and count(parameter)=3 and parameter[1][@type='com.payment.paymentsdk.integrationmodels.PaymentSdkBillingDetails'] and parameter[2][@type='java.lang.String'] and parameter[3][@type='java.lang.String']]"
-		[Register ("customerDetails", "(Lcom/payment/paymentsdk/integrationmodels/PaymentSdkBillingDetails;Ljava/lang/String;Ljava/lang/String;)Lcom/payment/paymentsdk/sharedclasses/model/shared/CustomerDetails;", "")]
-		public static unsafe global::Com.Payment.Paymentsdk.Sharedclasses.Model.Shared.CustomerDetails CustomerDetails (global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkBillingDetails obj, string ip, string nameOnCard)
-		{
-			const string __id = "customerDetails.(Lcom/payment/paymentsdk/integrationmodels/PaymentSdkBillingDetails;Ljava/lang/String;Ljava/lang/String;)Lcom/payment/paymentsdk/sharedclasses/model/shared/CustomerDetails;";
-			IntPtr native_ip = JNIEnv.NewString (ip);
-			IntPtr native_nameOnCard = JNIEnv.NewString (nameOnCard);
-			try {
-				JniArgumentValue* __args = stackalloc JniArgumentValue [3];
-				__args [0] = new JniArgumentValue ((obj == null) ? IntPtr.Zero : ((global::Java.Lang.Object) obj).Handle);
-				__args [1] = new JniArgumentValue (native_ip);
-				__args [2] = new JniArgumentValue (native_nameOnCard);
-				var __rm = _members.StaticMethods.InvokeObjectMethod (__id, __args);
-				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Sharedclasses.Model.Shared.CustomerDetails> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
-			} finally {
-				JNIEnv.DeleteLocalRef (native_ip);
-				JNIEnv.DeleteLocalRef (native_nameOnCard);
-				global::System.GC.KeepAlive (obj);
-			}
-		}
-
 	}
 }

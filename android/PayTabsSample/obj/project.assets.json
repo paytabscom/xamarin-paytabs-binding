@@ -2,37 +2,23 @@
   "version": 3,
   "targets": {
     "MonoAndroid,Version=v11.0": {
-      "GoogleGson/2.8.6": {
+      "GoogleGson/2.8.8": {
         "type": "package",
         "frameworkAssemblies": [
-          "Java.Interop"
+          "Java.Interop",
+          "Mono.Android",
+          "System",
+          "System.Core",
+          "System.Numerics",
+          "System.Numerics.Vectors",
+          "System.Xml",
+          "mscorlib"
         ],
         "compile": {
           "lib/monoandroid90/GoogleGson.dll": {}
         },
         "runtime": {
           "lib/monoandroid90/GoogleGson.dll": {}
-        }
-      },
-      "Paytabs.Xamarin.Android/1.0.0": {
-        "type": "package",
-        "dependencies": {
-          "Square.OkHttp3.LoggingInterceptor": "4.4.1",
-          "Square.Retrofit2": "2.9.0",
-          "Square.Retrofit2.ConverterGson": "2.9.0",
-          "Xamarin.AndroidX.ConstraintLayout": "2.0.4.2",
-          "Xamarin.AndroidX.Fragment.Ktx": "1.3.4",
-          "Xamarin.AndroidX.Lifecycle.LiveData": "2.3.1",
-          "Xamarin.AndroidX.Lifecycle.Runtime.Ktx": "2.3.1",
-          "Xamarin.AndroidX.RecyclerView": "1.2.0",
-          "Xamarin.Google.Android.Material": "1.3.0.1",
-          "Xamarin.Kotlin.StdLib": "1.5.10"
-        },
-        "compile": {
-          "lib/monoandroid/PaymentSDK.Binding.dll": {}
-        },
-        "runtime": {
-          "lib/monoandroid/PaymentSDK.Binding.dll": {}
         }
       },
       "Plugin.Toast/2.2.0": {
@@ -44,84 +30,6 @@
         "runtime": {
           "lib/MonoAndroid10/Plugin.Toast.Abstractions.dll": {},
           "lib/MonoAndroid10/Plugin.Toast.dll": {}
-        }
-      },
-      "Square.OkHttp3/4.9.1": {
-        "type": "package",
-        "dependencies": {
-          "Square.OkIO": "2.10.0",
-          "Xamarin.Kotlin.StdLib": "1.4.32.1"
-        },
-        "frameworkAssemblies": [
-          "Java.Interop"
-        ],
-        "compile": {
-          "lib/monoandroid90/Square.OkHttp3.dll": {}
-        },
-        "runtime": {
-          "lib/monoandroid90/Square.OkHttp3.dll": {}
-        }
-      },
-      "Square.OkHttp3.LoggingInterceptor/4.4.1": {
-        "type": "package",
-        "dependencies": {
-          "Square.OkHttp3": "4.4.1"
-        },
-        "frameworkAssemblies": [
-          "Java.Interop"
-        ],
-        "compile": {
-          "lib/monoandroid90/Square.OkHttp3.LoggingInterceptor.dll": {}
-        },
-        "runtime": {
-          "lib/monoandroid90/Square.OkHttp3.LoggingInterceptor.dll": {}
-        }
-      },
-      "Square.OkIO/2.10.0": {
-        "type": "package",
-        "dependencies": {
-          "Xamarin.Kotlin.StdLib": "1.4.32.1",
-          "Xamarin.Kotlin.StdLib.Common": "1.4.32.1"
-        },
-        "frameworkAssemblies": [
-          "Java.Interop"
-        ],
-        "compile": {
-          "lib/monoandroid90/Square.OkIO.dll": {}
-        },
-        "runtime": {
-          "lib/monoandroid90/Square.OkIO.dll": {}
-        }
-      },
-      "Square.Retrofit2/2.9.0": {
-        "type": "package",
-        "dependencies": {
-          "Square.OkHttp3": "4.9.1"
-        },
-        "frameworkAssemblies": [
-          "Java.Interop"
-        ],
-        "compile": {
-          "lib/monoandroid90/Square.Retrofit2.dll": {}
-        },
-        "runtime": {
-          "lib/monoandroid90/Square.Retrofit2.dll": {}
-        }
-      },
-      "Square.Retrofit2.ConverterGson/2.9.0": {
-        "type": "package",
-        "dependencies": {
-          "GoogleGson": "2.8.6",
-          "Square.Retrofit2": "2.9.0"
-        },
-        "frameworkAssemblies": [
-          "Java.Interop"
-        ],
-        "compile": {
-          "lib/monoandroid90/Square.Retrofit2.ConverterGson.dll": {}
-        },
-        "runtime": {
-          "lib/monoandroid90/Square.Retrofit2.ConverterGson.dll": {}
         }
       },
       "System.Numerics.Vectors/4.5.0": {
@@ -188,13 +96,20 @@
           "buildTransitive/monoandroid9.0/Xamarin.AndroidX.Activity.Ktx.targets": {}
         }
       },
-      "Xamarin.AndroidX.Annotation/1.2.0": {
+      "Xamarin.AndroidX.Annotation/1.2.0.2": {
         "type": "package",
         "dependencies": {
           "Xamarin.AndroidX.Migration": "1.0.8"
         },
         "frameworkAssemblies": [
-          "Java.Interop"
+          "Java.Interop",
+          "Mono.Android",
+          "System",
+          "System.Core",
+          "System.Numerics",
+          "System.Numerics.Vectors",
+          "System.Xml",
+          "mscorlib"
         ],
         "compile": {
           "lib/monoandroid90/Xamarin.AndroidX.Annotation.dll": {}
@@ -203,7 +118,7 @@
           "lib/monoandroid90/Xamarin.AndroidX.Annotation.dll": {}
         },
         "build": {
-          "buildTransitive/monoandroid9.0/Xamarin.AndroidX.Annotation.targets": {}
+          "buildTransitive/monoandroid90/Xamarin.AndroidX.Annotation.targets": {}
         }
       },
       "Xamarin.AndroidX.Annotation.Experimental/1.1.0": {
@@ -706,11 +621,11 @@
           "buildTransitive/monoandroid9.0/Xamarin.AndroidX.Lifecycle.Extensions.targets": {}
         }
       },
-      "Xamarin.AndroidX.Lifecycle.LiveData/2.3.1": {
+      "Xamarin.AndroidX.Lifecycle.LiveData/2.3.0.1": {
         "type": "package",
         "dependencies": {
           "Xamarin.AndroidX.Arch.Core.Runtime": "2.1.0.8",
-          "Xamarin.AndroidX.Lifecycle.LiveData.Core": "2.3.1"
+          "Xamarin.AndroidX.Lifecycle.LiveData.Core": "2.3.0.1"
         },
         "frameworkAssemblies": [
           "Java.Interop"
@@ -988,11 +903,11 @@
           "buildTransitive/monoandroid9.0/Xamarin.AndroidX.Print.targets": {}
         }
       },
-      "Xamarin.AndroidX.RecyclerView/1.2.0": {
+      "Xamarin.AndroidX.RecyclerView/1.2.1": {
         "type": "package",
         "dependencies": {
           "Xamarin.AndroidX.Annotation": "1.2.0",
-          "Xamarin.AndroidX.Core": "1.3.2.3",
+          "Xamarin.AndroidX.Core": "1.5.0",
           "Xamarin.AndroidX.CustomView": "1.1.0.6"
         },
         "frameworkAssemblies": [
@@ -1044,6 +959,24 @@
         },
         "build": {
           "buildTransitive/monoandroid9.0/Xamarin.AndroidX.SavedState.SavedState.Ktx.targets": {}
+        }
+      },
+      "Xamarin.AndroidX.Security.SecurityCrypto/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Xamarin.AndroidX.Annotation": "1.2.0"
+        },
+        "frameworkAssemblies": [
+          "Java.Interop"
+        ],
+        "compile": {
+          "lib/monoandroid90/Xamarin.AndroidX.Security.SecurityCrypto.dll": {}
+        },
+        "runtime": {
+          "lib/monoandroid90/Xamarin.AndroidX.Security.SecurityCrypto.dll": {}
+        },
+        "build": {
+          "buildTransitive/monoandroid9.0/Xamarin.AndroidX.Security.SecurityCrypto.targets": {}
         }
       },
       "Xamarin.AndroidX.Transition/1.4.0.1": {
@@ -1214,6 +1147,28 @@
           "buildTransitive/monoandroid9.0/Xamarin.Google.Android.Material.targets": {}
         }
       },
+      "Xamarin.Google.Crypto.Tink.Android/1.6.1": {
+        "type": "package",
+        "dependencies": {
+          "GoogleGson": "2.8.8"
+        },
+        "frameworkAssemblies": [
+          "Java.Interop",
+          "Mono.Android",
+          "System",
+          "System.Core",
+          "System.Numerics",
+          "System.Numerics.Vectors",
+          "System.Xml",
+          "mscorlib"
+        ],
+        "compile": {
+          "lib/monoandroid90/Xamarin.Google.Crypto.Tink.Android.dll": {}
+        },
+        "runtime": {
+          "lib/monoandroid90/Xamarin.Google.Crypto.Tink.Android.dll": {}
+        }
+      },
       "Xamarin.Google.Guava.ListenableFuture/1.0.0.2": {
         "type": "package",
         "frameworkAssemblies": [
@@ -1333,14 +1288,17 @@
         "type": "project",
         "framework": "MonoAndroid,Version=v11.0",
         "dependencies": {
+          "Xamarin.AndroidX.Annotation": "1.2.0.2",
           "Xamarin.AndroidX.ConstraintLayout": "2.0.4.2",
           "Xamarin.AndroidX.Fragment.Ktx": "1.3.4",
           "Xamarin.AndroidX.Lifecycle.Extensions": "2.2.0.7",
           "Xamarin.AndroidX.Lifecycle.LiveData.Core": "2.3.1",
           "Xamarin.AndroidX.Lifecycle.Runtime.Ktx": "2.3.1",
           "Xamarin.AndroidX.Lifecycle.ViewModel.Ktx": "2.3.1",
-          "Xamarin.AndroidX.RecyclerView": "1.2.0",
+          "Xamarin.AndroidX.RecyclerView": "1.2.1",
+          "Xamarin.AndroidX.Security.SecurityCrypto": "1.0.0",
           "Xamarin.Google.Android.Material": "1.3.0.1",
+          "Xamarin.Google.Crypto.Tink.Android": "1.6.1",
           "Xamarin.Kotlin.StdLib": "1.5.10"
         },
         "compile": {
@@ -1353,30 +1311,22 @@
     }
   },
   "libraries": {
-    "GoogleGson/2.8.6": {
-      "sha512": "T9aeQg/mvzJuxAGV1L0MWlqMssgasJZdYs+kasGJWqg5pUiE3+vJ//LNr2DAlN9dOAN0KlPbvcy/HWXUsW9Dag==",
+    "GoogleGson/2.8.8": {
+      "sha512": "4+SKfuFnI/opHv8jPIPm86atxHx+NWwcsZR6X1eBcnvMl9GkR30hC8hRZggK3nu4p8xB4WmtAHFnXj1Uv4y1Mg==",
       "type": "package",
-      "path": "googlegson/2.8.6",
+      "path": "googlegson/2.8.8",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
+        "License.md",
         "THIRD-PARTY-NOTICES.txt",
-        "googlegson.2.8.6.nupkg.sha512",
+        "googlegson.2.8.8.nupkg.sha512",
         "googlegson.nuspec",
-        "lib/monoandroid90/GoogleGson.dll"
-      ]
-    },
-    "Paytabs.Xamarin.Android/1.0.0": {
-      "sha512": "TP5lpqOhHKUfAjqwFw9YFwiXubeOp6BcLeHucxwRVjEkBVq0ShMj/w96jlxmv0c/Wb4PyqiEtPtdDt15DtT0DA==",
-      "type": "package",
-      "path": "paytabs.xamarin.android/1.0.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/monoandroid/PaymentSDK.Binding.dll",
-        "lib/xamarin.ios/PaymentSDKBinding.dll",
-        "paytabs.xamarin.android.1.0.0.nupkg.sha512",
-        "paytabs.xamarin.android.nuspec"
+        "lib/monoandroid90/GoogleGson.dll",
+        "lib/monoandroid90/GoogleGson.xml",
+        "lib/net6.0-android31.0/GoogleGson.aar",
+        "lib/net6.0-android31.0/GoogleGson.dll",
+        "lib/net6.0-android31.0/GoogleGson.xml"
       ]
     },
     "Plugin.Toast/2.2.0": {
@@ -1411,77 +1361,6 @@
         "lib/netstandard/Plugin.Toast.pdb",
         "plugin.toast.2.2.0.nupkg.sha512",
         "plugin.toast.nuspec"
-      ]
-    },
-    "Square.OkHttp3/4.9.1": {
-      "sha512": "oSY8Q9eg1TCN9us78dJHROPUEC1TErG5x4EIOVQn/T1rpqK4iLlJSnKrzSDoPPdLAua97Lj5zij/7ZZIFgOhTQ==",
-      "type": "package",
-      "path": "square.okhttp3/4.9.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.md",
-        "lib/monoandroid90/Square.OkHttp3.dll",
-        "square.okhttp3.4.9.1.nupkg.sha512",
-        "square.okhttp3.nuspec",
-        "square.okhttp_256x256.png"
-      ]
-    },
-    "Square.OkHttp3.LoggingInterceptor/4.4.1": {
-      "sha512": "RHbHM7Vp1gajnZaXrwQDYCFF393xqq2OKeOLNi/WtiJTkW3hLQqtjvZHtZCi3JBieXzWQUrzuLpa9tPXt5ryUw==",
-      "type": "package",
-      "path": "square.okhttp3.logginginterceptor/4.4.1",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.md",
-        "lib/monoandroid90/Square.OkHttp3.LoggingInterceptor.dll",
-        "square.okhttp.logginginterceptor_256x256.png",
-        "square.okhttp3.logginginterceptor.4.4.1.nupkg.sha512",
-        "square.okhttp3.logginginterceptor.nuspec"
-      ]
-    },
-    "Square.OkIO/2.10.0": {
-      "sha512": "Qxi3o7o1k+J9hBXrsiMfEF/TqA6wTBAfEosfso43ZgFrZimS5qkrWVxD5pI/Sht/ZpUldYxrtlv4SMrQtZ5LIg==",
-      "type": "package",
-      "path": "square.okio/2.10.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.md",
-        "lib/monoandroid90/Square.OkIO.dll",
-        "square.okio.2.10.0.nupkg.sha512",
-        "square.okio.nuspec"
-      ]
-    },
-    "Square.Retrofit2/2.9.0": {
-      "sha512": "Vb66T5bu63ojeZlLGHtTL79Lk64idwo9xzgv3KJftHtmyeWWJL2b6WTHgDKKERgDsV6AUuCadodoXUi4G+rwwg==",
-      "type": "package",
-      "path": "square.retrofit2/2.9.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.md",
-        "lib/monoandroid90/Square.Retrofit2.dll",
-        "lib/monoandroid90/Square.Retrofit2.xml",
-        "square.retrofit2.2.9.0.nupkg.sha512",
-        "square.retrofit2.nuspec",
-        "square.retrofit2_256x256.png"
-      ]
-    },
-    "Square.Retrofit2.ConverterGson/2.9.0": {
-      "sha512": "xwVWJwvimrJMUfWI+vs93XYLolGEvAffipwBjjIAASztTd6Cyhu9llVheaaNsZ1r9MgtJajboytMUpDjbKlmGA==",
-      "type": "package",
-      "path": "square.retrofit2.convertergson/2.9.0",
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "LICENSE.md",
-        "lib/monoandroid90/Square.Retrofit2.ConverterGson.dll",
-        "lib/monoandroid90/Square.Retrofit2.ConverterGson.xml",
-        "square.retrofit2.convertergson.2.9.0.nupkg.sha512",
-        "square.retrofit2.convertergson.nuspec",
-        "square.retrofit2_256x256.png"
       ]
     },
     "System.Numerics.Vectors/4.5.0": {
@@ -1578,20 +1457,26 @@
         "xamarin.androidx.activity.ktx.nuspec"
       ]
     },
-    "Xamarin.AndroidX.Annotation/1.2.0": {
-      "sha512": "kTDk/vkONmqX8Gd02KZih6f6dlnhWD+RfKSKimLptTfjJRE5lHROxnTELsP6BPjNxqM9JoJFX83/JKO0cK9f8w==",
+    "Xamarin.AndroidX.Annotation/1.2.0.2": {
+      "sha512": "+bk8qgM/D+uNJoZJ06a9tvFYPzIguC6EcVgzClEe3W3kprH1KDb2l78z9Gm7jjBnWEplV4X1g8dxD7OcKBzCxA==",
       "type": "package",
-      "path": "xamarin.androidx.annotation/1.2.0",
+      "path": "xamarin.androidx.annotation/1.2.0.2",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.md",
-        "build/monoandroid9.0/Xamarin.AndroidX.Annotation.targets",
-        "buildTransitive/monoandroid9.0/Xamarin.AndroidX.Annotation.targets",
+        "build/monoandroid90/Xamarin.AndroidX.Annotation.targets",
+        "build/net6.0-android31.0/Xamarin.AndroidX.Annotation.targets",
+        "buildTransitive/monoandroid90/Xamarin.AndroidX.Annotation.targets",
+        "buildTransitive/net6.0-android31.0/Xamarin.AndroidX.Annotation.targets",
         "jar/androidx.annotation.annotation.jar",
         "lib/monoandroid90/Xamarin.AndroidX.Annotation.dll",
         "lib/monoandroid90/Xamarin.AndroidX.Annotation.pdb",
-        "xamarin.androidx.annotation.1.2.0.nupkg.sha512",
+        "lib/monoandroid90/Xamarin.AndroidX.Annotation.xml",
+        "lib/net6.0-android31.0/Xamarin.AndroidX.Annotation.dll",
+        "lib/net6.0-android31.0/Xamarin.AndroidX.Annotation.pdb",
+        "lib/net6.0-android31.0/Xamarin.AndroidX.Annotation.xml",
+        "xamarin.androidx.annotation.1.2.0.2.nupkg.sha512",
         "xamarin.androidx.annotation.nuspec"
       ]
     },
@@ -2025,10 +1910,10 @@
         "xamarin.androidx.lifecycle.extensions.nuspec"
       ]
     },
-    "Xamarin.AndroidX.Lifecycle.LiveData/2.3.1": {
-      "sha512": "Y7i2cMa/YasjJqYQ8xle3oTis88JhuoG1fZu4XvZQoX7BsgVzRKo9RK4UI8bf87pO5d9cZMPAzv5Vzlx0tfl4w==",
+    "Xamarin.AndroidX.Lifecycle.LiveData/2.3.0.1": {
+      "sha512": "qbOce133nmKv/wEcl72YMtIqPBYOgM8bku37Z4LZBxP0bdVyfEPw/Hqq13aNUQ+3jOaowgzkc5WoPgzdjLN/3Q==",
       "type": "package",
-      "path": "xamarin.androidx.lifecycle.livedata/2.3.1",
+      "path": "xamarin.androidx.lifecycle.livedata/2.3.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2038,7 +1923,7 @@
         "buildTransitive/monoandroid9.0/Xamarin.AndroidX.Lifecycle.LiveData.targets",
         "lib/monoandroid90/Xamarin.AndroidX.Lifecycle.LiveData.dll",
         "lib/monoandroid90/Xamarin.AndroidX.Lifecycle.LiveData.pdb",
-        "xamarin.androidx.lifecycle.livedata.2.3.1.nupkg.sha512",
+        "xamarin.androidx.lifecycle.livedata.2.3.0.1.nupkg.sha512",
         "xamarin.androidx.lifecycle.livedata.nuspec"
       ]
     },
@@ -2314,10 +2199,10 @@
         "xamarin.androidx.print.nuspec"
       ]
     },
-    "Xamarin.AndroidX.RecyclerView/1.2.0": {
-      "sha512": "5mhm6bn1US6q9EL0itNAaSlgFT3gd+1xG0UjHx28W9SXII/BhXQyTJUzgau+Dm1PhhLWf25cfZA/PscnGA5Idg==",
+    "Xamarin.AndroidX.RecyclerView/1.2.1": {
+      "sha512": "LP6Tkk8JguzM4IEIAcMHACl99KIDe8wKNPKrB2zNTrpzBBhL5a0A5oRNn/MlqbDbrtDLFqwUtv0vA3VVDFlLyQ==",
       "type": "package",
-      "path": "xamarin.androidx.recyclerview/1.2.0",
+      "path": "xamarin.androidx.recyclerview/1.2.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -2328,7 +2213,7 @@
         "lib/monoandroid90/Xamarin.AndroidX.RecyclerView.dll",
         "lib/monoandroid90/Xamarin.AndroidX.RecyclerView.pdb",
         "proguard/proguard.txt",
-        "xamarin.androidx.recyclerview.1.2.0.nupkg.sha512",
+        "xamarin.androidx.recyclerview.1.2.1.nupkg.sha512",
         "xamarin.androidx.recyclerview.nuspec"
       ]
     },
@@ -2365,6 +2250,23 @@
         "lib/monoandroid90/Xamarin.AndroidX.SavedState.SavedState.Ktx.pdb",
         "xamarin.androidx.savedstate.savedstate.ktx.1.1.0.nupkg.sha512",
         "xamarin.androidx.savedstate.savedstate.ktx.nuspec"
+      ]
+    },
+    "Xamarin.AndroidX.Security.SecurityCrypto/1.0.0": {
+      "sha512": "vmCEQ/3uATsQABXSchTNVacnCl6nuYQbRyKDcKgEg2j5vzZSK29Z4gCUGRPy917I445rFPZdHih4UXgMiwBpOw==",
+      "type": "package",
+      "path": "xamarin.androidx.security.securitycrypto/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "aar/androidx.security.security-crypto.aar",
+        "build/monoandroid9.0/Xamarin.AndroidX.Security.SecurityCrypto.targets",
+        "buildTransitive/monoandroid9.0/Xamarin.AndroidX.Security.SecurityCrypto.targets",
+        "lib/monoandroid90/Xamarin.AndroidX.Security.SecurityCrypto.dll",
+        "lib/monoandroid90/Xamarin.AndroidX.Security.SecurityCrypto.pdb",
+        "xamarin.androidx.security.securitycrypto.1.0.0.nupkg.sha512",
+        "xamarin.androidx.security.securitycrypto.nuspec"
       ]
     },
     "Xamarin.AndroidX.Transition/1.4.0.1": {
@@ -2541,6 +2443,24 @@
         "xamarin.google.android.material.nuspec"
       ]
     },
+    "Xamarin.Google.Crypto.Tink.Android/1.6.1": {
+      "sha512": "IcitHo9pEg7m4y4yxfm3zAUjMQ+cGTc+w60AvuKMCnexvJCaIDEHT+nDeETiBKCeV35mQP3R8y6ugGqczsjXsw==",
+      "type": "package",
+      "path": "xamarin.google.crypto.tink.android/1.6.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "THIRD-PARTY-NOTICES.txt",
+        "lib/monoandroid90/Xamarin.Google.Crypto.Tink.Android.dll",
+        "lib/monoandroid90/Xamarin.Google.Crypto.Tink.Android.xml",
+        "lib/net6.0-android31.0/Xamarin.Google.Crypto.Tink.Android.aar",
+        "lib/net6.0-android31.0/Xamarin.Google.Crypto.Tink.Android.dll",
+        "lib/net6.0-android31.0/Xamarin.Google.Crypto.Tink.Android.xml",
+        "xamarin.google.crypto.tink.android.1.6.1.nupkg.sha512",
+        "xamarin.google.crypto.tink.android.nuspec"
+      ]
+    },
     "Xamarin.Google.Guava.ListenableFuture/1.0.0.2": {
       "sha512": "qmkNS5p4eRoDjQM/6VyRaX6lFCNYCiMvFVRj3nfOzt/+AuqTqAhRqIcAYeWLtUxdfDOC72yLSfWKeLiPIuYz0A==",
       "type": "package",
@@ -2652,44 +2572,41 @@
     "MonoAndroid,Version=v11.0": [
       "CardScanBindingLib >= 1.0.0",
       "PaymentSDK.Binding >= 1.0.0",
-      "Paytabs.Xamarin.Android >= 1.0.0",
       "Plugin.Toast >= 2.2.0",
       "Xamarin.Essentials >= 1.6.1",
       "Xamarin.Google.Android.Material >= 1.3.0.1"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Lenovo\\.nuget\\packages\\": {}
+    "/Users/mohamedadly/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Lenovo\\Downloads\\xamarin-paytabs-binding\\android\\PayTabsSample\\Pt2AndroidApp.csproj",
+      "projectUniqueName": "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/PayTabsSample/Pt2AndroidApp.csproj",
       "projectName": "Pt2AndroidApp",
-      "projectPath": "C:\\Users\\Lenovo\\Downloads\\xamarin-paytabs-binding\\android\\PayTabsSample\\Pt2AndroidApp.csproj",
-      "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Lenovo\\Downloads\\xamarin-paytabs-binding\\android\\PayTabsSample\\obj\\",
+      "projectPath": "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/PayTabsSample/Pt2AndroidApp.csproj",
+      "packagesPath": "/Users/mohamedadly/.nuget/packages/",
+      "outputPath": "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/PayTabsSample/obj/",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
       "configFilePaths": [
-        "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/mohamedadly/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "monoandroid11.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "monoandroid11.0": {
           "projectReferences": {
-            "C:\\Users\\Lenovo\\Downloads\\xamarin-paytabs-binding\\android\\CardScanBindingLib\\CardScanBindingLib.csproj": {
-              "projectPath": "C:\\Users\\Lenovo\\Downloads\\xamarin-paytabs-binding\\android\\CardScanBindingLib\\CardScanBindingLib.csproj"
+            "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/CardScanBindingLib/CardScanBindingLib.csproj": {
+              "projectPath": "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/CardScanBindingLib/CardScanBindingLib.csproj"
             },
-            "C:\\Users\\Lenovo\\Downloads\\xamarin-paytabs-binding\\android\\PaymentSDK.Binding\\PaymentSDK.Binding.csproj": {
-              "projectPath": "C:\\Users\\Lenovo\\Downloads\\xamarin-paytabs-binding\\android\\PaymentSDK.Binding\\PaymentSDK.Binding.csproj"
+            "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/PaymentSDK.Binding/PaymentSDK.Binding.csproj": {
+              "projectPath": "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/PaymentSDK.Binding/PaymentSDK.Binding.csproj"
             }
           }
         }
@@ -2698,10 +2615,6 @@
     "frameworks": {
       "monoandroid11.0": {
         "dependencies": {
-          "Paytabs.Xamarin.Android": {
-            "target": "Package",
-            "version": "[1.0.0, )"
-          },
           "Plugin.Toast": {
             "target": "Package",
             "version": "[2.2.0, )"

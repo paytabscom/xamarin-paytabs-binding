@@ -45,6 +45,18 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 		}
 
 
+		// Metadata.xml XPath field reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkRegion']/field[@name='IRAQ']"
+		[Register ("IRAQ")]
+		public static global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkRegion Iraq {
+			get {
+				const string __id = "IRAQ.Lcom/payment/paymentsdk/integrationmodels/PaymentSdkRegion;";
+
+				var __v = _members.StaticFields.GetObjectValue (__id);
+				return global::Java.Lang.Object.GetObject<global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkRegion> (__v.Handle, JniHandleOwnership.TransferLocalRef);
+			}
+		}
+
+
 		// Metadata.xml XPath field reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkRegion']/field[@name='JORDAN']"
 		[Register ("JORDAN")]
 		public static global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkRegion Jordan {
@@ -142,27 +154,27 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 
 			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkRegion.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
 			[Register ("createFromParcel", "(Landroid/os/Parcel;)Lcom/payment/paymentsdk/integrationmodels/PaymentSdkRegion;", "")]
-			public unsafe global::Java.Lang.Object CreateFromParcel (global::Android.OS.Parcel @in)
+			public unsafe global::Java.Lang.Object CreateFromParcel (global::Android.OS.Parcel p0)
 			{
 				const string __id = "createFromParcel.(Landroid/os/Parcel;)Lcom/payment/paymentsdk/integrationmodels/PaymentSdkRegion;";
 				try {
 					JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-					__args [0] = new JniArgumentValue ((@in == null) ? IntPtr.Zero : ((global::Java.Lang.Object) @in).Handle);
+					__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
 					var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, __args);
 					return global::Java.Lang.Object.GetObject<global::Java.Lang.Object> (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 				} finally {
-					global::System.GC.KeepAlive (@in);
+					global::System.GC.KeepAlive (p0);
 				}
 			}
 
 			// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkRegion.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
 			[Register ("newArray", "(I)[Lcom/payment/paymentsdk/integrationmodels/PaymentSdkRegion;", "")]
-			public unsafe global::Java.Lang.Object[] NewArray (int size)
+			public unsafe global::Java.Lang.Object[] NewArray (int p0)
 			{
 				const string __id = "newArray.(I)[Lcom/payment/paymentsdk/integrationmodels/PaymentSdkRegion;";
 				try {
 					JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-					__args [0] = new JniArgumentValue (size);
+					__args [0] = new JniArgumentValue (p0);
 					var __rm = _members.InstanceMethods.InvokeNonvirtualObjectMethod (__id, this, __args);
 					return (global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkRegion[]) JNIEnv.GetArray (__rm.Handle, JniHandleOwnership.TransferLocalRef, typeof (global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkRegion));
 				} finally {

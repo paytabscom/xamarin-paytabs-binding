@@ -1,127 +1,350 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:ns1="http://schemas.android.com/tools">
-    <bool name="wocr_is_tablet">false</bool>
-    <color name="wocr__purple_200">#FFBB86FC</color>
-    <color name="wocr__purple_500">#FF6200EE</color>
-    <color name="wocr__purple_700">#FF3700B3</color>
-    <color name="wocr__teal_200">#FF03DAC5</color>
-    <color name="wocr_accent">#26a69a</color>
-    <color name="wocr_black">#FF000000</color>
-    <color name="wocr_card_shadow_color">#a5080808</color>
-    <color name="wocr_default_window_background">#000</color>
-    <color name="wocr_manual_input_color">#05000000</color>
-    <color name="wocr_manual_input_color_pressed">#20ffffff</color>
-    <color name="wocr_paycards_link_color">#80ffffff</color>
-    <color name="wocr_primary">#26a69a</color>
-    <color name="wocr_primary_dark">#00897B</color>
-    <color name="wocr_tablet_screen_bg">#BB000000</color>
-    <color name="wocr_teal_700">#FF018786</color>
-    <color name="wocr_white">#FFFFFFFF</color>
-    <dimen name="wocr_tablet_card_land_top_bottom_margin">100dp</dimen>
-    <dimen name="wocr_tablet_card_port_right_left_margin">100dp</dimen>
-    <string name="wocr_button_enter_card_number">Enter card details manually</string>
-    <string name="wocr_cardspayrecognizer_library" translatable="false">pay.cards library</string>
-    <string name="wocr_hint_position_card_in_frame">Position your card in this frame</string>
-    <string name="wocr_powered_by_pay_cards" translatable="false">Powered by pay.cards</string>
-    <string name="wocr_toggle_flash">Toggle flash</string>
-    <style name="wocr_EnterManuallyButton" parent="Base.Widget.AppCompat.Button.Borderless.Colored">
-        <item name="android:fontFamily" ns1:ignore="NewApi">sans-serif</item>
-        <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:background">@drawable/wocr_manual_input_button</item>
-        <item name="android:layout_margin">0dp</item>
-        <item name="android:minHeight">56dp</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize" ns1:ignore="SpUsage">16dp</item>
+    <attr format="color" name="bt_expiration_date_dialog_divider"/>
+    <attr format="color" name="bt_expiration_date_dialog_label"/>
+    <attr format="color" name="bt_expiration_date_scrollbar_thumb_vertical"/>
+    <attr format="color" name="bt_expiration_date_scrollbar_track_vertical"/>
+    <attr format="color" name="bt_expiration_date_sheet_background"/>
+    <color name="bt_black">#001129</color>
+    <color name="bt_black_12">#1e000000</color>
+    <color name="bt_black_38">#61000000</color>
+    <color name="bt_black_54">#8a000000</color>
+    <color name="bt_black_87">#de000000</color>
+    <color name="bt_blue">#009bde</color>
+    <color name="bt_expiration_date_sheet_background_dark">#20272b</color>
+    <color name="bt_expiration_date_sheet_background_light">#eceff0</color>
+    <color name="bt_light_gray">#6d6d6d</color>
+    <color name="bt_white">#ffffff</color>
+    <color name="bt_white_12">#1effffff</color>
+    <color name="bt_white_38">#61ffffff</color>
+    <color name="bt_white_54">#8affffff</color>
+    <color name="bt_white_87">#deffffff</color>
+    <color name="payment_sdk_background_color">#F9FAFD</color>
+    <color name="payment_sdk_blue_F2FAFD">#F2FAFD</color>
+    <color name="payment_sdk_button_background_color">#0073bc</color>
+    <color name="payment_sdk_button_text_color">#FFF</color>
+    <color name="payment_sdk_error_text_color">#EC2213</color>
+    <color name="payment_sdk_hint_font_color">#a5a5a5</color>
+    <color name="payment_sdk_primary_color">#ffffff</color>
+    <color name="payment_sdk_primary_font_color">#4c4c4c</color>
+    <color name="payment_sdk_secondary_color">#0073bc</color>
+    <color name="payment_sdk_secondary_font_color">#0073bc</color>
+    <color name="payment_sdk_separators_color">#101010</color>
+    <color name="payment_sdk_status_bar_color">#444647</color>
+    <color name="payment_sdk_stroke_color">#e1e1e1</color>
+    <color name="payment_sdk_title_text_color">#1e1e1e</color>
+    <dimen name="bt_edit_text_icon_padding">24dp</dimen>
+    <dimen name="bt_expiration_date_item_selected_background_radius">2dp</dimen>
+    <dimen name="bt_expiration_date_item_text_size">16sp</dimen>
+    <dimen name="bt_expiration_date_sheet_height">260dp</dimen>
+    <dimen name="bt_expiration_date_sheet_label_padding_bottom">8dp</dimen>
+    <dimen name="bt_expiration_date_sheet_label_padding_top">8dp</dimen>
+    <dimen name="bt_expiration_date_sheet_left_right_margin">8dp</dimen>
+    <dimen name="bt_expiration_date_sheet_top_bottom_margin">8dp</dimen>
+    <dimen name="bt_input_text_size">16sp</dimen>
+    <dimen name="bt_margin">8dp</dimen>
+    <dimen name="bt_mobile_number_explanation_padding">53dp</dimen>
+    <dimen name="bt_no_edit_text_icon_padding">49dp</dimen>
+    <dimen name="bt_save_card_checkbox_left_margin">-7dp</dimen>
+    <dimen name="payment_sdk_button_corner_radius">8dp</dimen>
+    <dimen name="payment_sdk_button_font_size">16sp</dimen>
+    <dimen name="payment_sdk_error_font_size">12sp</dimen>
+    <dimen name="payment_sdk_input_corner_radius">8dp</dimen>
+    <dimen name="payment_sdk_primary_font_size">16sp</dimen>
+    <dimen name="payment_sdk_secondary_font_size">16sp</dimen>
+    <dimen name="payment_sdk_separator_thickness">1dp</dimen>
+    <dimen name="payment_sdk_stroke_thickness">.5dp</dimen>
+    <dimen name="payment_sdk_title_font_size">18sp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <string name="bt_country_code_required">Country code is required</string>
+    <string name="bt_form_hint_country_code">Country Code</string>
+    <string name="bt_form_hint_mobile_number">Mobile Number</string>
+    <string name="bt_mobile_number_required">Mobile number is required</string>
+    <string name="bt_month">Month</string>
+    <string name="bt_postal_code_required">Postal code is required</string>
+    <string name="bt_save_card_checkbox_name">Save card</string>
+    <string name="bt_year">Year</string>
+    <string name="done">Done</string>
+    <string name="edit">Edit</string>
+    <string name="pay_with_new_card">Pay with new card</string>
+    <string name="payment_sdk_3d_secure_title">"3D Secure"</string>
+    <string name="payment_sdk_apple_pay_error_missing_country_code">"Apple Pay country code is empty!"</string>
+    <string name="payment_sdk_apple_pay_error_missing_merchant_identifier">"Apple Pay identifier is empty!"</string>
+    <string name="payment_sdk_apple_pay_error_unauthorized_networks">"UnAuthorized Apple Pay networks"</string>
+    <string name="payment_sdk_billing_address_city">"City"</string>
+    <string name="payment_sdk_billing_address_country">"Country"</string>
+    <string name="payment_sdk_billing_address_email">"Email"</string>
+    <string name="payment_sdk_billing_address_full_name">"Full Name"</string>
+    <string name="payment_sdk_billing_address_phone">"Phone Number"</string>
+    <string name="payment_sdk_billing_address_state">"State"</string>
+    <string name="payment_sdk_billing_address_stree">"Street"</string>
+    <string name="payment_sdk_billing_address_zip">"Zip Code"</string>
+    <string name="payment_sdk_billing_details">"Billing Details"</string>
+    <string name="payment_sdk_billing_select_country">"Select Country"</string>
+    <string name="payment_sdk_cancel_alert">Are you sure you want to cancel the payment?</string>
+    <string name="payment_sdk_card_cid" translatable="false">CID</string>
+    <string name="payment_sdk_card_cvc" translatable="false">CVC</string>
+    <string name="payment_sdk_card_cvn" translatable="false">CVN</string>
+    <string name="payment_sdk_card_cvv" translatable="false">CVV</string>
+    <string name="payment_sdk_card_cvv_invalid">Invalid %s</string>
+    <string name="payment_sdk_card_error_empty_card_number">"Card number is empty!"</string>
+    <string name="payment_sdk_card_error_empty_cid">"CID is empty!"</string>
+    <string name="payment_sdk_card_error_empty_cvc">"CVC is empty!"</string>
+    <string name="payment_sdk_card_error_empty_cvn">"CVN is empty!"</string>
+    <string name="payment_sdk_card_error_empty_cvv">%s is empty!</string>
+    <string name="payment_sdk_card_error_empty_expiry_date">"Expiry date is empty!"</string>
+    <string name="payment_sdk_card_error_empty_name_on_card">"Card holder name is empty!"</string>
+    <string name="payment_sdk_card_error_expired_expiry_date">"Expired credit card"</string>
+    <string name="payment_sdk_card_error_invalid_card_number">"Invalid card number"</string>
+    <string name="payment_sdk_card_error_invalid_cid">"Invalid CID!"</string>
+    <string name="payment_sdk_card_error_invalid_cvc">"Invalid CVC!"</string>
+    <string name="payment_sdk_card_error_invalid_cvn">"Invalid CVN!"</string>
+    <string name="payment_sdk_card_error_invalid_cvv">"Invalid CVV!"</string>
+    <string name="payment_sdk_card_error_invalid_expiry_date">"Invalid expiry date"</string>
+    <string name="payment_sdk_card_error_invalid_name_on_card">"Invalid card holder name"</string>
+    <string name="payment_sdk_card_expiry_date">"Expiry Date"</string>
+    <string name="payment_sdk_card_expiry_date_hint">"MM/YY"</string>
+    <string name="payment_sdk_card_name_on_card_hint">"John Smith"</string>
+    <string name="payment_sdk_card_name_on_card_title">"Name on Card"</string>
+    <string name="payment_sdk_card_number">"Card Number"</string>
+    <string name="payment_sdk_card_number_hint">"0000 0000 0000 0000"</string>
+    <string name="payment_sdk_card_pay_button">"PAY NOW"</string>
+    <string name="payment_sdk_card_scanner_camera_permission_dismiss">"Not Now"</string>
+    <string name="payment_sdk_card_scanner_camera_permission_message">"Please grant permission to use the Camera so that you can scan cards"</string>
+    <string name="payment_sdk_card_scanner_camera_permission_settings">"Open Settings"</string>
+    <string name="payment_sdk_card_scanner_camera_permission_title">"Card Scanner"</string>
+    <string name="payment_sdk_card_scanner_line_up_hint">"Line up card within the lines"</string>
+    <string name="payment_sdk_click_back_again">Please click BACK again to exit.</string>
+    <string name="payment_sdk_confirmation">Confirmation</string>
+    <string name="payment_sdk_credit_card_pay_amount">"You're paying"</string>
+    <string name="payment_sdk_credit_card_screen_dismiss">"Cancel"</string>
+    <string name="payment_sdk_credit_card_screen_save_card_label">"Save card no. for future payments"</string>
+    <string name="payment_sdk_credit_card_screen_save_card_mandatory_error">"To continue, you have to save the card info!"</string>
+    <string name="payment_sdk_credit_card_screen_title">"Credit Card"</string>
+    <string name="payment_sdk_edit_billing_info">Edit Billing Info</string>
+    <string name="payment_sdk_edit_shipping_info">Edit shipping Info</string>
+    <string name="payment_sdk_error_card_scanner_failed">"Failed to scan"</string>
+    <string name="payment_sdk_error_empty_billing_address">"Billing address is empty!"</string>
+    <string name="payment_sdk_error_empty_billing_city">"Billing city is empty!"</string>
+    <string name="payment_sdk_error_empty_billing_country_code">"Billing country code is empty!"</string>
+    <string name="payment_sdk_error_empty_billing_email">"Billing email is empty!"</string>
+    <string name="payment_sdk_error_empty_billing_full_name">"Billing full name is empty!"</string>
+    <string name="payment_sdk_error_empty_billing_phone">"Billing phone number is empty!"</string>
+    <string name="payment_sdk_error_empty_billing_state">"Billing state is empty!"</string>
+    <string name="payment_sdk_error_empty_billing_zip_code">"Billing ZIP code is empty!"</string>
+    <string name="payment_sdk_error_empty_shipping_address">"Shipping address is empty!"</string>
+    <string name="payment_sdk_error_empty_shipping_city">"Shipping city is empty!"</string>
+    <string name="payment_sdk_error_empty_shipping_country_code">"Shipping country code is empty!"</string>
+    <string name="payment_sdk_error_empty_shipping_email">"Shipping email is empty!"</string>
+    <string name="payment_sdk_error_empty_shipping_full_name">"Shipping full name is empty!"</string>
+    <string name="payment_sdk_error_empty_shipping_phone">"Shipping phone number is empty!"</string>
+    <string name="payment_sdk_error_empty_shipping_state">"Shipping state is empty!"</string>
+    <string name="payment_sdk_error_empty_shipping_zip_code">"Shipping ZIP code is empty!"</string>
+    <string name="payment_sdk_error_generic">"Something went wrong!"</string>
+    <string name="payment_sdk_error_invalid_amount">"Invalid amount"</string>
+    <string name="payment_sdk_error_invalid_billing_address">"Invalid billing address"</string>
+    <string name="payment_sdk_error_invalid_billing_city">"Invalid billing city"</string>
+    <string name="payment_sdk_error_invalid_billing_country_code">"Invalid billing country code"</string>
+    <string name="payment_sdk_error_invalid_billing_email">"Invalid billing email"</string>
+    <string name="payment_sdk_error_invalid_billing_full_name">"Invalid billing full name"</string>
+    <string name="payment_sdk_error_invalid_billing_phone">"Invalid billing phone"</string>
+    <string name="payment_sdk_error_invalid_billing_state">"Invalid billing state"</string>
+    <string name="payment_sdk_error_invalid_billing_zip_code">"Invalid billing ZIP code"</string>
+    <string name="payment_sdk_error_invalid_currency">"Invalid Currency"</string>
+    <string name="payment_sdk_error_invalid_merchant_country_code">"Invalid merchant country code (it should be alpha-2 ISO code)"</string>
+    <string name="payment_sdk_error_invalid_shipping_address">"Invalid shipping address"</string>
+    <string name="payment_sdk_error_invalid_shipping_city">"Invalid shipping city"</string>
+    <string name="payment_sdk_error_invalid_shipping_country_code">"Invalid shipping country code"</string>
+    <string name="payment_sdk_error_invalid_shipping_email">"Invalid shipping email"</string>
+    <string name="payment_sdk_error_invalid_shipping_full_name">"Invalid shipping full name"</string>
+    <string name="payment_sdk_error_invalid_shipping_phone">"Invalid shipping phone number"</string>
+    <string name="payment_sdk_error_invalid_shipping_state">"Invalid shipping state"</string>
+    <string name="payment_sdk_error_invalid_shipping_zip_code">"Invalid shipping ZIP code"</string>
+    <string name="payment_sdk_error_missing_billing_info">"Please provide billing info"</string>
+    <string name="payment_sdk_error_missing_card_token">Please provide token</string>
+    <string name="payment_sdk_error_missing_cart_description">"Cart description is empty!"</string>
+    <string name="payment_sdk_error_missing_cart_id">"Cart ID is empty!"</string>
+    <string name="payment_sdk_error_missing_client_key">"Missing client key!"</string>
+    <string name="payment_sdk_error_missing_config_data">"Invalid config data"</string>
+    <string name="payment_sdk_error_missing_currency">"Currency is empty!"</string>
+    <string name="payment_sdk_error_missing_data_title">"Missing data"</string>
+    <string name="payment_sdk_error_missing_merchant_country_code">"Missing merchant country code!"</string>
+    <string name="payment_sdk_error_missing_payment_callback">Missing Payment Callback</string>
+    <string name="payment_sdk_error_missing_profile_id">"Profile ID is empty!"</string>
+    <string name="payment_sdk_error_missing_saved_card_info">Please provide saved card info</string>
+    <string name="payment_sdk_error_missing_server_ip">"Invalid server IP"</string>
+    <string name="payment_sdk_error_missing_server_key">"Missing server key!"</string>
+    <string name="payment_sdk_error_missing_shipping_info">"Please provide shipping info"</string>
+    <string name="payment_sdk_error_missing_tokenization_token">"Token is missing"</string>
+    <string name="payment_sdk_error_missing_transaction_reference">"Transaction reference is missing"</string>
+    <string name="payment_sdk_error_network">"Network error, please try again!"</string>
+    <string name="payment_sdk_error_no_apms">"Missing Alternative Payment Methods"</string>
+    <string name="payment_sdk_error_validation_title">"Validation Error"</string>
+    <string name="payment_sdk_hint_cvv" translatable="false">@string/payment_sdk_card_cvv</string>
+    <string name="payment_sdk_hint_postal_code">Postal Code</string>
+    <string name="payment_sdk_no">No</string>
+    <string name="payment_sdk_ok">"Ok"</string>
+    <string name="payment_sdk_powered_by">"Powered By"</string>
+    <string name="payment_sdk_samsung_pay_error_missing_token">"SamsungPay token is invalid"</string>
+    <string name="payment_sdk_save_continue">"Save &amp; Continue"</string>
+    <string name="payment_sdk_shipping_address_city">"City"</string>
+    <string name="payment_sdk_shipping_address_country">"Country"</string>
+    <string name="payment_sdk_shipping_address_email">"Email"</string>
+    <string name="payment_sdk_shipping_address_full_name">"Full Name"</string>
+    <string name="payment_sdk_shipping_address_phone">"Phone Number"</string>
+    <string name="payment_sdk_shipping_address_state">"State"</string>
+    <string name="payment_sdk_shipping_address_stree">"Street"</string>
+    <string name="payment_sdk_shipping_address_zip">"Zip Code"</string>
+    <string name="payment_sdk_shipping_details">"Shipping Details"</string>
+    <string name="payment_sdk_shipping_select_country">"Select Country"</string>
+    <string name="payment_sdk_ssl_error">Unsecured connection.</string>
+    <string name="payment_sdk_yes">Yes</string>
+    <string name="saved_cards">Saved Cards</string>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/payment_sdk_primary_font_color</item>
+        <item name="android:textColorSecondary">@color/payment_sdk_secondary_color</item>
     </style>
-    <style name="wocr_FlashButton" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:minWidth">32dp</item>
-        <item name="android:minHeight">32dp</item>
-        <item name="android:fitsSystemWindows">true</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:layout_marginTop">16dp</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:paddingBottom">17dp</item>
-        <item name="android:scaleType">fitEnd</item>
-        <item name="android:background">@null</item>
-        <item name="android:contentDescription">@string/wocr_toggle_flash</item>
-        <item name="android:visibility">gone</item>
+    <style name="BaseBottomSheetDialog" parent="@style/Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:statusBarColor" ns1:targetApi="lollipop">@android:color/transparent
+        </item>
+        <item name="android:navigationBarColor" ns1:targetApi="lollipop">@android:color/white
+        </item>
     </style>
-    <style name="wocr_PaycardsButton">
-        <item name="android:layout_width">wrap_content</item>
+    <style name="BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_dialog_fragment</item>
+    </style>
+    <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+    <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:background">#33000000</item> 
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+    <style name="bt_base_textview">
+        <item name="android:textSize">@dimen/bt_input_text_size</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+    <style name="bt_card_form_field" parent="bt_base_textview">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:background">@drawable/payment_sdk_input_field_background</item>
+        <item name="android:textColor">@color/payment_sdk_primary_font_color</item>
+        <item name="android:textSize">@dimen/payment_sdk_primary_font_size</item>
+        <item name="android:textColorHint">@color/payment_sdk_hint_font_color</item>
+        <item name="android:textCursorDrawable">@drawable/text_cursor_drawable</item>
+
+    </style>
+    <style name="bt_card_form_icon">
+        <item name="android:layout_width">25dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:shadowColor">@android:color/black</item>
-        <item name="android:shadowDx">1</item>
-        <item name="android:shadowDy">1</item>
-        <item name="android:shadowRadius">2</item>
-        <item name="android:textColor">@color/wocr_paycards_link_color</item>
-        <item name="android:textIsSelectable">false</item>
-        <item name="android:textSize" ns1:ignore="SpUsage">12dp</item>
-        <item name="android:theme">@style/wocr_PaycardsButtonTheme</item>
-        <item name="android:textColorHighlight">#22ffffff</item>
+        <item name="android:layout_gravity">top|center_horizontal</item>
+        <item name="android:paddingTop">50dp</item>
+        <item name="android:paddingBottom">@dimen/bt_margin</item>
     </style>
-    <style name="wocr_PaycardsButtonTheme" parent="@style/ThemeOverlay.AppCompat.Light">
-        <item name="colorAccent">@color/wocr_paycards_link_color</item>
+    <style name="bt_expiration_date_dialog_dark" parent="bt_expiration_date_dialog_sheet">
+        <item name="bt_expiration_date_sheet_background">@color/bt_expiration_date_sheet_background_dark</item>
+        <item name="bt_expiration_date_dialog_label">@color/bt_white_54</item>
+        <item name="bt_expiration_date_dialog_divider">@color/bt_white_12</item>
+        <item name="bt_expiration_date_scrollbar_thumb_vertical">@color/bt_white_54</item>
+        <item name="bt_expiration_date_scrollbar_track_vertical">@color/bt_white_12</item>
     </style>
-    <style name="wocr_RecognizerTheme" parent="wocr_RecognizerTheme.TransparentStatusBar"/>
-    <style name="wocr_RecognizerTheme.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/wocr_primary</item>
-        <item name="colorPrimaryDark">@color/wocr_primary_dark</item>
-        <item name="colorAccent">@color/wocr_accent</item>
-        <item name="android:windowBackground">@color/wocr_default_window_background</item>
+    <style name="bt_expiration_date_dialog_grid_view">
+        <item name="android:layout_marginLeft">@dimen/bt_expiration_date_sheet_left_right_margin</item>
+        <item name="android:layout_marginStart" ns1:targetApi="jelly_bean_mr1">
+            @dimen/bt_expiration_date_sheet_left_right_margin
+        </item>
+        <item name="android:layout_marginRight">@dimen/bt_expiration_date_sheet_left_right_margin</item>
+        <item name="android:layout_marginEnd" ns1:targetApi="jelly_bean_mr1">@dimen/bt_expiration_date_sheet_left_right_margin
+        </item>
+        <item name="android:layout_marginBottom">@dimen/bt_expiration_date_sheet_top_bottom_margin</item>
+        <item name="android:listSelector">@android:color/transparent</item>
+        <item name="android:choiceMode">singleChoice</item>
+        <item name="android:numColumns">auto_fit</item>
+        <item name="android:columnWidth">72dp</item>
     </style>
-    <style name="wocr_RecognizerTheme.TransparentStatusBar" parent="wocr_RecognizerTheme.Base"/>
-    <style name="wocr_Theme.PaytabsCardRecognizer" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/wocr__purple_500</item>
-        <item name="colorPrimaryVariant">@color/wocr__purple_700</item>
-        <item name="colorOnPrimary">@color/wocr_white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/wocr__teal_200</item>
-        <item name="colorSecondaryVariant">@color/wocr_teal_700</item>
-        <item name="colorOnSecondary">@color/wocr_black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" ns1:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+    <style name="bt_expiration_date_dialog_label">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:paddingTop">@dimen/bt_expiration_date_sheet_label_padding_top</item>
+        <item name="android:paddingBottom">@dimen/bt_expiration_date_sheet_label_padding_bottom</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?attr/bt_expiration_date_dialog_label</item>
     </style>
-    <declare-styleable name="wocr_CameraPreviewLayout_Layout">
-        <attr name="wocr_layout_cardAlignGravity">
-            <!-- Push object to the top of its container, not changing its size. -->
-            <flag name="top" value="0x30"/>
-            <!-- Push object to the bottom of its container, not changing its size. -->
-            <flag name="bottom" value="0x50"/>
-            <!-- Push object to the left of its container, not changing its size. -->
-            <flag name="left" value="0x03"/>
-            <!-- Push object to the right of its container, not changing its size. -->
-            <flag name="right" value="0x05"/>
-            <!-- Place object in the vertical center of its container, not changing its size. -->
-            <flag name="center_vertical" value="0x10"/>
-            <!-- Grow the vertical size of the object if needed so it completely fills its container. -->
-            <flag name="fill_vertical" value="0x70"/>
-            <!-- Place object in the horizontal center of its container, not changing its size. -->
-            <flag name="center_horizontal" value="0x01"/>
-            <!-- Grow the horizontal size of the object if needed so it completely fills its container. -->
-            <flag name="fill_horizontal" value="0x07"/>
-            <!-- Place the object in the center of its container in both the vertical and horizontal axis, not changing its size. -->
-            <flag name="center" value="0x11"/>
-            <!-- Grow the horizontal and vertical size of the object if needed so it completely fills its container. -->
-            <flag name="fill" value="0x77"/>
-            <!-- Additional option that can be set to have the top and/or bottom edges of
-                 the child clipped to its container's bounds.
-                 The clip will be based on the vertical gravity: a top gravity will clip the bottom
-                 edge, a bottom gravity will clip the top edge, and neither will clip both edges. -->
-            <flag name="clip_vertical" value="0x80"/>
-            <!-- Additional option that can be set to have the left and/or right edges of
-                 the child clipped to its container's bounds.
-                 The clip will be based on the horizontal gravity: a left gravity will clip the right
-                 edge, a right gravity will clip the left edge, and neither will clip both edges. -->
-            <flag name="clip_horizontal" value="0x08"/>
-            <!-- Push object to the beginning of its container, not changing its size. -->
-            <flag name="start" value="0x00800003"/>
-            <!-- Push object to the end of its container, not changing its size. -->
-            <flag name="end" value="0x00800005"/>
+    <style name="bt_expiration_date_dialog_light" parent="bt_expiration_date_dialog_sheet">
+        <item name="bt_expiration_date_sheet_background">@color/bt_expiration_date_sheet_background_light</item>
+        <item name="bt_expiration_date_dialog_label">@color/bt_black_54</item>
+        <item name="bt_expiration_date_dialog_divider">@color/bt_black_12</item>
+        <item name="bt_expiration_date_scrollbar_thumb_vertical">@color/bt_black_54</item>
+        <item name="bt_expiration_date_scrollbar_track_vertical">@color/bt_black_12</item>
+    </style>
+    <style name="bt_expiration_date_dialog_sheet" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowAnimationStyle">@style/bt_expiration_date_dialog_sheet_animation</item>
+    </style>
+    <style name="bt_expiration_date_dialog_sheet_animation">
+        <item name="android:windowEnterAnimation">@anim/payment_sdk_expiration_date_dialog_open</item>
+        <item name="android:windowExitAnimation">@anim/payment_sdk_expiration_date_dialog_close</item>
+    </style>
+    <style name="bt_expiration_date_dialog_year_grid_view" parent="bt_expiration_date_dialog_grid_view">
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingEnd" ns1:targetApi="jelly_bean_mr1">8dp</item>
+        <item name="android:paddingStart" ns1:targetApi="jelly_bean_mr1">0dp</item>
+        <item name="android:scrollbarSize">3dp</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+    </style>
+    <style name="bt_field_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+
+        <item name="android:orientation">horizontal</item>
+        <item name="android:baselineAligned">false</item>
+    </style>
+    <style name="bt_text_input_layout" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:textColorHint">@color/payment_sdk_secondary_font_color</item>
+        <item name="android:textColor">@color/payment_sdk_primary_font_color</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textCursorDrawable">@drawable/text_cursor_drawable</item>
+        <item name="colorControlNormal">@color/payment_sdk_secondary_color</item>
+        <item name="colorControlActivated">@color/payment_sdk_secondary_color</item>
+        <item name="android:accessibilityLiveRegion" ns1:targetApi="kitkat">polite</item>
+    </style>
+    <style name="payment_sdk_til" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxBackgroundColor">@color/bt_white</item>
+        <item name="boxBackgroundMode">outline</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/payment_sdk_input_corner_radius</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/payment_sdk_input_corner_radius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/payment_sdk_input_corner_radius</item>
+        <item name="boxCornerRadiusTopStart">@dimen/payment_sdk_input_corner_radius</item>
+        <item name="boxStrokeColor">@color/payment_sdk_stroke_color</item>
+        <item name="boxStrokeWidth">@dimen/payment_sdk_stroke_thickness</item>
+        <item name="android:textColorHint">@color/payment_sdk_hint_font_color</item>
+        <item name="android:textColor">@color/payment_sdk_primary_font_color</item>
+    </style>
+    <declare-styleable name="PaytabsEditText">
+        <attr format="string" name="pet_hint"/>
+        <attr format="string" name="pet_label"/>
+        <attr format="integer" name="pet_maxLength"/>
+        <attr format="boolean" name="pet_isDropDown"/>
+        <attr format="enum" name="pet_inputType">
+            <enum name="text" value="0"/>
+            <enum name="number" value="1"/>
         </attr>
     </declare-styleable>
 </resources>

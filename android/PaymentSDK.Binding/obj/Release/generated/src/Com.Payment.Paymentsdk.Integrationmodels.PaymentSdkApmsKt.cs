@@ -87,16 +87,16 @@ namespace Com.Payment.Paymentsdk.Integrationmodels {
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkApmsKt']/method[@name='getName' and count(parameter)=1 and parameter[1][@type='com.payment.paymentsdk.integrationmodels.PaymentSdkApms']]"
 		[Register ("getName", "(Lcom/payment/paymentsdk/integrationmodels/PaymentSdkApms;)Ljava/lang/String;", "")]
-		public static unsafe string GetName (global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms obj)
+		public static unsafe string GetName (global::Com.Payment.Paymentsdk.Integrationmodels.PaymentSdkApms p0)
 		{
 			const string __id = "getName.(Lcom/payment/paymentsdk/integrationmodels/PaymentSdkApms;)Ljava/lang/String;";
 			try {
 				JniArgumentValue* __args = stackalloc JniArgumentValue [1];
-				__args [0] = new JniArgumentValue ((obj == null) ? IntPtr.Zero : ((global::Java.Lang.Object) obj).Handle);
+				__args [0] = new JniArgumentValue ((p0 == null) ? IntPtr.Zero : ((global::Java.Lang.Object) p0).Handle);
 				var __rm = _members.StaticMethods.InvokeObjectMethod (__id, __args);
 				return JNIEnv.GetString (__rm.Handle, JniHandleOwnership.TransferLocalRef);
 			} finally {
-				global::System.GC.KeepAlive (obj);
+				global::System.GC.KeepAlive (p0);
 			}
 		}
 
