@@ -1,46 +1,38 @@
-package androidx.activity.result;
+package androidx.activity;
 
-import android.content.Context;
-import android.content.Intent;
-import androidx.activity.result.contract.ActivityResultContract;
+import android.app.Activity;
+import android.graphics.Rect;
+import android.view.View;
 import kotlin.Metadata;
 import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.internal.Intrinsics;
-import kotlin.jvm.internal.Lambda;
+import kotlin.coroutines.Continuation;
+import kotlin.coroutines.intrinsics.IntrinsicsKt;
+import kotlinx.coroutines.flow.FlowCollector;
+import kotlinx.coroutines.flow.FlowKt;
 
-/* JADX INFO: Access modifiers changed from: package-private */
-/* compiled from: ActivityResultCaller.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\t\n\u0000\n\u0002\b\u0005*\u0001\u0001\u0010\u0000\u001a\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00030\u0001\"\u0004\b\u0000\u0010\u0002\"\u0004\b\u0001\u0010\u0003H\n¢\u0006\u0004\b\u0004\u0010\u0005"}, d2 = {"<anonymous>", "androidx/activity/result/ActivityResultCallerLauncher$resultContract$2$1", "I", "O", "invoke", "()Landroidx/activity/result/ActivityResultCallerLauncher$resultContract$2$1;"}, k = 3, mv = {1, 4, 1})
+/* compiled from: PipHintTracker.kt */
+@Metadata(d1 = {"\u0000\u0014\n\u0000\n\u0002\u0010\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\u001a\u001d\u0010\u0000\u001a\u00020\u0001*\u00020\u00022\u0006\u0010\u0003\u001a\u00020\u0004H\u0087@ø\u0001\u0000¢\u0006\u0002\u0010\u0005\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\u0006"}, d2 = {"trackPipAnimationHintView", "", "Landroid/app/Activity;", "view", "Landroid/view/View;", "(Landroid/app/Activity;Landroid/view/View;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "activity-ktx_release"}, k = 2, mv = {1, 6, 0}, xi = 48)
 /* loaded from: classes.dex */
-public final class ActivityResultCallerLauncher$resultContract$2 extends Lambda implements Function0<AnonymousClass1> {
-    final /* synthetic */ ActivityResultCallerLauncher this$0;
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public ActivityResultCallerLauncher$resultContract$2(ActivityResultCallerLauncher activityResultCallerLauncher) {
-        super(0);
-        this.this$0 = activityResultCallerLauncher;
+public final class PipHintTrackerKt {
+    /* JADX INFO: Access modifiers changed from: private */
+    public static final Rect trackPipAnimationHintView$positionInWindow(View view) {
+        Rect rect = new Rect();
+        view.getGlobalVisibleRect(rect);
+        return rect;
     }
 
-    /* JADX WARN: Can't rename method to resolve collision */
-    /* JADX WARN: Type inference failed for: r0v0, types: [androidx.activity.result.ActivityResultCallerLauncher$resultContract$2$1] */
-    @Override // kotlin.jvm.functions.Function0
-    public final AnonymousClass1 invoke() {
-        return new ActivityResultContract<Unit, O>() { // from class: androidx.activity.result.ActivityResultCallerLauncher$resultContract$2.1
-            @Override // androidx.activity.result.contract.ActivityResultContract
-            public Intent createIntent(Context context, Unit unit) {
-                Intrinsics.checkNotNullParameter(context, "context");
-                Intent createIntent = ActivityResultCallerLauncher$resultContract$2.this.this$0.getCallerContract().createIntent(context, ActivityResultCallerLauncher$resultContract$2.this.this$0.getInput());
-                Intrinsics.checkNotNullExpressionValue(createIntent, "callerContract.createIntent(context, input)");
-                return createIntent;
+    public static final Object trackPipAnimationHintView(final Activity activity, View view, Continuation<? super Unit> continuation) {
+        Object collect = FlowKt.callbackFlow(new PipHintTrackerKt$trackPipAnimationHintView$flow$1(view, null)).collect(new FlowCollector() { // from class: androidx.activity.PipHintTrackerKt$trackPipAnimationHintView$2
+            @Override // kotlinx.coroutines.flow.FlowCollector
+            public /* bridge */ /* synthetic */ Object emit(Object obj, Continuation continuation2) {
+                return emit((Rect) obj, (Continuation<? super Unit>) continuation2);
             }
 
-            /* JADX WARN: Type inference failed for: r2v1, types: [java.lang.Object, O] */
-            @Override // androidx.activity.result.contract.ActivityResultContract
-            public O parseResult(int i2, Intent intent) {
-                return ActivityResultCallerLauncher$resultContract$2.this.this$0.getCallerContract().parseResult(i2, intent);
+            public final Object emit(Rect rect, Continuation<? super Unit> continuation2) {
+                Api26Impl.INSTANCE.setPipParamsSourceRectHint(activity, rect);
+                return Unit.INSTANCE;
             }
-        };
+        }, continuation);
+        return collect == IntrinsicsKt.getCOROUTINE_SUSPENDED() ? collect : Unit.INSTANCE;
     }
 }

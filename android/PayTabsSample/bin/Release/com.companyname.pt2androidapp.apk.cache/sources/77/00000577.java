@@ -1,40 +1,127 @@
-package androidx.core.text;
+package androidx.core.graphics;
 
-import android.text.Spanned;
-import android.text.SpannedString;
-import kotlin.Metadata;
-import kotlin.jvm.internal.Intrinsics;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.CancellationSignal;
+import android.util.Log;
+import androidx.collection.SimpleArrayMap;
+import androidx.core.content.res.FontResourcesParserCompat;
+import androidx.core.provider.FontsContractCompat;
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.util.List;
 
-/* compiled from: SpannedString.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000 \n\u0000\n\u0002\u0010\u0011\n\u0000\n\u0002\u0010\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\r\n\u0000\u001a:\u0010\u0000\u001a\n\u0012\u0006\b\u0001\u0012\u0002H\u00020\u0001\"\n\b\u0000\u0010\u0002\u0018\u0001*\u00020\u0003*\u00020\u00042\b\b\u0002\u0010\u0005\u001a\u00020\u00062\b\b\u0002\u0010\u0007\u001a\u00020\u0006H\u0086\b¢\u0006\u0002\u0010\b\u001a\r\u0010\t\u001a\u00020\u0004*\u00020\nH\u0086\b¨\u0006\u000b"}, d2 = {"getSpans", "", "T", "", "Landroid/text/Spanned;", "start", "", "end", "(Landroid/text/Spanned;II)[Ljava/lang/Object;", "toSpanned", "", "core-ktx_release"}, k = 2, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class SpannedStringKt {
-    public static final Spanned toSpanned(CharSequence toSpanned) {
-        Intrinsics.checkNotNullParameter(toSpanned, "$this$toSpanned");
-        SpannedString valueOf = SpannedString.valueOf(toSpanned);
-        Intrinsics.checkNotNullExpressionValue(valueOf, "SpannedString.valueOf(this)");
-        return valueOf;
+class TypefaceCompatApi24Impl extends TypefaceCompatBaseImpl {
+    private static final String ADD_FONT_WEIGHT_STYLE_METHOD = "addFontWeightStyle";
+    private static final String CREATE_FROM_FAMILIES_WITH_DEFAULT_METHOD = "createFromFamiliesWithDefault";
+    private static final String FONT_FAMILY_CLASS = "android.graphics.FontFamily";
+    private static final String TAG = "TypefaceCompatApi24Impl";
+    private static final Method sAddFontWeightStyle;
+    private static final Method sCreateFromFamiliesWithDefault;
+    private static final Class<?> sFontFamily;
+    private static final Constructor<?> sFontFamilyCtor;
+
+    static {
+        Class<?> cls;
+        Method method;
+        Method method2;
+        Constructor<?> constructor = null;
+        try {
+            cls = Class.forName(FONT_FAMILY_CLASS);
+            Constructor<?> constructor2 = cls.getConstructor(new Class[0]);
+            method2 = cls.getMethod(ADD_FONT_WEIGHT_STYLE_METHOD, ByteBuffer.class, Integer.TYPE, List.class, Integer.TYPE, Boolean.TYPE);
+            method = Typeface.class.getMethod(CREATE_FROM_FAMILIES_WITH_DEFAULT_METHOD, Array.newInstance(cls, 1).getClass());
+            constructor = constructor2;
+        } catch (ClassNotFoundException | NoSuchMethodException e2) {
+            Log.e(TAG, e2.getClass().getName(), e2);
+            cls = null;
+            method = null;
+            method2 = null;
+        }
+        sFontFamilyCtor = constructor;
+        sFontFamily = cls;
+        sAddFontWeightStyle = method2;
+        sCreateFromFamiliesWithDefault = method;
     }
 
-    public static /* synthetic */ Object[] getSpans$default(Spanned getSpans, int i2, int i3, int i4, Object obj) {
-        if ((i4 & 1) != 0) {
-            i2 = 0;
+    public static boolean isUsable() {
+        Method method = sAddFontWeightStyle;
+        if (method == null) {
+            Log.w(TAG, "Unable to collect necessary private methods.Fallback to legacy implementation.");
         }
-        if ((i4 & 2) != 0) {
-            i3 = getSpans.length();
-        }
-        Intrinsics.checkNotNullParameter(getSpans, "$this$getSpans");
-        Intrinsics.reifiedOperationMarker(4, "T");
-        Object[] spans = getSpans.getSpans(i2, i3, Object.class);
-        Intrinsics.checkNotNullExpressionValue(spans, "getSpans(start, end, T::class.java)");
-        return spans;
+        return method != null;
     }
 
-    public static final /* synthetic */ <T> T[] getSpans(Spanned getSpans, int i2, int i3) {
-        Intrinsics.checkNotNullParameter(getSpans, "$this$getSpans");
-        Intrinsics.reifiedOperationMarker(4, "T");
-        T[] tArr = (T[]) getSpans.getSpans(i2, i3, Object.class);
-        Intrinsics.checkNotNullExpressionValue(tArr, "getSpans(start, end, T::class.java)");
-        return tArr;
+    private static Object newFamily() {
+        try {
+            return sFontFamilyCtor.newInstance(new Object[0]);
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException unused) {
+            return null;
+        }
+    }
+
+    private static boolean addFontWeightStyle(Object obj, ByteBuffer byteBuffer, int i2, int i3, boolean z2) {
+        try {
+            return ((Boolean) sAddFontWeightStyle.invoke(obj, byteBuffer, Integer.valueOf(i2), null, Integer.valueOf(i3), Boolean.valueOf(z2))).booleanValue();
+        } catch (IllegalAccessException | InvocationTargetException unused) {
+            return false;
+        }
+    }
+
+    private static Typeface createFromFamiliesWithDefault(Object obj) {
+        try {
+            Object newInstance = Array.newInstance(sFontFamily, 1);
+            Array.set(newInstance, 0, obj);
+            return (Typeface) sCreateFromFamiliesWithDefault.invoke(null, newInstance);
+        } catch (IllegalAccessException | InvocationTargetException unused) {
+            return null;
+        }
+    }
+
+    @Override // androidx.core.graphics.TypefaceCompatBaseImpl
+    public Typeface createFromFontInfo(Context context, CancellationSignal cancellationSignal, FontsContractCompat.FontInfo[] fontInfoArr, int i2) {
+        Object newFamily = newFamily();
+        if (newFamily == null) {
+            return null;
+        }
+        SimpleArrayMap simpleArrayMap = new SimpleArrayMap();
+        for (FontsContractCompat.FontInfo fontInfo : fontInfoArr) {
+            Uri uri = fontInfo.getUri();
+            ByteBuffer byteBuffer = (ByteBuffer) simpleArrayMap.get(uri);
+            if (byteBuffer == null) {
+                byteBuffer = TypefaceCompatUtil.mmap(context, cancellationSignal, uri);
+                simpleArrayMap.put(uri, byteBuffer);
+            }
+            if (byteBuffer == null || !addFontWeightStyle(newFamily, byteBuffer, fontInfo.getTtcIndex(), fontInfo.getWeight(), fontInfo.isItalic())) {
+                return null;
+            }
+        }
+        Typeface createFromFamiliesWithDefault = createFromFamiliesWithDefault(newFamily);
+        if (createFromFamiliesWithDefault == null) {
+            return null;
+        }
+        return Typeface.create(createFromFamiliesWithDefault, i2);
+    }
+
+    @Override // androidx.core.graphics.TypefaceCompatBaseImpl
+    public Typeface createFromFontFamilyFilesResourceEntry(Context context, FontResourcesParserCompat.FontFamilyFilesResourceEntry fontFamilyFilesResourceEntry, Resources resources, int i2) {
+        FontResourcesParserCompat.FontFileResourceEntry[] entries;
+        Object newFamily = newFamily();
+        if (newFamily == null) {
+            return null;
+        }
+        for (FontResourcesParserCompat.FontFileResourceEntry fontFileResourceEntry : fontFamilyFilesResourceEntry.getEntries()) {
+            ByteBuffer copyToDirectBuffer = TypefaceCompatUtil.copyToDirectBuffer(context, resources, fontFileResourceEntry.getResourceId());
+            if (copyToDirectBuffer == null || !addFontWeightStyle(newFamily, copyToDirectBuffer, fontFileResourceEntry.getTtcIndex(), fontFileResourceEntry.getWeight(), fontFileResourceEntry.isItalic())) {
+                return null;
+            }
+        }
+        return createFromFamiliesWithDefault(newFamily);
     }
 }

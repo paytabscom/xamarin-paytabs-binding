@@ -1,41 +1,47 @@
-package kotlin.reflect;
+package com.google.crypto.tink.shaded.protobuf;
 
-import kotlin.Function;
-import kotlin.Metadata;
-
-/* compiled from: KFunction.kt */
-@Metadata(d1 = {"\u0000\u0018\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000b\n\u0002\b\f\bf\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u00012\b\u0012\u0004\u0012\u0002H\u00010\u00022\b\u0012\u0004\u0012\u0002H\u00010\u0003R\u001a\u0010\u0004\u001a\u00020\u00058&X§\u0004¢\u0006\f\u0012\u0004\b\u0006\u0010\u0007\u001a\u0004\b\u0004\u0010\bR\u001a\u0010\t\u001a\u00020\u00058&X§\u0004¢\u0006\f\u0012\u0004\b\n\u0010\u0007\u001a\u0004\b\t\u0010\bR\u001a\u0010\u000b\u001a\u00020\u00058&X§\u0004¢\u0006\f\u0012\u0004\b\f\u0010\u0007\u001a\u0004\b\u000b\u0010\bR\u001a\u0010\r\u001a\u00020\u00058&X§\u0004¢\u0006\f\u0012\u0004\b\u000e\u0010\u0007\u001a\u0004\b\r\u0010\bR\u001a\u0010\u000f\u001a\u00020\u00058&X§\u0004¢\u0006\f\u0012\u0004\b\u0010\u0010\u0007\u001a\u0004\b\u000f\u0010\b¨\u0006\u0011"}, d2 = {"Lkotlin/reflect/KFunction;", "R", "Lkotlin/reflect/KCallable;", "Lkotlin/Function;", "isExternal", "", "isExternal$annotations", "()V", "()Z", "isInfix", "isInfix$annotations", "isInline", "isInline$annotations", "isOperator", "isOperator$annotations", "isSuspend", "isSuspend$annotations", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-public interface KFunction<R> extends KCallable<R>, Function<R> {
+public final class ExtensionRegistryFactory {
+    static final Class<?> EXTENSION_REGISTRY_CLASS = reflectExtensionRegistry();
+    static final String FULL_REGISTRY_CLASS_NAME = "com.google.crypto.tink.shaded.protobuf.ExtensionRegistry";
 
-    /* compiled from: KFunction.kt */
-    @Metadata(k = 3, mv = {1, 5, 1})
-    /* loaded from: classes.dex */
-    public static final class DefaultImpls {
-        public static /* synthetic */ void isExternal$annotations() {
-        }
+    ExtensionRegistryFactory() {
+    }
 
-        public static /* synthetic */ void isInfix$annotations() {
-        }
-
-        public static /* synthetic */ void isInline$annotations() {
-        }
-
-        public static /* synthetic */ void isOperator$annotations() {
-        }
-
-        public static /* synthetic */ void isSuspend$annotations() {
+    static Class<?> reflectExtensionRegistry() {
+        try {
+            return Class.forName(FULL_REGISTRY_CLASS_NAME);
+        } catch (ClassNotFoundException unused) {
+            return null;
         }
     }
 
-    boolean isExternal();
+    public static ExtensionRegistryLite create() {
+        ExtensionRegistryLite invokeSubclassFactory = invokeSubclassFactory("newInstance");
+        return invokeSubclassFactory != null ? invokeSubclassFactory : new ExtensionRegistryLite();
+    }
 
-    boolean isInfix();
+    public static ExtensionRegistryLite createEmpty() {
+        ExtensionRegistryLite invokeSubclassFactory = invokeSubclassFactory("getEmptyRegistry");
+        return invokeSubclassFactory != null ? invokeSubclassFactory : ExtensionRegistryLite.EMPTY_REGISTRY_LITE;
+    }
 
-    boolean isInline();
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static boolean isFullRegistry(ExtensionRegistryLite registry) {
+        Class<?> cls = EXTENSION_REGISTRY_CLASS;
+        return cls != null && cls.isAssignableFrom(registry.getClass());
+    }
 
-    boolean isOperator();
-
-    @Override // kotlin.reflect.KCallable
-    boolean isSuspend();
+    private static final ExtensionRegistryLite invokeSubclassFactory(String methodName) {
+        Class<?> cls = EXTENSION_REGISTRY_CLASS;
+        if (cls == null) {
+            return null;
+        }
+        try {
+            return (ExtensionRegistryLite) cls.getDeclaredMethod(methodName, new Class[0]).invoke(null, new Object[0]);
+        } catch (Exception unused) {
+            return null;
+        }
+    }
 }

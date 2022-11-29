@@ -1,10 +1,28 @@
-package androidx.lifecycle;
+package androidx.core.widget;
 
-import java.util.concurrent.CancellationException;
-import kotlin.Metadata;
+import android.os.Build;
+import android.view.View;
+import android.widget.PopupMenu;
 
-/* compiled from: WithLifecycleState.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\u0018\u00002\u00060\u0001j\u0002`\u0002B\u0005¢\u0006\u0002\u0010\u0003¨\u0006\u0004"}, d2 = {"Landroidx/lifecycle/LifecycleDestroyedException;", "Ljava/util/concurrent/CancellationException;", "Lkotlinx/coroutines/CancellationException;", "()V", "lifecycle-runtime-ktx_release"}, k = 1, mv = {1, 4, 1})
 /* loaded from: classes.dex */
-public final class LifecycleDestroyedException extends CancellationException {
+public final class PopupMenuCompat {
+    private PopupMenuCompat() {
+    }
+
+    public static View.OnTouchListener getDragToOpenListener(Object obj) {
+        if (Build.VERSION.SDK_INT >= 19) {
+            return Api19Impl.getDragToOpenListener((PopupMenu) obj);
+        }
+        return null;
+    }
+
+    /* loaded from: classes.dex */
+    static class Api19Impl {
+        private Api19Impl() {
+        }
+
+        static View.OnTouchListener getDragToOpenListener(PopupMenu popupMenu) {
+            return popupMenu.getDragToOpenListener();
+        }
+    }
 }

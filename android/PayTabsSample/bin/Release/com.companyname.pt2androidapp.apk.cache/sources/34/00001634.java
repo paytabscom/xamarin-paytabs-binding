@@ -1,46 +1,44 @@
-package mono.android.hardware;
+package kotlin.io.path;
 
-import android.hardware.Camera;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.nio.file.Path;
+import java.util.Iterator;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
 
+/* JADX INFO: Access modifiers changed from: package-private */
+/* compiled from: PathTreeWalk.kt */
+@Metadata(d1 = {"\u0000\u001a\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0010(\n\u0002\b\u000b\b\u0002\u0018\u00002\u00020\u0001B!\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\b\u0010\u0004\u001a\u0004\u0018\u00010\u0001\u0012\b\u0010\u0005\u001a\u0004\u0018\u00010\u0000¢\u0006\u0002\u0010\u0006R\"\u0010\u0007\u001a\n\u0012\u0004\u0012\u00020\u0000\u0018\u00010\bX\u0086\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\t\u0010\n\"\u0004\b\u000b\u0010\fR\u0013\u0010\u0004\u001a\u0004\u0018\u00010\u0001¢\u0006\b\n\u0000\u001a\u0004\b\r\u0010\u000eR\u0013\u0010\u0005\u001a\u0004\u0018\u00010\u0000¢\u0006\b\n\u0000\u001a\u0004\b\u000f\u0010\u0010R\u0011\u0010\u0002\u001a\u00020\u0003¢\u0006\b\n\u0000\u001a\u0004\b\u0011\u0010\u0012¨\u0006\u0013"}, d2 = {"Lkotlin/io/path/PathNode;", "", "path", "Ljava/nio/file/Path;", "key", "parent", "(Ljava/nio/file/Path;Ljava/lang/Object;Lkotlin/io/path/PathNode;)V", "contentIterator", "", "getContentIterator", "()Ljava/util/Iterator;", "setContentIterator", "(Ljava/util/Iterator;)V", "getKey", "()Ljava/lang/Object;", "getParent", "()Lkotlin/io/path/PathNode;", "getPath", "()Ljava/nio/file/Path;", "kotlin-stdlib-jdk7"}, k = 1, mv = {1, 7, 1}, xi = 48)
 /* loaded from: classes.dex */
-public class Camera_FaceDetectionListenerImplementor implements IGCUserPeer, Camera.FaceDetectionListener {
-    public static final String __md_methods = "n_onFaceDetection:([Landroid/hardware/Camera$Face;Landroid/hardware/Camera;)V:GetOnFaceDetection_arrayLandroid_hardware_Camera_Face_Landroid_hardware_Camera_Handler:Android.Hardware.Camera/IFaceDetectionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public final class PathNode {
+    private Iterator<PathNode> contentIterator;
+    private final Object key;
+    private final PathNode parent;
+    private final Path path;
 
-    private native void n_onFaceDetection(Camera.Face[] faceArr, Camera camera);
-
-    static {
-        Runtime.register("Android.Hardware.Camera+IFaceDetectionListenerImplementor, Mono.Android", Camera_FaceDetectionListenerImplementor.class, __md_methods);
+    public PathNode(Path path, Object obj, PathNode pathNode) {
+        Intrinsics.checkNotNullParameter(path, "path");
+        this.path = path;
+        this.key = obj;
+        this.parent = pathNode;
     }
 
-    public Camera_FaceDetectionListenerImplementor() {
-        if (getClass() == Camera_FaceDetectionListenerImplementor.class) {
-            TypeManager.Activate("Android.Hardware.Camera+IFaceDetectionListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    public final Object getKey() {
+        return this.key;
     }
 
-    @Override // android.hardware.Camera.FaceDetectionListener
-    public void onFaceDetection(Camera.Face[] faceArr, Camera camera) {
-        n_onFaceDetection(faceArr, camera);
+    public final PathNode getParent() {
+        return this.parent;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
+    public final Path getPath() {
+        return this.path;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public final Iterator<PathNode> getContentIterator() {
+        return this.contentIterator;
+    }
+
+    public final void setContentIterator(Iterator<PathNode> it) {
+        this.contentIterator = it;
     }
 }

@@ -1,38 +1,114 @@
-package kotlinx.coroutines;
+package com.google.crypto.tink.subtle;
 
-import kotlin.Metadata;
-import kotlin.Result;
-import kotlin.ResultKt;
-import kotlin.coroutines.Continuation;
-import kotlinx.coroutines.internal.DispatchedContinuation;
+import com.google.crypto.tink.config.TinkFips;
+import com.google.crypto.tink.prf.Prf;
+import com.google.errorprone.annotations.Immutable;
+import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.Key;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import javax.crypto.Mac;
 
-/* compiled from: DebugStrings.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0014\n\u0000\n\u0002\u0010\u000e\n\u0002\u0010\u0000\n\u0002\b\u0005\n\u0002\u0018\u0002\n\u0000\u001a\u0010\u0010\u0007\u001a\u00020\u0001*\u0006\u0012\u0002\b\u00030\bH\u0000\"\u0018\u0010\u0000\u001a\u00020\u0001*\u00020\u00028@X\u0080\u0004¢\u0006\u0006\u001a\u0004\b\u0003\u0010\u0004\"\u0018\u0010\u0005\u001a\u00020\u0001*\u00020\u00028@X\u0080\u0004¢\u0006\u0006\u001a\u0004\b\u0006\u0010\u0004¨\u0006\t"}, d2 = {"classSimpleName", "", "", "getClassSimpleName", "(Ljava/lang/Object;)Ljava/lang/String;", "hexAddress", "getHexAddress", "toDebugString", "Lkotlin/coroutines/Continuation;", "kotlinx-coroutines-core"}, k = 2, mv = {1, 4, 2})
+@Immutable
 /* loaded from: classes.dex */
-public final class DebugStringsKt {
-    public static final String getHexAddress(Object obj) {
-        return Integer.toHexString(System.identityHashCode(obj));
+public final class PrfHmacJce implements Prf {
+    public static final TinkFips.AlgorithmFipsCompatibility FIPS = TinkFips.AlgorithmFipsCompatibility.ALGORITHM_REQUIRES_BORINGCRYPTO;
+    static final int MIN_KEY_SIZE_IN_BYTES = 16;
+    private final String algorithm;
+    private final Key key;
+    private final ThreadLocal<Mac> localMac;
+    private final int maxOutputLength;
+
+    public PrfHmacJce(String algorithm, Key key) throws GeneralSecurityException {
+        ThreadLocal<Mac> threadLocal = new ThreadLocal<Mac>() { // from class: com.google.crypto.tink.subtle.PrfHmacJce.1
+            /* JADX INFO: Access modifiers changed from: protected */
+            @Override // java.lang.ThreadLocal
+            public Mac initialValue() {
+                try {
+                    Mac engineFactory = EngineFactory.MAC.getInstance(PrfHmacJce.this.algorithm);
+                    engineFactory.init(PrfHmacJce.this.key);
+                    return engineFactory;
+                } catch (GeneralSecurityException e2) {
+                    throw new IllegalStateException(e2);
+                }
+            }
+        };
+        this.localMac = threadLocal;
+        if (!FIPS.isCompatible()) {
+            throw new GeneralSecurityException("Can not use HMAC in FIPS-mode, as BoringCrypto module is not available.");
+        }
+        this.algorithm = algorithm;
+        this.key = key;
+        if (key.getEncoded().length < 16) {
+            throw new InvalidAlgorithmParameterException("key size too small, need at least 16 bytes");
+        }
+        algorithm.hashCode();
+        char c2 = 65535;
+        switch (algorithm.hashCode()) {
+            case -1823053428:
+                if (algorithm.equals("HMACSHA1")) {
+                    c2 = 0;
+                    break;
+                }
+                break;
+            case 392315023:
+                if (algorithm.equals("HMACSHA224")) {
+                    c2 = 1;
+                    break;
+                }
+                break;
+            case 392315118:
+                if (algorithm.equals("HMACSHA256")) {
+                    c2 = 2;
+                    break;
+                }
+                break;
+            case 392316170:
+                if (algorithm.equals("HMACSHA384")) {
+                    c2 = 3;
+                    break;
+                }
+                break;
+            case 392317873:
+                if (algorithm.equals("HMACSHA512")) {
+                    c2 = 4;
+                    break;
+                }
+                break;
+        }
+        switch (c2) {
+            case 0:
+                this.maxOutputLength = 20;
+                break;
+            case 1:
+                this.maxOutputLength = 28;
+                break;
+            case 2:
+                this.maxOutputLength = 32;
+                break;
+            case 3:
+                this.maxOutputLength = 48;
+                break;
+            case 4:
+                this.maxOutputLength = 64;
+                break;
+            default:
+                throw new NoSuchAlgorithmException("unknown Hmac algorithm: " + algorithm);
+        }
+        threadLocal.get();
     }
 
-    public static final String toDebugString(Continuation<?> continuation) {
-        String m21constructorimpl;
-        if (continuation instanceof DispatchedContinuation) {
-            return continuation.toString();
+    @Override // com.google.crypto.tink.prf.Prf
+    public byte[] compute(byte[] data, int outputLength) throws GeneralSecurityException {
+        if (outputLength > this.maxOutputLength) {
+            throw new InvalidAlgorithmParameterException("tag size too big");
         }
-        try {
-            Result.Companion companion = Result.Companion;
-            m21constructorimpl = Result.m21constructorimpl(continuation + '@' + getHexAddress(continuation));
-        } catch (Throwable th) {
-            Result.Companion companion2 = Result.Companion;
-            m21constructorimpl = Result.m21constructorimpl(ResultKt.createFailure(th));
-        }
-        if (Result.m24exceptionOrNullimpl(m21constructorimpl) != null) {
-            m21constructorimpl = continuation.getClass().getName() + '@' + getHexAddress(continuation);
-        }
-        return (String) m21constructorimpl;
+        this.localMac.get().update(data);
+        return Arrays.copyOf(this.localMac.get().doFinal(), outputLength);
     }
 
-    public static final String getClassSimpleName(Object obj) {
-        return obj.getClass().getSimpleName();
+    public int getMaxOutputLength() {
+        return this.maxOutputLength;
     }
 }

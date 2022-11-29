@@ -1,14 +1,36 @@
-package kotlinx.coroutines;
+package com.google.crypto.tink.subtle;
 
-import kotlin.Metadata;
+import com.google.crypto.tink.Mac;
+import com.google.crypto.tink.prf.Prf;
+import com.google.errorprone.annotations.Immutable;
+import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
 
-/* compiled from: DefaultExecutor.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\n\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\"\u0014\u0010\u0000\u001a\u00020\u0001X\u0080\u0004¢\u0006\b\n\u0000\u001a\u0004\b\u0002\u0010\u0003¨\u0006\u0004"}, d2 = {"DefaultDelay", "Lkotlinx/coroutines/Delay;", "getDefaultDelay", "()Lkotlinx/coroutines/Delay;", "kotlinx-coroutines-core"}, k = 2, mv = {1, 4, 2})
+@Immutable
 /* loaded from: classes.dex */
-public final class DefaultExecutorKt {
-    private static final Delay DefaultDelay = DefaultExecutor.INSTANCE;
+public class PrfMac implements Mac {
+    static final int MIN_TAG_SIZE_IN_BYTES = 10;
+    private final int tagSize;
+    private final Prf wrappedPrf;
 
-    public static final Delay getDefaultDelay() {
-        return DefaultDelay;
+    public PrfMac(Prf wrappedPrf, int tagSize) throws GeneralSecurityException {
+        this.wrappedPrf = wrappedPrf;
+        this.tagSize = tagSize;
+        if (tagSize < 10) {
+            throw new InvalidAlgorithmParameterException("tag size too small, need at least 10 bytes");
+        }
+        wrappedPrf.compute(new byte[0], tagSize);
+    }
+
+    @Override // com.google.crypto.tink.Mac
+    public byte[] computeMac(byte[] data) throws GeneralSecurityException {
+        return this.wrappedPrf.compute(data, this.tagSize);
+    }
+
+    @Override // com.google.crypto.tink.Mac
+    public void verifyMac(byte[] mac, byte[] data) throws GeneralSecurityException {
+        if (!Bytes.equal(computeMac(data), mac)) {
+            throw new GeneralSecurityException("invalid MAC");
+        }
     }
 }

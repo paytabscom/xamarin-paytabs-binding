@@ -1,69 +1,196 @@
-package kotlinx.coroutines;
+package com.google.gson;
 
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.Future;
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.CoroutineContext;
-import kotlin.jvm.functions.Function0;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-@Metadata(bv = {1, 0, 3}, d1 = {"kotlinx/coroutines/JobKt__FutureKt", "kotlinx/coroutines/JobKt__JobKt"}, k = 4, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class JobKt {
-    public static final DisposableHandle DisposableHandle(Function0<Unit> function0) {
-        return JobKt__JobKt.DisposableHandle(function0);
+public final class JsonArray extends JsonElement implements Iterable<JsonElement> {
+    private final List<JsonElement> elements;
+
+    public JsonArray() {
+        this.elements = new ArrayList();
     }
 
-    public static final CompletableJob Job(Job job) {
-        return JobKt__JobKt.Job(job);
+    public JsonArray(int i2) {
+        this.elements = new ArrayList(i2);
     }
 
-    public static final void cancel(CoroutineContext coroutineContext, CancellationException cancellationException) {
-        JobKt__JobKt.cancel(coroutineContext, cancellationException);
+    @Override // com.google.gson.JsonElement
+    public JsonArray deepCopy() {
+        if (!this.elements.isEmpty()) {
+            JsonArray jsonArray = new JsonArray(this.elements.size());
+            for (JsonElement jsonElement : this.elements) {
+                jsonArray.add(jsonElement.deepCopy());
+            }
+            return jsonArray;
+        }
+        return new JsonArray();
     }
 
-    public static final void cancel(Job job, String str, Throwable th) {
-        JobKt__JobKt.cancel(job, str, th);
+    public void add(Boolean bool) {
+        this.elements.add(bool == null ? JsonNull.INSTANCE : new JsonPrimitive(bool));
     }
 
-    public static final Object cancelAndJoin(Job job, Continuation<? super Unit> continuation) {
-        return JobKt__JobKt.cancelAndJoin(job, continuation);
+    public void add(Character ch) {
+        this.elements.add(ch == null ? JsonNull.INSTANCE : new JsonPrimitive(ch));
     }
 
-    public static final void cancelChildren(CoroutineContext coroutineContext, CancellationException cancellationException) {
-        JobKt__JobKt.cancelChildren(coroutineContext, cancellationException);
+    public void add(Number number) {
+        this.elements.add(number == null ? JsonNull.INSTANCE : new JsonPrimitive(number));
     }
 
-    public static final void cancelChildren(Job job, CancellationException cancellationException) {
-        JobKt__JobKt.cancelChildren(job, cancellationException);
+    public void add(String str) {
+        this.elements.add(str == null ? JsonNull.INSTANCE : new JsonPrimitive(str));
     }
 
-    public static final void cancelFutureOnCancellation(CancellableContinuation<?> cancellableContinuation, Future<?> future) {
-        JobKt__FutureKt.cancelFutureOnCancellation(cancellableContinuation, future);
+    public void add(JsonElement jsonElement) {
+        if (jsonElement == null) {
+            jsonElement = JsonNull.INSTANCE;
+        }
+        this.elements.add(jsonElement);
     }
 
-    public static final DisposableHandle cancelFutureOnCompletion(Job job, Future<?> future) {
-        return JobKt__FutureKt.cancelFutureOnCompletion(job, future);
+    public void addAll(JsonArray jsonArray) {
+        this.elements.addAll(jsonArray.elements);
     }
 
-    public static final DisposableHandle disposeOnCompletion(Job job, DisposableHandle disposableHandle) {
-        return JobKt__JobKt.disposeOnCompletion(job, disposableHandle);
+    public JsonElement set(int i2, JsonElement jsonElement) {
+        return this.elements.set(i2, jsonElement);
     }
 
-    public static final void ensureActive(CoroutineContext coroutineContext) {
-        JobKt__JobKt.ensureActive(coroutineContext);
+    public boolean remove(JsonElement jsonElement) {
+        return this.elements.remove(jsonElement);
     }
 
-    public static final void ensureActive(Job job) {
-        JobKt__JobKt.ensureActive(job);
+    public JsonElement remove(int i2) {
+        return this.elements.remove(i2);
     }
 
-    public static final Job getJob(CoroutineContext coroutineContext) {
-        return JobKt__JobKt.getJob(coroutineContext);
+    public boolean contains(JsonElement jsonElement) {
+        return this.elements.contains(jsonElement);
     }
 
-    public static final boolean isActive(CoroutineContext coroutineContext) {
-        return JobKt__JobKt.isActive(coroutineContext);
+    public int size() {
+        return this.elements.size();
+    }
+
+    public boolean isEmpty() {
+        return this.elements.isEmpty();
+    }
+
+    @Override // java.lang.Iterable
+    public Iterator<JsonElement> iterator() {
+        return this.elements.iterator();
+    }
+
+    public JsonElement get(int i2) {
+        return this.elements.get(i2);
+    }
+
+    @Override // com.google.gson.JsonElement
+    public Number getAsNumber() {
+        if (this.elements.size() == 1) {
+            return this.elements.get(0).getAsNumber();
+        }
+        throw new IllegalStateException();
+    }
+
+    @Override // com.google.gson.JsonElement
+    public String getAsString() {
+        if (this.elements.size() == 1) {
+            return this.elements.get(0).getAsString();
+        }
+        throw new IllegalStateException();
+    }
+
+    @Override // com.google.gson.JsonElement
+    public double getAsDouble() {
+        if (this.elements.size() == 1) {
+            return this.elements.get(0).getAsDouble();
+        }
+        throw new IllegalStateException();
+    }
+
+    @Override // com.google.gson.JsonElement
+    public BigDecimal getAsBigDecimal() {
+        if (this.elements.size() == 1) {
+            return this.elements.get(0).getAsBigDecimal();
+        }
+        throw new IllegalStateException();
+    }
+
+    @Override // com.google.gson.JsonElement
+    public BigInteger getAsBigInteger() {
+        if (this.elements.size() == 1) {
+            return this.elements.get(0).getAsBigInteger();
+        }
+        throw new IllegalStateException();
+    }
+
+    @Override // com.google.gson.JsonElement
+    public float getAsFloat() {
+        if (this.elements.size() == 1) {
+            return this.elements.get(0).getAsFloat();
+        }
+        throw new IllegalStateException();
+    }
+
+    @Override // com.google.gson.JsonElement
+    public long getAsLong() {
+        if (this.elements.size() == 1) {
+            return this.elements.get(0).getAsLong();
+        }
+        throw new IllegalStateException();
+    }
+
+    @Override // com.google.gson.JsonElement
+    public int getAsInt() {
+        if (this.elements.size() == 1) {
+            return this.elements.get(0).getAsInt();
+        }
+        throw new IllegalStateException();
+    }
+
+    @Override // com.google.gson.JsonElement
+    public byte getAsByte() {
+        if (this.elements.size() == 1) {
+            return this.elements.get(0).getAsByte();
+        }
+        throw new IllegalStateException();
+    }
+
+    @Override // com.google.gson.JsonElement
+    public char getAsCharacter() {
+        if (this.elements.size() == 1) {
+            return this.elements.get(0).getAsCharacter();
+        }
+        throw new IllegalStateException();
+    }
+
+    @Override // com.google.gson.JsonElement
+    public short getAsShort() {
+        if (this.elements.size() == 1) {
+            return this.elements.get(0).getAsShort();
+        }
+        throw new IllegalStateException();
+    }
+
+    @Override // com.google.gson.JsonElement
+    public boolean getAsBoolean() {
+        if (this.elements.size() == 1) {
+            return this.elements.get(0).getAsBoolean();
+        }
+        throw new IllegalStateException();
+    }
+
+    public boolean equals(Object obj) {
+        return obj == this || ((obj instanceof JsonArray) && ((JsonArray) obj).elements.equals(this.elements));
+    }
+
+    public int hashCode() {
+        return this.elements.hashCode();
     }
 }

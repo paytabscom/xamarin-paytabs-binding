@@ -1,651 +1,106 @@
-package androidx.constraintlayout.motion.widget;
+package androidx.collection;
 
-import android.os.Build;
-import android.util.Log;
-import android.view.View;
-import androidx.constraintlayout.motion.utils.CurveFit;
-import androidx.constraintlayout.motion.utils.Oscillator;
-import androidx.constraintlayout.widget.ConstraintAttribute;
-import androidx.core.app.NotificationCompat;
-import java.lang.reflect.Array;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
+import kotlin.Metadata;
+import kotlin.Unit;
+import kotlin.collections.LongIterator;
+import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function2;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: LongSparseArray.kt */
+@Metadata(d1 = {"\u0000D\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\t\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0006\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0007\n\u0002\u0010(\n\u0000\u001a!\u0010\u0006\u001a\u00020\u0007\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u00032\u0006\u0010\b\u001a\u00020\tH\u0086\n\u001aT\u0010\n\u001a\u00020\u000b\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u000326\u0010\f\u001a2\u0012\u0013\u0012\u00110\t¢\u0006\f\b\u000e\u0012\b\b\u000f\u0012\u0004\b\b(\b\u0012\u0013\u0012\u0011H\u0002¢\u0006\f\b\u000e\u0012\b\b\u000f\u0012\u0004\b\b(\u0010\u0012\u0004\u0012\u00020\u000b0\rH\u0086\bø\u0001\u0000\u001a.\u0010\u0011\u001a\u0002H\u0002\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u00032\u0006\u0010\b\u001a\u00020\t2\u0006\u0010\u0012\u001a\u0002H\u0002H\u0086\b¢\u0006\u0002\u0010\u0013\u001a7\u0010\u0014\u001a\u0002H\u0002\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u00032\u0006\u0010\b\u001a\u00020\t2\f\u0010\u0012\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0015H\u0086\bø\u0001\u0000¢\u0006\u0002\u0010\u0016\u001a\u0019\u0010\u0017\u001a\u00020\u0007\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u0003H\u0086\b\u001a\u0016\u0010\u0018\u001a\u00020\u0019\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u0003\u001a-\u0010\u001a\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0003\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u00032\f\u0010\u001b\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0003H\u0086\u0002\u001a-\u0010\u001c\u001a\u00020\u0007\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u00032\u0006\u0010\b\u001a\u00020\t2\u0006\u0010\u0010\u001a\u0002H\u0002H\u0007¢\u0006\u0002\u0010\u001d\u001a.\u0010\u001e\u001a\u00020\u000b\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u00032\u0006\u0010\b\u001a\u00020\t2\u0006\u0010\u0010\u001a\u0002H\u0002H\u0086\n¢\u0006\u0002\u0010\u001f\u001a\u001c\u0010 \u001a\b\u0012\u0004\u0012\u0002H\u00020!\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u0003\"\"\u0010\u0000\u001a\u00020\u0001\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u00038Æ\u0002¢\u0006\u0006\u001a\u0004\b\u0004\u0010\u0005\u0082\u0002\u0007\n\u0005\b\u009920\u0001¨\u0006\""}, d2 = {"size", "", "T", "Landroidx/collection/LongSparseArray;", "getSize", "(Landroidx/collection/LongSparseArray;)I", "contains", "", "key", "", "forEach", "", "action", "Lkotlin/Function2;", "Lkotlin/ParameterName;", "name", "value", "getOrDefault", "defaultValue", "(Landroidx/collection/LongSparseArray;JLjava/lang/Object;)Ljava/lang/Object;", "getOrElse", "Lkotlin/Function0;", "(Landroidx/collection/LongSparseArray;JLkotlin/jvm/functions/Function0;)Ljava/lang/Object;", "isNotEmpty", "keyIterator", "Lkotlin/collections/LongIterator;", "plus", "other", "remove", "(Landroidx/collection/LongSparseArray;JLjava/lang/Object;)Z", "set", "(Landroidx/collection/LongSparseArray;JLjava/lang/Object;)V", "valueIterator", "", "collection-ktx"}, k = 2, mv = {1, 5, 1}, xi = 48)
 /* loaded from: classes.dex */
-public abstract class KeyCycleOscillator {
-    private static final String TAG = "KeyCycleOscillator";
-    private CurveFit mCurveFit;
-    protected ConstraintAttribute mCustom;
-    private CycleOscillator mCycleOscillator;
-    private String mType;
-    private int mWaveShape = 0;
-    public int mVariesBy = 0;
-    ArrayList<WavePoint> mWavePoints = new ArrayList<>();
-
-    public abstract void setProperty(View view, float f2);
-
-    public boolean variesByPath() {
-        return this.mVariesBy == 1;
+public final class LongSparseArrayKt {
+    public static final <T> int getSize(LongSparseArray<T> longSparseArray) {
+        Intrinsics.checkNotNullParameter(longSparseArray, "<this>");
+        return longSparseArray.size();
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* loaded from: classes.dex */
-    public static class WavePoint {
-        float mOffset;
-        float mPeriod;
-        int mPosition;
-        float mValue;
-
-        public WavePoint(int i2, float f2, float f3, float f4) {
-            this.mPosition = i2;
-            this.mValue = f4;
-            this.mOffset = f3;
-            this.mPeriod = f2;
-        }
+    public static final <T> boolean contains(LongSparseArray<T> longSparseArray, long j2) {
+        Intrinsics.checkNotNullParameter(longSparseArray, "<this>");
+        return longSparseArray.containsKey(j2);
     }
 
-    public String toString() {
-        String str = this.mType;
-        DecimalFormat decimalFormat = new DecimalFormat("##.##");
-        Iterator<WavePoint> it = this.mWavePoints.iterator();
-        while (it.hasNext()) {
-            WavePoint next = it.next();
-            str = str + "[" + next.mPosition + " , " + decimalFormat.format(next.mValue) + "] ";
-        }
-        return str;
+    public static final <T> void set(LongSparseArray<T> longSparseArray, long j2, T t2) {
+        Intrinsics.checkNotNullParameter(longSparseArray, "<this>");
+        longSparseArray.put(j2, t2);
     }
 
-    public void setType(String str) {
-        this.mType = str;
+    public static final <T> LongSparseArray<T> plus(LongSparseArray<T> longSparseArray, LongSparseArray<T> other) {
+        Intrinsics.checkNotNullParameter(longSparseArray, "<this>");
+        Intrinsics.checkNotNullParameter(other, "other");
+        LongSparseArray<T> longSparseArray2 = new LongSparseArray<>(longSparseArray.size() + other.size());
+        longSparseArray2.putAll(longSparseArray);
+        longSparseArray2.putAll(other);
+        return longSparseArray2;
     }
 
-    public float get(float f2) {
-        return (float) this.mCycleOscillator.getValues(f2);
+    public static final <T> T getOrDefault(LongSparseArray<T> longSparseArray, long j2, T t2) {
+        Intrinsics.checkNotNullParameter(longSparseArray, "<this>");
+        return longSparseArray.get(j2, t2);
     }
 
-    public float getSlope(float f2) {
-        return (float) this.mCycleOscillator.getSlope(f2);
+    public static final <T> T getOrElse(LongSparseArray<T> longSparseArray, long j2, Function0<? extends T> defaultValue) {
+        Intrinsics.checkNotNullParameter(longSparseArray, "<this>");
+        Intrinsics.checkNotNullParameter(defaultValue, "defaultValue");
+        T t2 = longSparseArray.get(j2);
+        return t2 == null ? defaultValue.invoke() : t2;
     }
 
-    public CurveFit getCurveFit() {
-        return this.mCurveFit;
+    public static final <T> boolean isNotEmpty(LongSparseArray<T> longSparseArray) {
+        Intrinsics.checkNotNullParameter(longSparseArray, "<this>");
+        return !longSparseArray.isEmpty();
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public static KeyCycleOscillator makeSpline(String str) {
-        if (str.startsWith("CUSTOM")) {
-            return new CustomSet();
-        }
-        str.hashCode();
-        char c2 = 65535;
-        switch (str.hashCode()) {
-            case -1249320806:
-                if (str.equals("rotationX")) {
-                    c2 = 0;
-                    break;
-                }
-                break;
-            case -1249320805:
-                if (str.equals("rotationY")) {
-                    c2 = 1;
-                    break;
-                }
-                break;
-            case -1225497657:
-                if (str.equals("translationX")) {
-                    c2 = 2;
-                    break;
-                }
-                break;
-            case -1225497656:
-                if (str.equals("translationY")) {
-                    c2 = 3;
-                    break;
-                }
-                break;
-            case -1225497655:
-                if (str.equals("translationZ")) {
-                    c2 = 4;
-                    break;
-                }
-                break;
-            case -1001078227:
-                if (str.equals(NotificationCompat.CATEGORY_PROGRESS)) {
-                    c2 = 5;
-                    break;
-                }
-                break;
-            case -908189618:
-                if (str.equals("scaleX")) {
-                    c2 = 6;
-                    break;
-                }
-                break;
-            case -908189617:
-                if (str.equals("scaleY")) {
-                    c2 = 7;
-                    break;
-                }
-                break;
-            case -797520672:
-                if (str.equals("waveVariesBy")) {
-                    c2 = '\b';
-                    break;
-                }
-                break;
-            case -40300674:
-                if (str.equals("rotation")) {
-                    c2 = '\t';
-                    break;
-                }
-                break;
-            case -4379043:
-                if (str.equals("elevation")) {
-                    c2 = '\n';
-                    break;
-                }
-                break;
-            case 37232917:
-                if (str.equals("transitionPathRotate")) {
-                    c2 = 11;
-                    break;
-                }
-                break;
-            case 92909918:
-                if (str.equals("alpha")) {
-                    c2 = '\f';
-                    break;
-                }
-                break;
-            case 156108012:
-                if (str.equals("waveOffset")) {
-                    c2 = '\r';
-                    break;
-                }
-                break;
-        }
-        switch (c2) {
-            case 0:
-                return new RotationXset();
-            case 1:
-                return new RotationYset();
-            case 2:
-                return new TranslationXset();
-            case 3:
-                return new TranslationYset();
-            case 4:
-                return new TranslationZset();
-            case 5:
-                return new ProgressSet();
-            case 6:
-                return new ScaleXset();
-            case 7:
-                return new ScaleYset();
-            case '\b':
-                return new AlphaSet();
-            case '\t':
-                return new RotationSet();
-            case '\n':
-                return new ElevationSet();
-            case 11:
-                return new PathRotateSet();
-            case '\f':
-                return new AlphaSet();
-            case '\r':
-                return new AlphaSet();
-            default:
-                return null;
-        }
-    }
-
-    public void setPoint(int i2, int i3, int i4, float f2, float f3, float f4, ConstraintAttribute constraintAttribute) {
-        this.mWavePoints.add(new WavePoint(i2, f2, f3, f4));
-        if (i4 != -1) {
-            this.mVariesBy = i4;
-        }
-        this.mWaveShape = i3;
-        this.mCustom = constraintAttribute;
-    }
-
-    public void setPoint(int i2, int i3, int i4, float f2, float f3, float f4) {
-        this.mWavePoints.add(new WavePoint(i2, f2, f3, f4));
-        if (i4 != -1) {
-            this.mVariesBy = i4;
-        }
-        this.mWaveShape = i3;
-    }
-
-    public void setup(float f2) {
-        int size = this.mWavePoints.size();
-        if (size == 0) {
+    public static final <T> void forEach(LongSparseArray<T> longSparseArray, Function2<? super Long, ? super T, Unit> action) {
+        Intrinsics.checkNotNullParameter(longSparseArray, "<this>");
+        Intrinsics.checkNotNullParameter(action, "action");
+        int size = longSparseArray.size();
+        if (size <= 0) {
             return;
         }
-        Collections.sort(this.mWavePoints, new Comparator<WavePoint>() { // from class: androidx.constraintlayout.motion.widget.KeyCycleOscillator.1
-            @Override // java.util.Comparator
-            public int compare(WavePoint wavePoint, WavePoint wavePoint2) {
-                return Integer.compare(wavePoint.mPosition, wavePoint2.mPosition);
-            }
-        });
-        double[] dArr = new double[size];
-        double[][] dArr2 = (double[][]) Array.newInstance(double.class, size, 2);
-        this.mCycleOscillator = new CycleOscillator(this.mWaveShape, this.mVariesBy, size);
-        Iterator<WavePoint> it = this.mWavePoints.iterator();
         int i2 = 0;
-        while (it.hasNext()) {
-            WavePoint next = it.next();
-            dArr[i2] = next.mPeriod * 0.01d;
-            dArr2[i2][0] = next.mValue;
-            dArr2[i2][1] = next.mOffset;
-            this.mCycleOscillator.setPoint(i2, next.mPosition, next.mPeriod, next.mOffset, next.mValue);
-            i2++;
-        }
-        this.mCycleOscillator.setup(f2);
-        this.mCurveFit = CurveFit.get(0, dArr, dArr2);
-    }
-
-    /* loaded from: classes.dex */
-    static class ElevationSet extends KeyCycleOscillator {
-        ElevationSet() {
-        }
-
-        @Override // androidx.constraintlayout.motion.widget.KeyCycleOscillator
-        public void setProperty(View view, float f2) {
-            if (Build.VERSION.SDK_INT >= 21) {
-                view.setElevation(get(f2));
+        while (true) {
+            int i3 = i2 + 1;
+            action.invoke(Long.valueOf(longSparseArray.keyAt(i2)), longSparseArray.valueAt(i2));
+            if (i3 >= size) {
+                return;
             }
+            i2 = i3;
         }
     }
 
-    /* loaded from: classes.dex */
-    static class AlphaSet extends KeyCycleOscillator {
-        AlphaSet() {
-        }
+    public static final <T> LongIterator keyIterator(final LongSparseArray<T> longSparseArray) {
+        Intrinsics.checkNotNullParameter(longSparseArray, "<this>");
+        return new LongIterator() { // from class: androidx.collection.LongSparseArrayKt$keyIterator$1
+            private int index;
 
-        @Override // androidx.constraintlayout.motion.widget.KeyCycleOscillator
-        public void setProperty(View view, float f2) {
-            view.setAlpha(get(f2));
-        }
-    }
-
-    /* loaded from: classes.dex */
-    static class RotationSet extends KeyCycleOscillator {
-        RotationSet() {
-        }
-
-        @Override // androidx.constraintlayout.motion.widget.KeyCycleOscillator
-        public void setProperty(View view, float f2) {
-            view.setRotation(get(f2));
-        }
-    }
-
-    /* loaded from: classes.dex */
-    static class RotationXset extends KeyCycleOscillator {
-        RotationXset() {
-        }
-
-        @Override // androidx.constraintlayout.motion.widget.KeyCycleOscillator
-        public void setProperty(View view, float f2) {
-            view.setRotationX(get(f2));
-        }
-    }
-
-    /* loaded from: classes.dex */
-    static class RotationYset extends KeyCycleOscillator {
-        RotationYset() {
-        }
-
-        @Override // androidx.constraintlayout.motion.widget.KeyCycleOscillator
-        public void setProperty(View view, float f2) {
-            view.setRotationY(get(f2));
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* loaded from: classes.dex */
-    public static class PathRotateSet extends KeyCycleOscillator {
-        @Override // androidx.constraintlayout.motion.widget.KeyCycleOscillator
-        public void setProperty(View view, float f2) {
-        }
-
-        PathRotateSet() {
-        }
-
-        public void setPathRotate(View view, float f2, double d2, double d3) {
-            view.setRotation(get(f2) + ((float) Math.toDegrees(Math.atan2(d3, d2))));
-        }
-    }
-
-    /* loaded from: classes.dex */
-    static class ScaleXset extends KeyCycleOscillator {
-        ScaleXset() {
-        }
-
-        @Override // androidx.constraintlayout.motion.widget.KeyCycleOscillator
-        public void setProperty(View view, float f2) {
-            view.setScaleX(get(f2));
-        }
-    }
-
-    /* loaded from: classes.dex */
-    static class ScaleYset extends KeyCycleOscillator {
-        ScaleYset() {
-        }
-
-        @Override // androidx.constraintlayout.motion.widget.KeyCycleOscillator
-        public void setProperty(View view, float f2) {
-            view.setScaleY(get(f2));
-        }
-    }
-
-    /* loaded from: classes.dex */
-    static class TranslationXset extends KeyCycleOscillator {
-        TranslationXset() {
-        }
-
-        @Override // androidx.constraintlayout.motion.widget.KeyCycleOscillator
-        public void setProperty(View view, float f2) {
-            view.setTranslationX(get(f2));
-        }
-    }
-
-    /* loaded from: classes.dex */
-    static class TranslationYset extends KeyCycleOscillator {
-        TranslationYset() {
-        }
-
-        @Override // androidx.constraintlayout.motion.widget.KeyCycleOscillator
-        public void setProperty(View view, float f2) {
-            view.setTranslationY(get(f2));
-        }
-    }
-
-    /* loaded from: classes.dex */
-    static class TranslationZset extends KeyCycleOscillator {
-        TranslationZset() {
-        }
-
-        @Override // androidx.constraintlayout.motion.widget.KeyCycleOscillator
-        public void setProperty(View view, float f2) {
-            if (Build.VERSION.SDK_INT >= 21) {
-                view.setTranslationZ(get(f2));
+            public final int getIndex() {
+                return this.index;
             }
-        }
+
+            public final void setIndex(int i2) {
+                this.index = i2;
+            }
+
+            @Override // java.util.Iterator
+            public boolean hasNext() {
+                return this.index < longSparseArray.size();
+            }
+
+            @Override // kotlin.collections.LongIterator
+            public long nextLong() {
+                LongSparseArray<T> longSparseArray2 = longSparseArray;
+                int i2 = this.index;
+                this.index = i2 + 1;
+                return longSparseArray2.keyAt(i2);
+            }
+        };
     }
 
-    /* loaded from: classes.dex */
-    static class CustomSet extends KeyCycleOscillator {
-        float[] value = new float[1];
-
-        CustomSet() {
-        }
-
-        @Override // androidx.constraintlayout.motion.widget.KeyCycleOscillator
-        public void setProperty(View view, float f2) {
-            this.value[0] = get(f2);
-            this.mCustom.setInterpolatedValue(view, this.value);
-        }
-    }
-
-    /* loaded from: classes.dex */
-    static class ProgressSet extends KeyCycleOscillator {
-        boolean mNoMethod = false;
-
-        ProgressSet() {
-        }
-
-        @Override // androidx.constraintlayout.motion.widget.KeyCycleOscillator
-        public void setProperty(View view, float f2) {
-            if (view instanceof MotionLayout) {
-                ((MotionLayout) view).setProgress(get(f2));
-            } else if (this.mNoMethod) {
-            } else {
-                Method method = null;
-                try {
-                    method = view.getClass().getMethod("setProgress", Float.TYPE);
-                } catch (NoSuchMethodException unused) {
-                    this.mNoMethod = true;
-                }
-                if (method != null) {
-                    try {
-                        method.invoke(view, Float.valueOf(get(f2)));
-                    } catch (IllegalAccessException e2) {
-                        Log.e(KeyCycleOscillator.TAG, "unable to setProgress", e2);
-                    } catch (InvocationTargetException e3) {
-                        Log.e(KeyCycleOscillator.TAG, "unable to setProgress", e3);
-                    }
-                }
-            }
-        }
-    }
-
-    /* loaded from: classes.dex */
-    private static class IntDoubleSort {
-        private IntDoubleSort() {
-        }
-
-        static void sort(int[] iArr, float[] fArr, int i2, int i3) {
-            int[] iArr2 = new int[iArr.length + 10];
-            iArr2[0] = i3;
-            iArr2[1] = i2;
-            int i4 = 2;
-            while (i4 > 0) {
-                int i5 = i4 - 1;
-                int i6 = iArr2[i5];
-                i4 = i5 - 1;
-                int i7 = iArr2[i4];
-                if (i6 < i7) {
-                    int partition = partition(iArr, fArr, i6, i7);
-                    int i8 = i4 + 1;
-                    iArr2[i4] = partition - 1;
-                    int i9 = i8 + 1;
-                    iArr2[i8] = i6;
-                    int i10 = i9 + 1;
-                    iArr2[i9] = i7;
-                    i4 = i10 + 1;
-                    iArr2[i10] = partition + 1;
-                }
-            }
-        }
-
-        private static int partition(int[] iArr, float[] fArr, int i2, int i3) {
-            int i4 = iArr[i3];
-            int i5 = i2;
-            while (i2 < i3) {
-                if (iArr[i2] <= i4) {
-                    swap(iArr, fArr, i5, i2);
-                    i5++;
-                }
-                i2++;
-            }
-            swap(iArr, fArr, i5, i3);
-            return i5;
-        }
-
-        private static void swap(int[] iArr, float[] fArr, int i2, int i3) {
-            int i4 = iArr[i2];
-            iArr[i2] = iArr[i3];
-            iArr[i3] = i4;
-            float f2 = fArr[i2];
-            fArr[i2] = fArr[i3];
-            fArr[i3] = f2;
-        }
-    }
-
-    /* loaded from: classes.dex */
-    private static class IntFloatFloatSort {
-        private IntFloatFloatSort() {
-        }
-
-        static void sort(int[] iArr, float[] fArr, float[] fArr2, int i2, int i3) {
-            int[] iArr2 = new int[iArr.length + 10];
-            iArr2[0] = i3;
-            iArr2[1] = i2;
-            int i4 = 2;
-            while (i4 > 0) {
-                int i5 = i4 - 1;
-                int i6 = iArr2[i5];
-                i4 = i5 - 1;
-                int i7 = iArr2[i4];
-                if (i6 < i7) {
-                    int partition = partition(iArr, fArr, fArr2, i6, i7);
-                    int i8 = i4 + 1;
-                    iArr2[i4] = partition - 1;
-                    int i9 = i8 + 1;
-                    iArr2[i8] = i6;
-                    int i10 = i9 + 1;
-                    iArr2[i9] = i7;
-                    i4 = i10 + 1;
-                    iArr2[i10] = partition + 1;
-                }
-            }
-        }
-
-        private static int partition(int[] iArr, float[] fArr, float[] fArr2, int i2, int i3) {
-            int i4 = iArr[i3];
-            int i5 = i2;
-            while (i2 < i3) {
-                if (iArr[i2] <= i4) {
-                    swap(iArr, fArr, fArr2, i5, i2);
-                    i5++;
-                }
-                i2++;
-            }
-            swap(iArr, fArr, fArr2, i5, i3);
-            return i5;
-        }
-
-        private static void swap(int[] iArr, float[] fArr, float[] fArr2, int i2, int i3) {
-            int i4 = iArr[i2];
-            iArr[i2] = iArr[i3];
-            iArr[i3] = i4;
-            float f2 = fArr[i2];
-            fArr[i2] = fArr[i3];
-            fArr[i3] = f2;
-            float f3 = fArr2[i2];
-            fArr2[i2] = fArr2[i3];
-            fArr2[i3] = f3;
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* loaded from: classes.dex */
-    public static class CycleOscillator {
-        private static final String TAG = "CycleOscillator";
-        static final int UNSET = -1;
-        CurveFit mCurveFit;
-        float[] mOffset;
-        float mPathLength;
-        float[] mPeriod;
-        double[] mPosition;
-        float[] mScale;
-        double[] mSplineSlopeCache;
-        double[] mSplineValueCache;
-        float[] mValues;
-        private final int mVariesBy;
-        int mWaveShape;
-        Oscillator mOscillator = new Oscillator();
-        public HashMap<String, ConstraintAttribute> mCustomConstraints = new HashMap<>();
-
-        CycleOscillator(int i2, int i3, int i4) {
-            this.mWaveShape = i2;
-            this.mVariesBy = i3;
-            this.mOscillator.setType(i2);
-            this.mValues = new float[i4];
-            this.mPosition = new double[i4];
-            this.mPeriod = new float[i4];
-            this.mOffset = new float[i4];
-            this.mScale = new float[i4];
-        }
-
-        public double getValues(float f2) {
-            CurveFit curveFit = this.mCurveFit;
-            if (curveFit != null) {
-                curveFit.getPos(f2, this.mSplineValueCache);
-            } else {
-                double[] dArr = this.mSplineValueCache;
-                dArr[0] = this.mOffset[0];
-                dArr[1] = this.mValues[0];
-            }
-            return this.mSplineValueCache[0] + (this.mOscillator.getValue(f2) * this.mSplineValueCache[1]);
-        }
-
-        public double getSlope(float f2) {
-            CurveFit curveFit = this.mCurveFit;
-            if (curveFit != null) {
-                double d2 = f2;
-                curveFit.getSlope(d2, this.mSplineSlopeCache);
-                this.mCurveFit.getPos(d2, this.mSplineValueCache);
-            } else {
-                double[] dArr = this.mSplineSlopeCache;
-                dArr[0] = 0.0d;
-                dArr[1] = 0.0d;
-            }
-            double d3 = f2;
-            double value = this.mOscillator.getValue(d3);
-            double slope = this.mOscillator.getSlope(d3);
-            double[] dArr2 = this.mSplineSlopeCache;
-            return dArr2[0] + (value * dArr2[1]) + (slope * this.mSplineValueCache[1]);
-        }
-
-        private ConstraintAttribute get(String str, ConstraintAttribute.AttributeType attributeType) {
-            if (this.mCustomConstraints.containsKey(str)) {
-                ConstraintAttribute constraintAttribute = this.mCustomConstraints.get(str);
-                if (constraintAttribute.getType() == attributeType) {
-                    return constraintAttribute;
-                }
-                throw new IllegalArgumentException("ConstraintAttribute is already a " + constraintAttribute.getType().name());
-            }
-            ConstraintAttribute constraintAttribute2 = new ConstraintAttribute(str, attributeType);
-            this.mCustomConstraints.put(str, constraintAttribute2);
-            return constraintAttribute2;
-        }
-
-        public void setPoint(int i2, int i3, float f2, float f3, float f4) {
-            this.mPosition[i2] = i3 / 100.0d;
-            this.mPeriod[i2] = f2;
-            this.mOffset[i2] = f3;
-            this.mValues[i2] = f4;
-        }
-
-        public void setup(float f2) {
-            this.mPathLength = f2;
-            double[][] dArr = (double[][]) Array.newInstance(double.class, this.mPosition.length, 2);
-            float[] fArr = this.mValues;
-            this.mSplineValueCache = new double[fArr.length + 1];
-            this.mSplineSlopeCache = new double[fArr.length + 1];
-            if (this.mPosition[0] > 0.0d) {
-                this.mOscillator.addPoint(0.0d, this.mPeriod[0]);
-            }
-            double[] dArr2 = this.mPosition;
-            int length = dArr2.length - 1;
-            if (dArr2[length] < 1.0d) {
-                this.mOscillator.addPoint(1.0d, this.mPeriod[length]);
-            }
-            for (int i2 = 0; i2 < dArr.length; i2++) {
-                dArr[i2][0] = this.mOffset[i2];
-                int i3 = 0;
-                while (true) {
-                    float[] fArr2 = this.mValues;
-                    if (i3 < fArr2.length) {
-                        dArr[i3][1] = fArr2[i3];
-                        i3++;
-                    }
-                }
-                this.mOscillator.addPoint(this.mPosition[i2], this.mPeriod[i2]);
-            }
-            this.mOscillator.normalize();
-            double[] dArr3 = this.mPosition;
-            if (dArr3.length > 1) {
-                this.mCurveFit = CurveFit.get(0, dArr3, dArr);
-            } else {
-                this.mCurveFit = null;
-            }
-        }
+    public static final <T> Iterator<T> valueIterator(LongSparseArray<T> longSparseArray) {
+        Intrinsics.checkNotNullParameter(longSparseArray, "<this>");
+        return new LongSparseArrayKt$valueIterator$1(longSparseArray);
     }
 }

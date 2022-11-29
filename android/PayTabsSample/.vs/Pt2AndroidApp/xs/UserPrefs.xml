@@ -1,34 +1,29 @@
 ﻿<Properties StartupConfiguration="{781677F0-06D3-4BD6-81F2-9FE04672C677}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="../PaymentSDK.Binding/Additions/AboutAdditions.txt">
+  <MonoDevelop.Ide.ItemProperties.CardScanBindingLib PreferredExecutionTarget="Android.Pixel_2_API_30" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="MainActivity.cs">
     <Files>
-      <File FileName="../PaymentSDK.Binding/Additions/StringArrayBottomSheetListAdapter.cs" Line="20" Column="27" />
-      <File FileName="MainActivity.cs" Line="35" Column="13" />
-      <File FileName="../PaymentSDK.Binding/Additions/AboutAdditions.txt" Line="1" Column="1" />
+      <File FileName="../../../../../../Library/Frameworks/Mono.framework/External/xbuild/Xamarin/Android/Xamarin.Android.Common.targets" Line="2526" Column="7" />
+      <File FileName="../../../../../../Library/Frameworks/Mono.framework/External/xbuild/Xamarin/Android/Xamarin.Android.Legacy.targets" />
+      <File FileName="../Payment.Binding/Transforms/Metadata.xml" Line="1" Column="11" />
+      <File FileName="MainActivity.cs" Line="73" Column="102" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Pt2AndroidApp" expanded="True">
-            <Node name="PaymentSDK.Binding" expanded="True">
-              <Node name="Packages" expanded="True" />
-              <Node name="Additions" expanded="True">
-                <Node name="AboutAdditions.txt" selected="True" />
-              </Node>
-              <Node name="Jars" expanded="True" />
-              <Node name="Transforms" expanded="True" />
-            </Node>
-            <Node name="Pt2AndroidApp" expanded="True">
-              <Node name="References" expanded="True" />
-              <Node name="Properties" expanded="True" />
-            </Node>
+            <Node name="PaymentSDK.Binding" expanded="True" selected="True" />
+            <Node name="Pt2AndroidApp" expanded="True" />
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <DisabledProjects>
+    <String>Payment.Binding/Payment.Binding.csproj</String>
+  </DisabledProjects>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.ItemProperties.Pt2AndroidApp AndroidDesignerPreferredTheme="AppTheme" PreferredExecutionTarget="Android.Pixel_2_API_30" />
+  <MonoDevelop.Ide.ItemProperties.Pt2AndroidApp PreferredExecutionTarget="Android.Pixel_2_API_30" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

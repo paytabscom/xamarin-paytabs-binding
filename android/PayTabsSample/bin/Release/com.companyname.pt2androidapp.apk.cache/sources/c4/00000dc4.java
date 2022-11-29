@@ -1,513 +1,254 @@
-package com.payment.paymentsdk.creditcard.view.customs;
+package com.google.android.material.shape;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import com.payment.paymentsdk.R;
-import java.util.Map;
-import kotlin.Metadata;
-import kotlin.Pair;
-import kotlin.TuplesKt;
-import kotlin.Unit;
-import kotlin.collections.MapsKt;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.internal.Intrinsics;
-import kotlin.jvm.internal.Lambda;
-import m.b;
-import w0.b;
-import z.c;
+import android.graphics.Matrix;
+import android.graphics.Path;
+import android.graphics.PointF;
+import android.graphics.RectF;
+import android.os.Build;
 
-@Metadata(bv = {}, d1 = {"\u0000`\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0010$\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0003\n\u0002\u0010\u000b\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0006\n\u0002\u0010\b\n\u0002\b\u0003\u0018\u00002\u00020\u0001B\u0011\b\u0016\u0012\u0006\u0010\u0003\u001a\u00020\u0002¢\u0006\u0004\b!\u0010\"B\u001b\b\u0016\u0012\u0006\u0010\u0003\u001a\u00020\u0002\u0012\b\u0010\u0005\u001a\u0004\u0018\u00010\u0004¢\u0006\u0004\b!\u0010#B#\b\u0016\u0012\u0006\u0010\u0003\u001a\u00020\u0002\u0012\b\u0010\u0005\u001a\u0004\u0018\u00010\u0004\u0012\u0006\u0010%\u001a\u00020$¢\u0006\u0004\b!\u0010&J\u001a\u0010\u0007\u001a\u00020\u00062\u0006\u0010\u0003\u001a\u00020\u00022\b\u0010\u0005\u001a\u0004\u0018\u00010\u0004H\u0002J\b\u0010\b\u001a\u00020\u0006H\u0002J\u0014\u0010\f\u001a\u000e\u0012\u0004\u0012\u00020\n\u0012\u0004\u0012\u00020\u000b0\tH\u0002J&\u0010\u0007\u001a\u00020\u00062\b\u0010\u000e\u001a\u0004\u0018\u00010\r2\u0006\u0010\u0010\u001a\u00020\u000f2\f\u0010\u0012\u001a\b\u0012\u0004\u0012\u00020\u00060\u0011J\u0010\u0010\u0015\u001a\u00020\u00062\b\u0010\u0014\u001a\u0004\u0018\u00010\u0013J\u0006\u0010\u0016\u001a\u00020\u0006J\u0006\u0010\u0007\u001a\u00020\u0017J\u000e\u0010\u0007\u001a\u00020\u00062\u0006\u0010\u0018\u001a\u00020\u0017R\u0016\u0010\u0010\u001a\u00020\u000f8\u0002@\u0002X\u0082.¢\u0006\u0006\n\u0004\b\u0007\u0010\u0019R\u0016\u0010\u001b\u001a\u00020\u00018\u0002@\u0002X\u0082.¢\u0006\u0006\n\u0004\b\b\u0010\u001aR\u001c\u0010 \u001a\b\u0012\u0004\u0012\u00020\u001d0\u001c8\u0002@\u0002X\u0082\u000e¢\u0006\u0006\n\u0004\b\u001e\u0010\u001f¨\u0006'"}, d2 = {"Lcom/payment/paymentsdk/creditcard/view/customs/ExpandableBillingInfo;", "Landroidx/constraintlayout/widget/ConstraintLayout;", "Landroid/content/Context;", "context", "Landroid/util/AttributeSet;", "attrs", "", "a", "b", "", "Lm/a;", "Lcom/payment/paymentsdk/creditcard/view/customs/PaytabsEditText;", "getEditTextsIdsMap", "Lp0/a;", "data", "Landroidx/lifecycle/LifecycleOwner;", "lifeCycleOwner", "Lkotlin/Function0;", "onCountryClicked", "", "countryIso", "setCountry", "c", "", "shouldShow", "Landroidx/lifecycle/LifecycleOwner;", "Landroidx/constraintlayout/widget/ConstraintLayout;", "view", "Landroidx/lifecycle/MutableLiveData;", "Lw0/b;", "e", "Landroidx/lifecycle/MutableLiveData;", "validatorLD", "<init>", "(Landroid/content/Context;)V", "(Landroid/content/Context;Landroid/util/AttributeSet;)V", "", "defStyle", "(Landroid/content/Context;Landroid/util/AttributeSet;I)V", "paymentsdk_release"}, k = 1, mv = {1, 7, 1})
 /* loaded from: classes.dex */
-public final class ExpandableBillingInfo extends ConstraintLayout {
+public class ShapeAppearancePathProvider {
+    private final ShapePath[] cornerPaths = new ShapePath[4];
+    private final Matrix[] cornerTransforms = new Matrix[4];
+    private final Matrix[] edgeTransforms = new Matrix[4];
+    private final PointF pointF = new PointF();
+    private final Path overlappedEdgePath = new Path();
+    private final Path boundsPath = new Path();
+    private final ShapePath shapePath = new ShapePath();
+    private final float[] scratch = new float[2];
+    private final float[] scratch2 = new float[2];
+    private final Path edgePath = new Path();
+    private final Path cornerPath = new Path();
+    private boolean edgeIntersectionCheckEnabled = true;
 
-    /* renamed from: a */
-    private LifecycleOwner f143a;
-
-    /* renamed from: b */
-    private ConstraintLayout f144b;
-
-    /* renamed from: c */
-    private b f145c;
-
-    /* renamed from: d */
-    private y0.b f146d;
-
-    /* renamed from: e */
-    private MutableLiveData<w0.b> f147e;
-
-    @Metadata(bv = {}, d1 = {"\u0000\b\n\u0002\u0010\u0002\n\u0002\b\u0002\u0010\u0001\u001a\u00020\u0000H\n¢\u0006\u0004\b\u0001\u0010\u0002"}, d2 = {"", "a", "()V"}, k = 3, mv = {1, 7, 1})
     /* loaded from: classes.dex */
-    public static final class a extends Lambda implements Function0<Unit> {
+    public interface PathListener {
+        void onCornerPathCreated(ShapePath shapePath, Matrix matrix, int i2);
 
-        /* renamed from: a */
-        final /* synthetic */ LinearLayout f148a;
+        void onEdgePathCreated(ShapePath shapePath, Matrix matrix, int i2);
+    }
 
-        /* renamed from: b */
-        final /* synthetic */ ExpandableBillingInfo f149b;
+    private float angleOfEdge(int i2) {
+        return (i2 + 1) * 90;
+    }
 
-        /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-        a(LinearLayout linearLayout, ExpandableBillingInfo expandableBillingInfo) {
-            super(0);
-            this.f148a = linearLayout;
-            this.f149b = expandableBillingInfo;
-        }
+    /* loaded from: classes.dex */
+    private static class Lazy {
+        static final ShapeAppearancePathProvider INSTANCE = new ShapeAppearancePathProvider();
 
-        public final void a() {
-            b bVar = null;
-            if (this.f148a.getVisibility() == 0) {
-                b bVar2 = this.f149b.f145c;
-                if (bVar2 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar = bVar2;
-                }
-                bVar.a();
-                return;
-            }
-            b bVar3 = this.f149b.f145c;
-            if (bVar3 == null) {
-                Intrinsics.throwUninitializedPropertyAccessException("delegate");
-            } else {
-                bVar = bVar3;
-            }
-            bVar.b();
-        }
-
-        @Override // kotlin.jvm.functions.Function0
-        public /* bridge */ /* synthetic */ Unit invoke() {
-            a();
-            return Unit.INSTANCE;
+        private Lazy() {
         }
     }
 
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public ExpandableBillingInfo(Context context) {
-        super(context);
-        Intrinsics.checkNotNullParameter(context, "context");
-        this.f147e = new MutableLiveData<>();
-        a(context, (AttributeSet) null);
+    public ShapeAppearancePathProvider() {
+        for (int i2 = 0; i2 < 4; i2++) {
+            this.cornerPaths[i2] = new ShapePath();
+            this.cornerTransforms[i2] = new Matrix();
+            this.edgeTransforms[i2] = new Matrix();
+        }
     }
 
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public ExpandableBillingInfo(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        Intrinsics.checkNotNullParameter(context, "context");
-        this.f147e = new MutableLiveData<>();
-        a(context, attributeSet);
+    public static ShapeAppearancePathProvider getInstance() {
+        return Lazy.INSTANCE;
     }
 
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public ExpandableBillingInfo(Context context, AttributeSet attributeSet, int i2) {
-        super(context, attributeSet, i2);
-        Intrinsics.checkNotNullParameter(context, "context");
-        this.f147e = new MutableLiveData<>();
-        a(context, attributeSet);
+    public void calculatePath(ShapeAppearanceModel shapeAppearanceModel, float f2, RectF rectF, Path path) {
+        calculatePath(shapeAppearanceModel, f2, rectF, null, path);
     }
 
-    private final void a(Context context, AttributeSet attributeSet) {
-        View inflate = LayoutInflater.from(context).inflate(R.layout.layout_expandable_billing_info, (ViewGroup) this, true);
-        Intrinsics.checkNotNull(inflate, "null cannot be cast to non-null type androidx.constraintlayout.widget.ConstraintLayout");
-        ConstraintLayout constraintLayout = (ConstraintLayout) inflate;
-        this.f144b = constraintLayout;
-        ConstraintLayout constraintLayout2 = null;
-        if (constraintLayout == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("view");
-            constraintLayout = null;
+    public void calculatePath(ShapeAppearanceModel shapeAppearanceModel, float f2, RectF rectF, PathListener pathListener, Path path) {
+        path.rewind();
+        this.overlappedEdgePath.rewind();
+        this.boundsPath.rewind();
+        this.boundsPath.addRect(rectF, Path.Direction.CW);
+        ShapeAppearancePathSpec shapeAppearancePathSpec = new ShapeAppearancePathSpec(shapeAppearanceModel, f2, rectF, pathListener, path);
+        for (int i2 = 0; i2 < 4; i2++) {
+            setCornerPathAndTransform(shapeAppearancePathSpec, i2);
+            setEdgePathAndTransform(i2);
         }
-        ConstraintLayout constraintLayout3 = (ConstraintLayout) c.a((View) constraintLayout, R.id.cl_main_billing);
-        ConstraintLayout constraintLayout4 = this.f144b;
-        if (constraintLayout4 == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("view");
-            constraintLayout4 = null;
+        for (int i3 = 0; i3 < 4; i3++) {
+            appendCornerPath(shapeAppearancePathSpec, i3);
+            appendEdgePath(shapeAppearancePathSpec, i3);
         }
-        LinearLayout linearLayout = (LinearLayout) c.a((View) constraintLayout4, R.id.ll_billing);
-        ConstraintLayout constraintLayout5 = this.f144b;
-        if (constraintLayout5 == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("view");
-            constraintLayout5 = null;
-        }
-        ImageView imageView = (ImageView) c.a((View) constraintLayout5, R.id.payment_sdk_iv_expandable_billing_arrow);
-        ConstraintLayout constraintLayout6 = this.f144b;
-        if (constraintLayout6 == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("view");
-        } else {
-            constraintLayout2 = constraintLayout6;
-        }
-        b bVar = new b(context, constraintLayout3, linearLayout, (TextView) c.a((View) constraintLayout2, R.id.payment_sdk_tv_expandable_billing_info), imageView, getEditTextsIdsMap());
-        this.f145c = bVar;
-        bVar.a();
-        c.a(c.a((View) constraintLayout3, R.id.payment_sdk_cl_billing_expandable), new a(linearLayout, this));
-    }
-
-    public static final void a(ExpandableBillingInfo this$0, w0.b bVar) {
-        m.a aVar;
-        int i2;
-        Intrinsics.checkNotNullParameter(this$0, "this$0");
-        b bVar2 = null;
-        if (bVar instanceof b.c) {
-            boolean a2 = ((b.c) bVar).a();
-            m.b bVar3 = this$0.f145c;
-            if (a2) {
-                if (bVar3 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar3;
-                }
-                aVar = m.a.COUNTRY;
-                i2 = R.string.payment_sdk_error_empty_billing_country_code;
-            } else {
-                if (bVar3 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar3;
-                }
-                aVar = m.a.COUNTRY;
-                i2 = R.string.payment_sdk_error_invalid_billing_country_code;
-            }
-        } else if (bVar instanceof b.C0032b) {
-            boolean a3 = ((b.C0032b) bVar).a();
-            m.b bVar4 = this$0.f145c;
-            if (a3) {
-                if (bVar4 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar4;
-                }
-                aVar = m.a.CITY;
-                i2 = R.string.payment_sdk_error_empty_billing_city;
-            } else {
-                if (bVar4 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar4;
-                }
-                aVar = m.a.CITY;
-                i2 = R.string.payment_sdk_error_invalid_billing_city;
-            }
-        } else if (bVar instanceof b.h) {
-            boolean a4 = ((b.h) bVar).a();
-            m.b bVar5 = this$0.f145c;
-            if (a4) {
-                if (bVar5 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar5;
-                }
-                aVar = m.a.STATE;
-                i2 = R.string.payment_sdk_error_empty_billing_state;
-            } else {
-                if (bVar5 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar5;
-                }
-                aVar = m.a.STATE;
-                i2 = R.string.payment_sdk_error_invalid_billing_state;
-            }
-        } else if (bVar instanceof b.i) {
-            boolean a5 = ((b.i) bVar).a();
-            m.b bVar6 = this$0.f145c;
-            if (a5) {
-                if (bVar6 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar6;
-                }
-                aVar = m.a.ADDRESS;
-                i2 = R.string.payment_sdk_error_empty_billing_address;
-            } else {
-                if (bVar6 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar6;
-                }
-                aVar = m.a.ADDRESS;
-                i2 = R.string.payment_sdk_error_invalid_billing_address;
-            }
-        } else if (bVar instanceof b.j) {
-            boolean a6 = ((b.j) bVar).a();
-            m.b bVar7 = this$0.f145c;
-            if (a6) {
-                if (bVar7 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar7;
-                }
-                aVar = m.a.ZIP;
-                i2 = R.string.payment_sdk_error_empty_billing_zip_code;
-            } else {
-                if (bVar7 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar7;
-                }
-                aVar = m.a.ZIP;
-                i2 = R.string.payment_sdk_error_invalid_billing_zip_code;
-            }
-        } else if (bVar instanceof b.d) {
-            boolean a7 = ((b.d) bVar).a();
-            m.b bVar8 = this$0.f145c;
-            if (a7) {
-                if (bVar8 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar8;
-                }
-                aVar = m.a.EMAIL;
-                i2 = R.string.payment_sdk_error_empty_billing_email;
-            } else {
-                if (bVar8 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar8;
-                }
-                aVar = m.a.EMAIL;
-                i2 = R.string.payment_sdk_error_invalid_billing_email;
-            }
-        } else if (bVar instanceof b.g) {
-            boolean a8 = ((b.g) bVar).a();
-            m.b bVar9 = this$0.f145c;
-            if (a8) {
-                if (bVar9 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar9;
-                }
-                aVar = m.a.PHONE;
-                i2 = R.string.payment_sdk_error_empty_billing_phone;
-            } else {
-                if (bVar9 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar9;
-                }
-                aVar = m.a.PHONE;
-                i2 = R.string.payment_sdk_error_invalid_billing_phone;
-            }
-        } else if (!(bVar instanceof b.e)) {
-            if (Intrinsics.areEqual(bVar, b.f.f538a)) {
-                return;
-            }
-            Intrinsics.areEqual(bVar, b.a.f533a);
+        path.close();
+        this.overlappedEdgePath.close();
+        if (Build.VERSION.SDK_INT < 19 || this.overlappedEdgePath.isEmpty()) {
             return;
+        }
+        path.op(this.overlappedEdgePath, Path.Op.UNION);
+    }
+
+    private void setCornerPathAndTransform(ShapeAppearancePathSpec shapeAppearancePathSpec, int i2) {
+        getCornerTreatmentForIndex(i2, shapeAppearancePathSpec.shapeAppearanceModel).getCornerPath(this.cornerPaths[i2], 90.0f, shapeAppearancePathSpec.interpolation, shapeAppearancePathSpec.bounds, getCornerSizeForIndex(i2, shapeAppearancePathSpec.shapeAppearanceModel));
+        float angleOfEdge = angleOfEdge(i2);
+        this.cornerTransforms[i2].reset();
+        getCoordinatesOfCorner(i2, shapeAppearancePathSpec.bounds, this.pointF);
+        this.cornerTransforms[i2].setTranslate(this.pointF.x, this.pointF.y);
+        this.cornerTransforms[i2].preRotate(angleOfEdge);
+    }
+
+    private void setEdgePathAndTransform(int i2) {
+        this.scratch[0] = this.cornerPaths[i2].getEndX();
+        this.scratch[1] = this.cornerPaths[i2].getEndY();
+        this.cornerTransforms[i2].mapPoints(this.scratch);
+        float angleOfEdge = angleOfEdge(i2);
+        this.edgeTransforms[i2].reset();
+        Matrix matrix = this.edgeTransforms[i2];
+        float[] fArr = this.scratch;
+        matrix.setTranslate(fArr[0], fArr[1]);
+        this.edgeTransforms[i2].preRotate(angleOfEdge);
+    }
+
+    private void appendCornerPath(ShapeAppearancePathSpec shapeAppearancePathSpec, int i2) {
+        this.scratch[0] = this.cornerPaths[i2].getStartX();
+        this.scratch[1] = this.cornerPaths[i2].getStartY();
+        this.cornerTransforms[i2].mapPoints(this.scratch);
+        if (i2 == 0) {
+            Path path = shapeAppearancePathSpec.path;
+            float[] fArr = this.scratch;
+            path.moveTo(fArr[0], fArr[1]);
         } else {
-            boolean a9 = ((b.e) bVar).a();
-            m.b bVar10 = this$0.f145c;
-            if (a9) {
-                if (bVar10 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar10;
+            Path path2 = shapeAppearancePathSpec.path;
+            float[] fArr2 = this.scratch;
+            path2.lineTo(fArr2[0], fArr2[1]);
+        }
+        this.cornerPaths[i2].applyToPath(this.cornerTransforms[i2], shapeAppearancePathSpec.path);
+        if (shapeAppearancePathSpec.pathListener != null) {
+            shapeAppearancePathSpec.pathListener.onCornerPathCreated(this.cornerPaths[i2], this.cornerTransforms[i2], i2);
+        }
+    }
+
+    private void appendEdgePath(ShapeAppearancePathSpec shapeAppearancePathSpec, int i2) {
+        int i3 = (i2 + 1) % 4;
+        this.scratch[0] = this.cornerPaths[i2].getEndX();
+        this.scratch[1] = this.cornerPaths[i2].getEndY();
+        this.cornerTransforms[i2].mapPoints(this.scratch);
+        this.scratch2[0] = this.cornerPaths[i3].getStartX();
+        this.scratch2[1] = this.cornerPaths[i3].getStartY();
+        this.cornerTransforms[i3].mapPoints(this.scratch2);
+        float[] fArr = this.scratch;
+        float f2 = fArr[0];
+        float[] fArr2 = this.scratch2;
+        float max = Math.max(((float) Math.hypot(f2 - fArr2[0], fArr[1] - fArr2[1])) - 0.001f, 0.0f);
+        float edgeCenterForIndex = getEdgeCenterForIndex(shapeAppearancePathSpec.bounds, i2);
+        this.shapePath.reset(0.0f, 0.0f);
+        EdgeTreatment edgeTreatmentForIndex = getEdgeTreatmentForIndex(i2, shapeAppearancePathSpec.shapeAppearanceModel);
+        edgeTreatmentForIndex.getEdgePath(max, edgeCenterForIndex, shapeAppearancePathSpec.interpolation, this.shapePath);
+        this.edgePath.reset();
+        this.shapePath.applyToPath(this.edgeTransforms[i2], this.edgePath);
+        if (this.edgeIntersectionCheckEnabled && Build.VERSION.SDK_INT >= 19 && (edgeTreatmentForIndex.forceIntersection() || pathOverlapsCorner(this.edgePath, i2) || pathOverlapsCorner(this.edgePath, i3))) {
+            Path path = this.edgePath;
+            path.op(path, this.boundsPath, Path.Op.DIFFERENCE);
+            this.scratch[0] = this.shapePath.getStartX();
+            this.scratch[1] = this.shapePath.getStartY();
+            this.edgeTransforms[i2].mapPoints(this.scratch);
+            Path path2 = this.overlappedEdgePath;
+            float[] fArr3 = this.scratch;
+            path2.moveTo(fArr3[0], fArr3[1]);
+            this.shapePath.applyToPath(this.edgeTransforms[i2], this.overlappedEdgePath);
+        } else {
+            this.shapePath.applyToPath(this.edgeTransforms[i2], shapeAppearancePathSpec.path);
+        }
+        if (shapeAppearancePathSpec.pathListener != null) {
+            shapeAppearancePathSpec.pathListener.onEdgePathCreated(this.shapePath, this.edgeTransforms[i2], i2);
+        }
+    }
+
+    private boolean pathOverlapsCorner(Path path, int i2) {
+        this.cornerPath.reset();
+        this.cornerPaths[i2].applyToPath(this.cornerTransforms[i2], this.cornerPath);
+        RectF rectF = new RectF();
+        path.computeBounds(rectF, true);
+        this.cornerPath.computeBounds(rectF, true);
+        path.op(this.cornerPath, Path.Op.INTERSECT);
+        path.computeBounds(rectF, true);
+        if (rectF.isEmpty()) {
+            return rectF.width() > 1.0f && rectF.height() > 1.0f;
+        }
+        return true;
+    }
+
+    private float getEdgeCenterForIndex(RectF rectF, int i2) {
+        this.scratch[0] = this.cornerPaths[i2].endX;
+        this.scratch[1] = this.cornerPaths[i2].endY;
+        this.cornerTransforms[i2].mapPoints(this.scratch);
+        if (i2 == 1 || i2 == 3) {
+            return Math.abs(rectF.centerX() - this.scratch[0]);
+        }
+        return Math.abs(rectF.centerY() - this.scratch[1]);
+    }
+
+    private CornerTreatment getCornerTreatmentForIndex(int i2, ShapeAppearanceModel shapeAppearanceModel) {
+        if (i2 != 1) {
+            if (i2 != 2) {
+                if (i2 == 3) {
+                    return shapeAppearanceModel.getTopLeftCorner();
                 }
-                aVar = m.a.NAME;
-                i2 = R.string.payment_sdk_error_empty_billing_full_name;
-            } else {
-                if (bVar10 == null) {
-                    Intrinsics.throwUninitializedPropertyAccessException("delegate");
-                } else {
-                    bVar2 = bVar10;
+                return shapeAppearanceModel.getTopRightCorner();
+            }
+            return shapeAppearanceModel.getBottomLeftCorner();
+        }
+        return shapeAppearanceModel.getBottomRightCorner();
+    }
+
+    private CornerSize getCornerSizeForIndex(int i2, ShapeAppearanceModel shapeAppearanceModel) {
+        if (i2 != 1) {
+            if (i2 != 2) {
+                if (i2 == 3) {
+                    return shapeAppearanceModel.getTopLeftCornerSize();
                 }
-                aVar = m.a.NAME;
-                i2 = R.string.payment_sdk_error_invalid_billing_full_name;
+                return shapeAppearanceModel.getTopRightCornerSize();
             }
+            return shapeAppearanceModel.getBottomLeftCornerSize();
         }
-        bVar2.a(aVar, i2);
+        return shapeAppearanceModel.getBottomRightCornerSize();
     }
 
-    private final void b() {
-        MutableLiveData<w0.b> mutableLiveData = this.f147e;
-        LifecycleOwner lifecycleOwner = this.f143a;
-        if (lifecycleOwner == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("lifeCycleOwner");
-            lifecycleOwner = null;
-        }
-        mutableLiveData.observe(lifecycleOwner, new Observer() { // from class: com.payment.paymentsdk.creditcard.view.customs.-$$Lambda$ExpandableBillingInfo$SYGV1hm48YtJopZQkvIywpOxPAw
-            @Override // androidx.lifecycle.Observer
-            public final void onChanged(Object obj) {
-                ExpandableBillingInfo.lambda$SYGV1hm48YtJopZQkvIywpOxPAw(ExpandableBillingInfo.this, (w0.b) obj);
+    private EdgeTreatment getEdgeTreatmentForIndex(int i2, ShapeAppearanceModel shapeAppearanceModel) {
+        if (i2 != 1) {
+            if (i2 != 2) {
+                if (i2 == 3) {
+                    return shapeAppearanceModel.getTopEdge();
+                }
+                return shapeAppearanceModel.getRightEdge();
             }
-        });
+            return shapeAppearanceModel.getLeftEdge();
+        }
+        return shapeAppearanceModel.getBottomEdge();
     }
 
-    private final Map<m.a, PaytabsEditText> getEditTextsIdsMap() {
-        Pair[] pairArr = new Pair[8];
-        m.a aVar = m.a.COUNTRY;
-        ConstraintLayout constraintLayout = this.f144b;
-        ConstraintLayout constraintLayout2 = null;
-        if (constraintLayout == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("view");
-            constraintLayout = null;
-        }
-        pairArr[0] = TuplesKt.to(aVar, c.a((View) constraintLayout, R.id.pet_billing_country));
-        m.a aVar2 = m.a.CITY;
-        ConstraintLayout constraintLayout3 = this.f144b;
-        if (constraintLayout3 == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("view");
-            constraintLayout3 = null;
-        }
-        pairArr[1] = TuplesKt.to(aVar2, c.a((View) constraintLayout3, R.id.pet_billing_city));
-        m.a aVar3 = m.a.STATE;
-        ConstraintLayout constraintLayout4 = this.f144b;
-        if (constraintLayout4 == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("view");
-            constraintLayout4 = null;
-        }
-        pairArr[2] = TuplesKt.to(aVar3, c.a((View) constraintLayout4, R.id.pet_billing_state));
-        m.a aVar4 = m.a.ADDRESS;
-        ConstraintLayout constraintLayout5 = this.f144b;
-        if (constraintLayout5 == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("view");
-            constraintLayout5 = null;
-        }
-        pairArr[3] = TuplesKt.to(aVar4, c.a((View) constraintLayout5, R.id.pet_billing_address));
-        m.a aVar5 = m.a.ZIP;
-        ConstraintLayout constraintLayout6 = this.f144b;
-        if (constraintLayout6 == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("view");
-            constraintLayout6 = null;
-        }
-        pairArr[4] = TuplesKt.to(aVar5, c.a((View) constraintLayout6, R.id.pet_billing_zip));
-        m.a aVar6 = m.a.NAME;
-        ConstraintLayout constraintLayout7 = this.f144b;
-        if (constraintLayout7 == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("view");
-            constraintLayout7 = null;
-        }
-        pairArr[5] = TuplesKt.to(aVar6, c.a((View) constraintLayout7, R.id.pet_billing_name));
-        m.a aVar7 = m.a.PHONE;
-        ConstraintLayout constraintLayout8 = this.f144b;
-        if (constraintLayout8 == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("view");
-            constraintLayout8 = null;
-        }
-        pairArr[6] = TuplesKt.to(aVar7, c.a((View) constraintLayout8, R.id.pet_billing_phone));
-        m.a aVar8 = m.a.EMAIL;
-        ConstraintLayout constraintLayout9 = this.f144b;
-        if (constraintLayout9 == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("view");
+    private void getCoordinatesOfCorner(int i2, RectF rectF, PointF pointF) {
+        if (i2 == 1) {
+            pointF.set(rectF.right, rectF.bottom);
+        } else if (i2 == 2) {
+            pointF.set(rectF.left, rectF.bottom);
+        } else if (i2 == 3) {
+            pointF.set(rectF.left, rectF.top);
         } else {
-            constraintLayout2 = constraintLayout9;
-        }
-        pairArr[7] = TuplesKt.to(aVar8, c.a((View) constraintLayout2, R.id.pet_billing_email));
-        return MapsKt.mapOf(pairArr);
-    }
-
-    public static /* synthetic */ void lambda$SYGV1hm48YtJopZQkvIywpOxPAw(ExpandableBillingInfo expandableBillingInfo, w0.b bVar) {
-        a(expandableBillingInfo, bVar);
-    }
-
-    public final void a(p0.a aVar, LifecycleOwner lifeCycleOwner, Function0<Unit> onCountryClicked) {
-        Intrinsics.checkNotNullParameter(lifeCycleOwner, "lifeCycleOwner");
-        Intrinsics.checkNotNullParameter(onCountryClicked, "onCountryClicked");
-        m.b bVar = this.f145c;
-        m.b bVar2 = null;
-        if (bVar == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("delegate");
-            bVar = null;
-        }
-        bVar.a(aVar);
-        this.f143a = lifeCycleOwner;
-        this.f146d = new y0.b(aVar, false);
-        m.b bVar3 = this.f145c;
-        if (bVar3 == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("delegate");
-        } else {
-            bVar2 = bVar3;
-        }
-        bVar2.a(onCountryClicked);
-    }
-
-    public final void a(boolean z2) {
-        ConstraintLayout constraintLayout = this.f144b;
-        if (constraintLayout == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("view");
-            constraintLayout = null;
-        }
-        View a2 = c.a((View) constraintLayout, R.id.pet_billing_name);
-        Intrinsics.checkNotNull(a2, "null cannot be cast to non-null type com.payment.paymentsdk.creditcard.view.customs.PaytabsEditText");
-        ((PaytabsEditText) a2).setVisibility(z2 ? 0 : 8);
-    }
-
-    /* JADX WARN: Code restructure failed: missing block: B:27:0x001f, code lost:
-        if ((getVisibility() == 0) == false) goto L15;
-     */
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct code enable 'Show inconsistent code' option in preferences
-    */
-    public final boolean a() {
-        /*
-            r5 = this;
-            y0.b r0 = r5.f146d
-            r1 = 0
-            if (r0 != 0) goto Lb
-            java.lang.String r0 = "validator"
-            kotlin.jvm.internal.Intrinsics.throwUninitializedPropertyAccessException(r0)
-            r0 = r1
-        Lb:
-            androidx.lifecycle.MutableLiveData<w0.b> r2 = r5.f147e
-            r3 = 2
-            r4 = 0
-            boolean r0 = y0.b.a(r0, r2, r4, r3, r1)
-            r1 = 1
-            if (r0 != 0) goto L21
-            int r0 = r5.getVisibility()
-            if (r0 != 0) goto L1e
-            r0 = 1
-            goto L1f
-        L1e:
-            r0 = 0
-        L1f:
-            if (r0 != 0) goto L22
-        L21:
-            r4 = 1
-        L22:
-            if (r4 != 0) goto L27
-            z.c.c(r5)
-        L27:
-            return r4
-        */
-        throw new UnsupportedOperationException("Method not decompiled: com.payment.paymentsdk.creditcard.view.customs.ExpandableBillingInfo.a():boolean");
-    }
-
-    public final void c() {
-        if (getVisibility() == 0) {
-            y0.b bVar = this.f146d;
-            m.b bVar2 = null;
-            if (bVar == null) {
-                Intrinsics.throwUninitializedPropertyAccessException("validator");
-                bVar = null;
-            }
-            if (y0.b.a(bVar, this.f147e, false, 2, null)) {
-                return;
-            }
-            b();
-            m.b bVar3 = this.f145c;
-            if (bVar3 == null) {
-                Intrinsics.throwUninitializedPropertyAccessException("delegate");
-            } else {
-                bVar2 = bVar3;
-            }
-            bVar2.b();
+            pointF.set(rectF.right, rectF.top);
         }
     }
 
-    public final void setCountry(String str) {
-        m.b bVar = this.f145c;
-        if (bVar == null) {
-            Intrinsics.throwUninitializedPropertyAccessException("delegate");
-            bVar = null;
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public void setEdgeIntersectionCheckEnable(boolean z2) {
+        this.edgeIntersectionCheckEnabled = z2;
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* loaded from: classes.dex */
+    public static final class ShapeAppearancePathSpec {
+        public final RectF bounds;
+        public final float interpolation;
+        public final Path path;
+        public final PathListener pathListener;
+        public final ShapeAppearanceModel shapeAppearanceModel;
+
+        ShapeAppearancePathSpec(ShapeAppearanceModel shapeAppearanceModel, float f2, RectF rectF, PathListener pathListener, Path path) {
+            this.pathListener = pathListener;
+            this.shapeAppearanceModel = shapeAppearanceModel;
+            this.interpolation = f2;
+            this.bounds = rectF;
+            this.path = path;
         }
-        bVar.a(str);
     }
 }

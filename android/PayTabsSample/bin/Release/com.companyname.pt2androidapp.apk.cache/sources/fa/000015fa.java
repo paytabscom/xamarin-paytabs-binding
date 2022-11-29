@@ -1,27 +1,18 @@
-package mono.android;
+package kotlin.internal;
 
-import java.util.ArrayList;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import kotlin.Metadata;
+import kotlin.annotation.AnnotationRetention;
+import kotlin.annotation.AnnotationTarget;
 
+/* compiled from: Annotations.kt */
+@Target({})
+@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\b\u0081\u0002\u0018\u00002\u00020\u0001B\u0000¨\u0006\u0002"}, d2 = {"Lkotlin/internal/OnlyInputTypes;", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+@kotlin.annotation.Target(allowedTargets = {AnnotationTarget.TYPE_PARAMETER})
+@Retention(RetentionPolicy.CLASS)
+@kotlin.annotation.Retention(AnnotationRetention.BINARY)
 /* loaded from: classes.dex */
-class GCUserPeer implements IGCUserPeer {
-    private ArrayList refList = null;
-
-    GCUserPeer() {
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public @interface OnlyInputTypes {
 }

@@ -1,47 +1,53 @@
-package com.google.android.material.transition.platform;
+package com.google.android.material.internal;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import androidx.transition.Transition;
+import androidx.transition.TransitionValues;
+import java.util.Map;
 
 /* loaded from: classes.dex */
-public final class FadeProvider implements VisibilityAnimatorProvider {
-    private float incomingEndThreshold = 1.0f;
+public class TextScale extends Transition {
+    private static final String PROPNAME_SCALE = "android:textscale:scale";
 
-    public float getIncomingEndThreshold() {
-        return this.incomingEndThreshold;
+    @Override // androidx.transition.Transition
+    public void captureStartValues(TransitionValues transitionValues) {
+        captureValues(transitionValues);
     }
 
-    public void setIncomingEndThreshold(float f2) {
-        this.incomingEndThreshold = f2;
+    @Override // androidx.transition.Transition
+    public void captureEndValues(TransitionValues transitionValues) {
+        captureValues(transitionValues);
     }
 
-    @Override // com.google.android.material.transition.platform.VisibilityAnimatorProvider
-    public Animator createAppear(ViewGroup viewGroup, View view) {
-        float alpha = view.getAlpha() == 0.0f ? 1.0f : view.getAlpha();
-        return createFadeAnimator(view, 0.0f, alpha, 0.0f, this.incomingEndThreshold, alpha);
+    private void captureValues(TransitionValues transitionValues) {
+        if (transitionValues.view instanceof TextView) {
+            transitionValues.values.put(PROPNAME_SCALE, Float.valueOf(((TextView) transitionValues.view).getScaleX()));
+        }
     }
 
-    @Override // com.google.android.material.transition.platform.VisibilityAnimatorProvider
-    public Animator createDisappear(ViewGroup viewGroup, View view) {
-        float alpha = view.getAlpha() == 0.0f ? 1.0f : view.getAlpha();
-        return createFadeAnimator(view, alpha, 0.0f, 0.0f, 1.0f, alpha);
-    }
-
-    private static Animator createFadeAnimator(final View view, final float f2, final float f3, final float f4, final float f5, final float f6) {
-        ValueAnimator ofFloat = ValueAnimator.ofFloat(0.0f, 1.0f);
-        ofFloat.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() { // from class: com.google.android.material.transition.platform.FadeProvider.1
+    @Override // androidx.transition.Transition
+    public Animator createAnimator(ViewGroup viewGroup, TransitionValues transitionValues, TransitionValues transitionValues2) {
+        if (transitionValues == null || transitionValues2 == null || !(transitionValues.view instanceof TextView) || !(transitionValues2.view instanceof TextView)) {
+            return null;
+        }
+        final TextView textView = (TextView) transitionValues2.view;
+        Map<String, Object> map = transitionValues.values;
+        Map<String, Object> map2 = transitionValues2.values;
+        float floatValue = map.get(PROPNAME_SCALE) != null ? ((Float) map.get(PROPNAME_SCALE)).floatValue() : 1.0f;
+        float floatValue2 = map2.get(PROPNAME_SCALE) != null ? ((Float) map2.get(PROPNAME_SCALE)).floatValue() : 1.0f;
+        if (floatValue == floatValue2) {
+            return null;
+        }
+        ValueAnimator ofFloat = ValueAnimator.ofFloat(floatValue, floatValue2);
+        ofFloat.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() { // from class: com.google.android.material.internal.TextScale.1
             @Override // android.animation.ValueAnimator.AnimatorUpdateListener
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                view.setAlpha(TransitionUtils.lerp(f2, f3, f4, f5, ((Float) valueAnimator.getAnimatedValue()).floatValue()));
-            }
-        });
-        ofFloat.addListener(new AnimatorListenerAdapter() { // from class: com.google.android.material.transition.platform.FadeProvider.2
-            @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
-            public void onAnimationEnd(Animator animator) {
-                view.setAlpha(f6);
+                float floatValue3 = ((Float) valueAnimator.getAnimatedValue()).floatValue();
+                textView.setScaleX(floatValue3);
+                textView.setScaleY(floatValue3);
             }
         });
         return ofFloat;

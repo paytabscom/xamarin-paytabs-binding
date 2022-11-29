@@ -1,70 +1,119 @@
-package kotlinx.coroutines.flow;
+package com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.gles;
 
-import kotlin.Metadata;
-import kotlin.ResultKt;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-import kotlin.coroutines.jvm.internal.SuspendLambda;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.internal.Ref;
-import kotlinx.coroutines.flow.internal.NullSurrogateKt;
-import kotlinx.coroutines.internal.Symbol;
+import android.opengl.GLES20;
+import android.opengl.Matrix;
+import android.util.Log;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.utils.Constants;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 
-/* compiled from: Delay.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\n\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0004\u0010\u0000\u001a\u00020\u0001\"\u0004\b\u0000\u0010\u0002H\u008a@¢\u0006\u0004\b\u0003\u0010\u0004¨\u0006\u0005"}, d2 = {"<anonymous>", "", "T", "invoke", "(Ljava/lang/Object;)Ljava/lang/Object;", "kotlinx/coroutines/flow/FlowKt__DelayKt$debounceInternal$1$3$1"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__DelayKt$debounceInternal$1$3$1", f = "Delay.kt", i = {}, l = {352}, m = "invokeSuspend", n = {}, s = {})
 /* loaded from: classes.dex */
-final class FlowKt__DelayKt$debounceInternal$1$invokeSuspend$$inlined$select$lambda$1 extends SuspendLambda implements Function1<Continuation<? super Unit>, Object> {
-    final /* synthetic */ FlowCollector $downstream$inlined;
-    final /* synthetic */ Ref.ObjectRef $lastValue$inlined;
-    final /* synthetic */ Ref.LongRef $timeoutMillis$inlined;
-    final /* synthetic */ Ref.ObjectRef $values$inlined;
-    int label;
+public class GlUtil {
+    public static final boolean DBG = Constants.DEBUG;
+    public static final float[] IDENTITY_MATRIX;
+    private static final int SIZEOF_FLOAT = 4;
+    public static final String TAG = "gles";
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public FlowKt__DelayKt$debounceInternal$1$invokeSuspend$$inlined$select$lambda$1(Continuation continuation, Ref.ObjectRef objectRef, Ref.LongRef longRef, FlowCollector flowCollector, Ref.ObjectRef objectRef2) {
-        super(1, continuation);
-        this.$lastValue$inlined = objectRef;
-        this.$timeoutMillis$inlined = longRef;
-        this.$downstream$inlined = flowCollector;
-        this.$values$inlined = objectRef2;
+    static {
+        float[] fArr = new float[16];
+        IDENTITY_MATRIX = fArr;
+        Matrix.setIdentityM(fArr, 0);
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Continuation<Unit> create(Continuation<?> continuation) {
-        return new FlowKt__DelayKt$debounceInternal$1$invokeSuspend$$inlined$select$lambda$1(continuation, this.$lastValue$inlined, this.$timeoutMillis$inlined, this.$downstream$inlined, this.$values$inlined);
+    private GlUtil() {
     }
 
-    @Override // kotlin.jvm.functions.Function1
-    public final Object invoke(Continuation<? super Unit> continuation) {
-        return ((FlowKt__DelayKt$debounceInternal$1$invokeSuspend$$inlined$select$lambda$1) create(continuation)).invokeSuspend(Unit.INSTANCE);
-    }
-
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
-        int i2 = this.label;
-        if (i2 == 0) {
-            ResultKt.throwOnFailure(obj);
-            FlowCollector flowCollector = this.$downstream$inlined;
-            Symbol symbol = NullSurrogateKt.NULL;
-            Object obj2 = this.$lastValue$inlined.element;
-            if (obj2 == symbol) {
-                obj2 = null;
-            }
-            this.label = 1;
-            if (flowCollector.emit(obj2, this) == coroutine_suspended) {
-                return coroutine_suspended;
-            }
-        } else if (i2 != 1) {
-            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
-        } else {
-            ResultKt.throwOnFailure(obj);
+    public static int createProgram(String str, String str2) {
+        int loadShader;
+        int loadShader2 = loadShader(35633, str);
+        if (loadShader2 == 0 || (loadShader = loadShader(35632, str2)) == 0) {
+            return 0;
         }
-        this.$lastValue$inlined.element = null;
-        return Unit.INSTANCE;
+        int glCreateProgram = GLES20.glCreateProgram();
+        checkGlError("glCreateProgram");
+        if (glCreateProgram == 0 && DBG) {
+            Log.e(TAG, "Could not create program");
+        }
+        GLES20.glAttachShader(glCreateProgram, loadShader2);
+        checkGlError("glAttachShader");
+        GLES20.glAttachShader(glCreateProgram, loadShader);
+        checkGlError("glAttachShader");
+        GLES20.glLinkProgram(glCreateProgram);
+        int[] iArr = new int[1];
+        GLES20.glGetProgramiv(glCreateProgram, 35714, iArr, 0);
+        if (iArr[0] != 1) {
+            boolean z2 = DBG;
+            if (z2) {
+                Log.e(TAG, "Could not link program: ");
+            }
+            if (z2) {
+                Log.e(TAG, GLES20.glGetProgramInfoLog(glCreateProgram));
+            }
+            GLES20.glDeleteProgram(glCreateProgram);
+            return 0;
+        }
+        return glCreateProgram;
+    }
+
+    public static int loadShader(int i2, String str) {
+        int glCreateShader = GLES20.glCreateShader(i2);
+        checkGlError("glCreateShader type=" + i2);
+        GLES20.glShaderSource(glCreateShader, str);
+        GLES20.glCompileShader(glCreateShader);
+        int[] iArr = new int[1];
+        GLES20.glGetShaderiv(glCreateShader, 35713, iArr, 0);
+        if (iArr[0] == 0) {
+            boolean z2 = DBG;
+            if (z2) {
+                Log.e(TAG, "Could not compile shader " + i2 + ":");
+            }
+            if (z2) {
+                Log.e(TAG, " " + GLES20.glGetShaderInfoLog(glCreateShader));
+            }
+            GLES20.glDeleteShader(glCreateShader);
+            return 0;
+        }
+        return glCreateShader;
+    }
+
+    public static void checkGlError(String str) {
+        int glGetError;
+        if (GLES20.glGetError() != 0) {
+            String str2 = str + ": glError 0x" + Integer.toHexString(glGetError);
+            if (DBG) {
+                Log.e(TAG, str2);
+            }
+            throw new RuntimeException(str2);
+        }
+    }
+
+    public static void checkLocation(int i2, String str) {
+        if (i2 >= 0) {
+            return;
+        }
+        throw new RuntimeException("Unable to locate '" + str + "' in program");
+    }
+
+    public static FloatBuffer createFloatBuffer(float[] fArr) {
+        ByteBuffer allocateDirect = ByteBuffer.allocateDirect(fArr.length * 4);
+        allocateDirect.order(ByteOrder.nativeOrder());
+        FloatBuffer asFloatBuffer = allocateDirect.asFloatBuffer();
+        asFloatBuffer.put(fArr);
+        asFloatBuffer.position(0);
+        return asFloatBuffer;
+    }
+
+    public static void logVersionInfo() {
+        boolean z2 = DBG;
+        if (z2) {
+            Log.i(TAG, "vendor  : " + GLES20.glGetString(7936));
+        }
+        if (z2) {
+            Log.i(TAG, "renderer: " + GLES20.glGetString(7937));
+        }
+        if (z2) {
+            Log.i(TAG, "version : " + GLES20.glGetString(7938));
+        }
     }
 }

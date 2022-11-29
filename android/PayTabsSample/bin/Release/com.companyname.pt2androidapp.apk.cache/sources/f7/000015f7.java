@@ -1,62 +1,19 @@
-package mono;
+package kotlin.internal;
 
-import android.content.ContentProvider;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.ProviderInfo;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import kotlin.Metadata;
+import kotlin.annotation.AnnotationRetention;
+import kotlin.annotation.AnnotationTarget;
 
+/* compiled from: Annotations.kt */
+@Target({ElementType.METHOD})
+@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\b\u0081\u0002\u0018\u00002\u00020\u0001B\u0000¨\u0006\u0002"}, d2 = {"Lkotlin/internal/InlineOnly;", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+@kotlin.annotation.Target(allowedTargets = {AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER})
+@Retention(RetentionPolicy.CLASS)
+@kotlin.annotation.Retention(AnnotationRetention.BINARY)
 /* loaded from: classes.dex */
-public class MonoRuntimeProvider extends ContentProvider {
-    @Override // android.content.ContentProvider
-    public boolean onCreate() {
-        return true;
-    }
-
-    @Override // android.content.ContentProvider
-    public void attachInfo(Context context, ProviderInfo providerInfo) {
-        String[] strArr;
-        String[] strArr2;
-        ApplicationInfo applicationInfo = context.getApplicationInfo();
-        if (Build.VERSION.SDK_INT < 21 || (strArr2 = applicationInfo.splitPublicSourceDirs) == null || strArr2.length <= 0) {
-            strArr = null;
-        } else {
-            strArr = new String[strArr2.length + 1];
-            strArr[0] = applicationInfo.sourceDir;
-            System.arraycopy(strArr2, 0, strArr, 1, strArr2.length);
-        }
-        if (strArr == null) {
-            strArr = new String[]{applicationInfo.sourceDir};
-        }
-        MonoPackageManager.LoadApplication(context, applicationInfo, strArr);
-        super.attachInfo(context, providerInfo);
-    }
-
-    @Override // android.content.ContentProvider
-    public Cursor query(Uri uri, String[] strArr, String str, String[] strArr2, String str2) {
-        throw new RuntimeException("This operation is not supported.");
-    }
-
-    @Override // android.content.ContentProvider
-    public String getType(Uri uri) {
-        throw new RuntimeException("This operation is not supported.");
-    }
-
-    @Override // android.content.ContentProvider
-    public Uri insert(Uri uri, ContentValues contentValues) {
-        throw new RuntimeException("This operation is not supported.");
-    }
-
-    @Override // android.content.ContentProvider
-    public int delete(Uri uri, String str, String[] strArr) {
-        throw new RuntimeException("This operation is not supported.");
-    }
-
-    @Override // android.content.ContentProvider
-    public int update(Uri uri, ContentValues contentValues, String str, String[] strArr) {
-        throw new RuntimeException("This operation is not supported.");
-    }
+public @interface InlineOnly {
 }

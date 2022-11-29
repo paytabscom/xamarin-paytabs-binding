@@ -1,90 +1,9 @@
-package com.google.android.material.internal;
+package c0;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
-import android.util.StateSet;
-import java.util.ArrayList;
+import android.content.SharedPreferences;
+import kotlin.Metadata;
 
+@Metadata(bv = {}, d1 = {"\u0000\u000e\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\ba\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001¨\u0006\u0003"}, d2 = {"Lc0/c;", "Lc0/d;", "Landroid/content/SharedPreferences;", "paymentsdk_release"}, k = 1, mv = {1, 7, 1})
 /* loaded from: classes.dex */
-public final class StateListAnimator {
-    private final ArrayList<Tuple> tuples = new ArrayList<>();
-    private Tuple lastMatch = null;
-    ValueAnimator runningAnimator = null;
-    private final Animator.AnimatorListener animationListener = new AnimatorListenerAdapter() { // from class: com.google.android.material.internal.StateListAnimator.1
-        @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
-        public void onAnimationEnd(Animator animator) {
-            if (StateListAnimator.this.runningAnimator == animator) {
-                StateListAnimator.this.runningAnimator = null;
-            }
-        }
-    };
-
-    public void addState(int[] iArr, ValueAnimator valueAnimator) {
-        Tuple tuple = new Tuple(iArr, valueAnimator);
-        valueAnimator.addListener(this.animationListener);
-        this.tuples.add(tuple);
-    }
-
-    public void setState(int[] iArr) {
-        Tuple tuple;
-        int size = this.tuples.size();
-        int i2 = 0;
-        while (true) {
-            if (i2 >= size) {
-                tuple = null;
-                break;
-            }
-            tuple = this.tuples.get(i2);
-            if (StateSet.stateSetMatches(tuple.specs, iArr)) {
-                break;
-            }
-            i2++;
-        }
-        Tuple tuple2 = this.lastMatch;
-        if (tuple == tuple2) {
-            return;
-        }
-        if (tuple2 != null) {
-            cancel();
-        }
-        this.lastMatch = tuple;
-        if (tuple != null) {
-            start(tuple);
-        }
-    }
-
-    private void start(Tuple tuple) {
-        ValueAnimator valueAnimator = tuple.animator;
-        this.runningAnimator = valueAnimator;
-        valueAnimator.start();
-    }
-
-    private void cancel() {
-        ValueAnimator valueAnimator = this.runningAnimator;
-        if (valueAnimator != null) {
-            valueAnimator.cancel();
-            this.runningAnimator = null;
-        }
-    }
-
-    public void jumpToCurrentState() {
-        ValueAnimator valueAnimator = this.runningAnimator;
-        if (valueAnimator != null) {
-            valueAnimator.end();
-            this.runningAnimator = null;
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* loaded from: classes.dex */
-    public static class Tuple {
-        final ValueAnimator animator;
-        final int[] specs;
-
-        Tuple(int[] iArr, ValueAnimator valueAnimator) {
-            this.specs = iArr;
-            this.animator = valueAnimator;
-        }
-    }
+public interface c extends d<SharedPreferences> {
 }

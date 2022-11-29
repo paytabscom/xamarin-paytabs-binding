@@ -1,69 +1,12 @@
-package mono.android.incrementaldeployment;
+package kotlin.io.path;
 
-import android.util.Log;
-import dalvik.system.BaseDexClassLoader;
-import java.io.File;
-import java.lang.reflect.Field;
-import java.util.List;
+import kotlin.Metadata;
 
+/* compiled from: PathWalkOption.kt */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u0010\n\u0002\b\u0005\b\u0087\u0001\u0018\u00002\b\u0012\u0004\u0012\u00020\u00000\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002j\u0002\b\u0003j\u0002\b\u0004j\u0002\b\u0005¨\u0006\u0006"}, d2 = {"Lkotlin/io/path/PathWalkOption;", "", "(Ljava/lang/String;I)V", "INCLUDE_DIRECTORIES", "BREADTH_FIRST", "FOLLOW_LINKS", "kotlin-stdlib-jdk7"}, k = 1, mv = {1, 7, 1}, xi = 48)
 /* loaded from: classes.dex */
-public class IncrementalClassLoader extends ClassLoader {
-    private final DelegateClassLoader delegateClassLoader;
-
-    public IncrementalClassLoader(ClassLoader classLoader, String str, File file, String str2, List<String> list) {
-        super(classLoader.getParent());
-        this.delegateClassLoader = createDelegateClassLoader(file, str2, list, classLoader);
-    }
-
-    @Override // java.lang.ClassLoader
-    public Class<?> findClass(String str) throws ClassNotFoundException {
-        return this.delegateClassLoader.findClass(str);
-    }
-
-    /* JADX INFO: Access modifiers changed from: private */
-    /* loaded from: classes.dex */
-    public static class DelegateClassLoader extends BaseDexClassLoader {
-        private DelegateClassLoader(String str, File file, String str2, ClassLoader classLoader) {
-            super(str, file, str2, classLoader);
-        }
-
-        @Override // dalvik.system.BaseDexClassLoader, java.lang.ClassLoader
-        public Class<?> findClass(String str) throws ClassNotFoundException {
-            return super.findClass(str);
-        }
-    }
-
-    private static DelegateClassLoader createDelegateClassLoader(File file, String str, List<String> list, ClassLoader classLoader) {
-        StringBuilder sb = new StringBuilder();
-        boolean z2 = true;
-        for (String str2 : list) {
-            if (z2) {
-                z2 = false;
-            } else {
-                sb.append(File.pathSeparator);
-            }
-            sb.append(str2);
-        }
-        Log.v("IncrementalClassLoader", "Incremental dex path is " + ((Object) sb));
-        Log.v("IncrementalClassLoader", "Native lib dir is " + str);
-        return new DelegateClassLoader(sb.toString(), file, str, classLoader);
-    }
-
-    private static void setParent(ClassLoader classLoader, ClassLoader classLoader2) {
-        try {
-            Field declaredField = ClassLoader.class.getDeclaredField("parent");
-            declaredField.setAccessible(true);
-            declaredField.set(classLoader, classLoader2);
-        } catch (IllegalAccessException e2) {
-            throw new RuntimeException(e2);
-        } catch (IllegalArgumentException e3) {
-            throw new RuntimeException(e3);
-        } catch (NoSuchFieldException e4) {
-            throw new RuntimeException(e4);
-        }
-    }
-
-    public static void inject(ClassLoader classLoader, String str, File file, String str2, List<String> list) {
-        setParent(classLoader, new IncrementalClassLoader(classLoader, str, file, str2, list));
-    }
+public enum PathWalkOption {
+    INCLUDE_DIRECTORIES,
+    BREADTH_FIRST,
+    FOLLOW_LINKS
 }

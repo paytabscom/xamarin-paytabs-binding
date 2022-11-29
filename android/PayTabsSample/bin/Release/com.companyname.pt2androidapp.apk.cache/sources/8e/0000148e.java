@@ -1,31 +1,67 @@
-package kotlinx.coroutines.flow;
+package kotlin;
 
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.jvm.functions.Function3;
-import kotlin.jvm.internal.Ref;
-import kotlinx.coroutines.flow.internal.NullSurrogateKt;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.List;
+import java.util.Objects;
+import kotlin.internal.PlatformImplementationsKt;
+import kotlin.jvm.internal.Intrinsics;
 
-/* compiled from: SafeCollector.common.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0019\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002*\u0001\u0000\b\n\u0018\u00002\b\u0012\u0004\u0012\u00028\u00000\u0001J\u001f\u0010\u0002\u001a\u00020\u00032\f\u0010\u0004\u001a\b\u0012\u0004\u0012\u00028\u00000\u0005H\u0096@ø\u0001\u0000¢\u0006\u0002\u0010\u0006\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\u0007¸\u0006\u0000"}, d2 = {"kotlinx/coroutines/flow/internal/SafeCollector_commonKt$unsafeFlow$1", "Lkotlinx/coroutines/flow/Flow;", "collect", "", "collector", "Lkotlinx/coroutines/flow/FlowCollector;", "(Lkotlinx/coroutines/flow/FlowCollector;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
+/* JADX INFO: Access modifiers changed from: package-private */
+/* compiled from: Exceptions.kt */
+@Metadata(d1 = {"\u00004\n\u0000\n\u0002\u0010\u0011\n\u0002\u0018\u0002\n\u0002\u0010\u0003\n\u0002\b\u0005\n\u0002\u0010 \n\u0002\b\u0004\n\u0002\u0010\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\u001a\u0014\u0010\r\u001a\u00020\u000e*\u00020\u00032\u0006\u0010\u000f\u001a\u00020\u0003H\u0007\u001a\r\u0010\u0010\u001a\u00020\u000e*\u00020\u0003H\u0087\b\u001a\u0015\u0010\u0010\u001a\u00020\u000e*\u00020\u00032\u0006\u0010\u0011\u001a\u00020\u0012H\u0087\b\u001a\u0015\u0010\u0010\u001a\u00020\u000e*\u00020\u00032\u0006\u0010\u0013\u001a\u00020\u0014H\u0087\b\u001a\f\u0010\u0015\u001a\u00020\u0016*\u00020\u0003H\u0007\"!\u0010\u0000\u001a\b\u0012\u0004\u0012\u00020\u00020\u0001*\u00020\u00038F¢\u0006\f\u0012\u0004\b\u0004\u0010\u0005\u001a\u0004\b\u0006\u0010\u0007\"$\u0010\b\u001a\b\u0012\u0004\u0012\u00020\u00030\t*\u00020\u00038FX\u0087\u0004¢\u0006\f\u0012\u0004\b\n\u0010\u0005\u001a\u0004\b\u000b\u0010\f¨\u0006\u0017"}, d2 = {"stackTrace", "", "Ljava/lang/StackTraceElement;", "", "getStackTrace$annotations", "(Ljava/lang/Throwable;)V", "getStackTrace", "(Ljava/lang/Throwable;)[Ljava/lang/StackTraceElement;", "suppressedExceptions", "", "getSuppressedExceptions$annotations", "getSuppressedExceptions", "(Ljava/lang/Throwable;)Ljava/util/List;", "addSuppressed", "", "exception", "printStackTrace", "stream", "Ljava/io/PrintStream;", "writer", "Ljava/io/PrintWriter;", "stackTraceToString", "", "kotlin-stdlib"}, k = 5, mv = {1, 5, 1}, xi = 1, xs = "kotlin/ExceptionsKt")
 /* loaded from: classes.dex */
-public final class FlowKt__TransformKt$runningReduce$$inlined$unsafeFlow$1 implements Flow<T> {
-    final /* synthetic */ Function3 $operation$inlined;
-    final /* synthetic */ Flow $this_runningReduce$inlined;
-
-    public FlowKt__TransformKt$runningReduce$$inlined$unsafeFlow$1(Flow flow, Function3 function3) {
-        this.$this_runningReduce$inlined = flow;
-        this.$operation$inlined = function3;
+public class ExceptionsKt__ExceptionsKt {
+    public static /* synthetic */ void getStackTrace$annotations(Throwable th) {
     }
 
-    /* JADX WARN: Type inference failed for: r1v0, types: [kotlinx.coroutines.internal.Symbol, T] */
-    @Override // kotlinx.coroutines.flow.Flow
-    public Object collect(FlowCollector flowCollector, Continuation continuation) {
-        Ref.ObjectRef objectRef = new Ref.ObjectRef();
-        objectRef.element = NullSurrogateKt.NULL;
-        Object collect = this.$this_runningReduce$inlined.collect(new FlowKt__TransformKt$runningReduce$$inlined$unsafeFlow$1$lambda$1(flowCollector, objectRef, this), continuation);
-        return collect == IntrinsicsKt.getCOROUTINE_SUSPENDED() ? collect : Unit.INSTANCE;
+    public static /* synthetic */ void getSuppressedExceptions$annotations(Throwable th) {
+    }
+
+    private static final void printStackTrace(Throwable th) {
+        Objects.requireNonNull(th, "null cannot be cast to non-null type java.lang.Throwable");
+        th.printStackTrace();
+    }
+
+    private static final void printStackTrace(Throwable th, PrintWriter printWriter) {
+        Objects.requireNonNull(th, "null cannot be cast to non-null type java.lang.Throwable");
+        th.printStackTrace(printWriter);
+    }
+
+    private static final void printStackTrace(Throwable th, PrintStream printStream) {
+        Objects.requireNonNull(th, "null cannot be cast to non-null type java.lang.Throwable");
+        th.printStackTrace(printStream);
+    }
+
+    public static final StackTraceElement[] getStackTrace(Throwable stackTrace) {
+        Intrinsics.checkNotNullParameter(stackTrace, "$this$stackTrace");
+        StackTraceElement[] stackTrace2 = stackTrace.getStackTrace();
+        Intrinsics.checkNotNull(stackTrace2);
+        return stackTrace2;
+    }
+
+    public static final String stackTraceToString(Throwable stackTraceToString) {
+        Intrinsics.checkNotNullParameter(stackTraceToString, "$this$stackTraceToString");
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        stackTraceToString.printStackTrace(printWriter);
+        printWriter.flush();
+        String stringWriter2 = stringWriter.toString();
+        Intrinsics.checkNotNullExpressionValue(stringWriter2, "sw.toString()");
+        return stringWriter2;
+    }
+
+    public static final void addSuppressed(Throwable addSuppressed, Throwable exception) {
+        Intrinsics.checkNotNullParameter(addSuppressed, "$this$addSuppressed");
+        Intrinsics.checkNotNullParameter(exception, "exception");
+        if (addSuppressed != exception) {
+            PlatformImplementationsKt.IMPLEMENTATIONS.addSuppressed(addSuppressed, exception);
+        }
+    }
+
+    public static final List<Throwable> getSuppressedExceptions(Throwable suppressedExceptions) {
+        Intrinsics.checkNotNullParameter(suppressedExceptions, "$this$suppressedExceptions");
+        return PlatformImplementationsKt.IMPLEMENTATIONS.getSuppressed(suppressedExceptions);
     }
 }

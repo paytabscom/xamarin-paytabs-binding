@@ -1,47 +1,49 @@
-package mono.androidx.appcompat.widget;
+package kotlin.ranges;
 
-import android.view.MenuItem;
-import androidx.appcompat.widget.Toolbar;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.NoSuchElementException;
+import kotlin.Metadata;
+import kotlin.collections.IntIterator;
 
+/* compiled from: ProgressionIterators.kt */
+@Metadata(d1 = {"\u0000\u001a\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0005\n\u0002\u0010\u000b\n\u0002\b\u0005\b\u0000\u0018\u00002\u00020\u0001B\u001d\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\u0006\u0010\u0004\u001a\u00020\u0003\u0012\u0006\u0010\u0005\u001a\u00020\u0003¢\u0006\u0002\u0010\u0006J\t\u0010\b\u001a\u00020\tH\u0096\u0002J\b\u0010\r\u001a\u00020\u0003H\u0016R\u000e\u0010\u0007\u001a\u00020\u0003X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\b\u001a\u00020\tX\u0082\u000e¢\u0006\u0002\n\u0000R\u000e\u0010\n\u001a\u00020\u0003X\u0082\u000e¢\u0006\u0002\n\u0000R\u0011\u0010\u0005\u001a\u00020\u0003¢\u0006\b\n\u0000\u001a\u0004\b\u000b\u0010\f¨\u0006\u000e"}, d2 = {"Lkotlin/ranges/IntProgressionIterator;", "Lkotlin/collections/IntIterator;", "first", "", "last", "step", "(III)V", "finalElement", "hasNext", "", "next", "getStep", "()I", "nextInt", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class Toolbar_OnMenuItemClickListenerImplementor implements IGCUserPeer, Toolbar.OnMenuItemClickListener {
-    public static final String __md_methods = "n_onMenuItemClick:(Landroid/view/MenuItem;)Z:GetOnMenuItemClick_Landroid_view_MenuItem_Handler:AndroidX.AppCompat.Widget.Toolbar/IOnMenuItemClickListenerInvoker, Xamarin.AndroidX.AppCompat\n";
-    private ArrayList refList;
+public final class IntProgressionIterator extends IntIterator {
+    private final int finalElement;
+    private boolean hasNext;
+    private int next;
+    private final int step;
 
-    private native boolean n_onMenuItemClick(MenuItem menuItem);
-
-    static {
-        Runtime.register("AndroidX.AppCompat.Widget.Toolbar+IOnMenuItemClickListenerImplementor, Xamarin.AndroidX.AppCompat", Toolbar_OnMenuItemClickListenerImplementor.class, __md_methods);
-    }
-
-    public Toolbar_OnMenuItemClickListenerImplementor() {
-        if (getClass() == Toolbar_OnMenuItemClickListenerImplementor.class) {
-            TypeManager.Activate("AndroidX.AppCompat.Widget.Toolbar+IOnMenuItemClickListenerImplementor, Xamarin.AndroidX.AppCompat", "", this, new Object[0]);
+    public IntProgressionIterator(int i2, int i3, int i4) {
+        this.step = i4;
+        this.finalElement = i3;
+        boolean z2 = true;
+        if (i4 <= 0 ? i2 < i3 : i2 > i3) {
+            z2 = false;
         }
+        this.hasNext = z2;
+        this.next = z2 ? i2 : i3;
     }
 
-    @Override // androidx.appcompat.widget.Toolbar.OnMenuItemClickListener
-    public boolean onMenuItemClick(MenuItem menuItem) {
-        return n_onMenuItemClick(menuItem);
+    public final int getStep() {
+        return this.step;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
+    @Override // java.util.Iterator
+    public boolean hasNext() {
+        return this.hasNext;
+    }
+
+    @Override // kotlin.collections.IntIterator
+    public int nextInt() {
+        int i2 = this.next;
+        if (i2 == this.finalElement) {
+            if (!this.hasNext) {
+                throw new NoSuchElementException();
+            }
+            this.hasNext = false;
+        } else {
+            this.next = this.step + i2;
         }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+        return i2;
     }
 }

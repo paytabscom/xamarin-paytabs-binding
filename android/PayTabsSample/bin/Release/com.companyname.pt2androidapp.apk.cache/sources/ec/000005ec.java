@@ -1,41 +1,32 @@
-package androidx.core.view;
+package androidx.core.os;
 
-import android.view.View;
-import android.view.ViewGroup;
+import android.os.Bundle;
+import android.util.Size;
+import android.util.SizeF;
+import kotlin.Metadata;
+import kotlin.jvm.JvmStatic;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: Bundle.kt */
+@Metadata(d1 = {"\u0000*\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\bÃ\u0002\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J\"\u0010\u0003\u001a\u00020\u00042\u0006\u0010\u0005\u001a\u00020\u00062\u0006\u0010\u0007\u001a\u00020\b2\b\u0010\t\u001a\u0004\u0018\u00010\nH\u0007J\"\u0010\u000b\u001a\u00020\u00042\u0006\u0010\u0005\u001a\u00020\u00062\u0006\u0010\u0007\u001a\u00020\b2\b\u0010\t\u001a\u0004\u0018\u00010\fH\u0007¨\u0006\r"}, d2 = {"Landroidx/core/os/BundleApi21ImplKt;", "", "()V", "putSize", "", "bundle", "Landroid/os/Bundle;", "key", "", "value", "Landroid/util/Size;", "putSizeF", "Landroid/util/SizeF;", "core-ktx_release"}, k = 1, mv = {1, 6, 0}, xi = 48)
 /* loaded from: classes.dex */
-public class NestedScrollingParentHelper {
-    private int mNestedScrollAxesNonTouch;
-    private int mNestedScrollAxesTouch;
+final class BundleApi21ImplKt {
+    public static final BundleApi21ImplKt INSTANCE = new BundleApi21ImplKt();
 
-    public NestedScrollingParentHelper(ViewGroup viewGroup) {
+    private BundleApi21ImplKt() {
     }
 
-    public void onNestedScrollAccepted(View view, View view2, int i2) {
-        onNestedScrollAccepted(view, view2, i2, 0);
+    @JvmStatic
+    public static final void putSize(Bundle bundle, String key, Size size) {
+        Intrinsics.checkNotNullParameter(bundle, "bundle");
+        Intrinsics.checkNotNullParameter(key, "key");
+        bundle.putSize(key, size);
     }
 
-    public void onNestedScrollAccepted(View view, View view2, int i2, int i3) {
-        if (i3 == 1) {
-            this.mNestedScrollAxesNonTouch = i2;
-        } else {
-            this.mNestedScrollAxesTouch = i2;
-        }
-    }
-
-    public int getNestedScrollAxes() {
-        return this.mNestedScrollAxesTouch | this.mNestedScrollAxesNonTouch;
-    }
-
-    public void onStopNestedScroll(View view) {
-        onStopNestedScroll(view, 0);
-    }
-
-    public void onStopNestedScroll(View view, int i2) {
-        if (i2 == 1) {
-            this.mNestedScrollAxesNonTouch = 0;
-        } else {
-            this.mNestedScrollAxesTouch = 0;
-        }
+    @JvmStatic
+    public static final void putSizeF(Bundle bundle, String key, SizeF sizeF) {
+        Intrinsics.checkNotNullParameter(bundle, "bundle");
+        Intrinsics.checkNotNullParameter(key, "key");
+        bundle.putSizeF(key, sizeF);
     }
 }

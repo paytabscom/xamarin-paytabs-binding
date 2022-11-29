@@ -1,148 +1,269 @@
-package androidx.lifecycle;
+package androidx.cursoradapter.widget;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
-import android.os.Build;
-import android.os.Bundle;
+import android.database.ContentObserver;
+import android.database.Cursor;
+import android.database.DataSetObserver;
 import android.os.Handler;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.ReportFragment;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.FilterQueryProvider;
+import android.widget.Filterable;
+import androidx.cursoradapter.widget.CursorFilter;
 
 /* loaded from: classes.dex */
-public class ProcessLifecycleOwner implements LifecycleOwner {
-    static final long TIMEOUT_MS = 700;
-    private static final ProcessLifecycleOwner sInstance = new ProcessLifecycleOwner();
-    private Handler mHandler;
-    private int mStartedCounter = 0;
-    private int mResumedCounter = 0;
-    private boolean mPauseSent = true;
-    private boolean mStopSent = true;
-    private final LifecycleRegistry mRegistry = new LifecycleRegistry(this);
-    private Runnable mDelayedPauseRunnable = new Runnable() { // from class: androidx.lifecycle.ProcessLifecycleOwner.1
-        @Override // java.lang.Runnable
-        public void run() {
-            ProcessLifecycleOwner.this.dispatchPauseIfNeeded();
-            ProcessLifecycleOwner.this.dispatchStopIfNeeded();
-        }
-    };
-    ReportFragment.ActivityInitializationListener mInitializationListener = new ReportFragment.ActivityInitializationListener() { // from class: androidx.lifecycle.ProcessLifecycleOwner.2
-        @Override // androidx.lifecycle.ReportFragment.ActivityInitializationListener
-        public void onCreate() {
-        }
+public abstract class CursorAdapter extends BaseAdapter implements Filterable, CursorFilter.CursorFilterClient {
+    @Deprecated
+    public static final int FLAG_AUTO_REQUERY = 1;
+    public static final int FLAG_REGISTER_CONTENT_OBSERVER = 2;
+    protected boolean mAutoRequery;
+    protected ChangeObserver mChangeObserver;
+    protected Context mContext;
+    protected Cursor mCursor;
+    protected CursorFilter mCursorFilter;
+    protected DataSetObserver mDataSetObserver;
+    protected boolean mDataValid;
+    protected FilterQueryProvider mFilterQueryProvider;
+    protected int mRowIDColumn;
 
-        @Override // androidx.lifecycle.ReportFragment.ActivityInitializationListener
-        public void onStart() {
-            ProcessLifecycleOwner.this.activityStarted();
-        }
+    public abstract void bindView(View view, Context context, Cursor cursor);
 
-        @Override // androidx.lifecycle.ReportFragment.ActivityInitializationListener
-        public void onResume() {
-            ProcessLifecycleOwner.this.activityResumed();
-        }
-    };
-
-    public static LifecycleOwner get() {
-        return sInstance;
+    @Override // android.widget.BaseAdapter, android.widget.Adapter
+    public boolean hasStableIds() {
+        return true;
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public static void init(Context context) {
-        sInstance.attach(context);
+    public abstract View newView(Context context, Cursor cursor, ViewGroup viewGroup);
+
+    @Deprecated
+    public CursorAdapter(Context context, Cursor cursor) {
+        init(context, cursor, 1);
     }
 
-    void activityStarted() {
-        int i2 = this.mStartedCounter + 1;
-        this.mStartedCounter = i2;
-        if (i2 == 1 && this.mStopSent) {
-            this.mRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
-            this.mStopSent = false;
+    public CursorAdapter(Context context, Cursor cursor, boolean z2) {
+        init(context, cursor, z2 ? 1 : 2);
+    }
+
+    public CursorAdapter(Context context, Cursor cursor, int i2) {
+        init(context, cursor, i2);
+    }
+
+    @Deprecated
+    protected void init(Context context, Cursor cursor, boolean z2) {
+        init(context, cursor, z2 ? 1 : 2);
+    }
+
+    void init(Context context, Cursor cursor, int i2) {
+        if ((i2 & 1) == 1) {
+            i2 |= 2;
+            this.mAutoRequery = true;
+        } else {
+            this.mAutoRequery = false;
         }
-    }
-
-    void activityResumed() {
-        int i2 = this.mResumedCounter + 1;
-        this.mResumedCounter = i2;
-        if (i2 == 1) {
-            if (this.mPauseSent) {
-                this.mRegistry.handleLifecycleEvent(Lifecycle.Event.ON_RESUME);
-                this.mPauseSent = false;
-                return;
+        boolean z2 = cursor != null;
+        this.mCursor = cursor;
+        this.mDataValid = z2;
+        this.mContext = context;
+        this.mRowIDColumn = z2 ? cursor.getColumnIndexOrThrow("_id") : -1;
+        if ((i2 & 2) == 2) {
+            this.mChangeObserver = new ChangeObserver();
+            this.mDataSetObserver = new MyDataSetObserver();
+        } else {
+            this.mChangeObserver = null;
+            this.mDataSetObserver = null;
+        }
+        if (z2) {
+            ChangeObserver changeObserver = this.mChangeObserver;
+            if (changeObserver != null) {
+                cursor.registerContentObserver(changeObserver);
             }
-            this.mHandler.removeCallbacks(this.mDelayedPauseRunnable);
+            DataSetObserver dataSetObserver = this.mDataSetObserver;
+            if (dataSetObserver != null) {
+                cursor.registerDataSetObserver(dataSetObserver);
+            }
         }
     }
 
-    void activityPaused() {
-        int i2 = this.mResumedCounter - 1;
-        this.mResumedCounter = i2;
-        if (i2 == 0) {
-            this.mHandler.postDelayed(this.mDelayedPauseRunnable, TIMEOUT_MS);
+    @Override // androidx.cursoradapter.widget.CursorFilter.CursorFilterClient
+    public Cursor getCursor() {
+        return this.mCursor;
+    }
+
+    @Override // android.widget.Adapter
+    public int getCount() {
+        Cursor cursor;
+        if (!this.mDataValid || (cursor = this.mCursor) == null) {
+            return 0;
+        }
+        return cursor.getCount();
+    }
+
+    @Override // android.widget.Adapter
+    public Object getItem(int i2) {
+        Cursor cursor;
+        if (!this.mDataValid || (cursor = this.mCursor) == null) {
+            return null;
+        }
+        cursor.moveToPosition(i2);
+        return this.mCursor;
+    }
+
+    @Override // android.widget.Adapter
+    public long getItemId(int i2) {
+        Cursor cursor;
+        if (this.mDataValid && (cursor = this.mCursor) != null && cursor.moveToPosition(i2)) {
+            return this.mCursor.getLong(this.mRowIDColumn);
+        }
+        return 0L;
+    }
+
+    @Override // android.widget.Adapter
+    public View getView(int i2, View view, ViewGroup viewGroup) {
+        if (!this.mDataValid) {
+            throw new IllegalStateException("this should only be called when the cursor is valid");
+        }
+        if (!this.mCursor.moveToPosition(i2)) {
+            throw new IllegalStateException("couldn't move cursor to position " + i2);
+        }
+        if (view == null) {
+            view = newView(this.mContext, this.mCursor, viewGroup);
+        }
+        bindView(view, this.mContext, this.mCursor);
+        return view;
+    }
+
+    @Override // android.widget.BaseAdapter, android.widget.SpinnerAdapter
+    public View getDropDownView(int i2, View view, ViewGroup viewGroup) {
+        if (this.mDataValid) {
+            this.mCursor.moveToPosition(i2);
+            if (view == null) {
+                view = newDropDownView(this.mContext, this.mCursor, viewGroup);
+            }
+            bindView(view, this.mContext, this.mCursor);
+            return view;
+        }
+        return null;
+    }
+
+    public View newDropDownView(Context context, Cursor cursor, ViewGroup viewGroup) {
+        return newView(context, cursor, viewGroup);
+    }
+
+    public void changeCursor(Cursor cursor) {
+        Cursor swapCursor = swapCursor(cursor);
+        if (swapCursor != null) {
+            swapCursor.close();
         }
     }
 
-    void activityStopped() {
-        this.mStartedCounter--;
-        dispatchStopIfNeeded();
+    public Cursor swapCursor(Cursor cursor) {
+        Cursor cursor2 = this.mCursor;
+        if (cursor == cursor2) {
+            return null;
+        }
+        if (cursor2 != null) {
+            ChangeObserver changeObserver = this.mChangeObserver;
+            if (changeObserver != null) {
+                cursor2.unregisterContentObserver(changeObserver);
+            }
+            DataSetObserver dataSetObserver = this.mDataSetObserver;
+            if (dataSetObserver != null) {
+                cursor2.unregisterDataSetObserver(dataSetObserver);
+            }
+        }
+        this.mCursor = cursor;
+        if (cursor != null) {
+            ChangeObserver changeObserver2 = this.mChangeObserver;
+            if (changeObserver2 != null) {
+                cursor.registerContentObserver(changeObserver2);
+            }
+            DataSetObserver dataSetObserver2 = this.mDataSetObserver;
+            if (dataSetObserver2 != null) {
+                cursor.registerDataSetObserver(dataSetObserver2);
+            }
+            this.mRowIDColumn = cursor.getColumnIndexOrThrow("_id");
+            this.mDataValid = true;
+            notifyDataSetChanged();
+        } else {
+            this.mRowIDColumn = -1;
+            this.mDataValid = false;
+            notifyDataSetInvalidated();
+        }
+        return cursor2;
     }
 
-    void dispatchPauseIfNeeded() {
-        if (this.mResumedCounter == 0) {
-            this.mPauseSent = true;
-            this.mRegistry.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE);
+    public CharSequence convertToString(Cursor cursor) {
+        return cursor == null ? "" : cursor.toString();
+    }
+
+    public Cursor runQueryOnBackgroundThread(CharSequence charSequence) {
+        FilterQueryProvider filterQueryProvider = this.mFilterQueryProvider;
+        if (filterQueryProvider != null) {
+            return filterQueryProvider.runQuery(charSequence);
+        }
+        return this.mCursor;
+    }
+
+    @Override // android.widget.Filterable
+    public Filter getFilter() {
+        if (this.mCursorFilter == null) {
+            this.mCursorFilter = new CursorFilter(this);
+        }
+        return this.mCursorFilter;
+    }
+
+    public FilterQueryProvider getFilterQueryProvider() {
+        return this.mFilterQueryProvider;
+    }
+
+    public void setFilterQueryProvider(FilterQueryProvider filterQueryProvider) {
+        this.mFilterQueryProvider = filterQueryProvider;
+    }
+
+    protected void onContentChanged() {
+        Cursor cursor;
+        if (!this.mAutoRequery || (cursor = this.mCursor) == null || cursor.isClosed()) {
+            return;
+        }
+        this.mDataValid = this.mCursor.requery();
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    /* loaded from: classes.dex */
+    public class ChangeObserver extends ContentObserver {
+        @Override // android.database.ContentObserver
+        public boolean deliverSelfNotifications() {
+            return true;
+        }
+
+        ChangeObserver() {
+            super(new Handler());
+        }
+
+        @Override // android.database.ContentObserver
+        public void onChange(boolean z2) {
+            CursorAdapter.this.onContentChanged();
         }
     }
 
-    void dispatchStopIfNeeded() {
-        if (this.mStartedCounter == 0 && this.mPauseSent) {
-            this.mRegistry.handleLifecycleEvent(Lifecycle.Event.ON_STOP);
-            this.mStopSent = true;
+    /* JADX INFO: Access modifiers changed from: private */
+    /* loaded from: classes.dex */
+    public class MyDataSetObserver extends DataSetObserver {
+        MyDataSetObserver() {
         }
-    }
 
-    private ProcessLifecycleOwner() {
-    }
+        @Override // android.database.DataSetObserver
+        public void onChanged() {
+            CursorAdapter.this.mDataValid = true;
+            CursorAdapter.this.notifyDataSetChanged();
+        }
 
-    void attach(Context context) {
-        this.mHandler = new Handler();
-        this.mRegistry.handleLifecycleEvent(Lifecycle.Event.ON_CREATE);
-        ((Application) context.getApplicationContext()).registerActivityLifecycleCallbacks(new EmptyActivityLifecycleCallbacks() { // from class: androidx.lifecycle.ProcessLifecycleOwner.3
-            @Override // android.app.Application.ActivityLifecycleCallbacks
-            public void onActivityPreCreated(Activity activity, Bundle savedInstanceState) {
-                activity.registerActivityLifecycleCallbacks(new EmptyActivityLifecycleCallbacks() { // from class: androidx.lifecycle.ProcessLifecycleOwner.3.1
-                    @Override // android.app.Application.ActivityLifecycleCallbacks
-                    public void onActivityPostStarted(Activity activity2) {
-                        ProcessLifecycleOwner.this.activityStarted();
-                    }
-
-                    @Override // android.app.Application.ActivityLifecycleCallbacks
-                    public void onActivityPostResumed(Activity activity2) {
-                        ProcessLifecycleOwner.this.activityResumed();
-                    }
-                });
-            }
-
-            @Override // androidx.lifecycle.EmptyActivityLifecycleCallbacks, android.app.Application.ActivityLifecycleCallbacks
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                if (Build.VERSION.SDK_INT < 29) {
-                    ReportFragment.get(activity).setProcessListener(ProcessLifecycleOwner.this.mInitializationListener);
-                }
-            }
-
-            @Override // androidx.lifecycle.EmptyActivityLifecycleCallbacks, android.app.Application.ActivityLifecycleCallbacks
-            public void onActivityPaused(Activity activity) {
-                ProcessLifecycleOwner.this.activityPaused();
-            }
-
-            @Override // androidx.lifecycle.EmptyActivityLifecycleCallbacks, android.app.Application.ActivityLifecycleCallbacks
-            public void onActivityStopped(Activity activity) {
-                ProcessLifecycleOwner.this.activityStopped();
-            }
-        });
-    }
-
-    @Override // androidx.lifecycle.LifecycleOwner
-    public Lifecycle getLifecycle() {
-        return this.mRegistry;
+        @Override // android.database.DataSetObserver
+        public void onInvalidated() {
+            CursorAdapter.this.mDataValid = false;
+            CursorAdapter.this.notifyDataSetInvalidated();
+        }
     }
 }

@@ -1,65 +1,85 @@
-package androidx.activity.result;
+package androidx.activity;
 
-import android.content.Intent;
-import android.os.Parcel;
-import android.os.Parcelable;
+import android.app.Activity;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
+import androidx.lifecycle.LifecycleOwner;
+import java.lang.reflect.Field;
 
 /* loaded from: classes.dex */
-public final class ActivityResult implements Parcelable {
-    public static final Parcelable.Creator<ActivityResult> CREATOR = new Parcelable.Creator<ActivityResult>() { // from class: androidx.activity.result.ActivityResult.1
-        /* JADX WARN: Can't rename method to resolve collision */
-        @Override // android.os.Parcelable.Creator
-        public ActivityResult createFromParcel(Parcel parcel) {
-            return new ActivityResult(parcel);
+final class ImmLeaksCleaner implements LifecycleEventObserver {
+    private static final int INIT_FAILED = 2;
+    private static final int INIT_SUCCESS = 1;
+    private static final int NOT_INITIALIAZED = 0;
+    private static Field sHField;
+    private static Field sNextServedViewField;
+    private static int sReflectedFieldsInitialized;
+    private static Field sServedViewField;
+    private Activity mActivity;
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public ImmLeaksCleaner(Activity activity) {
+        this.mActivity = activity;
+    }
+
+    @Override // androidx.lifecycle.LifecycleEventObserver
+    public void onStateChanged(LifecycleOwner lifecycleOwner, Lifecycle.Event event) {
+        if (event != Lifecycle.Event.ON_DESTROY) {
+            return;
         }
-
-        /* JADX WARN: Can't rename method to resolve collision */
-        @Override // android.os.Parcelable.Creator
-        public ActivityResult[] newArray(int i2) {
-            return new ActivityResult[i2];
+        if (sReflectedFieldsInitialized == 0) {
+            initializeReflectiveFields();
         }
-    };
-    private final Intent mData;
-    private final int mResultCode;
-
-    @Override // android.os.Parcelable
-    public int describeContents() {
-        return 0;
+        if (sReflectedFieldsInitialized == 1) {
+            InputMethodManager inputMethodManager = (InputMethodManager) this.mActivity.getSystemService("input_method");
+            try {
+                Object obj = sHField.get(inputMethodManager);
+                if (obj == null) {
+                    return;
+                }
+                synchronized (obj) {
+                    try {
+                        try {
+                            View view = (View) sServedViewField.get(inputMethodManager);
+                            if (view == null) {
+                                return;
+                            }
+                            if (view.isAttachedToWindow()) {
+                                return;
+                            }
+                            try {
+                                sNextServedViewField.set(inputMethodManager, null);
+                                inputMethodManager.isActive();
+                            } catch (IllegalAccessException unused) {
+                            }
+                        } catch (ClassCastException unused2) {
+                        } catch (IllegalAccessException unused3) {
+                        }
+                    } catch (Throwable th) {
+                        throw th;
+                    }
+                }
+            } catch (IllegalAccessException unused4) {
+            }
+        }
     }
 
-    public ActivityResult(int i2, Intent intent) {
-        this.mResultCode = i2;
-        this.mData = intent;
-    }
-
-    ActivityResult(Parcel parcel) {
-        this.mResultCode = parcel.readInt();
-        this.mData = parcel.readInt() == 0 ? null : (Intent) Intent.CREATOR.createFromParcel(parcel);
-    }
-
-    public int getResultCode() {
-        return this.mResultCode;
-    }
-
-    public Intent getData() {
-        return this.mData;
-    }
-
-    public String toString() {
-        return "ActivityResult{resultCode=" + resultCodeToString(this.mResultCode) + ", data=" + this.mData + '}';
-    }
-
-    public static String resultCodeToString(int i2) {
-        return i2 != -1 ? i2 != 0 ? String.valueOf(i2) : "RESULT_CANCELED" : "RESULT_OK";
-    }
-
-    @Override // android.os.Parcelable
-    public void writeToParcel(Parcel parcel, int i2) {
-        parcel.writeInt(this.mResultCode);
-        parcel.writeInt(this.mData == null ? 0 : 1);
-        Intent intent = this.mData;
-        if (intent != null) {
-            intent.writeToParcel(parcel, i2);
+    private static void initializeReflectiveFields() {
+        try {
+            sReflectedFieldsInitialized = 2;
+            Field declaredField = InputMethodManager.class.getDeclaredField("mServedView");
+            sServedViewField = declaredField;
+            declaredField.setAccessible(true);
+            Field declaredField2 = InputMethodManager.class.getDeclaredField("mNextServedView");
+            sNextServedViewField = declaredField2;
+            declaredField2.setAccessible(true);
+            Field declaredField3 = InputMethodManager.class.getDeclaredField("mH");
+            sHField = declaredField3;
+            declaredField3.setAccessible(true);
+            sReflectedFieldsInitialized = 1;
+        } catch (NoSuchFieldException unused) {
         }
     }
 }

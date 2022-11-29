@@ -1,46 +1,56 @@
-package mono.android.net;
+package kotlin.jvm.internal;
 
-import android.net.ConnectivityManager;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
+import kotlin.collections.BooleanIterator;
+import kotlin.collections.ByteIterator;
+import kotlin.collections.CharIterator;
+import kotlin.collections.DoubleIterator;
+import kotlin.collections.FloatIterator;
+import kotlin.collections.IntIterator;
+import kotlin.collections.LongIterator;
+import kotlin.collections.ShortIterator;
 
+/* compiled from: ArrayIterators.kt */
+@Metadata(d1 = {"\u0000F\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0018\n\u0002\u0018\u0002\n\u0002\u0010\u0012\n\u0002\u0018\u0002\n\u0002\u0010\u0019\n\u0002\u0018\u0002\n\u0002\u0010\u0013\n\u0002\u0018\u0002\n\u0002\u0010\u0014\n\u0002\u0018\u0002\n\u0002\u0010\u0015\n\u0002\u0018\u0002\n\u0002\u0010\u0016\n\u0002\u0018\u0002\n\u0002\u0010\u0017\n\u0000\u001a\u000e\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0003\u001a\u000e\u0010\u0000\u001a\u00020\u00042\u0006\u0010\u0002\u001a\u00020\u0005\u001a\u000e\u0010\u0000\u001a\u00020\u00062\u0006\u0010\u0002\u001a\u00020\u0007\u001a\u000e\u0010\u0000\u001a\u00020\b2\u0006\u0010\u0002\u001a\u00020\t\u001a\u000e\u0010\u0000\u001a\u00020\n2\u0006\u0010\u0002\u001a\u00020\u000b\u001a\u000e\u0010\u0000\u001a\u00020\f2\u0006\u0010\u0002\u001a\u00020\r\u001a\u000e\u0010\u0000\u001a\u00020\u000e2\u0006\u0010\u0002\u001a\u00020\u000f\u001a\u000e\u0010\u0000\u001a\u00020\u00102\u0006\u0010\u0002\u001a\u00020\u0011¨\u0006\u0012"}, d2 = {"iterator", "Lkotlin/collections/BooleanIterator;", "array", "", "Lkotlin/collections/ByteIterator;", "", "Lkotlin/collections/CharIterator;", "", "Lkotlin/collections/DoubleIterator;", "", "Lkotlin/collections/FloatIterator;", "", "Lkotlin/collections/IntIterator;", "", "Lkotlin/collections/LongIterator;", "", "Lkotlin/collections/ShortIterator;", "", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class ConnectivityManager_OnNetworkActiveListenerImplementor implements IGCUserPeer, ConnectivityManager.OnNetworkActiveListener {
-    public static final String __md_methods = "n_onNetworkActive:()V:GetOnNetworkActiveHandler:Android.Net.ConnectivityManager/IOnNetworkActiveListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onNetworkActive();
-
-    static {
-        Runtime.register("Android.Net.ConnectivityManager+IOnNetworkActiveListenerImplementor, Mono.Android", ConnectivityManager_OnNetworkActiveListenerImplementor.class, __md_methods);
+public final class ArrayIteratorsKt {
+    public static final ByteIterator iterator(byte[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        return new ArrayByteIterator(array);
     }
 
-    public ConnectivityManager_OnNetworkActiveListenerImplementor() {
-        if (getClass() == ConnectivityManager_OnNetworkActiveListenerImplementor.class) {
-            TypeManager.Activate("Android.Net.ConnectivityManager+IOnNetworkActiveListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    public static final CharIterator iterator(char[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        return new ArrayCharIterator(array);
     }
 
-    @Override // android.net.ConnectivityManager.OnNetworkActiveListener
-    public void onNetworkActive() {
-        n_onNetworkActive();
+    public static final ShortIterator iterator(short[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        return new ArrayShortIterator(array);
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
+    public static final IntIterator iterator(int[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        return new ArrayIntIterator(array);
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public static final LongIterator iterator(long[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        return new ArrayLongIterator(array);
+    }
+
+    public static final FloatIterator iterator(float[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        return new ArrayFloatIterator(array);
+    }
+
+    public static final DoubleIterator iterator(double[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        return new ArrayDoubleIterator(array);
+    }
+
+    public static final BooleanIterator iterator(boolean[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        return new ArrayBooleanIterator(array);
     }
 }

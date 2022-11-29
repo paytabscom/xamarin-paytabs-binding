@@ -1,47 +1,38 @@
-package mono.android.content;
+package kotlin.io;
 
-import android.content.DialogInterface;
-import android.view.KeyEvent;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.io.File;
+import java.io.IOException;
+import kotlin.Metadata;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function2;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.internal.Lambda;
 
+/* compiled from: Utils.kt */
+@Metadata(d1 = {"\u0000\u0014\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u00032\u0006\u0010\u0004\u001a\u00020\u0005H\n¢\u0006\u0002\b\u0006"}, d2 = {"<anonymous>", "", "f", "Ljava/io/File;", "e", "Ljava/io/IOException;", "invoke"}, k = 3, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class DialogInterface_OnKeyListenerImplementor implements IGCUserPeer, DialogInterface.OnKeyListener {
-    public static final String __md_methods = "n_onKey:(Landroid/content/DialogInterface;ILandroid/view/KeyEvent;)Z:GetOnKey_Landroid_content_DialogInterface_ILandroid_view_KeyEvent_Handler:Android.Content.IDialogInterfaceOnKeyListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+final class FilesKt__UtilsKt$copyRecursively$2 extends Lambda implements Function2<File, IOException, Unit> {
+    final /* synthetic */ Function2 $onError;
 
-    private native boolean n_onKey(DialogInterface dialogInterface, int i2, KeyEvent keyEvent);
-
-    static {
-        Runtime.register("Android.Content.IDialogInterfaceOnKeyListenerImplementor, Mono.Android", DialogInterface_OnKeyListenerImplementor.class, __md_methods);
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public FilesKt__UtilsKt$copyRecursively$2(Function2 function2) {
+        super(2);
+        this.$onError = function2;
     }
 
-    public DialogInterface_OnKeyListenerImplementor() {
-        if (getClass() == DialogInterface_OnKeyListenerImplementor.class) {
-            TypeManager.Activate("Android.Content.IDialogInterfaceOnKeyListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    @Override // kotlin.jvm.functions.Function2
+    public /* bridge */ /* synthetic */ Unit invoke(File file, IOException iOException) {
+        invoke2(file, iOException);
+        return Unit.INSTANCE;
     }
 
-    @Override // android.content.DialogInterface.OnKeyListener
-    public boolean onKey(DialogInterface dialogInterface, int i2, KeyEvent keyEvent) {
-        return n_onKey(dialogInterface, i2, keyEvent);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
+    /* renamed from: invoke  reason: avoid collision after fix types in other method */
+    public final void invoke2(File f2, IOException e2) {
+        Intrinsics.checkNotNullParameter(f2, "f");
+        Intrinsics.checkNotNullParameter(e2, "e");
+        if (((OnErrorAction) this.$onError.invoke(f2, e2)) == OnErrorAction.TERMINATE) {
+            throw new TerminateException(f2);
         }
     }
 }

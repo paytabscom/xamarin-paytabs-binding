@@ -1,47 +1,33 @@
-package mono.android.os;
+package kotlin.jvm.internal;
 
-import android.os.Handler;
-import android.os.Message;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: PrimitiveSpreadBuilders.kt */
+@Metadata(d1 = {"\u0000$\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0014\n\u0000\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u0007\n\u0002\b\u0003\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\r\u0012\u0006\u0010\u0003\u001a\u00020\u0004¢\u0006\u0002\u0010\u0005J\u000e\u0010\u0007\u001a\u00020\b2\u0006\u0010\t\u001a\u00020\nJ\u0006\u0010\u000b\u001a\u00020\u0002J\f\u0010\f\u001a\u00020\u0004*\u00020\u0002H\u0014R\u000e\u0010\u0006\u001a\u00020\u0002X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\r"}, d2 = {"Lkotlin/jvm/internal/FloatSpreadBuilder;", "Lkotlin/jvm/internal/PrimitiveSpreadBuilder;", "", "size", "", "(I)V", "values", "add", "", "value", "", "toArray", "getSize", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class ActionHandlerCallback implements IGCUserPeer, Handler.Callback {
-    public static final String __md_methods = "n_handleMessage:(Landroid/os/Message;)Z:GetHandleMessage_Landroid_os_Message_Handler:Android.OS.Handler/ICallbackInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public final class FloatSpreadBuilder extends PrimitiveSpreadBuilder<float[]> {
+    private final float[] values;
 
-    private native boolean n_handleMessage(Message message);
-
-    static {
-        Runtime.register("Android.OS.ActionHandlerCallback, Mono.Android", ActionHandlerCallback.class, __md_methods);
+    public FloatSpreadBuilder(int i2) {
+        super(i2);
+        this.values = new float[i2];
     }
 
-    public ActionHandlerCallback() {
-        if (getClass() == ActionHandlerCallback.class) {
-            TypeManager.Activate("Android.OS.ActionHandlerCallback, Mono.Android", "", this, new Object[0]);
-        }
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // kotlin.jvm.internal.PrimitiveSpreadBuilder
+    public int getSize(float[] getSize) {
+        Intrinsics.checkNotNullParameter(getSize, "$this$getSize");
+        return getSize.length;
     }
 
-    @Override // android.os.Handler.Callback
-    public boolean handleMessage(Message message) {
-        return n_handleMessage(message);
+    public final void add(float f2) {
+        float[] fArr = this.values;
+        int position = getPosition();
+        setPosition(position + 1);
+        fArr[position] = f2;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public final float[] toArray() {
+        return toArray(this.values, new float[size()]);
     }
 }

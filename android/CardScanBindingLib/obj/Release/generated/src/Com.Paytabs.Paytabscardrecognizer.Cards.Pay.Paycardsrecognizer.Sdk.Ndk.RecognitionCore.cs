@@ -194,7 +194,8 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk']/class[@name='RecognitionCore']/method[@name='setRecognitionMode' and count(parameter)=1 and parameter[1][@type='int']]"
 		[Register ("setRecognitionMode", "(I)V", "")]
-		public unsafe void SetRecognitionMode (int mode)
+		public unsafe void SetRecognitionMode ([global::Android.Runtime.IntDef (Flag = true, Type = "Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk.RecognitionConstants", Fields = new string [] {"RecognizerModeNumber", "RecognizerModeDate", "RecognizerModeName", "RecognizerModeGrabCardImage"})]
+		int mode)
 		{
 			const string __id = "setRecognitionMode.(I)V";
 			try {

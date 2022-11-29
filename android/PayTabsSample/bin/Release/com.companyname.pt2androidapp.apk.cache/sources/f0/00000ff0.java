@@ -1,165 +1,206 @@
-package kotlin.comparisons;
+package com.google.crypto.tink.proto;
 
-import kotlin.Metadata;
-import kotlin.UByte;
-import kotlin.UShort;
-import kotlin.UnsignedKt;
-import kotlin.jvm.internal.Intrinsics;
+import com.google.crypto.tink.shaded.protobuf.ByteString;
+import com.google.crypto.tink.shaded.protobuf.CodedInputStream;
+import com.google.crypto.tink.shaded.protobuf.ExtensionRegistryLite;
+import com.google.crypto.tink.shaded.protobuf.GeneratedMessageLite;
+import com.google.crypto.tink.shaded.protobuf.InvalidProtocolBufferException;
+import com.google.crypto.tink.shaded.protobuf.Parser;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 
-/* JADX INFO: Access modifiers changed from: package-private */
-/* compiled from: _UComparisons.kt */
-@Metadata(d1 = {"\u0000B\n\u0000\n\u0002\u0018\u0002\n\u0002\b\b\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u0010\u001a\"\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u00012\u0006\u0010\u0003\u001a\u00020\u0001H\u0007ø\u0001\u0000¢\u0006\u0004\b\u0004\u0010\u0005\u001a+\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u00012\u0006\u0010\u0003\u001a\u00020\u00012\u0006\u0010\u0006\u001a\u00020\u0001H\u0087\bø\u0001\u0000¢\u0006\u0004\b\u0007\u0010\b\u001a&\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u00012\n\u0010\t\u001a\u00020\n\"\u00020\u0001H\u0007ø\u0001\u0000¢\u0006\u0004\b\u000b\u0010\f\u001a\"\u0010\u0000\u001a\u00020\r2\u0006\u0010\u0002\u001a\u00020\r2\u0006\u0010\u0003\u001a\u00020\rH\u0007ø\u0001\u0000¢\u0006\u0004\b\u000e\u0010\u000f\u001a+\u0010\u0000\u001a\u00020\r2\u0006\u0010\u0002\u001a\u00020\r2\u0006\u0010\u0003\u001a\u00020\r2\u0006\u0010\u0006\u001a\u00020\rH\u0087\bø\u0001\u0000¢\u0006\u0004\b\u0010\u0010\u0011\u001a&\u0010\u0000\u001a\u00020\r2\u0006\u0010\u0002\u001a\u00020\r2\n\u0010\t\u001a\u00020\u0012\"\u00020\rH\u0007ø\u0001\u0000¢\u0006\u0004\b\u0013\u0010\u0014\u001a\"\u0010\u0000\u001a\u00020\u00152\u0006\u0010\u0002\u001a\u00020\u00152\u0006\u0010\u0003\u001a\u00020\u0015H\u0007ø\u0001\u0000¢\u0006\u0004\b\u0016\u0010\u0017\u001a+\u0010\u0000\u001a\u00020\u00152\u0006\u0010\u0002\u001a\u00020\u00152\u0006\u0010\u0003\u001a\u00020\u00152\u0006\u0010\u0006\u001a\u00020\u0015H\u0087\bø\u0001\u0000¢\u0006\u0004\b\u0018\u0010\u0019\u001a&\u0010\u0000\u001a\u00020\u00152\u0006\u0010\u0002\u001a\u00020\u00152\n\u0010\t\u001a\u00020\u001a\"\u00020\u0015H\u0007ø\u0001\u0000¢\u0006\u0004\b\u001b\u0010\u001c\u001a\"\u0010\u0000\u001a\u00020\u001d2\u0006\u0010\u0002\u001a\u00020\u001d2\u0006\u0010\u0003\u001a\u00020\u001dH\u0007ø\u0001\u0000¢\u0006\u0004\b\u001e\u0010\u001f\u001a+\u0010\u0000\u001a\u00020\u001d2\u0006\u0010\u0002\u001a\u00020\u001d2\u0006\u0010\u0003\u001a\u00020\u001d2\u0006\u0010\u0006\u001a\u00020\u001dH\u0087\bø\u0001\u0000¢\u0006\u0004\b \u0010!\u001a&\u0010\u0000\u001a\u00020\u001d2\u0006\u0010\u0002\u001a\u00020\u001d2\n\u0010\t\u001a\u00020\"\"\u00020\u001dH\u0007ø\u0001\u0000¢\u0006\u0004\b#\u0010$\u001a\"\u0010%\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u00012\u0006\u0010\u0003\u001a\u00020\u0001H\u0007ø\u0001\u0000¢\u0006\u0004\b&\u0010\u0005\u001a+\u0010%\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u00012\u0006\u0010\u0003\u001a\u00020\u00012\u0006\u0010\u0006\u001a\u00020\u0001H\u0087\bø\u0001\u0000¢\u0006\u0004\b'\u0010\b\u001a&\u0010%\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u00012\n\u0010\t\u001a\u00020\n\"\u00020\u0001H\u0007ø\u0001\u0000¢\u0006\u0004\b(\u0010\f\u001a\"\u0010%\u001a\u00020\r2\u0006\u0010\u0002\u001a\u00020\r2\u0006\u0010\u0003\u001a\u00020\rH\u0007ø\u0001\u0000¢\u0006\u0004\b)\u0010\u000f\u001a+\u0010%\u001a\u00020\r2\u0006\u0010\u0002\u001a\u00020\r2\u0006\u0010\u0003\u001a\u00020\r2\u0006\u0010\u0006\u001a\u00020\rH\u0087\bø\u0001\u0000¢\u0006\u0004\b*\u0010\u0011\u001a&\u0010%\u001a\u00020\r2\u0006\u0010\u0002\u001a\u00020\r2\n\u0010\t\u001a\u00020\u0012\"\u00020\rH\u0007ø\u0001\u0000¢\u0006\u0004\b+\u0010\u0014\u001a\"\u0010%\u001a\u00020\u00152\u0006\u0010\u0002\u001a\u00020\u00152\u0006\u0010\u0003\u001a\u00020\u0015H\u0007ø\u0001\u0000¢\u0006\u0004\b,\u0010\u0017\u001a+\u0010%\u001a\u00020\u00152\u0006\u0010\u0002\u001a\u00020\u00152\u0006\u0010\u0003\u001a\u00020\u00152\u0006\u0010\u0006\u001a\u00020\u0015H\u0087\bø\u0001\u0000¢\u0006\u0004\b-\u0010\u0019\u001a&\u0010%\u001a\u00020\u00152\u0006\u0010\u0002\u001a\u00020\u00152\n\u0010\t\u001a\u00020\u001a\"\u00020\u0015H\u0007ø\u0001\u0000¢\u0006\u0004\b.\u0010\u001c\u001a\"\u0010%\u001a\u00020\u001d2\u0006\u0010\u0002\u001a\u00020\u001d2\u0006\u0010\u0003\u001a\u00020\u001dH\u0007ø\u0001\u0000¢\u0006\u0004\b/\u0010\u001f\u001a+\u0010%\u001a\u00020\u001d2\u0006\u0010\u0002\u001a\u00020\u001d2\u0006\u0010\u0003\u001a\u00020\u001d2\u0006\u0010\u0006\u001a\u00020\u001dH\u0087\bø\u0001\u0000¢\u0006\u0004\b0\u0010!\u001a&\u0010%\u001a\u00020\u001d2\u0006\u0010\u0002\u001a\u00020\u001d2\n\u0010\t\u001a\u00020\"\"\u00020\u001dH\u0007ø\u0001\u0000¢\u0006\u0004\b1\u0010$\u0082\u0002\u0004\n\u0002\b\u0019¨\u00062"}, d2 = {"maxOf", "Lkotlin/UByte;", "a", "b", "maxOf-Kr8caGY", "(BB)B", "c", "maxOf-b33U2AM", "(BBB)B", "other", "Lkotlin/UByteArray;", "maxOf-Wr6uiD8", "(B[B)B", "Lkotlin/UInt;", "maxOf-J1ME1BU", "(II)I", "maxOf-WZ9TVnA", "(III)I", "Lkotlin/UIntArray;", "maxOf-Md2H83M", "(I[I)I", "Lkotlin/ULong;", "maxOf-eb3DHEI", "(JJ)J", "maxOf-sambcqE", "(JJJ)J", "Lkotlin/ULongArray;", "maxOf-R03FKyM", "(J[J)J", "Lkotlin/UShort;", "maxOf-5PvTz6A", "(SS)S", "maxOf-VKSA0NQ", "(SSS)S", "Lkotlin/UShortArray;", "maxOf-t1qELG4", "(S[S)S", "minOf", "minOf-Kr8caGY", "minOf-b33U2AM", "minOf-Wr6uiD8", "minOf-J1ME1BU", "minOf-WZ9TVnA", "minOf-Md2H83M", "minOf-eb3DHEI", "minOf-sambcqE", "minOf-R03FKyM", "minOf-5PvTz6A", "minOf-VKSA0NQ", "minOf-t1qELG4", "kotlin-stdlib"}, k = 5, mv = {1, 5, 1}, xi = 1, xs = "kotlin/comparisons/UComparisonsKt")
 /* loaded from: classes.dex */
-public class UComparisonsKt___UComparisonsKt {
-    /* renamed from: maxOf-J1ME1BU  reason: not valid java name */
-    public static final int m1185maxOfJ1ME1BU(int i2, int i3) {
-        return UnsignedKt.uintCompare(i2, i3) >= 0 ? i2 : i3;
+public final class AesCtrParams extends GeneratedMessageLite<AesCtrParams, Builder> implements AesCtrParamsOrBuilder {
+    private static final AesCtrParams DEFAULT_INSTANCE;
+    public static final int IV_SIZE_FIELD_NUMBER = 1;
+    private static volatile Parser<AesCtrParams> PARSER;
+    private int ivSize_;
+
+    private AesCtrParams() {
     }
 
-    /* renamed from: maxOf-eb3DHEI  reason: not valid java name */
-    public static final long m1193maxOfeb3DHEI(long j2, long j3) {
-        return UnsignedKt.ulongCompare(j2, j3) >= 0 ? j2 : j3;
+    @Override // com.google.crypto.tink.proto.AesCtrParamsOrBuilder
+    public int getIvSize() {
+        return this.ivSize_;
     }
 
-    /* renamed from: maxOf-Kr8caGY  reason: not valid java name */
-    public static final byte m1186maxOfKr8caGY(byte b2, byte b3) {
-        return Intrinsics.compare(b2 & UByte.MAX_VALUE, b3 & UByte.MAX_VALUE) >= 0 ? b2 : b3;
+    /* JADX INFO: Access modifiers changed from: private */
+    public void setIvSize(int value) {
+        this.ivSize_ = value;
     }
 
-    /* renamed from: maxOf-5PvTz6A  reason: not valid java name */
-    public static final short m1184maxOf5PvTz6A(short s2, short s3) {
-        return Intrinsics.compare(s2 & UShort.MAX_VALUE, 65535 & s3) >= 0 ? s2 : s3;
+    /* JADX INFO: Access modifiers changed from: private */
+    public void clearIvSize() {
+        this.ivSize_ = 0;
     }
 
-    /* renamed from: maxOf-WZ9TVnA  reason: not valid java name */
-    private static final int m1190maxOfWZ9TVnA(int i2, int i3, int i4) {
-        return UComparisonsKt.m1185maxOfJ1ME1BU(i2, UComparisonsKt.m1185maxOfJ1ME1BU(i3, i4));
+    public static AesCtrParams parseFrom(ByteBuffer data) throws InvalidProtocolBufferException {
+        return (AesCtrParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data);
     }
 
-    /* renamed from: maxOf-sambcqE  reason: not valid java name */
-    private static final long m1194maxOfsambcqE(long j2, long j3, long j4) {
-        return UComparisonsKt.m1193maxOfeb3DHEI(j2, UComparisonsKt.m1193maxOfeb3DHEI(j3, j4));
+    public static AesCtrParams parseFrom(ByteBuffer data, ExtensionRegistryLite extensionRegistry) throws InvalidProtocolBufferException {
+        return (AesCtrParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data, extensionRegistry);
     }
 
-    /* renamed from: maxOf-b33U2AM  reason: not valid java name */
-    private static final byte m1192maxOfb33U2AM(byte b2, byte b3, byte b4) {
-        return UComparisonsKt.m1186maxOfKr8caGY(b2, UComparisonsKt.m1186maxOfKr8caGY(b3, b4));
+    public static AesCtrParams parseFrom(ByteString data) throws InvalidProtocolBufferException {
+        return (AesCtrParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data);
     }
 
-    /* renamed from: maxOf-VKSA0NQ  reason: not valid java name */
-    private static final short m1189maxOfVKSA0NQ(short s2, short s3, short s4) {
-        return UComparisonsKt.m1184maxOf5PvTz6A(s2, UComparisonsKt.m1184maxOf5PvTz6A(s3, s4));
+    public static AesCtrParams parseFrom(ByteString data, ExtensionRegistryLite extensionRegistry) throws InvalidProtocolBufferException {
+        return (AesCtrParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data, extensionRegistry);
     }
 
-    /* renamed from: maxOf-Md2H83M  reason: not valid java name */
-    public static final int m1187maxOfMd2H83M(int i2, int... other) {
-        Intrinsics.checkNotNullParameter(other, "other");
-        for (int i3 : other) {
-            i2 = UComparisonsKt.m1185maxOfJ1ME1BU(i2, i3);
+    public static AesCtrParams parseFrom(byte[] data) throws InvalidProtocolBufferException {
+        return (AesCtrParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data);
+    }
+
+    public static AesCtrParams parseFrom(byte[] data, ExtensionRegistryLite extensionRegistry) throws InvalidProtocolBufferException {
+        return (AesCtrParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+
+    public static AesCtrParams parseFrom(InputStream input) throws IOException {
+        return (AesCtrParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static AesCtrParams parseFrom(InputStream input, ExtensionRegistryLite extensionRegistry) throws IOException {
+        return (AesCtrParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static AesCtrParams parseDelimitedFrom(InputStream input) throws IOException {
+        return (AesCtrParams) parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static AesCtrParams parseDelimitedFrom(InputStream input, ExtensionRegistryLite extensionRegistry) throws IOException {
+        return (AesCtrParams) parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static AesCtrParams parseFrom(CodedInputStream input) throws IOException {
+        return (AesCtrParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static AesCtrParams parseFrom(CodedInputStream input, ExtensionRegistryLite extensionRegistry) throws IOException {
+        return (AesCtrParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.createBuilder();
+    }
+
+    public static Builder newBuilder(AesCtrParams prototype) {
+        return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /* loaded from: classes.dex */
+    public static final class Builder extends GeneratedMessageLite.Builder<AesCtrParams, Builder> implements AesCtrParamsOrBuilder {
+        /* synthetic */ Builder(AnonymousClass1 anonymousClass1) {
+            this();
         }
-        return i2;
-    }
 
-    /* renamed from: maxOf-R03FKyM  reason: not valid java name */
-    public static final long m1188maxOfR03FKyM(long j2, long... other) {
-        Intrinsics.checkNotNullParameter(other, "other");
-        for (long j3 : other) {
-            j2 = UComparisonsKt.m1193maxOfeb3DHEI(j2, j3);
+        private Builder() {
+            super(AesCtrParams.DEFAULT_INSTANCE);
         }
-        return j2;
-    }
 
-    /* renamed from: maxOf-Wr6uiD8  reason: not valid java name */
-    public static final byte m1191maxOfWr6uiD8(byte b2, byte... other) {
-        Intrinsics.checkNotNullParameter(other, "other");
-        for (byte b3 : other) {
-            b2 = UComparisonsKt.m1186maxOfKr8caGY(b2, b3);
+        @Override // com.google.crypto.tink.proto.AesCtrParamsOrBuilder
+        public int getIvSize() {
+            return ((AesCtrParams) this.instance).getIvSize();
         }
-        return b2;
-    }
 
-    /* renamed from: maxOf-t1qELG4  reason: not valid java name */
-    public static final short m1195maxOft1qELG4(short s2, short... other) {
-        Intrinsics.checkNotNullParameter(other, "other");
-        for (short s3 : other) {
-            s2 = UComparisonsKt.m1184maxOf5PvTz6A(s2, s3);
+        public Builder setIvSize(int value) {
+            copyOnWrite();
+            ((AesCtrParams) this.instance).setIvSize(value);
+            return this;
         }
-        return s2;
-    }
 
-    /* renamed from: minOf-J1ME1BU  reason: not valid java name */
-    public static final int m1197minOfJ1ME1BU(int i2, int i3) {
-        return UnsignedKt.uintCompare(i2, i3) <= 0 ? i2 : i3;
-    }
-
-    /* renamed from: minOf-eb3DHEI  reason: not valid java name */
-    public static final long m1205minOfeb3DHEI(long j2, long j3) {
-        return UnsignedKt.ulongCompare(j2, j3) <= 0 ? j2 : j3;
-    }
-
-    /* renamed from: minOf-Kr8caGY  reason: not valid java name */
-    public static final byte m1198minOfKr8caGY(byte b2, byte b3) {
-        return Intrinsics.compare(b2 & UByte.MAX_VALUE, b3 & UByte.MAX_VALUE) <= 0 ? b2 : b3;
-    }
-
-    /* renamed from: minOf-5PvTz6A  reason: not valid java name */
-    public static final short m1196minOf5PvTz6A(short s2, short s3) {
-        return Intrinsics.compare(s2 & UShort.MAX_VALUE, 65535 & s3) <= 0 ? s2 : s3;
-    }
-
-    /* renamed from: minOf-WZ9TVnA  reason: not valid java name */
-    private static final int m1202minOfWZ9TVnA(int i2, int i3, int i4) {
-        return UComparisonsKt.m1197minOfJ1ME1BU(i2, UComparisonsKt.m1197minOfJ1ME1BU(i3, i4));
-    }
-
-    /* renamed from: minOf-sambcqE  reason: not valid java name */
-    private static final long m1206minOfsambcqE(long j2, long j3, long j4) {
-        return UComparisonsKt.m1205minOfeb3DHEI(j2, UComparisonsKt.m1205minOfeb3DHEI(j3, j4));
-    }
-
-    /* renamed from: minOf-b33U2AM  reason: not valid java name */
-    private static final byte m1204minOfb33U2AM(byte b2, byte b3, byte b4) {
-        return UComparisonsKt.m1198minOfKr8caGY(b2, UComparisonsKt.m1198minOfKr8caGY(b3, b4));
-    }
-
-    /* renamed from: minOf-VKSA0NQ  reason: not valid java name */
-    private static final short m1201minOfVKSA0NQ(short s2, short s3, short s4) {
-        return UComparisonsKt.m1196minOf5PvTz6A(s2, UComparisonsKt.m1196minOf5PvTz6A(s3, s4));
-    }
-
-    /* renamed from: minOf-Md2H83M  reason: not valid java name */
-    public static final int m1199minOfMd2H83M(int i2, int... other) {
-        Intrinsics.checkNotNullParameter(other, "other");
-        for (int i3 : other) {
-            i2 = UComparisonsKt.m1197minOfJ1ME1BU(i2, i3);
+        public Builder clearIvSize() {
+            copyOnWrite();
+            ((AesCtrParams) this.instance).clearIvSize();
+            return this;
         }
-        return i2;
     }
 
-    /* renamed from: minOf-R03FKyM  reason: not valid java name */
-    public static final long m1200minOfR03FKyM(long j2, long... other) {
-        Intrinsics.checkNotNullParameter(other, "other");
-        for (long j3 : other) {
-            j2 = UComparisonsKt.m1205minOfeb3DHEI(j2, j3);
+    /* renamed from: com.google.crypto.tink.proto.AesCtrParams$1  reason: invalid class name */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke;
+
+        static {
+            int[] iArr = new int[GeneratedMessageLite.MethodToInvoke.values().length];
+            $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke = iArr;
+            try {
+                iArr[GeneratedMessageLite.MethodToInvoke.NEW_MUTABLE_INSTANCE.ordinal()] = 1;
+            } catch (NoSuchFieldError unused) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.NEW_BUILDER.ordinal()] = 2;
+            } catch (NoSuchFieldError unused2) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.BUILD_MESSAGE_INFO.ordinal()] = 3;
+            } catch (NoSuchFieldError unused3) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.GET_DEFAULT_INSTANCE.ordinal()] = 4;
+            } catch (NoSuchFieldError unused4) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.GET_PARSER.ordinal()] = 5;
+            } catch (NoSuchFieldError unused5) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.GET_MEMOIZED_IS_INITIALIZED.ordinal()] = 6;
+            } catch (NoSuchFieldError unused6) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.SET_MEMOIZED_IS_INITIALIZED.ordinal()] = 7;
+            } catch (NoSuchFieldError unused7) {
+            }
         }
-        return j2;
     }
 
-    /* renamed from: minOf-Wr6uiD8  reason: not valid java name */
-    public static final byte m1203minOfWr6uiD8(byte b2, byte... other) {
-        Intrinsics.checkNotNullParameter(other, "other");
-        for (byte b3 : other) {
-            b2 = UComparisonsKt.m1198minOfKr8caGY(b2, b3);
+    @Override // com.google.crypto.tink.shaded.protobuf.GeneratedMessageLite
+    protected final Object dynamicMethod(GeneratedMessageLite.MethodToInvoke method, Object arg0, Object arg1) {
+        switch (AnonymousClass1.$SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[method.ordinal()]) {
+            case 1:
+                return new AesCtrParams();
+            case 2:
+                return new Builder(null);
+            case 3:
+                return newMessageInfo(DEFAULT_INSTANCE, "\u0000\u0001\u0000\u0000\u0001\u0001\u0001\u0000\u0000\u0000\u0001\u000b", new Object[]{"ivSize_"});
+            case 4:
+                return DEFAULT_INSTANCE;
+            case 5:
+                Parser<AesCtrParams> parser = PARSER;
+                if (parser == null) {
+                    synchronized (AesCtrParams.class) {
+                        parser = PARSER;
+                        if (parser == null) {
+                            parser = new GeneratedMessageLite.DefaultInstanceBasedParser<>(DEFAULT_INSTANCE);
+                            PARSER = parser;
+                        }
+                    }
+                }
+                return parser;
+            case 6:
+                return (byte) 1;
+            case 7:
+                return null;
+            default:
+                throw new UnsupportedOperationException();
         }
-        return b2;
     }
 
-    /* renamed from: minOf-t1qELG4  reason: not valid java name */
-    public static final short m1207minOft1qELG4(short s2, short... other) {
-        Intrinsics.checkNotNullParameter(other, "other");
-        for (short s3 : other) {
-            s2 = UComparisonsKt.m1196minOf5PvTz6A(s2, s3);
-        }
-        return s2;
+    static {
+        AesCtrParams aesCtrParams = new AesCtrParams();
+        DEFAULT_INSTANCE = aesCtrParams;
+        GeneratedMessageLite.registerDefaultInstance(AesCtrParams.class, aesCtrParams);
+    }
+
+    public static AesCtrParams getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static Parser<AesCtrParams> parser() {
+        return DEFAULT_INSTANCE.getParserForType();
     }
 }

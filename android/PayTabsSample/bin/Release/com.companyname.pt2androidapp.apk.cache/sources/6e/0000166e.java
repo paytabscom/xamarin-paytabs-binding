@@ -1,46 +1,36 @@
-package mono.android.media.audiofx;
+package kotlin.jvm.internal;
 
-import android.media.audiofx.PresetReverb;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.NoSuchElementException;
+import kotlin.Metadata;
+import kotlin.collections.BooleanIterator;
 
+/* compiled from: ArrayIterators.kt */
+@Metadata(d1 = {"\u0000 \n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0018\n\u0002\b\u0002\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0002\b\u0002\u0018\u00002\u00020\u0001B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0002\u0010\u0004J\t\u0010\u0007\u001a\u00020\bH\u0096\u0002J\b\u0010\t\u001a\u00020\bH\u0016R\u000e\u0010\u0002\u001a\u00020\u0003X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0006X\u0082\u000e¢\u0006\u0002\n\u0000¨\u0006\n"}, d2 = {"Lkotlin/jvm/internal/ArrayBooleanIterator;", "Lkotlin/collections/BooleanIterator;", "array", "", "([Z)V", "index", "", "hasNext", "", "nextBoolean", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class PresetReverb_OnParameterChangeListenerImplementor implements IGCUserPeer, PresetReverb.OnParameterChangeListener {
-    public static final String __md_methods = "n_onParameterChange:(Landroid/media/audiofx/PresetReverb;IIS)V:GetOnParameterChange_Landroid_media_audiofx_PresetReverb_IISHandler:Android.Media.Audiofx.PresetReverb/IOnParameterChangeListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+final class ArrayBooleanIterator extends BooleanIterator {
+    private final boolean[] array;
+    private int index;
 
-    private native void n_onParameterChange(PresetReverb presetReverb, int i2, int i3, short s2);
-
-    static {
-        Runtime.register("Android.Media.Audiofx.PresetReverb+IOnParameterChangeListenerImplementor, Mono.Android", PresetReverb_OnParameterChangeListenerImplementor.class, __md_methods);
+    public ArrayBooleanIterator(boolean[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        this.array = array;
     }
 
-    public PresetReverb_OnParameterChangeListenerImplementor() {
-        if (getClass() == PresetReverb_OnParameterChangeListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.Audiofx.PresetReverb+IOnParameterChangeListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    @Override // java.util.Iterator
+    public boolean hasNext() {
+        return this.index < this.array.length;
     }
 
-    @Override // android.media.audiofx.PresetReverb.OnParameterChangeListener
-    public void onParameterChange(PresetReverb presetReverb, int i2, int i3, short s2) {
-        n_onParameterChange(presetReverb, i2, i3, s2);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
+    @Override // kotlin.collections.BooleanIterator
+    public boolean nextBoolean() {
+        try {
+            boolean[] zArr = this.array;
+            int i2 = this.index;
+            this.index = i2 + 1;
+            return zArr[i2];
+        } catch (ArrayIndexOutOfBoundsException e2) {
+            this.index--;
+            throw new NoSuchElementException(e2.getMessage());
         }
     }
 }

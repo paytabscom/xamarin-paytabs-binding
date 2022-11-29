@@ -1,76 +1,432 @@
-package kotlinx.coroutines.flow;
+package com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera;
 
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.functions.Function3;
-import kotlin.jvm.internal.InlineMarker;
-import kotlinx.coroutines.BuildersKt__Builders_commonKt;
-import kotlinx.coroutines.CoroutineScope;
-import kotlinx.coroutines.Job;
-import kotlinx.coroutines.flow.internal.NopCollector;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.util.Log;
+import android.view.Display;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.View;
+import android.view.WindowManager;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.RenderThread;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.WindowRotationListener;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.widget.CameraPreviewLayout;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.widget.CardDetectionStateView;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.widget.OnWindowFocusChangedListener;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.DisplayConfigurationImpl;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.RecognitionCore;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.RecognitionResult;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.RecognitionStatusListener;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.utils.Constants;
+import java.util.Locale;
 
-/* JADX INFO: Access modifiers changed from: package-private */
-/* compiled from: Collect.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000F\n\u0000\n\u0002\u0010\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0010\b\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\u001a\u0019\u0010\u0000\u001a\u00020\u0001*\u0006\u0012\u0002\b\u00030\u0002H\u0086@ø\u0001\u0000¢\u0006\u0002\u0010\u0003\u001aV\u0010\u0000\u001a\u00020\u0001\"\u0004\b\u0000\u0010\u0004*\b\u0012\u0004\u0012\u0002H\u00040\u000223\b\u0004\u0010\u0005\u001a-\b\u0001\u0012\u0013\u0012\u0011H\u0004¢\u0006\f\b\u0007\u0012\b\b\b\u0012\u0004\b\b(\t\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00010\n\u0012\u0006\u0012\u0004\u0018\u00010\u000b0\u0006H\u0086Hø\u0001\u0000¢\u0006\u0002\u0010\f\u001ak\u0010\r\u001a\u00020\u0001\"\u0004\b\u0000\u0010\u0004*\b\u0012\u0004\u0012\u0002H\u00040\u00022H\b\u0004\u0010\u0005\u001aB\b\u0001\u0012\u0013\u0012\u00110\u000f¢\u0006\f\b\u0007\u0012\b\b\b\u0012\u0004\b\b(\u0010\u0012\u0013\u0012\u0011H\u0004¢\u0006\f\b\u0007\u0012\b\b\b\u0012\u0004\b\b(\t\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00010\n\u0012\u0006\u0012\u0004\u0018\u00010\u000b0\u000eH\u0086Hø\u0001\u0000¢\u0006\u0002\u0010\u0011\u001aT\u0010\u0012\u001a\u00020\u0001\"\u0004\b\u0000\u0010\u0004*\b\u0012\u0004\u0012\u0002H\u00040\u000221\u0010\u0005\u001a-\b\u0001\u0012\u0013\u0012\u0011H\u0004¢\u0006\f\b\u0007\u0012\b\b\b\u0012\u0004\b\b(\t\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00010\n\u0012\u0006\u0012\u0004\u0018\u00010\u000b0\u0006H\u0086@ø\u0001\u0000¢\u0006\u0002\u0010\f\u001a/\u0010\u0013\u001a\u00020\u0001\"\u0004\b\u0000\u0010\u0004*\b\u0012\u0004\u0012\u0002H\u00040\u00142\f\u0010\u0015\u001a\b\u0012\u0004\u0012\u0002H\u00040\u0002H\u0087Hø\u0001\u0000¢\u0006\u0002\u0010\u0016\u001a\u001e\u0010\u0017\u001a\u00020\u0018\"\u0004\b\u0000\u0010\u0004*\b\u0012\u0004\u0012\u0002H\u00040\u00022\u0006\u0010\u0019\u001a\u00020\u001a\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\u001b"}, d2 = {"collect", "", "Lkotlinx/coroutines/flow/Flow;", "(Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "T", "action", "Lkotlin/Function2;", "Lkotlin/ParameterName;", "name", "value", "Lkotlin/coroutines/Continuation;", "", "(Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "collectIndexed", "Lkotlin/Function3;", "", "index", "(Lkotlinx/coroutines/flow/Flow;Lkotlin/jvm/functions/Function3;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "collectLatest", "emitAll", "Lkotlinx/coroutines/flow/FlowCollector;", "flow", "(Lkotlinx/coroutines/flow/FlowCollector;Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "launchIn", "Lkotlinx/coroutines/Job;", "scope", "Lkotlinx/coroutines/CoroutineScope;", "kotlinx-coroutines-core"}, k = 5, mv = {1, 4, 2}, xs = "kotlinx/coroutines/flow/FlowKt")
 /* loaded from: classes.dex */
-public final /* synthetic */ class FlowKt__CollectKt {
-    public static final Object collect(Flow<?> flow, Continuation<? super Unit> continuation) {
-        Object collect = flow.collect(NopCollector.INSTANCE, continuation);
-        return collect == IntrinsicsKt.getCOROUTINE_SUSPENDED() ? collect : Unit.INSTANCE;
+public final class ScanManager {
+    private static final boolean DBG = Constants.DEBUG;
+    private static final int DEFAULT_RECOGNITION_MODE = 15;
+    private static final String TAG = "ScanManager";
+    private static SurfaceHolder sSurfaceHolder;
+    private final Context mAppContext;
+    private final Callbacks mCallbacks;
+    private final DisplayConfigurationImpl mDisplayConfiguration;
+    private ScanManagerHandler mHandler;
+    private CameraPreviewLayout mPreviewLayout;
+    private RecognitionCore mRecognitionCore;
+    private final int mRecognitionMode;
+    private final RecognitionStatusListener mRecognitionStatusListener;
+    private RenderThread mRenderThread;
+    private final SensorEventListener mShakeEventListener;
+    private final WindowRotationListener mWindowRotationListener;
+
+    /* loaded from: classes.dex */
+    public interface Callbacks {
+        void onAutoFocusComplete(boolean z2, String str);
+
+        void onAutoFocusMoving(boolean z2, String str);
+
+        void onCameraOpened(Camera.Parameters parameters);
+
+        void onCardImageReceived(Bitmap bitmap);
+
+        void onFpsReport(String str);
+
+        void onOpenCameraError(Exception exc);
+
+        void onRecognitionComplete(RecognitionResult recognitionResult);
     }
 
-    public static final <T> Job launchIn(Flow<? extends T> flow, CoroutineScope coroutineScope) {
-        Job launch$default;
-        launch$default = BuildersKt__Builders_commonKt.launch$default(coroutineScope, null, null, new FlowKt__CollectKt$launchIn$1(flow, null), 3, null);
-        return launch$default;
+    public ScanManager(Context context, CameraPreviewLayout cameraPreviewLayout, Callbacks callbacks) {
+        this(15, context, cameraPreviewLayout, callbacks);
     }
 
-    public static final <T> Object collect(Flow<? extends T> flow, Function2<? super T, ? super Continuation<? super Unit>, ? extends Object> function2, Continuation<? super Unit> continuation) {
-        Object collect = flow.collect(new FlowKt__CollectKt$collect$3(function2), continuation);
-        return collect == IntrinsicsKt.getCOROUTINE_SUSPENDED() ? collect : Unit.INSTANCE;
+    public ScanManager(int i2, Context context, CameraPreviewLayout cameraPreviewLayout, Callbacks callbacks) throws RuntimeException {
+        this.mRecognitionStatusListener = new RecognitionStatusListener() { // from class: com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.ScanManager.4
+            private long mRecognitionCompleteTs;
+
+            @Override // com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.RecognitionStatusListener
+            public void onRecognitionComplete(RecognitionResult recognitionResult) {
+                ScanManager.this.getCardDetectionStateView().setRecognitionResult(recognitionResult);
+                if (recognitionResult.isFirst()) {
+                    if (ScanManager.this.mRenderThread != null) {
+                        ScanManager.this.mRenderThread.getHandler().sendPauseProcessFrames();
+                    }
+                    ScanManager.this.getCardDetectionStateView().setDetectionState(15);
+                    if (ScanManager.DBG) {
+                        this.mRecognitionCompleteTs = System.nanoTime();
+                    }
+                }
+                if (recognitionResult.isFinal()) {
+                    long nanoTime = System.nanoTime();
+                    if (ScanManager.DBG) {
+                        Log.v(ScanManager.TAG, String.format(Locale.US, "Final result received after %.3f ms", Float.valueOf(((float) (nanoTime - this.mRecognitionCompleteTs)) / 1000000.0f)));
+                    }
+                }
+                ScanManager.this.mCallbacks.onRecognitionComplete(recognitionResult);
+            }
+
+            @Override // com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.RecognitionStatusListener
+            public void onCardImageReceived(Bitmap bitmap) {
+                if (ScanManager.DBG) {
+                    Log.v(ScanManager.TAG, String.format(Locale.US, "Card image received after %.3f ms", Float.valueOf(((float) (System.nanoTime() - this.mRecognitionCompleteTs)) / 1000000.0f)));
+                }
+                ScanManager.this.mCallbacks.onCardImageReceived(bitmap);
+            }
+        };
+        this.mShakeEventListener = new SensorEventListener() { // from class: com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.ScanManager.5
+            private static final double SHAKE_THRESHOLD = 3.3d;
+            public double[] gravity = new double[3];
+            long lastUpdate;
+
+            @Override // android.hardware.SensorEventListener
+            public void onAccuracyChanged(Sensor sensor, int i3) {
+            }
+
+            @Override // android.hardware.SensorEventListener
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                long currentTimeMillis = System.currentTimeMillis();
+                if (500 < currentTimeMillis - this.lastUpdate) {
+                    this.lastUpdate = currentTimeMillis;
+                    double[] dArr = this.gravity;
+                    dArr[0] = (dArr[0] * 0.800000011920929d) + (sensorEvent.values[0] * 0.19999999f);
+                    double[] dArr2 = this.gravity;
+                    dArr2[1] = (dArr2[1] * 0.800000011920929d) + (sensorEvent.values[1] * 0.19999999f);
+                    double[] dArr3 = this.gravity;
+                    dArr3[2] = (dArr3[2] * 0.800000011920929d) + (sensorEvent.values[2] * 0.19999999f);
+                    double d2 = sensorEvent.values[0] - this.gravity[0];
+                    double d3 = sensorEvent.values[1] - this.gravity[1];
+                    double d4 = sensorEvent.values[2] - this.gravity[2];
+                    if (SHAKE_THRESHOLD >= Math.sqrt((d2 * d2) + (d3 * d3) + (d4 * d4)) || ScanManager.this.mRenderThread == null) {
+                        return;
+                    }
+                    if (ScanManager.DBG) {
+                        Log.d(ScanManager.TAG, "shake focus request");
+                    }
+                    ScanManager.this.mRenderThread.getHandler().sendRequestFocus();
+                }
+            }
+        };
+        this.mRecognitionMode = i2 == 0 ? 15 : i2;
+        Context applicationContext = context.getApplicationContext();
+        this.mAppContext = applicationContext;
+        this.mCallbacks = callbacks;
+        this.mPreviewLayout = cameraPreviewLayout;
+        this.mRecognitionCore = RecognitionCore.getInstance(applicationContext);
+        this.mHandler = new ScanManagerHandler(this);
+        Display display = getDisplay();
+        DisplayConfigurationImpl displayConfigurationImpl = new DisplayConfigurationImpl();
+        this.mDisplayConfiguration = displayConfigurationImpl;
+        displayConfigurationImpl.setCameraParameters(CameraUtils.getBackCameraSensorOrientation());
+        displayConfigurationImpl.setDisplayParameters(display);
+        this.mRecognitionCore.setDisplayConfiguration(displayConfigurationImpl);
+        getSurfaceView().getHolder().addCallback(new SurfaceHolder.Callback() { // from class: com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.ScanManager.1
+            @Override // android.view.SurfaceHolder.Callback
+            public void surfaceCreated(SurfaceHolder surfaceHolder) {
+                if (ScanManager.DBG) {
+                    Log.d(ScanManager.TAG, "SurfaceView  surfaceCreated holder=" + surfaceHolder + " (static=" + ScanManager.sSurfaceHolder + ")");
+                }
+                if (ScanManager.sSurfaceHolder == null) {
+                    SurfaceHolder unused = ScanManager.sSurfaceHolder = surfaceHolder;
+                    if (ScanManager.this.mRenderThread == null) {
+                        if (ScanManager.DBG) {
+                            Log.d(ScanManager.TAG, "render thread not running");
+                            return;
+                        }
+                        return;
+                    }
+                    ScanManager.this.mRenderThread.getHandler().sendSurfaceAvailable(surfaceHolder, true);
+                    return;
+                }
+                throw new RuntimeException("sSurfaceHolder is already set");
+            }
+
+            @Override // android.view.SurfaceHolder.Callback
+            public void surfaceChanged(SurfaceHolder surfaceHolder, int i3, int i4, int i5) {
+                if (ScanManager.DBG) {
+                    Log.d(ScanManager.TAG, "SurfaceView surfaceChanged fmt=" + i3 + " size=" + i4 + "x" + i5 + " holder=" + surfaceHolder);
+                }
+                if (ScanManager.this.mRenderThread == null) {
+                    if (ScanManager.DBG) {
+                        Log.d(ScanManager.TAG, "Ignoring surfaceChanged");
+                        return;
+                    }
+                    return;
+                }
+                ScanManager.this.mRenderThread.getHandler().sendSurfaceChanged(i3, i4, i5);
+            }
+
+            @Override // android.view.SurfaceHolder.Callback
+            public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+                if (ScanManager.this.mRenderThread != null) {
+                    ScanManager.this.mRenderThread.getHandler().sendSurfaceDestroyed();
+                }
+                if (ScanManager.DBG) {
+                    Log.d(ScanManager.TAG, "SurfaceView surfaceDestroyed holder=" + surfaceHolder);
+                }
+                SurfaceHolder unused = ScanManager.sSurfaceHolder = null;
+            }
+        });
+        this.mWindowRotationListener = new WindowRotationListener();
     }
 
-    private static final Object collect$$forInline(Flow flow, Function2 function2, Continuation continuation) {
-        InlineMarker.mark(0);
-        Object collect = flow.collect(new FlowKt__CollectKt$collect$3(function2), continuation);
-        InlineMarker.mark(2);
-        InlineMarker.mark(1);
-        return collect;
+    public void onResume() {
+        boolean z2 = DBG;
+        if (z2) {
+            Log.d(TAG, "onResume()");
+        }
+        RenderThread renderThread = new RenderThread(this.mAppContext, this.mHandler);
+        this.mRenderThread = renderThread;
+        renderThread.setName("Camera thread");
+        this.mRenderThread.start();
+        this.mRenderThread.waitUntilReady();
+        RenderThread.RenderHandler handler = this.mRenderThread.getHandler();
+        if (sSurfaceHolder != null) {
+            if (z2) {
+                Log.d(TAG, "Sending previous surface");
+            }
+            handler.sendSurfaceAvailable(sSurfaceHolder, false);
+        } else if (z2) {
+            Log.d(TAG, "No previous surface");
+        }
+        this.mDisplayConfiguration.setCameraParameters(CameraUtils.getBackCameraSensorOrientation());
+        this.mRecognitionCore.setRecognitionMode(this.mRecognitionMode);
+        this.mRecognitionCore.setStatusListener(this.mRecognitionStatusListener);
+        this.mRecognitionCore.resetResult();
+        RenderThread.RenderHandler handler2 = this.mRenderThread.getHandler();
+        handler2.sendOrientationChanged(CameraUtils.getBackCameraDataRotation(getDisplay()));
+        handler2.sendUnfreeze();
+        this.mPreviewLayout.setOnWindowFocusChangedListener(new OnWindowFocusChangedListener() { // from class: com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.ScanManager.2
+            @Override // com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.widget.OnWindowFocusChangedListener
+            public void onWindowFocusChanged(View view, boolean z3) {
+                if (z3) {
+                    ScanManager.this.setRecognitionCoreIdle(false);
+                } else {
+                    ScanManager.this.setRecognitionCoreIdle(true);
+                }
+            }
+        });
+        startShakeDetector();
+        this.mWindowRotationListener.register(this.mAppContext, getDisplay(), new WindowRotationListener.RotationListener() { // from class: com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.ScanManager.3
+            @Override // com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.WindowRotationListener.RotationListener
+            public void onWindowRotationChanged() {
+                ScanManager.this.refreshDisplayOrientation();
+            }
+        });
+        getCardDetectionStateView().setRecognitionResult(RecognitionResult.empty());
+        setRecognitionCoreIdle(false);
     }
 
-    public static final <T> Object collectIndexed(Flow<? extends T> flow, Function3<? super Integer, ? super T, ? super Continuation<? super Unit>, ? extends Object> function3, Continuation<? super Unit> continuation) {
-        Object collect = flow.collect(new FlowKt__CollectKt$collectIndexed$2(function3), continuation);
-        return collect == IntrinsicsKt.getCOROUTINE_SUSPENDED() ? collect : Unit.INSTANCE;
+    public void onPause() {
+        if (DBG) {
+            Log.d(TAG, "onPause()");
+        }
+        setRecognitionCoreIdle(true);
+        stopShakeDetector();
+        this.mPreviewLayout.setOnWindowFocusChangedListener(null);
+        this.mRecognitionCore.setStatusListener(null);
+        RenderThread renderThread = this.mRenderThread;
+        if (renderThread != null) {
+            renderThread.getHandler().sendShutdown();
+            try {
+                this.mRenderThread.join();
+            } catch (InterruptedException e2) {
+                Callbacks callbacks = this.mCallbacks;
+                if (callbacks != null) {
+                    callbacks.onOpenCameraError(e2);
+                }
+            }
+            this.mRenderThread = null;
+        }
+        this.mWindowRotationListener.unregister();
     }
 
-    private static final Object collectIndexed$$forInline(Flow flow, Function3 function3, Continuation continuation) {
-        InlineMarker.mark(0);
-        Object collect = flow.collect(new FlowKt__CollectKt$collectIndexed$2(function3), continuation);
-        InlineMarker.mark(2);
-        InlineMarker.mark(1);
-        return collect;
+    public void resumeScan() {
+        setRecognitionCoreIdle(false);
     }
 
-    public static final <T> Object collectLatest(Flow<? extends T> flow, Function2<? super T, ? super Continuation<? super Unit>, ? extends Object> function2, Continuation<? super Unit> continuation) {
-        Flow buffer$default;
-        buffer$default = FlowKt__ContextKt.buffer$default(FlowKt.mapLatest(flow, function2), 0, null, 2, null);
-        Object collect = FlowKt.collect(buffer$default, continuation);
-        return collect == IntrinsicsKt.getCOROUTINE_SUSPENDED() ? collect : Unit.INSTANCE;
+    public void toggleFlash() {
+        RenderThread renderThread = this.mRenderThread;
+        if (renderThread == null) {
+            return;
+        }
+        renderThread.getHandler().sendToggleFlash();
     }
 
-    public static final <T> Object emitAll(FlowCollector<? super T> flowCollector, Flow<? extends T> flow, Continuation<? super Unit> continuation) {
-        Object collect = flow.collect(flowCollector, continuation);
-        return collect == IntrinsicsKt.getCOROUTINE_SUSPENDED() ? collect : Unit.INSTANCE;
+    private SurfaceView getSurfaceView() {
+        return this.mPreviewLayout.getSurfaceView();
     }
 
-    private static final Object emitAll$$forInline(FlowCollector flowCollector, Flow flow, Continuation continuation) {
-        InlineMarker.mark(0);
-        Object collect = flow.collect(flowCollector, continuation);
-        InlineMarker.mark(2);
-        InlineMarker.mark(1);
-        return collect;
+    /* JADX INFO: Access modifiers changed from: private */
+    public CardDetectionStateView getCardDetectionStateView() {
+        return this.mPreviewLayout.getDetectionStateOverlay();
+    }
+
+    private Display getDisplay() {
+        return ((WindowManager) this.mAppContext.getSystemService("window")).getDefaultDisplay();
+    }
+
+    public void resetResult() {
+        if (DBG) {
+            Log.d(TAG, "resetResult()");
+        }
+        this.mRecognitionCore.resetResult();
+        RenderThread renderThread = this.mRenderThread;
+        if (renderThread != null) {
+            renderThread.getHandler().sendResumeProcessFrames();
+        }
+        unfreezeCameraPreview();
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void refreshDisplayOrientation() {
+        if (DBG) {
+            Log.d(TAG, "refreshDisplayOrientation()");
+        }
+        Display display = getDisplay();
+        this.mDisplayConfiguration.setDisplayParameters(display);
+        this.mRecognitionCore.setDisplayConfiguration(this.mDisplayConfiguration);
+        if (this.mRenderThread != null) {
+            this.mRenderThread.getHandler().sendOrientationChanged(CameraUtils.getBackCameraDataRotation(display));
+        }
+    }
+
+    public void setRecognitionCoreIdle(boolean z2) {
+        if (DBG) {
+            Log.d(TAG, "setRecognitionCoreIdle() called with: idle = [" + z2 + "]");
+        }
+        this.mRecognitionCore.setIdle(z2);
+        RenderThread renderThread = this.mRenderThread;
+        if (renderThread != null) {
+            if (z2) {
+                renderThread.getHandler().sendPauseCamera();
+            } else {
+                renderThread.getHandler().sendResumeCamera();
+            }
+        }
+    }
+
+    private void setupCardDetectionCameraParameters(int i2, int i3) {
+        this.mPreviewLayout.setCameraParameters(i2, i3, CameraUtils.getBackCameraDataRotation(getDisplay()), OrientationHelper.rotateRect(this.mRecognitionCore.getCardFrameRect(), CameraUtils.CAMERA_RESOLUTION.size.height, CameraUtils.CAMERA_RESOLUTION.size.width, 90, null));
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public void onCameraOpened(Camera.Parameters parameters) {
+        Camera.Size previewSize = parameters.getPreviewSize();
+        setupCardDetectionCameraParameters(previewSize.width, previewSize.height);
+        Callbacks callbacks = this.mCallbacks;
+        if (callbacks != null) {
+            callbacks.onCameraOpened(parameters);
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public void onOpenCameraError(Exception exc) {
+        if (DBG) {
+            Log.d(TAG, "onOpenCameraError() called with: e = [" + exc + "]");
+        }
+        Callbacks callbacks = this.mCallbacks;
+        if (callbacks != null) {
+            callbacks.onOpenCameraError(exc);
+        }
+        this.mRenderThread = null;
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public void onRenderThreadError(Throwable th) {
+        if (DBG) {
+            Log.d(TAG, "onRenderThreadError() called with: e = [" + th + "]");
+        }
+        Callbacks callbacks = this.mCallbacks;
+        if (callbacks != null) {
+            callbacks.onOpenCameraError((Exception) th);
+        }
+        this.mRenderThread = null;
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public void onFrameProcessed(int i2) {
+        if (this.mCallbacks != null) {
+            this.mPreviewLayout.getDetectionStateOverlay().setDetectionState(i2);
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public void onFpsReport(String str) {
+        Callbacks callbacks = this.mCallbacks;
+        if (callbacks != null) {
+            callbacks.onFpsReport(str);
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public void onAutoFocusMoving(boolean z2, String str) {
+        Callbacks callbacks = this.mCallbacks;
+        if (callbacks != null) {
+            callbacks.onAutoFocusMoving(z2, str);
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public void onAutoFocusComplete(boolean z2, String str) {
+        Callbacks callbacks = this.mCallbacks;
+        if (callbacks != null) {
+            callbacks.onAutoFocusComplete(z2, str);
+        }
+    }
+
+    public void freezeCameraPreview() {
+        if (DBG) {
+            Log.d(TAG, "freezeCameraPreview() called with: ");
+        }
+        RenderThread renderThread = this.mRenderThread;
+        if (renderThread != null) {
+            renderThread.getHandler().sendFreeze();
+        }
+    }
+
+    public void unfreezeCameraPreview() {
+        if (DBG) {
+            Log.d(TAG, "unfreezeCameraPreview() called with: ");
+        }
+        RenderThread renderThread = this.mRenderThread;
+        if (renderThread != null) {
+            renderThread.getHandler().sendUnfreeze();
+        }
+    }
+
+    private void startShakeDetector() {
+        SensorManager sensorManager = (SensorManager) this.mAppContext.getSystemService("sensor");
+        Sensor defaultSensor = sensorManager.getDefaultSensor(1);
+        if (defaultSensor != null) {
+            sensorManager.registerListener(this.mShakeEventListener, defaultSensor, 1);
+        }
+    }
+
+    private void stopShakeDetector() {
+        ((SensorManager) this.mAppContext.getSystemService("sensor")).unregisterListener(this.mShakeEventListener);
     }
 }

@@ -1,46 +1,12 @@
-package mono.android.preference;
+package kotlin.jvm.internal;
 
-import android.preference.PreferenceManager;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.lang.reflect.Type;
+import kotlin.Metadata;
+import kotlin.reflect.KType;
 
+/* compiled from: KTypeBase.kt */
+@Metadata(d1 = {"\u0000\u0012\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\bg\u0018\u00002\u00020\u0001R\u0014\u0010\u0002\u001a\u0004\u0018\u00010\u0003X¦\u0004¢\u0006\u0006\u001a\u0004\b\u0004\u0010\u0005¨\u0006\u0006"}, d2 = {"Lkotlin/jvm/internal/KTypeBase;", "Lkotlin/reflect/KType;", "javaType", "Ljava/lang/reflect/Type;", "getJavaType", "()Ljava/lang/reflect/Type;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class PreferenceManager_OnActivityStopListenerImplementor implements IGCUserPeer, PreferenceManager.OnActivityStopListener {
-    public static final String __md_methods = "n_onActivityStop:()V:GetOnActivityStopHandler:Android.Preferences.PreferenceManager/IOnActivityStopListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onActivityStop();
-
-    static {
-        Runtime.register("Android.Preferences.PreferenceManager+IOnActivityStopListenerImplementor, Mono.Android", PreferenceManager_OnActivityStopListenerImplementor.class, __md_methods);
-    }
-
-    public PreferenceManager_OnActivityStopListenerImplementor() {
-        if (getClass() == PreferenceManager_OnActivityStopListenerImplementor.class) {
-            TypeManager.Activate("Android.Preferences.PreferenceManager+IOnActivityStopListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.preference.PreferenceManager.OnActivityStopListener
-    public void onActivityStop() {
-        n_onActivityStop();
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public interface KTypeBase extends KType {
+    Type getJavaType();
 }

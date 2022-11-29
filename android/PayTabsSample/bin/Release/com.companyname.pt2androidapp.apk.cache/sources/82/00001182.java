@@ -1,30 +1,104 @@
-package kotlin.sequences;
+package com.google.crypto.tink.shaded.protobuf;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.util.Iterator;
-import kotlin.Metadata;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.internal.Intrinsics;
+import kotlin.UByte;
 
-/* compiled from: Sequences.kt */
-@Metadata(d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010(\n\u0000\b\u0000\u0018\u0000*\u0004\b\u0000\u0010\u0001*\u0004\b\u0001\u0010\u0002*\u0004\b\u0002\u0010\u00032\b\u0012\u0004\u0012\u0002H\u00030\u0004B;\u0012\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u00028\u00000\u0004\u0012\f\u0010\u0006\u001a\b\u0012\u0004\u0012\u00028\u00010\u0004\u0012\u0018\u0010\u0007\u001a\u0014\u0012\u0004\u0012\u00028\u0000\u0012\u0004\u0012\u00028\u0001\u0012\u0004\u0012\u00028\u00020\b¢\u0006\u0002\u0010\tJ\u000f\u0010\n\u001a\b\u0012\u0004\u0012\u00028\u00020\u000bH\u0096\u0002R\u0014\u0010\u0005\u001a\b\u0012\u0004\u0012\u00028\u00000\u0004X\u0082\u0004¢\u0006\u0002\n\u0000R\u0014\u0010\u0006\u001a\b\u0012\u0004\u0012\u00028\u00010\u0004X\u0082\u0004¢\u0006\u0002\n\u0000R \u0010\u0007\u001a\u0014\u0012\u0004\u0012\u00028\u0000\u0012\u0004\u0012\u00028\u0001\u0012\u0004\u0012\u00028\u00020\bX\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\f"}, d2 = {"Lkotlin/sequences/MergingSequence;", "T1", "T2", "V", "Lkotlin/sequences/Sequence;", "sequence1", "sequence2", "transform", "Lkotlin/Function2;", "(Lkotlin/sequences/Sequence;Lkotlin/sequences/Sequence;Lkotlin/jvm/functions/Function2;)V", "iterator", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-public final class MergingSequence<T1, T2, V> implements Sequence<V> {
-    private final Sequence<T1> sequence1;
-    private final Sequence<T2> sequence2;
-    private final Function2<T1, T2, V> transform;
+public class IterableByteBufferInputStream extends InputStream {
+    private long currentAddress;
+    private byte[] currentArray;
+    private int currentArrayOffset;
+    private ByteBuffer currentByteBuffer;
+    private int currentByteBufferPos;
+    private int currentIndex;
+    private int dataSize = 0;
+    private boolean hasArray;
+    private Iterator<ByteBuffer> iterator;
 
-    /* JADX WARN: Multi-variable type inference failed */
-    public MergingSequence(Sequence<? extends T1> sequence1, Sequence<? extends T2> sequence2, Function2<? super T1, ? super T2, ? extends V> transform) {
-        Intrinsics.checkNotNullParameter(sequence1, "sequence1");
-        Intrinsics.checkNotNullParameter(sequence2, "sequence2");
-        Intrinsics.checkNotNullParameter(transform, "transform");
-        this.sequence1 = sequence1;
-        this.sequence2 = sequence2;
-        this.transform = transform;
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public IterableByteBufferInputStream(Iterable<ByteBuffer> data) {
+        this.iterator = data.iterator();
+        for (ByteBuffer byteBuffer : data) {
+            this.dataSize++;
+        }
+        this.currentIndex = -1;
+        if (getNextByteBuffer()) {
+            return;
+        }
+        this.currentByteBuffer = Internal.EMPTY_BYTE_BUFFER;
+        this.currentIndex = 0;
+        this.currentByteBufferPos = 0;
+        this.currentAddress = 0L;
     }
 
-    @Override // kotlin.sequences.Sequence
-    public Iterator<V> iterator() {
-        return new MergingSequence$iterator$1(this);
+    private boolean getNextByteBuffer() {
+        this.currentIndex++;
+        if (this.iterator.hasNext()) {
+            ByteBuffer next = this.iterator.next();
+            this.currentByteBuffer = next;
+            this.currentByteBufferPos = next.position();
+            if (this.currentByteBuffer.hasArray()) {
+                this.hasArray = true;
+                this.currentArray = this.currentByteBuffer.array();
+                this.currentArrayOffset = this.currentByteBuffer.arrayOffset();
+            } else {
+                this.hasArray = false;
+                this.currentAddress = UnsafeUtil.addressOffset(this.currentByteBuffer);
+                this.currentArray = null;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private void updateCurrentByteBufferPos(int numberOfBytesRead) {
+        int i2 = this.currentByteBufferPos + numberOfBytesRead;
+        this.currentByteBufferPos = i2;
+        if (i2 == this.currentByteBuffer.limit()) {
+            getNextByteBuffer();
+        }
+    }
+
+    @Override // java.io.InputStream
+    public int read() throws IOException {
+        if (this.currentIndex == this.dataSize) {
+            return -1;
+        }
+        if (this.hasArray) {
+            int i2 = this.currentArray[this.currentByteBufferPos + this.currentArrayOffset] & UByte.MAX_VALUE;
+            updateCurrentByteBufferPos(1);
+            return i2;
+        }
+        int i3 = UnsafeUtil.getByte(this.currentByteBufferPos + this.currentAddress) & UByte.MAX_VALUE;
+        updateCurrentByteBufferPos(1);
+        return i3;
+    }
+
+    @Override // java.io.InputStream
+    public int read(byte[] output, int offset, int length) throws IOException {
+        if (this.currentIndex == this.dataSize) {
+            return -1;
+        }
+        int limit = this.currentByteBuffer.limit();
+        int i2 = this.currentByteBufferPos;
+        int i3 = limit - i2;
+        if (length > i3) {
+            length = i3;
+        }
+        if (this.hasArray) {
+            System.arraycopy(this.currentArray, i2 + this.currentArrayOffset, output, offset, length);
+            updateCurrentByteBufferPos(length);
+        } else {
+            int position = this.currentByteBuffer.position();
+            this.currentByteBuffer.position(this.currentByteBufferPos);
+            this.currentByteBuffer.get(output, offset, length);
+            this.currentByteBuffer.position(position);
+            updateCurrentByteBufferPos(length);
+        }
+        return length;
     }
 }

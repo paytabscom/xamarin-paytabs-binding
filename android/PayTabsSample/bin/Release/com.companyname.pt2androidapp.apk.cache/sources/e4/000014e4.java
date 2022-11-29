@@ -1,43 +1,21 @@
-package kotlinx.coroutines.flow;
+package kotlin;
 
-import kotlin.Metadata;
-import kotlin.ResultKt;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.Boxing;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-import kotlin.coroutines.jvm.internal.SuspendLambda;
-import kotlin.jvm.functions.Function2;
+import kotlin.jvm.functions.Function1;
 
-/* compiled from: Lint.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0012\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0002\n\u0002\u0010\u0003\n\u0002\b\u0002\u0010\u0000\u001a\u00020\u0001\"\u0004\b\u0000\u0010\u00022\u0006\u0010\u0003\u001a\u00020\u0004H\u008a@¢\u0006\u0004\b\u0005\u0010\u0006"}, d2 = {"<anonymous>", "", "T", "it", "", "invoke", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.flow.LintKt$retry$1", f = "Lint.kt", i = {}, l = {}, m = "invokeSuspend", n = {}, s = {})
+/* compiled from: UShortArray.kt */
+@Metadata(d1 = {"\u0000\u001a\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0006\u001a0\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u00032\u0012\u0010\u0004\u001a\u000e\u0012\u0004\u0012\u00020\u0003\u0012\u0004\u0012\u00020\u00060\u0005H\u0087\bø\u0001\u0000ø\u0001\u0001¢\u0006\u0002\u0010\u0007\u001a\u001f\u0010\b\u001a\u00020\u00012\n\u0010\t\u001a\u00020\u0001\"\u00020\u0006H\u0087\bø\u0001\u0000¢\u0006\u0004\b\n\u0010\u000b\u0082\u0002\u000b\n\u0002\b\u0019\n\u0005\b\u009920\u0001¨\u0006\f"}, d2 = {"UShortArray", "Lkotlin/UShortArray;", "size", "", "init", "Lkotlin/Function1;", "Lkotlin/UShort;", "(ILkotlin/jvm/functions/Function1;)[S", "ushortArrayOf", "elements", "ushortArrayOf-rL5Bavg", "([S)[S", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class LintKt$retry$1 extends SuspendLambda implements Function2<Throwable, Continuation<? super Boolean>, Object> {
-    int label;
-
-    public LintKt$retry$1(Continuation continuation) {
-        super(2, continuation);
+public final class UShortArrayKt {
+    /* renamed from: ushortArrayOf-rL5Bavg  reason: not valid java name */
+    private static final short[] m388ushortArrayOfrL5Bavg(short... sArr) {
+        return sArr;
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Continuation<Unit> create(Object obj, Continuation<?> continuation) {
-        return new LintKt$retry$1(continuation);
-    }
-
-    @Override // kotlin.jvm.functions.Function2
-    public final Object invoke(Throwable th, Continuation<? super Boolean> continuation) {
-        return ((LintKt$retry$1) create(th, continuation)).invokeSuspend(Unit.INSTANCE);
-    }
-
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        IntrinsicsKt.getCOROUTINE_SUSPENDED();
-        if (this.label == 0) {
-            ResultKt.throwOnFailure(obj);
-            return Boxing.boxBoolean(true);
+    private static final short[] UShortArray(int i2, Function1<? super Integer, UShort> function1) {
+        short[] sArr = new short[i2];
+        for (int i3 = 0; i3 < i2; i3++) {
+            sArr[i3] = function1.invoke(Integer.valueOf(i3)).m369unboximpl();
         }
-        throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+        return UShortArray.m372constructorimpl(sArr);
     }
 }

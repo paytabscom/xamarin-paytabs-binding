@@ -1,23 +1,35 @@
-package kotlin.collections;
+package com.google.crypto.tink.hybrid.subtle;
 
-import java.util.Iterator;
-import kotlin.Metadata;
-import kotlin.jvm.internal.markers.KMappedMarker;
+import com.google.crypto.tink.HybridEncrypt;
+import com.google.crypto.tink.aead.subtle.AeadFactory;
+import com.google.crypto.tink.subtle.Hkdf;
+import java.nio.ByteBuffer;
+import java.security.GeneralSecurityException;
+import java.security.interfaces.RSAPublicKey;
+import javax.crypto.Cipher;
 
-/* compiled from: Iterators.kt */
-@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\u0010(\n\u0002\u0010\u0006\n\u0002\b\u0005\b&\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\u0005¢\u0006\u0002\u0010\u0003J\u000e\u0010\u0004\u001a\u00020\u0002H\u0086\u0002¢\u0006\u0002\u0010\u0005J\b\u0010\u0006\u001a\u00020\u0002H&¨\u0006\u0007"}, d2 = {"Lkotlin/collections/DoubleIterator;", "", "", "()V", "next", "()Ljava/lang/Double;", "nextDouble", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public abstract class DoubleIterator implements Iterator<Double>, KMappedMarker {
-    public abstract double nextDouble();
+public final class RsaKemHybridEncrypt implements HybridEncrypt {
+    private final AeadFactory aeadFactory;
+    private final String hkdfHmacAlgo;
+    private final byte[] hkdfSalt;
+    private final RSAPublicKey recipientPublicKey;
 
-    @Override // java.util.Iterator
-    public void remove() {
-        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
+    public RsaKemHybridEncrypt(final RSAPublicKey recipientPublicKey, String hkdfHmacAlgo, final byte[] hkdfSalt, AeadFactory aeadFactory) throws GeneralSecurityException {
+        RsaKem.validateRsaModulus(recipientPublicKey.getModulus());
+        this.recipientPublicKey = recipientPublicKey;
+        this.hkdfHmacAlgo = hkdfHmacAlgo;
+        this.hkdfSalt = hkdfSalt;
+        this.aeadFactory = aeadFactory;
     }
 
-    /* JADX WARN: Can't rename method to resolve collision */
-    @Override // java.util.Iterator
-    public final Double next() {
-        return Double.valueOf(nextDouble());
+    @Override // com.google.crypto.tink.HybridEncrypt
+    public byte[] encrypt(final byte[] plaintext, final byte[] contextInfo) throws GeneralSecurityException {
+        byte[] generateSecret = RsaKem.generateSecret(this.recipientPublicKey.getModulus());
+        Cipher cipher = Cipher.getInstance("RSA/ECB/NoPadding");
+        cipher.init(1, this.recipientPublicKey);
+        byte[] doFinal = cipher.doFinal(generateSecret);
+        byte[] encrypt = this.aeadFactory.createAead(Hkdf.computeHkdf(this.hkdfHmacAlgo, generateSecret, this.hkdfSalt, contextInfo, this.aeadFactory.getKeySizeInBytes())).encrypt(plaintext, RsaKem.EMPTY_AAD);
+        return ByteBuffer.allocate(doFinal.length + encrypt.length).put(doFinal).put(encrypt).array();
     }
 }

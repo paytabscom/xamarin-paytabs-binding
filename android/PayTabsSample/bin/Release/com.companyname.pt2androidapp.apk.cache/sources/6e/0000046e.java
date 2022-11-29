@@ -1,166 +1,119 @@
 package androidx.core.app;
 
-import android.app.Person;
-import android.os.Bundle;
-import android.os.PersistableBundle;
-import androidx.core.graphics.drawable.IconCompat;
+import android.app.AppOpsManager;
+import android.content.Context;
+import android.os.Binder;
+import android.os.Build;
 
 /* loaded from: classes.dex */
-public class Person {
-    private static final String ICON_KEY = "icon";
-    private static final String IS_BOT_KEY = "isBot";
-    private static final String IS_IMPORTANT_KEY = "isImportant";
-    private static final String KEY_KEY = "key";
-    private static final String NAME_KEY = "name";
-    private static final String URI_KEY = "uri";
-    IconCompat mIcon;
-    boolean mIsBot;
-    boolean mIsImportant;
-    String mKey;
-    CharSequence mName;
-    String mUri;
+public final class AppOpsManagerCompat {
+    public static final int MODE_ALLOWED = 0;
+    public static final int MODE_DEFAULT = 3;
+    public static final int MODE_ERRORED = 2;
+    public static final int MODE_IGNORED = 1;
 
-    public static Person fromBundle(Bundle bundle) {
-        Bundle bundle2 = bundle.getBundle(ICON_KEY);
-        return new Builder().setName(bundle.getCharSequence(NAME_KEY)).setIcon(bundle2 != null ? IconCompat.createFromBundle(bundle2) : null).setUri(bundle.getString(URI_KEY)).setKey(bundle.getString(KEY_KEY)).setBot(bundle.getBoolean(IS_BOT_KEY)).setImportant(bundle.getBoolean(IS_IMPORTANT_KEY)).build();
+    private AppOpsManagerCompat() {
     }
 
-    public static Person fromPersistableBundle(PersistableBundle persistableBundle) {
-        return new Builder().setName(persistableBundle.getString(NAME_KEY)).setUri(persistableBundle.getString(URI_KEY)).setKey(persistableBundle.getString(KEY_KEY)).setBot(persistableBundle.getBoolean(IS_BOT_KEY)).setImportant(persistableBundle.getBoolean(IS_IMPORTANT_KEY)).build();
-    }
-
-    public static Person fromAndroidPerson(android.app.Person person) {
-        return new Builder().setName(person.getName()).setIcon(person.getIcon() != null ? IconCompat.createFromIcon(person.getIcon()) : null).setUri(person.getUri()).setKey(person.getKey()).setBot(person.isBot()).setImportant(person.isImportant()).build();
-    }
-
-    Person(Builder builder) {
-        this.mName = builder.mName;
-        this.mIcon = builder.mIcon;
-        this.mUri = builder.mUri;
-        this.mKey = builder.mKey;
-        this.mIsBot = builder.mIsBot;
-        this.mIsImportant = builder.mIsImportant;
-    }
-
-    public Bundle toBundle() {
-        Bundle bundle = new Bundle();
-        bundle.putCharSequence(NAME_KEY, this.mName);
-        IconCompat iconCompat = this.mIcon;
-        bundle.putBundle(ICON_KEY, iconCompat != null ? iconCompat.toBundle() : null);
-        bundle.putString(URI_KEY, this.mUri);
-        bundle.putString(KEY_KEY, this.mKey);
-        bundle.putBoolean(IS_BOT_KEY, this.mIsBot);
-        bundle.putBoolean(IS_IMPORTANT_KEY, this.mIsImportant);
-        return bundle;
-    }
-
-    public PersistableBundle toPersistableBundle() {
-        PersistableBundle persistableBundle = new PersistableBundle();
-        CharSequence charSequence = this.mName;
-        persistableBundle.putString(NAME_KEY, charSequence != null ? charSequence.toString() : null);
-        persistableBundle.putString(URI_KEY, this.mUri);
-        persistableBundle.putString(KEY_KEY, this.mKey);
-        persistableBundle.putBoolean(IS_BOT_KEY, this.mIsBot);
-        persistableBundle.putBoolean(IS_IMPORTANT_KEY, this.mIsImportant);
-        return persistableBundle;
-    }
-
-    public Builder toBuilder() {
-        return new Builder(this);
-    }
-
-    public android.app.Person toAndroidPerson() {
-        return new Person.Builder().setName(getName()).setIcon(getIcon() != null ? getIcon().toIcon() : null).setUri(getUri()).setKey(getKey()).setBot(isBot()).setImportant(isImportant()).build();
-    }
-
-    public CharSequence getName() {
-        return this.mName;
-    }
-
-    public IconCompat getIcon() {
-        return this.mIcon;
-    }
-
-    public String getUri() {
-        return this.mUri;
-    }
-
-    public String getKey() {
-        return this.mKey;
-    }
-
-    public boolean isBot() {
-        return this.mIsBot;
-    }
-
-    public boolean isImportant() {
-        return this.mIsImportant;
-    }
-
-    public String resolveToLegacyUri() {
-        String str = this.mUri;
-        if (str != null) {
-            return str;
+    public static String permissionToOp(String str) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            return Api23Impl.permissionToOp(str);
         }
-        if (this.mName != null) {
-            return "name:" + ((Object) this.mName);
+        return null;
+    }
+
+    public static int noteOp(Context context, String str, int i2, String str2) {
+        if (Build.VERSION.SDK_INT >= 19) {
+            return Api19Impl.noteOp((AppOpsManager) context.getSystemService("appops"), str, i2, str2);
         }
-        return "";
+        return 1;
+    }
+
+    public static int noteOpNoThrow(Context context, String str, int i2, String str2) {
+        if (Build.VERSION.SDK_INT >= 19) {
+            return Api19Impl.noteOpNoThrow((AppOpsManager) context.getSystemService("appops"), str, i2, str2);
+        }
+        return 1;
+    }
+
+    public static int noteProxyOp(Context context, String str, String str2) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            return Api23Impl.noteProxyOp((AppOpsManager) Api23Impl.getSystemService(context, AppOpsManager.class), str, str2);
+        }
+        return 1;
+    }
+
+    public static int noteProxyOpNoThrow(Context context, String str, String str2) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            return Api23Impl.noteProxyOpNoThrow((AppOpsManager) Api23Impl.getSystemService(context, AppOpsManager.class), str, str2);
+        }
+        return 1;
+    }
+
+    public static int checkOrNoteProxyOp(Context context, int i2, String str, String str2) {
+        if (Build.VERSION.SDK_INT >= 29) {
+            AppOpsManager systemService = Api29Impl.getSystemService(context);
+            int checkOpNoThrow = Api29Impl.checkOpNoThrow(systemService, str, Binder.getCallingUid(), str2);
+            return checkOpNoThrow != 0 ? checkOpNoThrow : Api29Impl.checkOpNoThrow(systemService, str, i2, Api29Impl.getOpPackageName(context));
+        }
+        return noteProxyOpNoThrow(context, str, str2);
     }
 
     /* loaded from: classes.dex */
-    public static class Builder {
-        IconCompat mIcon;
-        boolean mIsBot;
-        boolean mIsImportant;
-        String mKey;
-        CharSequence mName;
-        String mUri;
-
-        public Builder() {
+    static class Api29Impl {
+        private Api29Impl() {
         }
 
-        Builder(Person person) {
-            this.mName = person.mName;
-            this.mIcon = person.mIcon;
-            this.mUri = person.mUri;
-            this.mKey = person.mKey;
-            this.mIsBot = person.mIsBot;
-            this.mIsImportant = person.mIsImportant;
+        static AppOpsManager getSystemService(Context context) {
+            return (AppOpsManager) context.getSystemService(AppOpsManager.class);
         }
 
-        public Builder setName(CharSequence charSequence) {
-            this.mName = charSequence;
-            return this;
+        static int checkOpNoThrow(AppOpsManager appOpsManager, String str, int i2, String str2) {
+            if (appOpsManager == null) {
+                return 1;
+            }
+            return appOpsManager.checkOpNoThrow(str, i2, str2);
         }
 
-        public Builder setIcon(IconCompat iconCompat) {
-            this.mIcon = iconCompat;
-            return this;
+        static String getOpPackageName(Context context) {
+            return context.getOpPackageName();
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* loaded from: classes.dex */
+    public static class Api23Impl {
+        private Api23Impl() {
         }
 
-        public Builder setUri(String str) {
-            this.mUri = str;
-            return this;
+        static String permissionToOp(String str) {
+            return AppOpsManager.permissionToOp(str);
         }
 
-        public Builder setKey(String str) {
-            this.mKey = str;
-            return this;
+        static <T> T getSystemService(Context context, Class<T> cls) {
+            return (T) context.getSystemService(cls);
         }
 
-        public Builder setBot(boolean z2) {
-            this.mIsBot = z2;
-            return this;
+        static int noteProxyOp(AppOpsManager appOpsManager, String str, String str2) {
+            return appOpsManager.noteProxyOp(str, str2);
         }
 
-        public Builder setImportant(boolean z2) {
-            this.mIsImportant = z2;
-            return this;
+        static int noteProxyOpNoThrow(AppOpsManager appOpsManager, String str, String str2) {
+            return appOpsManager.noteProxyOpNoThrow(str, str2);
+        }
+    }
+
+    /* loaded from: classes.dex */
+    static class Api19Impl {
+        private Api19Impl() {
         }
 
-        public Person build() {
-            return new Person(this);
+        static int noteOpNoThrow(AppOpsManager appOpsManager, String str, int i2, String str2) {
+            return appOpsManager.noteOpNoThrow(str, i2, str2);
+        }
+
+        static int noteOp(AppOpsManager appOpsManager, String str, int i2, String str2) {
+            return appOpsManager.noteOp(str, i2, str2);
         }
     }
 }

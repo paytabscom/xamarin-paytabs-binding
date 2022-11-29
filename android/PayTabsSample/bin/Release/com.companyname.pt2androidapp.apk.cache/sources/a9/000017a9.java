@@ -1,72 +1,89 @@
-package z0;
+package kotlin.text;
 
-import com.payment.paymentsdk.PaymentSdkParams;
-import com.payment.paymentsdk.integrationmodels.PaymentSdkConfigurationDetails;
-import com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClass;
-import java.util.Locale;
 import kotlin.Metadata;
-import kotlin.jvm.internal.Intrinsics;
-import t0.b;
-import t0.d;
 
-@Metadata(bv = {}, d1 = {"\u0000$\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\u0010\u000e\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0005\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\u0018\u00002\u00020\u0001B\u000f\u0012\u0006\u0010\r\u001a\u00020\f¢\u0006\u0004\b\u000e\u0010\u000fJ\u0010\u0010\u0004\u001a\u00020\u00002\b\u0010\u0003\u001a\u0004\u0018\u00010\u0002J\u0010\u0010\u0004\u001a\u00020\u00002\b\u0010\u0006\u001a\u0004\u0018\u00010\u0005J\u0010\u0010\b\u001a\u00020\u00002\b\u0010\u0007\u001a\u0004\u0018\u00010\u0002J\u0010\u0010\n\u001a\u00020\u00002\b\u0010\t\u001a\u0004\u0018\u00010\u0002J\u0006\u0010\u0004\u001a\u00020\u000b¨\u0006\u0010"}, d2 = {"Lz0/a;", "", "", PaymentSdkParams.TOKEN, "a", "Lt0/b;", "deviceInfo", "tokenFormat", "b", "transRef", "c", "Lt0/d;", "Lcom/payment/paymentsdk/integrationmodels/PaymentSdkConfigurationDetails;", "ptConfigData", "<init>", "(Lcom/payment/paymentsdk/integrationmodels/PaymentSdkConfigurationDetails;)V", "paymentsdk_release"}, k = 1, mv = {1, 7, 1})
+/* compiled from: Char.kt */
+@Metadata(d1 = {"\u0000\u001e\n\u0000\n\u0002\u0010\f\n\u0002\u0010\b\n\u0002\b\u0006\n\u0002\u0010\u000b\n\u0002\b\u0004\n\u0002\u0010\u000e\n\u0002\b\u0002\u001a\f\u0010\u0000\u001a\u00020\u0001*\u00020\u0002H\u0007\u001a\u0014\u0010\u0000\u001a\u00020\u0001*\u00020\u00022\u0006\u0010\u0003\u001a\u00020\u0002H\u0007\u001a\f\u0010\u0004\u001a\u00020\u0002*\u00020\u0001H\u0007\u001a\u0014\u0010\u0004\u001a\u00020\u0002*\u00020\u00012\u0006\u0010\u0003\u001a\u00020\u0002H\u0007\u001a\u0013\u0010\u0005\u001a\u0004\u0018\u00010\u0002*\u00020\u0001H\u0007¢\u0006\u0002\u0010\u0006\u001a\u001b\u0010\u0005\u001a\u0004\u0018\u00010\u0002*\u00020\u00012\u0006\u0010\u0003\u001a\u00020\u0002H\u0007¢\u0006\u0002\u0010\u0007\u001a\u001c\u0010\b\u001a\u00020\t*\u00020\u00012\u0006\u0010\n\u001a\u00020\u00012\b\b\u0002\u0010\u000b\u001a\u00020\t\u001a\n\u0010\f\u001a\u00020\t*\u00020\u0001\u001a\u0015\u0010\r\u001a\u00020\u000e*\u00020\u00012\u0006\u0010\n\u001a\u00020\u000eH\u0087\n\u001a\f\u0010\u000f\u001a\u00020\u000e*\u00020\u0001H\u0007¨\u0006\u0010"}, d2 = {"digitToChar", "", "", "radix", "digitToInt", "digitToIntOrNull", "(C)Ljava/lang/Integer;", "(CI)Ljava/lang/Integer;", "equals", "", "other", "ignoreCase", "isSurrogate", "plus", "", "titlecase", "kotlin-stdlib"}, k = 5, mv = {1, 5, 1}, xi = 1, xs = "kotlin/text/CharsKt")
 /* loaded from: classes.dex */
-public final class a {
-
-    /* renamed from: a  reason: collision with root package name */
-    private final PaymentSdkConfigurationDetails f567a;
-
-    /* renamed from: b  reason: collision with root package name */
-    private b f568b;
-
-    /* renamed from: c  reason: collision with root package name */
-    private String f569c;
-
-    /* renamed from: d  reason: collision with root package name */
-    private String f570d;
-
-    /* renamed from: e  reason: collision with root package name */
-    private String f571e;
-
-    public a(PaymentSdkConfigurationDetails ptConfigData) {
-        Intrinsics.checkNotNullParameter(ptConfigData, "ptConfigData");
-        this.f567a = ptConfigData;
+class CharsKt__CharKt extends CharsKt__CharJVMKt {
+    public static final boolean isSurrogate(char c2) {
+        return 55296 <= c2 && 57343 >= c2;
     }
 
-    public final d a() {
-        Double amount = this.f567a.getAmount();
-        String currencyCode = this.f567a.getCurrencyCode();
-        String cartId = this.f567a.getCartId();
-        String cartDescription = this.f567a.getCartDescription();
-        String name = PaymentSdkTransactionClass.RECURRING.name();
-        Locale locale = Locale.getDefault();
-        Intrinsics.checkNotNullExpressionValue(locale, "getDefault()");
-        String lowerCase = name.toLowerCase(locale);
-        Intrinsics.checkNotNullExpressionValue(lowerCase, "this as java.lang.String).toLowerCase(locale)");
-        String transactionType = this.f567a.getTransactionType();
-        String valueOf = String.valueOf(this.f567a.getLocale());
-        String profileId = this.f567a.getProfileId();
-        String str = this.f569c;
-        return new d(this.f567a.getCallback(), null, null, amount, currencyCode, cartDescription, cartId, null, valueOf, profileId, null, null, lowerCase, transactionType, null, this.f570d, str, this.f571e, this.f568b, 19588, null);
+    public static final int digitToInt(char c2) {
+        int digitOf = CharsKt.digitOf(c2, 10);
+        if (digitOf >= 0) {
+            return digitOf;
+        }
+        throw new IllegalArgumentException("Char " + c2 + " is not a decimal digit");
     }
 
-    public final a a(String str) {
-        this.f569c = str;
-        return this;
+    public static final int digitToInt(char c2, int i2) {
+        Integer digitToIntOrNull = CharsKt.digitToIntOrNull(c2, i2);
+        if (digitToIntOrNull != null) {
+            return digitToIntOrNull.intValue();
+        }
+        throw new IllegalArgumentException("Char " + c2 + " is not a digit in the given radix=" + i2);
     }
 
-    public final a a(b bVar) {
-        this.f568b = bVar;
-        return this;
+    public static final Integer digitToIntOrNull(char c2) {
+        Integer valueOf = Integer.valueOf(CharsKt.digitOf(c2, 10));
+        if (valueOf.intValue() >= 0) {
+            return valueOf;
+        }
+        return null;
     }
 
-    public final a b(String str) {
-        this.f570d = str;
-        return this;
+    public static final Integer digitToIntOrNull(char c2, int i2) {
+        CharsKt.checkRadix(i2);
+        Integer valueOf = Integer.valueOf(CharsKt.digitOf(c2, i2));
+        if (valueOf.intValue() >= 0) {
+            return valueOf;
+        }
+        return null;
     }
 
-    public final a c(String str) {
-        this.f571e = str;
-        return this;
+    public static final char digitToChar(int i2) {
+        if (i2 < 0 || 9 < i2) {
+            throw new IllegalArgumentException("Int " + i2 + " is not a decimal digit");
+        }
+        return (char) (i2 + 48);
+    }
+
+    public static final char digitToChar(int i2, int i3) {
+        if (2 > i3 || 36 < i3) {
+            throw new IllegalArgumentException("Invalid radix: " + i3 + ". Valid radix values are in range 2..36");
+        } else if (i2 >= 0 && i2 < i3) {
+            return (char) (i2 < 10 ? i2 + 48 : ((char) (i2 + 65)) - '\n');
+        } else {
+            throw new IllegalArgumentException("Digit " + i2 + " does not represent a valid digit in radix " + i3);
+        }
+    }
+
+    public static final String titlecase(char c2) {
+        return _OneToManyTitlecaseMappingsKt.titlecaseImpl(c2);
+    }
+
+    private static final String plus(char c2, String str) {
+        return String.valueOf(c2) + str;
+    }
+
+    public static /* synthetic */ boolean equals$default(char c2, char c3, boolean z2, int i2, Object obj) {
+        if ((i2 & 2) != 0) {
+            z2 = false;
+        }
+        return CharsKt.equals(c2, c3, z2);
+    }
+
+    public static final boolean equals(char c2, char c3, boolean z2) {
+        if (c2 == c3) {
+            return true;
+        }
+        if (z2) {
+            char upperCase = Character.toUpperCase(c2);
+            char upperCase2 = Character.toUpperCase(c3);
+            return upperCase == upperCase2 || Character.toLowerCase(upperCase) == Character.toLowerCase(upperCase2);
+        }
+        return false;
     }
 }

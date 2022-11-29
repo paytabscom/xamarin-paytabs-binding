@@ -8,10 +8,6 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Cam
 	// Metadata.xml XPath class reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.gles']/class[@name='WindowSurface']"
 	[global::Android.Runtime.Register ("com/paytabs/paytabscardrecognizer/cards/pay/paycardsrecognizer/sdk/camera/gles/WindowSurface", DoNotGenerateAcw=true)]
 	public sealed partial class WindowSurface : global::Java.Lang.Object {
-		// Metadata.xml XPath field reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.gles']/class[@name='WindowSurface']/field[@name='TAG']"
-		[Register ("TAG")]
-		private const string Tag = (string) "gles";
-
 
 		// Metadata.xml XPath field reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.gles']/class[@name='WindowSurface']/field[@name='mEglCore']"
 		[Register ("mEglCore")]
@@ -33,6 +29,10 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Cam
 				}
 			}
 		}
+
+		// Metadata.xml XPath field reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.gles']/class[@name='WindowSurface']/field[@name='TAG']"
+		[Register ("TAG")]
+		private const string Tag = (string) "gles";
 
 		static readonly JniPeerMembers _members = new XAPeerMembers ("com/paytabs/paytabscardrecognizer/cards/pay/paycardsrecognizer/sdk/camera/gles/WindowSurface", typeof (WindowSurface));
 

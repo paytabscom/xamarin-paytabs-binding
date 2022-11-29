@@ -1,0 +1,7 @@
+package mono;
+
+/* loaded from: classes2.dex */
+public class MonoPackageManager_Resources {
+    public static String[] Assemblies = {"Pt2AndroidApp.dll", "CardScanBindingLib.dll", "GoogleGson.dll", "Payment.Binding.dll", "Plugin.Toast.Abstractions.dll", "Plugin.Toast.dll", "Square.OkHttp3.dll", "Square.OkHttp3.LoggingInterceptor.dll", "Square.OkIO.dll", "Square.Retrofit2.ConverterGson.dll", "Square.Retrofit2.ConverterScalars.dll", "Square.Retrofit2.dll", "Xamarin.Android.Device.YearClass.dll", "Xamarin.AndroidX.Activity.dll", "Xamarin.AndroidX.AppCompat.dll", "Xamarin.AndroidX.ConstraintLayout.dll", "Xamarin.AndroidX.ConstraintLayout.Solver.dll", "Xamarin.AndroidX.Core.dll", "Xamarin.AndroidX.CustomView.dll", "Xamarin.AndroidX.DrawerLayout.dll", "Xamarin.AndroidX.Fragment.dll", "Xamarin.AndroidX.Lifecycle.Common.dll", "Xamarin.AndroidX.Lifecycle.LiveData.Core.dll", "Xamarin.AndroidX.Lifecycle.ViewModel.dll", "Xamarin.AndroidX.Loader.dll", "Xamarin.AndroidX.RecyclerView.dll", "Xamarin.AndroidX.SavedState.dll", "Xamarin.Essentials.dll", "Xamarin.Google.Crypto.Tink.Android.dll", "Xamarin.Google.Guava.ListenableFuture.dll", "Xamarin.Jetbrains.Annotations.dll", "Xamarin.Kotlin.StdLib.Common.dll", "Xamarin.Kotlin.StdLib.dll", "Xamarin.Kotlin.StdLib.Jdk7.dll", "Xamarin.Kotlin.StdLib.Jdk8.dll", "Xamarin.KotlinX.Coroutines.Android.dll", "Xamarin.KotlinX.Coroutines.Core.Jvm.dll"};
+    public static String[] Dependencies = new String[0];
+}

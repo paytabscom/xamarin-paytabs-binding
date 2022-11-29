@@ -1,47 +1,16 @@
-package mono.android.drm;
+package kotlin.io;
 
-import android.drm.DrmEvent;
-import android.drm.DrmManagerClient;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.io.File;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: Utils.kt */
+@Metadata(d1 = {"\u0000\u0012\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\b\u0002\u0018\u00002\u00020\u0001B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0002\u0010\u0004¨\u0006\u0005"}, d2 = {"Lkotlin/io/TerminateException;", "Lkotlin/io/FileSystemException;", "file", "Ljava/io/File;", "(Ljava/io/File;)V", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class DrmManagerClient_OnEventListenerImplementor implements IGCUserPeer, DrmManagerClient.OnEventListener {
-    public static final String __md_methods = "n_onEvent:(Landroid/drm/DrmManagerClient;Landroid/drm/DrmEvent;)V:GetOnEvent_Landroid_drm_DrmManagerClient_Landroid_drm_DrmEvent_Handler:Android.Drm.DrmManagerClient/IOnEventListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onEvent(DrmManagerClient drmManagerClient, DrmEvent drmEvent);
-
-    static {
-        Runtime.register("Android.Drm.DrmManagerClient+IOnEventListenerImplementor, Mono.Android", DrmManagerClient_OnEventListenerImplementor.class, __md_methods);
-    }
-
-    public DrmManagerClient_OnEventListenerImplementor() {
-        if (getClass() == DrmManagerClient_OnEventListenerImplementor.class) {
-            TypeManager.Activate("Android.Drm.DrmManagerClient+IOnEventListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.drm.DrmManagerClient.OnEventListener
-    public void onEvent(DrmManagerClient drmManagerClient, DrmEvent drmEvent) {
-        n_onEvent(drmManagerClient, drmEvent);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+final class TerminateException extends FileSystemException {
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public TerminateException(File file) {
+        super(file, null, null, 6, null);
+        Intrinsics.checkNotNullParameter(file, "file");
     }
 }

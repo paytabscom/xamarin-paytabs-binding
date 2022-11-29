@@ -1,13 +1,36 @@
-package kotlinx.coroutines;
+package com.google.crypto.tink.subtle;
 
-import kotlin.Deprecated;
-import kotlin.DeprecationLevel;
-import kotlin.Metadata;
+import com.google.crypto.tink.HybridDecrypt;
+import com.google.crypto.tink.subtle.EllipticCurves;
+import java.security.GeneralSecurityException;
+import java.security.interfaces.ECPrivateKey;
+import java.util.Arrays;
 
-/* compiled from: Job.kt */
-@Deprecated(level = DeprecationLevel.ERROR, message = "This is internal API and may be removed in the future releases")
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0016\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u0003\n\u0000\bg\u0018\u00002\u00020\u0001J\u0010\u0010\u0002\u001a\u00020\u00032\u0006\u0010\u0004\u001a\u00020\u0005H'¨\u0006\u0006"}, d2 = {"Lkotlinx/coroutines/ChildHandle;", "Lkotlinx/coroutines/DisposableHandle;", "childCancelled", "", "cause", "", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public interface ChildHandle extends DisposableHandle {
-    boolean childCancelled(Throwable th);
+public final class EciesAeadHkdfHybridDecrypt implements HybridDecrypt {
+    private static final byte[] EMPTY_AAD = new byte[0];
+    private final EciesAeadHkdfDemHelper demHelper;
+    private final EllipticCurves.PointFormatType ecPointFormat;
+    private final String hkdfHmacAlgo;
+    private final byte[] hkdfSalt;
+    private final EciesHkdfRecipientKem recipientKem;
+    private final ECPrivateKey recipientPrivateKey;
+
+    public EciesAeadHkdfHybridDecrypt(final ECPrivateKey recipientPrivateKey, final byte[] hkdfSalt, String hkdfHmacAlgo, EllipticCurves.PointFormatType ecPointFormat, EciesAeadHkdfDemHelper demHelper) throws GeneralSecurityException {
+        this.recipientPrivateKey = recipientPrivateKey;
+        this.recipientKem = new EciesHkdfRecipientKem(recipientPrivateKey);
+        this.hkdfSalt = hkdfSalt;
+        this.hkdfHmacAlgo = hkdfHmacAlgo;
+        this.ecPointFormat = ecPointFormat;
+        this.demHelper = demHelper;
+    }
+
+    @Override // com.google.crypto.tink.HybridDecrypt
+    public byte[] decrypt(final byte[] ciphertext, final byte[] contextInfo) throws GeneralSecurityException {
+        int encodingSizeInBytes = EllipticCurves.encodingSizeInBytes(this.recipientPrivateKey.getParams().getCurve(), this.ecPointFormat);
+        if (ciphertext.length < encodingSizeInBytes) {
+            throw new GeneralSecurityException("ciphertext too short");
+        }
+        return this.demHelper.getAeadOrDaead(this.recipientKem.generateKey(Arrays.copyOfRange(ciphertext, 0, encodingSizeInBytes), this.hkdfHmacAlgo, this.hkdfSalt, contextInfo, this.demHelper.getSymmetricKeySizeInBytes(), this.ecPointFormat)).decrypt(Arrays.copyOfRange(ciphertext, encodingSizeInBytes, ciphertext.length), EMPTY_AAD);
+    }
 }

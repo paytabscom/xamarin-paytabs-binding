@@ -1,60 +1,33 @@
-package mono.android.net.sip;
+package kotlin.jvm.internal;
 
-import android.net.sip.SipRegistrationListener;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: PrimitiveSpreadBuilders.kt */
+@Metadata(d1 = {"\u0000$\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0018\n\u0000\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0003\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\r\u0012\u0006\u0010\u0003\u001a\u00020\u0004¢\u0006\u0002\u0010\u0005J\u000e\u0010\u0007\u001a\u00020\b2\u0006\u0010\t\u001a\u00020\nJ\u0006\u0010\u000b\u001a\u00020\u0002J\f\u0010\f\u001a\u00020\u0004*\u00020\u0002H\u0014R\u000e\u0010\u0006\u001a\u00020\u0002X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\r"}, d2 = {"Lkotlin/jvm/internal/BooleanSpreadBuilder;", "Lkotlin/jvm/internal/PrimitiveSpreadBuilder;", "", "size", "", "(I)V", "values", "add", "", "value", "", "toArray", "getSize", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class SipRegistrationListenerImplementor implements IGCUserPeer, SipRegistrationListener {
-    public static final String __md_methods = "n_onRegistering:(Ljava/lang/String;)V:GetOnRegistering_Ljava_lang_String_Handler:Android.Net.Sip.ISipRegistrationListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onRegistrationDone:(Ljava/lang/String;J)V:GetOnRegistrationDone_Ljava_lang_String_JHandler:Android.Net.Sip.ISipRegistrationListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onRegistrationFailed:(Ljava/lang/String;ILjava/lang/String;)V:GetOnRegistrationFailed_Ljava_lang_String_ILjava_lang_String_Handler:Android.Net.Sip.ISipRegistrationListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public final class BooleanSpreadBuilder extends PrimitiveSpreadBuilder<boolean[]> {
+    private final boolean[] values;
 
-    private native void n_onRegistering(String str);
-
-    private native void n_onRegistrationDone(String str, long j2);
-
-    private native void n_onRegistrationFailed(String str, int i2, String str2);
-
-    static {
-        Runtime.register("Android.Net.Sip.ISipRegistrationListenerImplementor, Mono.Android", SipRegistrationListenerImplementor.class, __md_methods);
+    public BooleanSpreadBuilder(int i2) {
+        super(i2);
+        this.values = new boolean[i2];
     }
 
-    public SipRegistrationListenerImplementor() {
-        if (getClass() == SipRegistrationListenerImplementor.class) {
-            TypeManager.Activate("Android.Net.Sip.ISipRegistrationListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // kotlin.jvm.internal.PrimitiveSpreadBuilder
+    public int getSize(boolean[] getSize) {
+        Intrinsics.checkNotNullParameter(getSize, "$this$getSize");
+        return getSize.length;
     }
 
-    @Override // android.net.sip.SipRegistrationListener
-    public void onRegistering(String str) {
-        n_onRegistering(str);
+    public final void add(boolean z2) {
+        boolean[] zArr = this.values;
+        int position = getPosition();
+        setPosition(position + 1);
+        zArr[position] = z2;
     }
 
-    @Override // android.net.sip.SipRegistrationListener
-    public void onRegistrationDone(String str, long j2) {
-        n_onRegistrationDone(str, j2);
-    }
-
-    @Override // android.net.sip.SipRegistrationListener
-    public void onRegistrationFailed(String str, int i2, String str2) {
-        n_onRegistrationFailed(str, i2, str2);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public final boolean[] toArray() {
+        return toArray(this.values, new boolean[size()]);
     }
 }

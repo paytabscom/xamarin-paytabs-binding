@@ -1,127 +1,129 @@
-package kotlinx.coroutines.channels;
+package com.payment.paymentsdk.creditcard.view.cardform.view;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import kotlinx.coroutines.channels.AbstractSendChannel;
-import kotlinx.coroutines.internal.AtomicKt;
-import kotlinx.coroutines.internal.OnUndeliveredElementKt;
-import kotlinx.coroutines.internal.UndeliveredElementException;
-import kotlinx.coroutines.selects.SelectInstance;
-import kotlinx.coroutines.selects.SelectKt;
+import android.content.Context;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.AttributeSet;
+import android.view.View;
+import com.payment.paymentsdk.R;
+import k.c;
+import l.b;
 
-/* compiled from: LinkedListChannel.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000F\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u000b\n\u0002\b\u0005\n\u0002\u0010\u0000\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\b\u0010\u0018\u0000*\u0004\b\u0000\u0010\u00012\b\u0012\u0004\u0012\u0002H\u00010\u0002B'\u0012 \u0010\u0003\u001a\u001c\u0012\u0004\u0012\u00028\u0000\u0012\u0004\u0012\u00020\u0005\u0018\u00010\u0004j\n\u0012\u0004\u0012\u00028\u0000\u0018\u0001`\u0006¢\u0006\u0002\u0010\u0007J\u0015\u0010\u000e\u001a\u00020\u000f2\u0006\u0010\u0010\u001a\u00028\u0000H\u0014¢\u0006\u0002\u0010\u0011J!\u0010\u0012\u001a\u00020\u000f2\u0006\u0010\u0010\u001a\u00028\u00002\n\u0010\u0013\u001a\u0006\u0012\u0002\b\u00030\u0014H\u0014¢\u0006\u0002\u0010\u0015J/\u0010\u0016\u001a\u00020\u00052\f\u0010\u0017\u001a\b\u0012\u0004\u0012\u00020\u00190\u00182\n\u0010\u001a\u001a\u0006\u0012\u0002\b\u00030\u001bH\u0014ø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\b\u001c\u0010\u001dR\u0014\u0010\b\u001a\u00020\t8DX\u0084\u0004¢\u0006\u0006\u001a\u0004\b\b\u0010\nR\u0014\u0010\u000b\u001a\u00020\t8DX\u0084\u0004¢\u0006\u0006\u001a\u0004\b\u000b\u0010\nR\u0014\u0010\f\u001a\u00020\t8DX\u0084\u0004¢\u0006\u0006\u001a\u0004\b\f\u0010\nR\u0014\u0010\r\u001a\u00020\t8DX\u0084\u0004¢\u0006\u0006\u001a\u0004\b\r\u0010\n\u0082\u0002\u000b\n\u0002\b\u0019\n\u0005\b¡\u001e0\u0001¨\u0006\u001e"}, d2 = {"Lkotlinx/coroutines/channels/LinkedListChannel;", "E", "Lkotlinx/coroutines/channels/AbstractChannel;", "onUndeliveredElement", "Lkotlin/Function1;", "", "Lkotlinx/coroutines/internal/OnUndeliveredElement;", "(Lkotlin/jvm/functions/Function1;)V", "isBufferAlwaysEmpty", "", "()Z", "isBufferAlwaysFull", "isBufferEmpty", "isBufferFull", "offerInternal", "", "element", "(Ljava/lang/Object;)Ljava/lang/Object;", "offerSelectInternal", "select", "Lkotlinx/coroutines/selects/SelectInstance;", "(Ljava/lang/Object;Lkotlinx/coroutines/selects/SelectInstance;)Ljava/lang/Object;", "onCancelIdempotentList", "list", "Lkotlinx/coroutines/internal/InlineList;", "Lkotlinx/coroutines/channels/Send;", "closed", "Lkotlinx/coroutines/channels/Closed;", "onCancelIdempotentList-w-w6eGU", "(Ljava/lang/Object;Lkotlinx/coroutines/channels/Closed;)V", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public class LinkedListChannel<E> extends AbstractChannel<E> {
-    @Override // kotlinx.coroutines.channels.AbstractChannel
-    protected final boolean isBufferAlwaysEmpty() {
-        return true;
+public class ExpirationDateEditText extends l.a implements TextWatcher, View.OnClickListener {
+
+    /* renamed from: d  reason: collision with root package name */
+    private boolean f151d;
+
+    /* renamed from: e  reason: collision with root package name */
+    private View.OnClickListener f152e;
+
+    public ExpirationDateEditText(Context context) {
+        super(context);
+        b();
     }
 
-    @Override // kotlinx.coroutines.channels.AbstractSendChannel
-    protected final boolean isBufferAlwaysFull() {
-        return false;
+    public ExpirationDateEditText(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        b();
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // kotlinx.coroutines.channels.AbstractChannel
-    public final boolean isBufferEmpty() {
-        return true;
+    public ExpirationDateEditText(Context context, AttributeSet attributeSet, int i2) {
+        super(context, attributeSet, i2);
+        b();
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // kotlinx.coroutines.channels.AbstractSendChannel
-    public final boolean isBufferFull() {
-        return false;
-    }
-
-    public LinkedListChannel(Function1<? super E, Unit> function1) {
-        super(function1);
-    }
-
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // kotlinx.coroutines.channels.AbstractSendChannel
-    public Object offerInternal(E e2) {
-        ReceiveOrClosed<?> sendBuffered;
-        do {
-            Object offerInternal = super.offerInternal(e2);
-            if (offerInternal == AbstractChannelKt.OFFER_SUCCESS) {
-                return AbstractChannelKt.OFFER_SUCCESS;
-            }
-            if (offerInternal == AbstractChannelKt.OFFER_FAILED) {
-                sendBuffered = sendBuffered(e2);
-                if (sendBuffered == null) {
-                    return AbstractChannelKt.OFFER_SUCCESS;
-                }
-            } else if (offerInternal instanceof Closed) {
-                return offerInternal;
-            } else {
-                throw new IllegalStateException(("Invalid offerInternal result " + offerInternal).toString());
-            }
-        } while (!(sendBuffered instanceof Closed));
-        return sendBuffered;
-    }
-
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // kotlinx.coroutines.channels.AbstractSendChannel
-    public Object offerSelectInternal(E e2, SelectInstance<?> selectInstance) {
-        Object performAtomicTrySelect;
-        while (true) {
-            if (getHasReceiveOrClosed()) {
-                performAtomicTrySelect = super.offerSelectInternal(e2, selectInstance);
-            } else {
-                performAtomicTrySelect = selectInstance.performAtomicTrySelect(describeSendBuffered(e2));
-                if (performAtomicTrySelect == null) {
-                    performAtomicTrySelect = AbstractChannelKt.OFFER_SUCCESS;
-                }
-            }
-            if (performAtomicTrySelect == SelectKt.getALREADY_SELECTED()) {
-                return SelectKt.getALREADY_SELECTED();
-            }
-            if (performAtomicTrySelect == AbstractChannelKt.OFFER_SUCCESS) {
-                return AbstractChannelKt.OFFER_SUCCESS;
-            }
-            if (performAtomicTrySelect != AbstractChannelKt.OFFER_FAILED && performAtomicTrySelect != AtomicKt.RETRY_ATOMIC) {
-                if (performAtomicTrySelect instanceof Closed) {
-                    return performAtomicTrySelect;
-                }
-                throw new IllegalStateException(("Invalid result " + performAtomicTrySelect).toString());
-            }
+    private void a(Editable editable) {
+        if (2 <= editable.length()) {
+            editable.setSpan(new b(), 1, 2, 33);
         }
     }
 
-    @Override // kotlinx.coroutines.channels.AbstractChannel
-    /* renamed from: onCancelIdempotentList-w-w6eGU */
-    protected void mo1405onCancelIdempotentListww6eGU(Object obj, Closed<?> closed) {
-        UndeliveredElementException undeliveredElementException = null;
-        if (obj != null) {
-            if (!(obj instanceof ArrayList)) {
-                Send send = (Send) obj;
-                if (send instanceof AbstractSendChannel.SendBuffered) {
-                    Function1<E, Unit> function1 = this.onUndeliveredElement;
-                    undeliveredElementException = function1 != null ? OnUndeliveredElementKt.callUndeliveredElementCatchingException(function1, ((AbstractSendChannel.SendBuffered) send).element, undeliveredElementException) : null;
-                } else {
-                    send.resumeSendClosed(closed);
-                }
-            } else {
-                Objects.requireNonNull(obj, "null cannot be cast to non-null type kotlin.collections.ArrayList<E> /* = java.util.ArrayList<E> */");
-                ArrayList arrayList = (ArrayList) obj;
-                for (int size = arrayList.size() - 1; size >= 0; size--) {
-                    Send send2 = (Send) arrayList.get(size);
-                    if (send2 instanceof AbstractSendChannel.SendBuffered) {
-                        Function1<E, Unit> function12 = this.onUndeliveredElement;
-                        undeliveredElementException = function12 != null ? OnUndeliveredElementKt.callUndeliveredElementCatchingException(function12, ((AbstractSendChannel.SendBuffered) send2).element, undeliveredElementException) : null;
-                    } else {
-                        send2.resumeSendClosed(closed);
-                    }
-                }
-            }
+    private void b() {
+        setInputType(2);
+        f();
+        addTextChangedListener(this);
+        super.setOnClickListener(this);
+    }
+
+    private void b(Editable editable) {
+        editable.replace(0, 1, "0").append(editable.charAt(0));
+    }
+
+    private void f() {
+        setFilters(new InputFilter[]{new InputFilter.LengthFilter(4), a.a(4)});
+    }
+
+    private String getString() {
+        Editable text = getText();
+        return text != null ? text.toString() : "";
+    }
+
+    @Override // android.text.TextWatcher
+    public void afterTextChanged(Editable editable) {
+        if (this.f151d && editable.length() == 1 && Character.getNumericValue(editable.charAt(0)) >= 2) {
+            b(editable);
         }
-        if (undeliveredElementException != null) {
-            throw undeliveredElementException;
+        for (Object obj : editable.getSpans(0, editable.length(), b.class)) {
+            editable.removeSpan(obj);
         }
+        a(editable);
+        if (((getSelectionStart() != 4 || editable.toString().endsWith("20")) && getSelectionStart() != 4) || !d()) {
+            return;
+        }
+        a();
+    }
+
+    @Override // android.text.TextWatcher
+    public void beforeTextChanged(CharSequence charSequence, int i2, int i3, int i4) {
+    }
+
+    @Override // l.a
+    public boolean d() {
+        return c() || c.a(getMonth(), getYear());
+    }
+
+    @Override // l.a
+    public String getErrorMessage() {
+        Context context;
+        int i2;
+        if (TextUtils.isEmpty(getText())) {
+            context = getContext();
+            i2 = R.string.payment_sdk_card_error_empty_expiry_date;
+        } else {
+            context = getContext();
+            i2 = R.string.payment_sdk_card_error_invalid_expiry_date;
+        }
+        return context.getString(i2);
+    }
+
+    public String getMonth() {
+        return getString().length() < 2 ? "" : getString().substring(0, 2);
+    }
+
+    public String getYear() {
+        String string = getString();
+        return (string.length() == 4 || string.length() == 6) ? getString().substring(2) : "";
+    }
+
+    @Override // android.view.View.OnClickListener
+    public void onClick(View view) {
+        View.OnClickListener onClickListener = this.f152e;
+        if (onClickListener != null) {
+            onClickListener.onClick(view);
+        }
+    }
+
+    @Override // l.a, android.widget.TextView, android.text.TextWatcher
+    public void onTextChanged(CharSequence charSequence, int i2, int i3, int i4) {
+        super.onTextChanged(charSequence, i2, i3, i4);
+        this.f151d = i4 > i3;
+    }
+
+    @Override // android.view.View
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        this.f152e = onClickListener;
     }
 }

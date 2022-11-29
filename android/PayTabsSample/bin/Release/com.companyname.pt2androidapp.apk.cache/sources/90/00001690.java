@@ -1,46 +1,22 @@
-package mono.android.os;
-
-import android.os.RecoverySystem;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+package kotlin.jvm.internal;
 
 /* loaded from: classes.dex */
-public class RecoverySystem_ProgressListenerImplementor implements IGCUserPeer, RecoverySystem.ProgressListener {
-    public static final String __md_methods = "n_onProgress:(I)V:GetOnProgress_IHandler:Android.OS.RecoverySystem/IProgressListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onProgress(int i2);
-
-    static {
-        Runtime.register("Android.OS.RecoverySystem+IProgressListenerImplementor, Mono.Android", RecoverySystem_ProgressListenerImplementor.class, __md_methods);
+public class InlineMarker {
+    public static void afterInlineCall() {
     }
 
-    public RecoverySystem_ProgressListenerImplementor() {
-        if (getClass() == RecoverySystem_ProgressListenerImplementor.class) {
-            TypeManager.Activate("Android.OS.RecoverySystem+IProgressListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    public static void beforeInlineCall() {
     }
 
-    @Override // android.os.RecoverySystem.ProgressListener
-    public void onProgress(int i2) {
-        n_onProgress(i2);
+    public static void finallyEnd(int i2) {
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
+    public static void finallyStart(int i2) {
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public static void mark(int i2) {
+    }
+
+    public static void mark(String str) {
     }
 }

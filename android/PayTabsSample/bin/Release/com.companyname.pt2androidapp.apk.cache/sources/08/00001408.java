@@ -1,145 +1,261 @@
-package kotlinx.coroutines.flow;
+package com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk;
 
-import kotlin.Metadata;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.jvm.internal.ContinuationImpl;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-import kotlin.jvm.functions.Function2;
+import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-/* compiled from: SafeCollector.common.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0019\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002*\u0001\u0000\b\n\u0018\u00002\b\u0012\u0004\u0012\u00028\u00000\u0001J\u001f\u0010\u0002\u001a\u00020\u00032\f\u0010\u0004\u001a\b\u0012\u0004\u0012\u00028\u00000\u0005H\u0096@ø\u0001\u0000¢\u0006\u0002\u0010\u0006\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\u0007¸\u0006\u0000"}, d2 = {"kotlinx/coroutines/flow/internal/SafeCollector_commonKt$unsafeFlow$1", "Lkotlinx/coroutines/flow/Flow;", "collect", "", "collector", "Lkotlinx/coroutines/flow/FlowCollector;", "(Lkotlinx/coroutines/flow/FlowCollector;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class FlowKt__EmittersKt$onStart$$inlined$unsafeFlow$1 implements Flow<T> {
-    final /* synthetic */ Function2 $action$inlined;
-    final /* synthetic */ Flow $this_onStart$inlined;
+public final class RecognitionResult implements Parcelable {
+    private final Bitmap cardImage;
+    private final String date;
+    private final boolean isFinal;
+    private final boolean isFirst;
+    private final String name;
+    private final String nameRaw;
+    private final String number;
+    private final Rect numberImageRect;
+    private static final RecognitionResult sEmpty = new Builder().setIsFirst(true).build();
+    public static final Parcelable.Creator<RecognitionResult> CREATOR = new Parcelable.Creator<RecognitionResult>() { // from class: com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.RecognitionResult.1
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // android.os.Parcelable.Creator
+        public RecognitionResult createFromParcel(Parcel parcel) {
+            return new RecognitionResult(parcel);
+        }
 
-    @Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u001a\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0000\u0010\u0000\u001a\u0004\u0018\u00010\u0001\"\u0004\b\u0000\u0010\u00022\f\u0010\u0003\u001a\b\u0012\u0004\u0012\u0002H\u00020\u00042\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u00020\u00070\u0006H\u0096@¨\u0006\b"}, d2 = {"collect", "", "T", "collector", "Lkotlinx/coroutines/flow/FlowCollector;", "continuation", "Lkotlin/coroutines/Continuation;", "", "kotlinx/coroutines/flow/internal/SafeCollector_commonKt$unsafeFlow$1$collect$1"}, k = 3, mv = {1, 4, 2})
-    @DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__EmittersKt$onStart$$inlined$unsafeFlow$1", f = "Emitters.kt", i = {0, 0, 0}, l = {116, 120}, m = "collect", n = {"this", "$receiver", "safeCollector"}, s = {"L$0", "L$1", "L$2"})
-    /* renamed from: kotlinx.coroutines.flow.FlowKt__EmittersKt$onStart$$inlined$unsafeFlow$1$1  reason: invalid class name */
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // android.os.Parcelable.Creator
+        public RecognitionResult[] newArray(int i2) {
+            return new RecognitionResult[i2];
+        }
+    };
+
+    @Override // android.os.Parcelable
+    public int describeContents() {
+        return 0;
+    }
+
+    public static RecognitionResult empty() {
+        return sEmpty;
+    }
+
+    public RecognitionResult(String str, String str2, String str3, Rect rect, String str4, Bitmap bitmap, boolean z2, boolean z3) {
+        this.number = str;
+        this.name = str2;
+        this.date = str3;
+        this.nameRaw = str4;
+        this.cardImage = bitmap;
+        this.numberImageRect = rect;
+        this.isFirst = z2;
+        this.isFinal = z3;
+    }
+
+    private RecognitionResult(Builder builder) {
+        this.cardImage = builder.cardImage;
+        this.number = builder.number;
+        this.date = builder.date;
+        this.name = builder.name;
+        this.nameRaw = builder.nameRaw;
+        this.numberImageRect = builder.numberImageRect;
+        this.isFirst = builder.isFirst;
+        this.isFinal = builder.isFinal;
+    }
+
+    public Builder newBuilder() {
+        return new Builder(this);
+    }
+
+    public String getNumber() {
+        return this.number;
+    }
+
+    public String getDate() {
+        return this.date;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public String getNameRaw() {
+        return this.nameRaw;
+    }
+
+    public Bitmap getCardImage() {
+        return this.cardImage;
+    }
+
+    public Rect getNumberImageRect() {
+        return this.numberImageRect;
+    }
+
+    public boolean isFirst() {
+        return this.isFirst;
+    }
+
+    public boolean isFinal() {
+        return this.isFinal;
+    }
+
+    public int getCardImageWidth() {
+        if (getCardImage() == null) {
+            return 0;
+        }
+        return getCardImage().getWidth();
+    }
+
+    public int getCardImageHeight() {
+        if (getCardImage() == null) {
+            return 0;
+        }
+        return getCardImage().getHeight();
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        RecognitionResult recognitionResult = (RecognitionResult) obj;
+        if (this.isFirst == recognitionResult.isFirst && this.isFinal == recognitionResult.isFinal) {
+            String str = this.number;
+            if (str == null ? recognitionResult.number == null : str.equals(recognitionResult.number)) {
+                String str2 = this.date;
+                if (str2 == null ? recognitionResult.date == null : str2.equals(recognitionResult.date)) {
+                    String str3 = this.name;
+                    if (str3 == null ? recognitionResult.name == null : str3.equals(recognitionResult.name)) {
+                        String str4 = this.nameRaw;
+                        if (str4 == null ? recognitionResult.nameRaw == null : str4.equals(recognitionResult.nameRaw)) {
+                            Rect rect = this.numberImageRect;
+                            if (rect == null ? recognitionResult.numberImageRect == null : rect.equals(recognitionResult.numberImageRect)) {
+                                Bitmap bitmap = this.cardImage;
+                                Bitmap bitmap2 = recognitionResult.cardImage;
+                                return bitmap != null ? bitmap.equals(bitmap2) : bitmap2 == null;
+                            }
+                            return false;
+                        }
+                        return false;
+                    }
+                    return false;
+                }
+                return false;
+            }
+            return false;
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        String str = this.number;
+        int hashCode = (str != null ? str.hashCode() : 0) * 31;
+        String str2 = this.date;
+        int hashCode2 = (hashCode + (str2 != null ? str2.hashCode() : 0)) * 31;
+        String str3 = this.name;
+        int hashCode3 = (hashCode2 + (str3 != null ? str3.hashCode() : 0)) * 31;
+        String str4 = this.nameRaw;
+        int hashCode4 = (hashCode3 + (str4 != null ? str4.hashCode() : 0)) * 31;
+        Rect rect = this.numberImageRect;
+        int hashCode5 = (hashCode4 + (rect != null ? rect.hashCode() : 0)) * 31;
+        Bitmap bitmap = this.cardImage;
+        return ((((hashCode5 + (bitmap != null ? bitmap.hashCode() : 0)) * 31) + (this.isFirst ? 1 : 0)) * 31) + (this.isFinal ? 1 : 0);
+    }
+
+    @Override // android.os.Parcelable
+    public void writeToParcel(Parcel parcel, int i2) {
+        parcel.writeInt(this.isFirst ? 1 : 0);
+        parcel.writeInt(this.isFinal ? 1 : 0);
+        parcel.writeString(this.number);
+        parcel.writeString(this.date);
+        parcel.writeString(this.name);
+        parcel.writeString(this.nameRaw);
+        parcel.writeParcelable(this.numberImageRect, 0);
+        parcel.writeParcelable(this.cardImage, 0);
+    }
+
+    protected RecognitionResult(Parcel parcel) {
+        this.isFirst = parcel.readInt() != 0;
+        this.isFinal = parcel.readInt() != 0;
+        this.number = parcel.readString();
+        this.date = parcel.readString();
+        this.name = parcel.readString();
+        this.nameRaw = parcel.readString();
+        this.numberImageRect = (Rect) parcel.readParcelable(Rect.class.getClassLoader());
+        this.cardImage = (Bitmap) parcel.readParcelable(Bitmap.class.getClassLoader());
+    }
+
     /* loaded from: classes.dex */
-    public static final class AnonymousClass1 extends ContinuationImpl {
-        Object L$0;
-        Object L$1;
-        Object L$2;
-        int label;
-        /* synthetic */ Object result;
+    public static final class Builder {
+        private Bitmap cardImage;
+        private String date;
+        private boolean isFinal;
+        private boolean isFirst;
+        private String name;
+        private String nameRaw;
+        private String number;
+        private Rect numberImageRect;
 
-        public AnonymousClass1(Continuation continuation) {
-            super(continuation);
+        public Builder() {
+            this.isFirst = true;
+            this.isFinal = true;
         }
 
-        @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-        public final Object invokeSuspend(Object obj) {
-            this.result = obj;
-            this.label |= Integer.MIN_VALUE;
-            return FlowKt__EmittersKt$onStart$$inlined$unsafeFlow$1.this.collect(null, this);
+        public Builder(RecognitionResult recognitionResult) {
+            this.isFirst = true;
+            this.isFinal = true;
+            this.isFirst = recognitionResult.isFirst;
+            this.isFinal = recognitionResult.isFinal;
+            this.cardImage = recognitionResult.cardImage;
+            this.number = recognitionResult.number;
+            this.date = recognitionResult.date;
+            this.name = recognitionResult.name;
+            this.nameRaw = recognitionResult.nameRaw;
+            this.numberImageRect = recognitionResult.numberImageRect;
         }
-    }
 
-    /* JADX WARN: Removed duplicated region for block: B:10:0x0025  */
-    /* JADX WARN: Removed duplicated region for block: B:20:0x0047  */
-    /* JADX WARN: Removed duplicated region for block: B:27:0x0087 A[RETURN] */
-    @Override // kotlinx.coroutines.flow.Flow
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct code enable 'Show inconsistent code' option in preferences
-    */
-    public java.lang.Object collect(kotlinx.coroutines.flow.FlowCollector r7, kotlin.coroutines.Continuation r8) {
-        /*
-            r6 = this;
-            boolean r0 = r8 instanceof kotlinx.coroutines.flow.FlowKt__EmittersKt$onStart$$inlined$unsafeFlow$1.AnonymousClass1
-            if (r0 == 0) goto L14
-            r0 = r8
-            kotlinx.coroutines.flow.FlowKt__EmittersKt$onStart$$inlined$unsafeFlow$1$1 r0 = (kotlinx.coroutines.flow.FlowKt__EmittersKt$onStart$$inlined$unsafeFlow$1.AnonymousClass1) r0
-            int r1 = r0.label
-            r2 = -2147483648(0xffffffff80000000, float:-0.0)
-            r1 = r1 & r2
-            if (r1 == 0) goto L14
-            int r8 = r0.label
-            int r8 = r8 - r2
-            r0.label = r8
-            goto L19
-        L14:
-            kotlinx.coroutines.flow.FlowKt__EmittersKt$onStart$$inlined$unsafeFlow$1$1 r0 = new kotlinx.coroutines.flow.FlowKt__EmittersKt$onStart$$inlined$unsafeFlow$1$1
-            r0.<init>(r8)
-        L19:
-            java.lang.Object r8 = r0.result
-            java.lang.Object r1 = kotlin.coroutines.intrinsics.IntrinsicsKt.getCOROUTINE_SUSPENDED()
-            int r2 = r0.label
-            r3 = 2
-            r4 = 1
-            if (r2 == 0) goto L47
-            if (r2 == r4) goto L35
-            if (r2 != r3) goto L2d
-            kotlin.ResultKt.throwOnFailure(r8)
-            goto L88
-        L2d:
-            java.lang.IllegalStateException r7 = new java.lang.IllegalStateException
-            java.lang.String r8 = "call to 'resume' before 'invoke' with coroutine"
-            r7.<init>(r8)
-            throw r7
-        L35:
-            java.lang.Object r7 = r0.L$2
-            kotlinx.coroutines.flow.internal.SafeCollector r7 = (kotlinx.coroutines.flow.internal.SafeCollector) r7
-            java.lang.Object r2 = r0.L$1
-            kotlinx.coroutines.flow.FlowCollector r2 = (kotlinx.coroutines.flow.FlowCollector) r2
-            java.lang.Object r4 = r0.L$0
-            kotlinx.coroutines.flow.FlowKt__EmittersKt$onStart$$inlined$unsafeFlow$1 r4 = (kotlinx.coroutines.flow.FlowKt__EmittersKt$onStart$$inlined$unsafeFlow$1) r4
-            kotlin.ResultKt.throwOnFailure(r8)     // Catch: java.lang.Throwable -> L45
-            goto L73
-        L45:
-            r8 = move-exception
-            goto L8d
-        L47:
-            kotlin.ResultKt.throwOnFailure(r8)
-            r8 = r0
-            kotlin.coroutines.Continuation r8 = (kotlin.coroutines.Continuation) r8
-            kotlin.coroutines.CoroutineContext r8 = r0.getContext()
-            kotlinx.coroutines.flow.internal.SafeCollector r2 = new kotlinx.coroutines.flow.internal.SafeCollector
-            r2.<init>(r7, r8)
-            kotlin.jvm.functions.Function2 r8 = r6.$action$inlined     // Catch: java.lang.Throwable -> L8b
-            r0.L$0 = r6     // Catch: java.lang.Throwable -> L8b
-            r0.L$1 = r7     // Catch: java.lang.Throwable -> L8b
-            r0.L$2 = r2     // Catch: java.lang.Throwable -> L8b
-            r0.label = r4     // Catch: java.lang.Throwable -> L8b
-            r4 = 6
-            kotlin.jvm.internal.InlineMarker.mark(r4)     // Catch: java.lang.Throwable -> L8b
-            java.lang.Object r8 = r8.invoke(r2, r0)     // Catch: java.lang.Throwable -> L8b
-            r4 = 7
-            kotlin.jvm.internal.InlineMarker.mark(r4)     // Catch: java.lang.Throwable -> L8b
-            if (r8 != r1) goto L6f
-            return r1
-        L6f:
-            r4 = r6
-            r5 = r2
-            r2 = r7
-            r7 = r5
-        L73:
-            r7.releaseIntercepted()
-            kotlinx.coroutines.flow.Flow r7 = r4.$this_onStart$inlined
-            r8 = 0
-            r0.L$0 = r8
-            r0.L$1 = r8
-            r0.L$2 = r8
-            r0.label = r3
-            java.lang.Object r7 = r7.collect(r2, r0)
-            if (r7 != r1) goto L88
-            return r1
-        L88:
-            kotlin.Unit r7 = kotlin.Unit.INSTANCE
-            return r7
-        L8b:
-            r8 = move-exception
-            r7 = r2
-        L8d:
-            r7.releaseIntercepted()
-            throw r8
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.flow.FlowKt__EmittersKt$onStart$$inlined$unsafeFlow$1.collect(kotlinx.coroutines.flow.FlowCollector, kotlin.coroutines.Continuation):java.lang.Object");
-    }
+        public Builder setCardImage(Bitmap bitmap) {
+            this.cardImage = bitmap;
+            return this;
+        }
 
-    public FlowKt__EmittersKt$onStart$$inlined$unsafeFlow$1(Flow flow, Function2 function2) {
-        this.$this_onStart$inlined = flow;
-        this.$action$inlined = function2;
+        public Builder setNumber(String str) {
+            this.number = str;
+            return this;
+        }
+
+        public Builder setDate(String str) {
+            this.date = str;
+            return this;
+        }
+
+        public Builder setName(String str) {
+            this.name = str;
+            return this;
+        }
+
+        public Builder setNameRaw(String str) {
+            this.nameRaw = str;
+            return this;
+        }
+
+        public Builder setNumberImageRect(Rect rect) {
+            this.numberImageRect = rect;
+            return this;
+        }
+
+        public Builder setIsFinal(boolean z2) {
+            this.isFinal = z2;
+            return this;
+        }
+
+        public Builder setIsFirst(boolean z2) {
+            this.isFirst = z2;
+            return this;
+        }
+
+        public RecognitionResult build() {
+            return new RecognitionResult(this);
+        }
     }
 }

@@ -1,46 +1,107 @@
-package androidx.core.view;
+package androidx.core.net;
 
-import android.view.Menu;
-import android.view.MenuItem;
-import java.util.Iterator;
-import kotlin.Metadata;
-import kotlin.jvm.internal.markers.KMutableIterator;
+import android.net.Uri;
+import androidx.core.util.Preconditions;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import kotlin.text.Typography;
 
-/* compiled from: Menu.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000#\n\u0000\n\u0002\u0010)\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0000*\u0001\u0000\b\n\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001J\t\u0010\u0005\u001a\u00020\u0006H\u0096\u0002J\t\u0010\u0007\u001a\u00020\u0002H\u0096\u0002J\b\u0010\b\u001a\u00020\tH\u0016R\u000e\u0010\u0003\u001a\u00020\u0004X\u0082\u000e¢\u0006\u0002\n\u0000¨\u0006\n"}, d2 = {"androidx/core/view/MenuKt$iterator$1", "", "Landroid/view/MenuItem;", "index", "", "hasNext", "", "next", "remove", "", "core-ktx_release"}, k = 1, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class MenuKt$iterator$1 implements Iterator<MenuItem>, KMutableIterator {
-    final /* synthetic */ Menu $this_iterator;
-    private int index;
+public final class MailTo {
+    private static final String BCC = "bcc";
+    private static final String BODY = "body";
+    private static final String CC = "cc";
+    private static final String MAILTO = "mailto";
+    public static final String MAILTO_SCHEME = "mailto:";
+    private static final String SUBJECT = "subject";
+    private static final String TO = "to";
+    private HashMap<String, String> mHeaders = new HashMap<>();
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public MenuKt$iterator$1(Menu menu) {
-        this.$this_iterator = menu;
+    private MailTo() {
     }
 
-    @Override // java.util.Iterator
-    public boolean hasNext() {
-        return this.index < this.$this_iterator.size();
+    public static boolean isMailTo(String str) {
+        return str != null && str.startsWith(MAILTO_SCHEME);
     }
 
-    /* JADX WARN: Can't rename method to resolve collision */
-    @Override // java.util.Iterator
-    public MenuItem next() {
-        Menu menu = this.$this_iterator;
-        int i2 = this.index;
-        this.index = i2 + 1;
-        MenuItem item = menu.getItem(i2);
-        if (item != null) {
-            return item;
+    public static boolean isMailTo(Uri uri) {
+        return uri != null && MAILTO.equals(uri.getScheme());
+    }
+
+    public static MailTo parse(String str) throws ParseException {
+        String decode;
+        String substring;
+        Preconditions.checkNotNull(str);
+        if (!isMailTo(str)) {
+            throw new ParseException("Not a mailto scheme");
         }
-        throw new IndexOutOfBoundsException();
+        int indexOf = str.indexOf(35);
+        if (indexOf != -1) {
+            str = str.substring(0, indexOf);
+        }
+        int indexOf2 = str.indexOf(63);
+        if (indexOf2 == -1) {
+            decode = Uri.decode(str.substring(7));
+            substring = null;
+        } else {
+            decode = Uri.decode(str.substring(7, indexOf2));
+            substring = str.substring(indexOf2 + 1);
+        }
+        MailTo mailTo = new MailTo();
+        if (substring != null) {
+            for (String str2 : substring.split("&")) {
+                String[] split = str2.split("=", 2);
+                if (split.length != 0) {
+                    mailTo.mHeaders.put(Uri.decode(split[0]).toLowerCase(Locale.ROOT), split.length > 1 ? Uri.decode(split[1]) : null);
+                }
+            }
+        }
+        String to = mailTo.getTo();
+        if (to != null) {
+            decode = decode + ", " + to;
+        }
+        mailTo.mHeaders.put(TO, decode);
+        return mailTo;
     }
 
-    @Override // java.util.Iterator
-    public void remove() {
-        Menu menu = this.$this_iterator;
-        int i2 = this.index - 1;
-        this.index = i2;
-        menu.removeItem(i2);
+    public static MailTo parse(Uri uri) throws ParseException {
+        return parse(uri.toString());
+    }
+
+    public String getTo() {
+        return this.mHeaders.get(TO);
+    }
+
+    public String getCc() {
+        return this.mHeaders.get(CC);
+    }
+
+    public String getBcc() {
+        return this.mHeaders.get(BCC);
+    }
+
+    public String getSubject() {
+        return this.mHeaders.get(SUBJECT);
+    }
+
+    public String getBody() {
+        return this.mHeaders.get(BODY);
+    }
+
+    public Map<String, String> getHeaders() {
+        return this.mHeaders;
+    }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder(MAILTO_SCHEME);
+        sb.append('?');
+        for (Map.Entry<String, String> entry : this.mHeaders.entrySet()) {
+            sb.append(Uri.encode(entry.getKey()));
+            sb.append('=');
+            sb.append(Uri.encode(entry.getValue()));
+            sb.append(Typography.amp);
+        }
+        return sb.toString();
     }
 }

@@ -1,11 +1,6 @@
-package androidx.transition;
-
-import android.view.View;
-import android.view.ViewGroup;
+package androidx.lifecycle;
 
 /* loaded from: classes.dex */
-interface GhostView {
-    void reserveEndViewTransition(ViewGroup viewGroup, View view);
-
-    void setVisibility(int i2);
+public interface Observer<T> {
+    void onChanged(T t2);
 }

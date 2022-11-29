@@ -1,67 +1,122 @@
-package androidx.core.view;
-
-import android.os.Build;
-import android.view.ViewGroup;
+package androidx.core.math;
 
 /* loaded from: classes.dex */
-public final class MarginLayoutParamsCompat {
-    public static int getMarginStart(ViewGroup.MarginLayoutParams marginLayoutParams) {
-        if (Build.VERSION.SDK_INT >= 17) {
-            return marginLayoutParams.getMarginStart();
-        }
-        return marginLayoutParams.leftMargin;
+public class MathUtils {
+    public static double clamp(double d2, double d3, double d4) {
+        return d2 < d3 ? d3 : d2 > d4 ? d4 : d2;
     }
 
-    public static int getMarginEnd(ViewGroup.MarginLayoutParams marginLayoutParams) {
-        if (Build.VERSION.SDK_INT >= 17) {
-            return marginLayoutParams.getMarginEnd();
-        }
-        return marginLayoutParams.rightMargin;
+    public static float clamp(float f2, float f3, float f4) {
+        return f2 < f3 ? f3 : f2 > f4 ? f4 : f2;
     }
 
-    public static void setMarginStart(ViewGroup.MarginLayoutParams marginLayoutParams, int i2) {
-        if (Build.VERSION.SDK_INT >= 17) {
-            marginLayoutParams.setMarginStart(i2);
-        } else {
-            marginLayoutParams.leftMargin = i2;
-        }
+    public static int clamp(int i2, int i3, int i4) {
+        return i2 < i3 ? i3 : i2 > i4 ? i4 : i2;
     }
 
-    public static void setMarginEnd(ViewGroup.MarginLayoutParams marginLayoutParams, int i2) {
-        if (Build.VERSION.SDK_INT >= 17) {
-            marginLayoutParams.setMarginEnd(i2);
-        } else {
-            marginLayoutParams.rightMargin = i2;
-        }
+    public static long clamp(long j2, long j3, long j4) {
+        return j2 < j3 ? j3 : j2 > j4 ? j4 : j2;
     }
 
-    public static boolean isMarginRelative(ViewGroup.MarginLayoutParams marginLayoutParams) {
-        if (Build.VERSION.SDK_INT >= 17) {
-            return marginLayoutParams.isMarginRelative();
-        }
-        return false;
+    private MathUtils() {
     }
 
-    public static int getLayoutDirection(ViewGroup.MarginLayoutParams marginLayoutParams) {
-        int layoutDirection = Build.VERSION.SDK_INT >= 17 ? marginLayoutParams.getLayoutDirection() : 0;
-        if (layoutDirection == 0 || layoutDirection == 1) {
-            return layoutDirection;
+    public static int addExact(int i2, int i3) {
+        int i4 = i2 + i3;
+        if (((i2 ^ i4) & (i3 ^ i4)) >= 0) {
+            return i4;
         }
-        return 0;
+        throw new ArithmeticException("integer overflow");
     }
 
-    public static void setLayoutDirection(ViewGroup.MarginLayoutParams marginLayoutParams, int i2) {
-        if (Build.VERSION.SDK_INT >= 17) {
-            marginLayoutParams.setLayoutDirection(i2);
+    public static long addExact(long j2, long j3) {
+        long j4 = j2 + j3;
+        if (((j2 ^ j4) & (j3 ^ j4)) >= 0) {
+            return j4;
         }
+        throw new ArithmeticException("long overflow");
     }
 
-    public static void resolveLayoutDirection(ViewGroup.MarginLayoutParams marginLayoutParams, int i2) {
-        if (Build.VERSION.SDK_INT >= 17) {
-            marginLayoutParams.resolveLayoutDirection(i2);
+    public static int subtractExact(int i2, int i3) {
+        int i4 = i2 - i3;
+        if (((i2 ^ i4) & (i3 ^ i2)) >= 0) {
+            return i4;
         }
+        throw new ArithmeticException("integer overflow");
     }
 
-    private MarginLayoutParamsCompat() {
+    public static long subtractExact(long j2, long j3) {
+        long j4 = j2 - j3;
+        if (((j2 ^ j4) & (j3 ^ j2)) >= 0) {
+            return j4;
+        }
+        throw new ArithmeticException("long overflow");
+    }
+
+    public static int multiplyExact(int i2, int i3) {
+        long j2 = i2 * i3;
+        int i4 = (int) j2;
+        if (i4 == j2) {
+            return i4;
+        }
+        throw new ArithmeticException("integer overflow");
+    }
+
+    public static long multiplyExact(long j2, long j3) {
+        long j4 = j2 * j3;
+        if (((Math.abs(j2) | Math.abs(j3)) >>> 31) == 0 || ((j3 == 0 || j4 / j3 == j2) && !(j2 == Long.MIN_VALUE && j3 == -1))) {
+            return j4;
+        }
+        throw new ArithmeticException("long overflow");
+    }
+
+    public static int incrementExact(int i2) {
+        if (i2 != Integer.MAX_VALUE) {
+            return i2 + 1;
+        }
+        throw new ArithmeticException("integer overflow");
+    }
+
+    public static long incrementExact(long j2) {
+        if (j2 != Long.MAX_VALUE) {
+            return j2 + 1;
+        }
+        throw new ArithmeticException("long overflow");
+    }
+
+    public static int decrementExact(int i2) {
+        if (i2 != Integer.MIN_VALUE) {
+            return i2 - 1;
+        }
+        throw new ArithmeticException("integer overflow");
+    }
+
+    public static long decrementExact(long j2) {
+        if (j2 != Long.MIN_VALUE) {
+            return j2 - 1;
+        }
+        throw new ArithmeticException("long overflow");
+    }
+
+    public static int negateExact(int i2) {
+        if (i2 != Integer.MIN_VALUE) {
+            return -i2;
+        }
+        throw new ArithmeticException("integer overflow");
+    }
+
+    public static long negateExact(long j2) {
+        if (j2 != Long.MIN_VALUE) {
+            return -j2;
+        }
+        throw new ArithmeticException("long overflow");
+    }
+
+    public static int toIntExact(long j2) {
+        int i2 = (int) j2;
+        if (i2 == j2) {
+            return i2;
+        }
+        throw new ArithmeticException("integer overflow");
     }
 }

@@ -1,246 +1,493 @@
-package androidx.fragment.app;
+package androidx.core.view;
 
-import android.animation.LayoutTransition;
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.os.Build;
-import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowInsets;
-import android.widget.FrameLayout;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.R;
-import java.util.ArrayList;
+import android.view.ViewPropertyAnimator;
+import android.view.animation.Interpolator;
+import java.lang.ref.WeakReference;
 
 /* loaded from: classes.dex */
-public final class FragmentContainerView extends FrameLayout {
-    private View.OnApplyWindowInsetsListener mApplyWindowInsetsListener;
-    private ArrayList<View> mDisappearingFragmentChildren;
-    private boolean mDrawDisappearingViewsFirst;
-    private ArrayList<View> mTransitioningFragmentViews;
+public final class ViewPropertyAnimatorCompat {
+    static final int LISTENER_TAG_ID = 2113929216;
+    private final WeakReference<View> mView;
+    Runnable mStartAction = null;
+    Runnable mEndAction = null;
+    int mOldLayerType = -1;
 
-    @Override // android.view.View
-    public WindowInsets onApplyWindowInsets(WindowInsets windowInsets) {
-        return windowInsets;
-    }
-
-    public FragmentContainerView(Context context) {
-        super(context);
-        this.mDrawDisappearingViewsFirst = true;
-    }
-
-    public FragmentContainerView(Context context, AttributeSet attributeSet) {
-        this(context, attributeSet, 0);
-    }
-
-    public FragmentContainerView(Context context, AttributeSet attributeSet, int i2) {
-        super(context, attributeSet, i2);
-        String str;
-        this.mDrawDisappearingViewsFirst = true;
-        if (attributeSet != null) {
-            String classAttribute = attributeSet.getClassAttribute();
-            TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, R.styleable.FragmentContainerView);
-            if (classAttribute == null) {
-                classAttribute = obtainStyledAttributes.getString(R.styleable.FragmentContainerView_android_name);
-                str = "android:name";
-            } else {
-                str = "class";
-            }
-            obtainStyledAttributes.recycle();
-            if (classAttribute == null || isInEditMode()) {
-                return;
-            }
-            throw new UnsupportedOperationException("FragmentContainerView must be within a FragmentActivity to use " + str + "=\"" + classAttribute + "\"");
-        }
+    public ViewPropertyAnimatorCompat(View view) {
+        this.mView = new WeakReference<>(view);
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    public FragmentContainerView(Context context, AttributeSet attributeSet, FragmentManager fragmentManager) {
-        super(context, attributeSet);
-        String str;
-        this.mDrawDisappearingViewsFirst = true;
-        String classAttribute = attributeSet.getClassAttribute();
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, R.styleable.FragmentContainerView);
-        classAttribute = classAttribute == null ? obtainStyledAttributes.getString(R.styleable.FragmentContainerView_android_name) : classAttribute;
-        String string = obtainStyledAttributes.getString(R.styleable.FragmentContainerView_android_tag);
-        obtainStyledAttributes.recycle();
-        int id = getId();
-        Fragment findFragmentById = fragmentManager.findFragmentById(id);
-        if (classAttribute != null && findFragmentById == null) {
-            if (id <= 0) {
-                if (string != null) {
-                    str = " with tag " + string;
-                } else {
-                    str = "";
+    /* loaded from: classes.dex */
+    public static class ViewPropertyAnimatorListenerApi14 implements ViewPropertyAnimatorListener {
+        boolean mAnimEndCalled;
+        ViewPropertyAnimatorCompat mVpa;
+
+        ViewPropertyAnimatorListenerApi14(ViewPropertyAnimatorCompat viewPropertyAnimatorCompat) {
+            this.mVpa = viewPropertyAnimatorCompat;
+        }
+
+        @Override // androidx.core.view.ViewPropertyAnimatorListener
+        public void onAnimationStart(View view) {
+            this.mAnimEndCalled = false;
+            if (this.mVpa.mOldLayerType > -1) {
+                view.setLayerType(2, null);
+            }
+            if (this.mVpa.mStartAction != null) {
+                Runnable runnable = this.mVpa.mStartAction;
+                this.mVpa.mStartAction = null;
+                runnable.run();
+            }
+            Object tag = view.getTag(ViewPropertyAnimatorCompat.LISTENER_TAG_ID);
+            ViewPropertyAnimatorListener viewPropertyAnimatorListener = tag instanceof ViewPropertyAnimatorListener ? (ViewPropertyAnimatorListener) tag : null;
+            if (viewPropertyAnimatorListener != null) {
+                viewPropertyAnimatorListener.onAnimationStart(view);
+            }
+        }
+
+        @Override // androidx.core.view.ViewPropertyAnimatorListener
+        public void onAnimationEnd(View view) {
+            if (this.mVpa.mOldLayerType > -1) {
+                view.setLayerType(this.mVpa.mOldLayerType, null);
+                this.mVpa.mOldLayerType = -1;
+            }
+            if (Build.VERSION.SDK_INT >= 16 || !this.mAnimEndCalled) {
+                if (this.mVpa.mEndAction != null) {
+                    Runnable runnable = this.mVpa.mEndAction;
+                    this.mVpa.mEndAction = null;
+                    runnable.run();
                 }
-                throw new IllegalStateException("FragmentContainerView must have an android:id to add Fragment " + classAttribute + str);
+                Object tag = view.getTag(ViewPropertyAnimatorCompat.LISTENER_TAG_ID);
+                ViewPropertyAnimatorListener viewPropertyAnimatorListener = tag instanceof ViewPropertyAnimatorListener ? (ViewPropertyAnimatorListener) tag : null;
+                if (viewPropertyAnimatorListener != null) {
+                    viewPropertyAnimatorListener.onAnimationEnd(view);
+                }
+                this.mAnimEndCalled = true;
             }
-            Fragment instantiate = fragmentManager.getFragmentFactory().instantiate(context.getClassLoader(), classAttribute);
-            instantiate.onInflate(context, attributeSet, (Bundle) null);
-            fragmentManager.beginTransaction().setReorderingAllowed(true).add(this, instantiate, string).commitNowAllowingStateLoss();
         }
-        fragmentManager.onContainerAvailable(this);
-    }
 
-    @Override // android.view.ViewGroup
-    public void setLayoutTransition(LayoutTransition layoutTransition) {
-        if (Build.VERSION.SDK_INT < 18) {
-            super.setLayoutTransition(layoutTransition);
-            return;
+        @Override // androidx.core.view.ViewPropertyAnimatorListener
+        public void onAnimationCancel(View view) {
+            Object tag = view.getTag(ViewPropertyAnimatorCompat.LISTENER_TAG_ID);
+            ViewPropertyAnimatorListener viewPropertyAnimatorListener = tag instanceof ViewPropertyAnimatorListener ? (ViewPropertyAnimatorListener) tag : null;
+            if (viewPropertyAnimatorListener != null) {
+                viewPropertyAnimatorListener.onAnimationCancel(view);
+            }
         }
-        throw new UnsupportedOperationException("FragmentContainerView does not support Layout Transitions or animateLayoutChanges=\"true\".");
     }
 
-    @Override // android.view.View
-    public void setOnApplyWindowInsetsListener(View.OnApplyWindowInsetsListener onApplyWindowInsetsListener) {
-        this.mApplyWindowInsetsListener = onApplyWindowInsetsListener;
+    public ViewPropertyAnimatorCompat setDuration(long j2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().setDuration(j2);
+        }
+        return this;
     }
 
-    @Override // android.view.ViewGroup, android.view.View
-    public WindowInsets dispatchApplyWindowInsets(WindowInsets windowInsets) {
-        WindowInsetsCompat onApplyWindowInsets;
-        WindowInsetsCompat windowInsetsCompat = WindowInsetsCompat.toWindowInsetsCompat(windowInsets);
-        View.OnApplyWindowInsetsListener onApplyWindowInsetsListener = this.mApplyWindowInsetsListener;
-        if (onApplyWindowInsetsListener != null) {
-            onApplyWindowInsets = WindowInsetsCompat.toWindowInsetsCompat(onApplyWindowInsetsListener.onApplyWindowInsets(this, windowInsets));
+    public ViewPropertyAnimatorCompat alpha(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().alpha(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat alphaBy(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().alphaBy(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat translationX(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().translationX(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat translationY(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().translationY(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat withEndAction(Runnable runnable) {
+        View view = this.mView.get();
+        if (view != null) {
+            if (Build.VERSION.SDK_INT >= 16) {
+                Api16Impl.withEndAction(view.animate(), runnable);
+            } else {
+                setListenerInternal(view, new ViewPropertyAnimatorListenerApi14(this));
+                this.mEndAction = runnable;
+            }
+        }
+        return this;
+    }
+
+    public long getDuration() {
+        View view = this.mView.get();
+        if (view != null) {
+            return view.animate().getDuration();
+        }
+        return 0L;
+    }
+
+    public ViewPropertyAnimatorCompat setInterpolator(Interpolator interpolator) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().setInterpolator(interpolator);
+        }
+        return this;
+    }
+
+    public Interpolator getInterpolator() {
+        View view = this.mView.get();
+        if (view == null || Build.VERSION.SDK_INT < 18) {
+            return null;
+        }
+        return Api18Impl.getInterpolator(view.animate());
+    }
+
+    public ViewPropertyAnimatorCompat setStartDelay(long j2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().setStartDelay(j2);
+        }
+        return this;
+    }
+
+    public long getStartDelay() {
+        View view = this.mView.get();
+        if (view != null) {
+            return view.animate().getStartDelay();
+        }
+        return 0L;
+    }
+
+    public ViewPropertyAnimatorCompat rotation(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().rotation(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat rotationBy(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().rotationBy(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat rotationX(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().rotationX(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat rotationXBy(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().rotationXBy(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat rotationY(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().rotationY(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat rotationYBy(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().rotationYBy(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat scaleX(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().scaleX(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat scaleXBy(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().scaleXBy(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat scaleY(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().scaleY(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat scaleYBy(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().scaleYBy(f2);
+        }
+        return this;
+    }
+
+    public void cancel() {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().cancel();
+        }
+    }
+
+    public ViewPropertyAnimatorCompat x(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().x(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat xBy(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().xBy(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat y(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().y(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat yBy(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().yBy(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat translationXBy(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().translationXBy(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat translationYBy(float f2) {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().translationYBy(f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat translationZBy(float f2) {
+        View view = this.mView.get();
+        if (view != null && Build.VERSION.SDK_INT >= 21) {
+            Api21Impl.translationZBy(view.animate(), f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat translationZ(float f2) {
+        View view = this.mView.get();
+        if (view != null && Build.VERSION.SDK_INT >= 21) {
+            Api21Impl.translationZ(view.animate(), f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat z(float f2) {
+        View view = this.mView.get();
+        if (view != null && Build.VERSION.SDK_INT >= 21) {
+            Api21Impl.z(view.animate(), f2);
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat zBy(float f2) {
+        View view = this.mView.get();
+        if (view != null && Build.VERSION.SDK_INT >= 21) {
+            Api21Impl.zBy(view.animate(), f2);
+        }
+        return this;
+    }
+
+    public void start() {
+        View view = this.mView.get();
+        if (view != null) {
+            view.animate().start();
+        }
+    }
+
+    public ViewPropertyAnimatorCompat withLayer() {
+        View view = this.mView.get();
+        if (view != null) {
+            if (Build.VERSION.SDK_INT >= 16) {
+                Api16Impl.withLayer(view.animate());
+            } else {
+                this.mOldLayerType = view.getLayerType();
+                setListenerInternal(view, new ViewPropertyAnimatorListenerApi14(this));
+            }
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat withStartAction(Runnable runnable) {
+        View view = this.mView.get();
+        if (view != null) {
+            if (Build.VERSION.SDK_INT >= 16) {
+                Api16Impl.withStartAction(view.animate(), runnable);
+            } else {
+                setListenerInternal(view, new ViewPropertyAnimatorListenerApi14(this));
+                this.mStartAction = runnable;
+            }
+        }
+        return this;
+    }
+
+    public ViewPropertyAnimatorCompat setListener(ViewPropertyAnimatorListener viewPropertyAnimatorListener) {
+        View view = this.mView.get();
+        if (view != null) {
+            if (Build.VERSION.SDK_INT >= 16) {
+                setListenerInternal(view, viewPropertyAnimatorListener);
+            } else {
+                view.setTag(LISTENER_TAG_ID, viewPropertyAnimatorListener);
+                setListenerInternal(view, new ViewPropertyAnimatorListenerApi14(this));
+            }
+        }
+        return this;
+    }
+
+    private void setListenerInternal(final View view, final ViewPropertyAnimatorListener viewPropertyAnimatorListener) {
+        if (viewPropertyAnimatorListener != null) {
+            view.animate().setListener(new AnimatorListenerAdapter() { // from class: androidx.core.view.ViewPropertyAnimatorCompat.1
+                {
+                    ViewPropertyAnimatorCompat.this = this;
+                }
+
+                @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
+                public void onAnimationCancel(Animator animator) {
+                    viewPropertyAnimatorListener.onAnimationCancel(view);
+                }
+
+                @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
+                public void onAnimationEnd(Animator animator) {
+                    viewPropertyAnimatorListener.onAnimationEnd(view);
+                }
+
+                @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
+                public void onAnimationStart(Animator animator) {
+                    viewPropertyAnimatorListener.onAnimationStart(view);
+                }
+            });
         } else {
-            onApplyWindowInsets = ViewCompat.onApplyWindowInsets(this, windowInsetsCompat);
+            view.animate().setListener(null);
         }
-        if (!onApplyWindowInsets.isConsumed()) {
-            int childCount = getChildCount();
-            for (int i2 = 0; i2 < childCount; i2++) {
-                ViewCompat.dispatchApplyWindowInsets(getChildAt(i2), onApplyWindowInsets);
-            }
-        }
-        return windowInsets;
     }
 
-    @Override // android.view.ViewGroup, android.view.View
-    protected void dispatchDraw(Canvas canvas) {
-        if (this.mDrawDisappearingViewsFirst && this.mDisappearingFragmentChildren != null) {
-            for (int i2 = 0; i2 < this.mDisappearingFragmentChildren.size(); i2++) {
-                super.drawChild(canvas, this.mDisappearingFragmentChildren.get(i2), getDrawingTime());
-            }
+    public ViewPropertyAnimatorCompat setUpdateListener(final ViewPropertyAnimatorUpdateListener viewPropertyAnimatorUpdateListener) {
+        final View view = this.mView.get();
+        if (view != null && Build.VERSION.SDK_INT >= 19) {
+            Api19Impl.setUpdateListener(view.animate(), viewPropertyAnimatorUpdateListener != null ? new ValueAnimator.AnimatorUpdateListener() { // from class: androidx.core.view.-$$Lambda$ViewPropertyAnimatorCompat$-X-OeeZ3zgiQP_YgN-Cy4Y7jVqc
+                @Override // android.animation.ValueAnimator.AnimatorUpdateListener
+                public final void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    ViewPropertyAnimatorCompat.lambda$setUpdateListener$0(ViewPropertyAnimatorUpdateListener.this, view, valueAnimator);
+                }
+            } : null);
         }
-        super.dispatchDraw(canvas);
+        return this;
     }
 
-    @Override // android.view.ViewGroup
-    protected boolean drawChild(Canvas canvas, View view, long j2) {
-        ArrayList<View> arrayList;
-        if (!this.mDrawDisappearingViewsFirst || (arrayList = this.mDisappearingFragmentChildren) == null || arrayList.size() <= 0 || !this.mDisappearingFragmentChildren.contains(view)) {
-            return super.drawChild(canvas, view, j2);
-        }
-        return false;
+    public static /* synthetic */ void lambda$setUpdateListener$0(ViewPropertyAnimatorUpdateListener viewPropertyAnimatorUpdateListener, View view, ValueAnimator valueAnimator) {
+        viewPropertyAnimatorUpdateListener.onAnimationUpdate(view);
     }
 
-    @Override // android.view.ViewGroup
-    public void startViewTransition(View view) {
-        if (view.getParent() == this) {
-            if (this.mTransitioningFragmentViews == null) {
-                this.mTransitioningFragmentViews = new ArrayList<>();
-            }
-            this.mTransitioningFragmentViews.add(view);
+    /* loaded from: classes.dex */
+    static class Api16Impl {
+        private Api16Impl() {
         }
-        super.startViewTransition(view);
+
+        static ViewPropertyAnimator withEndAction(ViewPropertyAnimator viewPropertyAnimator, Runnable runnable) {
+            return viewPropertyAnimator.withEndAction(runnable);
+        }
+
+        static ViewPropertyAnimator withLayer(ViewPropertyAnimator viewPropertyAnimator) {
+            return viewPropertyAnimator.withLayer();
+        }
+
+        static ViewPropertyAnimator withStartAction(ViewPropertyAnimator viewPropertyAnimator, Runnable runnable) {
+            return viewPropertyAnimator.withStartAction(runnable);
+        }
     }
 
-    @Override // android.view.ViewGroup
-    public void endViewTransition(View view) {
-        ArrayList<View> arrayList = this.mTransitioningFragmentViews;
-        if (arrayList != null) {
-            arrayList.remove(view);
-            ArrayList<View> arrayList2 = this.mDisappearingFragmentChildren;
-            if (arrayList2 != null && arrayList2.remove(view)) {
-                this.mDrawDisappearingViewsFirst = true;
-            }
+    /* loaded from: classes.dex */
+    static class Api18Impl {
+        private Api18Impl() {
         }
-        super.endViewTransition(view);
+
+        static Interpolator getInterpolator(ViewPropertyAnimator viewPropertyAnimator) {
+            return (Interpolator) viewPropertyAnimator.getInterpolator();
+        }
+    }
+
+    /* loaded from: classes.dex */
+    static class Api21Impl {
+        private Api21Impl() {
+        }
+
+        static ViewPropertyAnimator translationZBy(ViewPropertyAnimator viewPropertyAnimator, float f2) {
+            return viewPropertyAnimator.translationZBy(f2);
+        }
+
+        static ViewPropertyAnimator translationZ(ViewPropertyAnimator viewPropertyAnimator, float f2) {
+            return viewPropertyAnimator.translationZ(f2);
+        }
+
+        static ViewPropertyAnimator z(ViewPropertyAnimator viewPropertyAnimator, float f2) {
+            return viewPropertyAnimator.z(f2);
+        }
+
+        static ViewPropertyAnimator zBy(ViewPropertyAnimator viewPropertyAnimator, float f2) {
+            return viewPropertyAnimator.zBy(f2);
+        }
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    public void setDrawDisappearingViewsLast(boolean z2) {
-        this.mDrawDisappearingViewsFirst = z2;
-    }
-
-    @Override // android.view.ViewGroup
-    public void addView(View view, int i2, ViewGroup.LayoutParams layoutParams) {
-        if (FragmentManager.getViewFragment(view) == null) {
-            throw new IllegalStateException("Views added to a FragmentContainerView must be associated with a Fragment. View " + view + " is not associated with a Fragment.");
+    /* loaded from: classes.dex */
+    public static class Api19Impl {
+        private Api19Impl() {
         }
-        super.addView(view, i2, layoutParams);
-    }
 
-    @Override // android.view.ViewGroup
-    protected boolean addViewInLayout(View view, int i2, ViewGroup.LayoutParams layoutParams, boolean z2) {
-        if (FragmentManager.getViewFragment(view) == null) {
-            throw new IllegalStateException("Views added to a FragmentContainerView must be associated with a Fragment. View " + view + " is not associated with a Fragment.");
+        static ViewPropertyAnimator setUpdateListener(ViewPropertyAnimator viewPropertyAnimator, ValueAnimator.AnimatorUpdateListener animatorUpdateListener) {
+            return viewPropertyAnimator.setUpdateListener(animatorUpdateListener);
         }
-        return super.addViewInLayout(view, i2, layoutParams, z2);
-    }
-
-    @Override // android.view.ViewGroup
-    public void removeViewAt(int i2) {
-        addDisappearingFragmentView(getChildAt(i2));
-        super.removeViewAt(i2);
-    }
-
-    @Override // android.view.ViewGroup
-    public void removeViewInLayout(View view) {
-        addDisappearingFragmentView(view);
-        super.removeViewInLayout(view);
-    }
-
-    @Override // android.view.ViewGroup, android.view.ViewManager
-    public void removeView(View view) {
-        addDisappearingFragmentView(view);
-        super.removeView(view);
-    }
-
-    @Override // android.view.ViewGroup
-    public void removeViews(int i2, int i3) {
-        for (int i4 = i2; i4 < i2 + i3; i4++) {
-            addDisappearingFragmentView(getChildAt(i4));
-        }
-        super.removeViews(i2, i3);
-    }
-
-    @Override // android.view.ViewGroup
-    public void removeViewsInLayout(int i2, int i3) {
-        for (int i4 = i2; i4 < i2 + i3; i4++) {
-            addDisappearingFragmentView(getChildAt(i4));
-        }
-        super.removeViewsInLayout(i2, i3);
-    }
-
-    @Override // android.view.ViewGroup
-    public void removeAllViewsInLayout() {
-        for (int childCount = getChildCount() - 1; childCount >= 0; childCount--) {
-            addDisappearingFragmentView(getChildAt(childCount));
-        }
-        super.removeAllViewsInLayout();
-    }
-
-    @Override // android.view.ViewGroup
-    protected void removeDetachedView(View view, boolean z2) {
-        if (z2) {
-            addDisappearingFragmentView(view);
-        }
-        super.removeDetachedView(view, z2);
-    }
-
-    private void addDisappearingFragmentView(View view) {
-        ArrayList<View> arrayList = this.mTransitioningFragmentViews;
-        if (arrayList == null || !arrayList.contains(view)) {
-            return;
-        }
-        if (this.mDisappearingFragmentChildren == null) {
-            this.mDisappearingFragmentChildren = new ArrayList<>();
-        }
-        this.mDisappearingFragmentChildren.add(view);
     }
 }

@@ -1,46 +1,26 @@
-package mono.android.content;
+package kotlin.io;
 
-import android.content.DialogInterface;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.io.File;
+import java.io.IOException;
+import kotlin.Metadata;
+import kotlin.jvm.functions.Function2;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.internal.Lambda;
 
+/* compiled from: Utils.kt */
+@Metadata(d1 = {"\u0000\u0014\n\u0000\n\u0002\u0010\u0001\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u00032\u0006\u0010\u0004\u001a\u00020\u0005H\n¢\u0006\u0002\b\u0006"}, d2 = {"<anonymous>", "", "<anonymous parameter 0>", "Ljava/io/File;", "exception", "Ljava/io/IOException;", "invoke"}, k = 3, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class DialogInterface_OnDismissListenerImplementor implements IGCUserPeer, DialogInterface.OnDismissListener {
-    public static final String __md_methods = "n_onDismiss:(Landroid/content/DialogInterface;)V:GetOnDismiss_Landroid_content_DialogInterface_Handler:Android.Content.IDialogInterfaceOnDismissListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+final class FilesKt__UtilsKt$copyRecursively$1 extends Lambda implements Function2 {
+    public static final FilesKt__UtilsKt$copyRecursively$1 INSTANCE = new FilesKt__UtilsKt$copyRecursively$1();
 
-    private native void n_onDismiss(DialogInterface dialogInterface);
-
-    static {
-        Runtime.register("Android.Content.IDialogInterfaceOnDismissListenerImplementor, Mono.Android", DialogInterface_OnDismissListenerImplementor.class, __md_methods);
+    FilesKt__UtilsKt$copyRecursively$1() {
+        super(2);
     }
 
-    public DialogInterface_OnDismissListenerImplementor() {
-        if (getClass() == DialogInterface_OnDismissListenerImplementor.class) {
-            TypeManager.Activate("Android.Content.IDialogInterfaceOnDismissListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.content.DialogInterface.OnDismissListener
-    public void onDismiss(DialogInterface dialogInterface) {
-        n_onDismiss(dialogInterface);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    @Override // kotlin.jvm.functions.Function2
+    public final Void invoke(File file, IOException exception) {
+        Intrinsics.checkNotNullParameter(file, "<anonymous parameter 0>");
+        Intrinsics.checkNotNullParameter(exception, "exception");
+        throw exception;
     }
 }

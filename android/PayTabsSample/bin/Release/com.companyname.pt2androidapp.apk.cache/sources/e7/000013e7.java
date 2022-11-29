@@ -1,29 +1,87 @@
-package kotlinx.coroutines.flow;
+package com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera;
 
-import kotlin.Metadata;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.jvm.internal.ContinuationImpl;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
+import android.hardware.Camera;
+import android.util.Log;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.RecognitionCore;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.TorchStatusListener;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.utils.Constants;
+import kotlinx.coroutines.DebugKt;
 
-/* JADX INFO: Access modifiers changed from: package-private */
-/* compiled from: Collection.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u001a\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u001f\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\u0010\u0000\u001a\u0004\u0018\u00010\u0001\"\u0004\b\u0000\u0010\u0002\"\u0010\b\u0001\u0010\u0003*\n\u0012\u0006\b\u0000\u0012\u0002H\u00020\u0004*\b\u0012\u0004\u0012\u0002H\u00020\u00052\u0006\u0010\u0006\u001a\u0002H\u00032\f\u0010\u0007\u001a\b\u0012\u0004\u0012\u0002H\u00030\bH\u0086@"}, d2 = {"toCollection", "", "T", "C", "", "Lkotlinx/coroutines/flow/Flow;", "destination", "continuation", "Lkotlin/coroutines/Continuation;"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__CollectionKt", f = "Collection.kt", i = {0}, l = {32}, m = "toCollection", n = {"destination"}, s = {"L$0"})
 /* loaded from: classes.dex */
-public final class FlowKt__CollectionKt$toCollection$1 extends ContinuationImpl {
-    Object L$0;
-    int label;
-    /* synthetic */ Object result;
+public final class TorchManager {
+    private static final boolean DBG = Constants.DEBUG;
+    private static final String TAG = "TorchManager";
+    private final Camera mCamera;
+    private boolean mPaused;
+    private final RecognitionCore mRecognitionCore;
+    private final TorchStatusListener mRecognitionCoreTorchStatusListener = new TorchStatusListener() { // from class: com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.TorchManager.1
+        @Override // com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.TorchStatusListener
+        public void onTorchStatusChanged(boolean z2) {
+            if (TorchManager.this.mCamera == null) {
+                return;
+            }
+            if (TorchManager.DBG) {
+                Log.d(TorchManager.TAG, "onTorchStatusChanged() called with: turnTorchOn = [" + z2 + "]");
+            }
+            if (z2) {
+                TorchManager.this.mTorchTurnedOn = true;
+                if (TorchManager.this.mPaused) {
+                    return;
+                }
+                CameraConfigurationUtils.setFlashLight(TorchManager.this.mCamera, true);
+                return;
+            }
+            TorchManager.this.mTorchTurnedOn = false;
+            CameraConfigurationUtils.setFlashLight(TorchManager.this.mCamera, false);
+        }
+    };
+    private boolean mTorchTurnedOn;
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public FlowKt__CollectionKt$toCollection$1(Continuation continuation) {
-        super(continuation);
+    public TorchManager(RecognitionCore recognitionCore, Camera camera) {
+        this.mCamera = camera;
+        this.mRecognitionCore = recognitionCore;
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        this.result = obj;
-        this.label |= Integer.MIN_VALUE;
-        return FlowKt.toCollection(null, null, this);
+    public void pause() {
+        if (DBG) {
+            Log.d(TAG, "pause()");
+        }
+        CameraConfigurationUtils.setFlashLight(this.mCamera, false);
+        this.mPaused = true;
+        this.mRecognitionCore.setTorchListener(null);
+    }
+
+    public void resume() {
+        if (DBG) {
+            Log.d(TAG, "resume()");
+        }
+        this.mPaused = false;
+        this.mRecognitionCore.setTorchListener(this.mRecognitionCoreTorchStatusListener);
+        if (this.mTorchTurnedOn) {
+            this.mRecognitionCore.setTorchStatus(true);
+        } else {
+            this.mRecognitionCore.setTorchStatus(false);
+        }
+    }
+
+    public void destroy() {
+        this.mRecognitionCore.setTorchListener(null);
+    }
+
+    private boolean isTorchTurnedOn() {
+        String flashMode = this.mCamera.getParameters().getFlashMode();
+        return "torch".equals(flashMode) || DebugKt.DEBUG_PROPERTY_VALUE_ON.equals(flashMode);
+    }
+
+    public void toggleTorch() {
+        if (this.mPaused) {
+            return;
+        }
+        boolean z2 = !isTorchTurnedOn();
+        if (DBG) {
+            Log.d(TAG, "toggleTorch() called with newStatus: " + z2);
+        }
+        this.mRecognitionCore.setTorchStatus(z2);
+        CameraConfigurationUtils.setFlashLight(this.mCamera, z2);
     }
 }

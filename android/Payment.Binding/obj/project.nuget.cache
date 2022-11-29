@@ -1,0 +1,229 @@
+{
+  "version": 2,
+  "dgSpecHash": "Wqqaktq+OCVUKQGGnmRuzI5ntvIsI5LfHCv/4o0tXX1OfgnRQQWKHnVUcH1OsS9wGJYZMG5PuPW/gg79j1f+fw==",
+  "success": true,
+  "projectFilePath": "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/Payment.Binding/PaymentSDK.Binding.csproj",
+  "expectedPackageFiles": [
+    "/Users/mohamedadly/.nuget/packages/googlegson/2.9.0/googlegson.2.9.0.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/nuget.build.packaging/0.2.5-dev.8/nuget.build.packaging.0.2.5-dev.8.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/square.okhttp3/4.9.1/square.okhttp3.4.9.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/square.okhttp3.logginginterceptor/4.4.1/square.okhttp3.logginginterceptor.4.4.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/square.okio/2.10.0/square.okio.2.10.0.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/square.retrofit2/2.9.0/square.retrofit2.2.9.0.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/square.retrofit2.convertergson/2.9.0/square.retrofit2.convertergson.2.9.0.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/square.retrofit2.converterscalars/2.7.2/square.retrofit2.converterscalars.2.7.2.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.activity/1.5.1/xamarin.androidx.activity.1.5.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.activity.ktx/1.5.1/xamarin.androidx.activity.ktx.1.5.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.annotation/1.4.0/xamarin.androidx.annotation.1.4.0.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.annotation.experimental/1.2.0.2/xamarin.androidx.annotation.experimental.1.2.0.2.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.appcompat/1.4.2/xamarin.androidx.appcompat.1.4.2.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.appcompat.appcompatresources/1.4.2/xamarin.androidx.appcompat.appcompatresources.1.4.2.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.arch.core.common/2.1.0.15/xamarin.androidx.arch.core.common.2.1.0.15.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.arch.core.runtime/2.1.0.15/xamarin.androidx.arch.core.runtime.2.1.0.15.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.cardview/1.0.0.15/xamarin.androidx.cardview.1.0.0.15.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.collection/1.2.0.4/xamarin.androidx.collection.1.2.0.4.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.collection.ktx/1.2.0.4/xamarin.androidx.collection.ktx.1.2.0.4.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.concurrent.futures/1.1.0.9/xamarin.androidx.concurrent.futures.1.1.0.9.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.constraintlayout/2.1.4/xamarin.androidx.constraintlayout.2.1.4.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.constraintlayout.core/1.0.4/xamarin.androidx.constraintlayout.core.1.0.4.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.coordinatorlayout/1.2.0.1/xamarin.androidx.coordinatorlayout.1.2.0.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.core/1.8.0.1/xamarin.androidx.core.1.8.0.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.core.core.ktx/1.8.0/xamarin.androidx.core.core.ktx.1.8.0.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.cursoradapter/1.0.0.13/xamarin.androidx.cursoradapter.1.0.0.13.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.customview/1.1.0.13/xamarin.androidx.customview.1.1.0.13.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.documentfile/1.0.1.13/xamarin.androidx.documentfile.1.0.1.13.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.drawerlayout/1.1.1.8/xamarin.androidx.drawerlayout.1.1.1.8.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.dynamicanimation/1.0.0.13/xamarin.androidx.dynamicanimation.1.0.0.13.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.emoji2/1.1.0.1/xamarin.androidx.emoji2.1.1.0.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.emoji2.viewshelper/1.1.0.1/xamarin.androidx.emoji2.viewshelper.1.1.0.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.fragment/1.5.1/xamarin.androidx.fragment.1.5.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.fragment.ktx/1.5.1/xamarin.androidx.fragment.ktx.1.5.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.interpolator/1.0.0.13/xamarin.androidx.interpolator.1.0.0.13.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.legacy.support.core.utils/1.0.0.13/xamarin.androidx.legacy.support.core.utils.1.0.0.13.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.lifecycle.common/2.5.1/xamarin.androidx.lifecycle.common.2.5.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.lifecycle.extensions/2.2.0/xamarin.androidx.lifecycle.extensions.2.2.0.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.lifecycle.livedata/2.2.0/xamarin.androidx.lifecycle.livedata.2.2.0.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.lifecycle.livedata.core/2.5.1/xamarin.androidx.lifecycle.livedata.core.2.5.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.lifecycle.livedata.core.ktx/2.5.1/xamarin.androidx.lifecycle.livedata.core.ktx.2.5.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.lifecycle.process/2.4.1.1/xamarin.androidx.lifecycle.process.2.4.1.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.lifecycle.runtime/2.5.1/xamarin.androidx.lifecycle.runtime.2.5.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.lifecycle.runtime.ktx/2.5.1/xamarin.androidx.lifecycle.runtime.ktx.2.5.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.lifecycle.service/2.2.0/xamarin.androidx.lifecycle.service.2.2.0.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.lifecycle.viewmodel/2.5.1/xamarin.androidx.lifecycle.viewmodel.2.5.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.lifecycle.viewmodel.ktx/2.5.1/xamarin.androidx.lifecycle.viewmodel.ktx.2.5.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.lifecycle.viewmodelsavedstate/2.5.1/xamarin.androidx.lifecycle.viewmodelsavedstate.2.5.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.loader/1.1.0.14/xamarin.androidx.loader.1.1.0.14.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.localbroadcastmanager/1.1.0.1/xamarin.androidx.localbroadcastmanager.1.1.0.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.migration/1.0.10/xamarin.androidx.migration.1.0.10.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.multidex/2.0.1.13/xamarin.androidx.multidex.2.0.1.13.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.print/1.0.0.13/xamarin.androidx.print.1.0.0.13.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.recyclerview/1.2.1.6/xamarin.androidx.recyclerview.1.2.1.6.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.resourceinspection.annotation/1.0.1.1/xamarin.androidx.resourceinspection.annotation.1.0.1.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.savedstate/1.2.0/xamarin.androidx.savedstate.1.2.0.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.savedstate.savedstate.ktx/1.2.0/xamarin.androidx.savedstate.savedstate.ktx.1.2.0.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.security.securitycrypto/1.0.0/xamarin.androidx.security.securitycrypto.1.0.0.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.startup.startupruntime/1.1.1.1/xamarin.androidx.startup.startupruntime.1.1.1.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.tracing.tracing/1.1.0.1/xamarin.androidx.tracing.tracing.1.1.0.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.transition/1.4.1.6/xamarin.androidx.transition.1.4.1.6.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.vectordrawable/1.1.0.13/xamarin.androidx.vectordrawable.1.1.0.13.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.vectordrawable.animated/1.1.0.13/xamarin.androidx.vectordrawable.animated.1.1.0.13.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.versionedparcelable/1.1.1.14/xamarin.androidx.versionedparcelable.1.1.1.14.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.viewpager/1.0.0.14/xamarin.androidx.viewpager.1.0.0.14.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.androidx.viewpager2/1.0.0.15/xamarin.androidx.viewpager2.1.0.0.15.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.google.android.material/1.6.1/xamarin.google.android.material.1.6.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.google.crypto.tink.android/1.6.1/xamarin.google.crypto.tink.android.1.6.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.google.guava.listenablefuture/1.0.0.9/xamarin.google.guava.listenablefuture.1.0.0.9.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.jetbrains.annotations/13.0.0.4/xamarin.jetbrains.annotations.13.0.0.4.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.kotlin.stdlib/1.5.10/xamarin.kotlin.stdlib.1.5.10.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.kotlin.stdlib.common/1.7.20.1/xamarin.kotlin.stdlib.common.1.7.20.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.kotlin.stdlib.jdk7/1.7.20.1/xamarin.kotlin.stdlib.jdk7.1.7.20.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.kotlin.stdlib.jdk8/1.7.20.1/xamarin.kotlin.stdlib.jdk8.1.7.20.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.kotlinx.coroutines.android/1.6.4.1/xamarin.kotlinx.coroutines.android.1.6.4.1.nupkg.sha512",
+    "/Users/mohamedadly/.nuget/packages/xamarin.kotlinx.coroutines.core.jvm/1.6.4.1/xamarin.kotlinx.coroutines.core.jvm.1.6.4.1.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1605",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package downgrade: Xamarin.Kotlin.StdLib from 1.6.21 to 1.5.10. Reference the package directly from the project to select a different version. \n Paytabs.Xamarin.Android -> Xamarin.AndroidX.Core.Core.Ktx 1.8.0 -> Xamarin.Kotlin.StdLib (>= 1.6.21) \n Paytabs.Xamarin.Android -> Xamarin.Kotlin.StdLib (>= 1.5.10)",
+      "libraryId": "Xamarin.Kotlin.StdLib",
+      "targetGraphs": [
+        "MonoAndroid,Version=v12.0",
+        "MonoAndroid,Version=v12.0/win",
+        "MonoAndroid,Version=v12.0/win-x64",
+        "MonoAndroid,Version=v12.0/win-x86"
+      ]
+    },
+    {
+      "code": "NU1605",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package downgrade: Xamarin.AndroidX.Core.Core.Ktx from 1.8.0.1 to 1.8.0. Reference the package directly from the project to select a different version. \n Paytabs.Xamarin.Android -> Xamarin.AndroidX.Fragment.Ktx 1.5.1 -> Xamarin.AndroidX.Core.Core.Ktx (>= 1.8.0.1) \n Paytabs.Xamarin.Android -> Xamarin.AndroidX.Core.Core.Ktx (>= 1.8.0)",
+      "libraryId": "Xamarin.AndroidX.Core.Core.Ktx",
+      "targetGraphs": [
+        "MonoAndroid,Version=v12.0",
+        "MonoAndroid,Version=v12.0/win",
+        "MonoAndroid,Version=v12.0/win-x64",
+        "MonoAndroid,Version=v12.0/win-x86"
+      ]
+    },
+    {
+      "code": "NU1605",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package downgrade: Xamarin.Kotlin.StdLib from 1.7.10 to 1.5.10. Reference the package directly from the project to select a different version. \n Paytabs.Xamarin.Android -> Xamarin.AndroidX.Fragment.Ktx 1.5.1 -> Xamarin.Kotlin.StdLib (>= 1.7.10) \n Paytabs.Xamarin.Android -> Xamarin.Kotlin.StdLib (>= 1.5.10)",
+      "libraryId": "Xamarin.Kotlin.StdLib",
+      "targetGraphs": [
+        "MonoAndroid,Version=v12.0",
+        "MonoAndroid,Version=v12.0/win",
+        "MonoAndroid,Version=v12.0/win-x64",
+        "MonoAndroid,Version=v12.0/win-x86"
+      ]
+    },
+    {
+      "code": "NU1605",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package downgrade: Xamarin.Kotlin.StdLib from 1.7.10 to 1.5.10. Reference the package directly from the project to select a different version. \n Paytabs.Xamarin.Android -> Xamarin.AndroidX.Lifecycle.LiveData.Core.Ktx 2.5.1 -> Xamarin.Kotlin.StdLib (>= 1.7.10) \n Paytabs.Xamarin.Android -> Xamarin.Kotlin.StdLib (>= 1.5.10)",
+      "libraryId": "Xamarin.Kotlin.StdLib",
+      "targetGraphs": [
+        "MonoAndroid,Version=v12.0",
+        "MonoAndroid,Version=v12.0/win",
+        "MonoAndroid,Version=v12.0/win-x64",
+        "MonoAndroid,Version=v12.0/win-x86"
+      ]
+    },
+    {
+      "code": "NU1605",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package downgrade: Xamarin.Kotlin.StdLib from 1.7.10 to 1.5.10. Reference the package directly from the project to select a different version. \n Paytabs.Xamarin.Android -> Xamarin.AndroidX.Lifecycle.Runtime.Ktx 2.5.1 -> Xamarin.Kotlin.StdLib (>= 1.7.10) \n Paytabs.Xamarin.Android -> Xamarin.Kotlin.StdLib (>= 1.5.10)",
+      "libraryId": "Xamarin.Kotlin.StdLib",
+      "targetGraphs": [
+        "MonoAndroid,Version=v12.0",
+        "MonoAndroid,Version=v12.0/win",
+        "MonoAndroid,Version=v12.0/win-x64",
+        "MonoAndroid,Version=v12.0/win-x86"
+      ]
+    },
+    {
+      "code": "NU1605",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package downgrade: Xamarin.Kotlin.StdLib from 1.7.10 to 1.5.10. Reference the package directly from the project to select a different version. \n Paytabs.Xamarin.Android -> Xamarin.AndroidX.Lifecycle.ViewModel.Ktx 2.5.1 -> Xamarin.Kotlin.StdLib (>= 1.7.10) \n Paytabs.Xamarin.Android -> Xamarin.Kotlin.StdLib (>= 1.5.10)",
+      "libraryId": "Xamarin.Kotlin.StdLib",
+      "targetGraphs": [
+        "MonoAndroid,Version=v12.0",
+        "MonoAndroid,Version=v12.0/win",
+        "MonoAndroid,Version=v12.0/win-x64",
+        "MonoAndroid,Version=v12.0/win-x86"
+      ]
+    },
+    {
+      "code": "NU1605",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package downgrade: Xamarin.Kotlin.StdLib from 1.6.20.1 to 1.5.10. Reference the package directly from the project to select a different version. \n Paytabs.Xamarin.Android -> Xamarin.Google.Android.Material 1.6.1 -> Xamarin.AndroidX.Fragment 1.4.1.1 -> Xamarin.Kotlin.StdLib (>= 1.6.20.1) \n Paytabs.Xamarin.Android -> Xamarin.Kotlin.StdLib (>= 1.5.10)",
+      "libraryId": "Xamarin.Kotlin.StdLib",
+      "targetGraphs": [
+        "MonoAndroid,Version=v12.0",
+        "MonoAndroid,Version=v12.0/win",
+        "MonoAndroid,Version=v12.0/win-x64",
+        "MonoAndroid,Version=v12.0/win-x86"
+      ]
+    },
+    {
+      "code": "NU1605",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package downgrade: Xamarin.Kotlin.StdLib from 1.7.20.1 to 1.5.10. Reference the package directly from the project to select a different version. \n Paytabs.Xamarin.Android -> Xamarin.KotlinX.Coroutines.Android 1.6.4.1 -> Xamarin.Kotlin.StdLib.Jdk8 1.7.20.1 -> Xamarin.Kotlin.StdLib (>= 1.7.20.1) \n Paytabs.Xamarin.Android -> Xamarin.Kotlin.StdLib (>= 1.5.10)",
+      "libraryId": "Xamarin.Kotlin.StdLib",
+      "targetGraphs": [
+        "MonoAndroid,Version=v12.0",
+        "MonoAndroid,Version=v12.0/win",
+        "MonoAndroid,Version=v12.0/win-x64",
+        "MonoAndroid,Version=v12.0/win-x86"
+      ]
+    },
+    {
+      "code": "NU1605",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package downgrade: Xamarin.Kotlin.StdLib from 1.6.21 to 1.5.10. Reference the package directly from the project to select a different version. \n Paytabs.Xamarin.Android -> Xamarin.Google.Android.Material 1.6.1 -> Xamarin.AndroidX.AppCompat 1.4.2 -> Xamarin.AndroidX.Activity 1.4.0.3 -> Xamarin.Kotlin.StdLib (>= 1.6.21) \n Paytabs.Xamarin.Android -> Xamarin.Kotlin.StdLib (>= 1.5.10)",
+      "libraryId": "Xamarin.Kotlin.StdLib",
+      "targetGraphs": [
+        "MonoAndroid,Version=v12.0",
+        "MonoAndroid,Version=v12.0/win",
+        "MonoAndroid,Version=v12.0/win-x64",
+        "MonoAndroid,Version=v12.0/win-x86"
+      ]
+    },
+    {
+      "code": "NU1605",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package downgrade: Xamarin.Kotlin.StdLib from 1.6.20.1 to 1.5.10. Reference the package directly from the project to select a different version. \n Paytabs.Xamarin.Android -> Xamarin.Google.Android.Material 1.6.1 -> Xamarin.AndroidX.AppCompat 1.4.2 -> Xamarin.AndroidX.Lifecycle.ViewModel 2.4.1.1 -> Xamarin.Kotlin.StdLib (>= 1.6.20.1) \n Paytabs.Xamarin.Android -> Xamarin.Kotlin.StdLib (>= 1.5.10)",
+      "libraryId": "Xamarin.Kotlin.StdLib",
+      "targetGraphs": [
+        "MonoAndroid,Version=v12.0",
+        "MonoAndroid,Version=v12.0/win",
+        "MonoAndroid,Version=v12.0/win-x64",
+        "MonoAndroid,Version=v12.0/win-x86"
+      ]
+    },
+    {
+      "code": "NU1605",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Detected package downgrade: Xamarin.Kotlin.StdLib from 1.6.20.1 to 1.5.10. Reference the package directly from the project to select a different version. \n Paytabs.Xamarin.Android -> Xamarin.Google.Android.Material 1.6.1 -> Xamarin.AndroidX.DynamicAnimation 1.0.0.13 -> Xamarin.AndroidX.Legacy.Support.Core.Utils 1.0.0.13 -> Xamarin.AndroidX.Loader 1.1.0.13 -> Xamarin.AndroidX.Lifecycle.ViewModel 2.4.1.1 -> Xamarin.Kotlin.StdLib (>= 1.6.20.1) \n Paytabs.Xamarin.Android -> Xamarin.Kotlin.StdLib (>= 1.5.10)",
+      "libraryId": "Xamarin.Kotlin.StdLib",
+      "targetGraphs": [
+        "MonoAndroid,Version=v12.0",
+        "MonoAndroid,Version=v12.0/win",
+        "MonoAndroid,Version=v12.0/win-x64",
+        "MonoAndroid,Version=v12.0/win-x86"
+      ]
+    }
+  ]
+}

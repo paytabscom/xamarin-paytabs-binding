@@ -1,58 +1,32 @@
-package kotlinx.coroutines.internal;
+package kotlin.collections;
 
+import java.util.Iterator;
+import kotlin.Deprecated;
+import kotlin.DeprecationLevel;
 import kotlin.Metadata;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.CoroutineContext;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.CoroutineStackFrame;
-import kotlinx.coroutines.AbstractCoroutine;
-import kotlinx.coroutines.CompletionStateKt;
-import kotlinx.coroutines.Job;
+import kotlin.UInt;
+import kotlin.jvm.internal.markers.KMappedMarker;
 
-/* compiled from: Scopes.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000J\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0005\n\u0002\u0010\u000b\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\b\u0010\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u00002\b\u0012\u0004\u0012\u0002H\u00010\u00022\u00060\u0003j\u0002`\u0004B\u001b\u0012\u0006\u0010\u0005\u001a\u00020\u0006\u0012\f\u0010\u0007\u001a\b\u0012\u0004\u0012\u00028\u00000\b¢\u0006\u0002\u0010\tJ\u0012\u0010\u0014\u001a\u00020\u00152\b\u0010\u0016\u001a\u0004\u0018\u00010\u0017H\u0014J\u0012\u0010\u0018\u001a\u00020\u00152\b\u0010\u0016\u001a\u0004\u0018\u00010\u0017H\u0014J\u000e\u0010\u0019\u001a\n\u0018\u00010\u001aj\u0004\u0018\u0001`\u001bR\u0019\u0010\n\u001a\n\u0018\u00010\u0003j\u0004\u0018\u0001`\u00048F¢\u0006\u0006\u001a\u0004\b\u000b\u0010\fR\u0014\u0010\r\u001a\u00020\u000e8DX\u0084\u0004¢\u0006\u0006\u001a\u0004\b\r\u0010\u000fR\u0016\u0010\u0010\u001a\u0004\u0018\u00010\u00118@X\u0080\u0004¢\u0006\u0006\u001a\u0004\b\u0012\u0010\u0013R\u0016\u0010\u0007\u001a\b\u0012\u0004\u0012\u00028\u00000\b8\u0006X\u0087\u0004¢\u0006\u0002\n\u0000¨\u0006\u001c"}, d2 = {"Lkotlinx/coroutines/internal/ScopeCoroutine;", "T", "Lkotlinx/coroutines/AbstractCoroutine;", "Lkotlin/coroutines/jvm/internal/CoroutineStackFrame;", "Lkotlinx/coroutines/internal/CoroutineStackFrame;", "context", "Lkotlin/coroutines/CoroutineContext;", "uCont", "Lkotlin/coroutines/Continuation;", "(Lkotlin/coroutines/CoroutineContext;Lkotlin/coroutines/Continuation;)V", "callerFrame", "getCallerFrame", "()Lkotlin/coroutines/jvm/internal/CoroutineStackFrame;", "isScopedCoroutine", "", "()Z", "parent", "Lkotlinx/coroutines/Job;", "getParent$kotlinx_coroutines_core", "()Lkotlinx/coroutines/Job;", "afterCompletion", "", "state", "", "afterResume", "getStackTraceElement", "Ljava/lang/StackTraceElement;", "Lkotlinx/coroutines/internal/StackTraceElement;", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
+/* compiled from: UIterators.kt */
+@Deprecated(level = DeprecationLevel.ERROR, message = "This class is not going to be stabilized and is to be removed soon.")
+@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\u0010(\n\u0002\u0018\u0002\n\u0002\b\u0007\b'\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\u0005¢\u0006\u0002\u0010\u0003J\u0016\u0010\u0004\u001a\u00020\u0002H\u0086\u0002ø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\b\u0005\u0010\u0006J\u0015\u0010\u0007\u001a\u00020\u0002H&ø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\b\b\u0010\u0006ø\u0001\u0000\u0082\u0002\b\n\u0002\b\u0019\n\u0002\b!¨\u0006\t"}, d2 = {"Lkotlin/collections/UIntIterator;", "", "Lkotlin/UInt;", "()V", "next", "next-pVg5ArA", "()I", "nextUInt", "nextUInt-pVg5ArA", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class ScopeCoroutine<T> extends AbstractCoroutine<T> implements CoroutineStackFrame {
-    public final Continuation<T> uCont;
+public abstract class UIntIterator implements Iterator<UInt>, KMappedMarker {
+    /* renamed from: nextUInt-pVg5ArA */
+    public abstract int mo205nextUIntpVg5ArA();
 
-    @Override // kotlin.coroutines.jvm.internal.CoroutineStackFrame
-    public final StackTraceElement getStackTraceElement() {
-        return null;
+    @Override // java.util.Iterator
+    public void remove() {
+        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
     }
 
-    @Override // kotlinx.coroutines.JobSupport
-    protected final boolean isScopedCoroutine() {
-        return true;
+    @Override // java.util.Iterator
+    public /* bridge */ /* synthetic */ UInt next() {
+        return UInt.m130boximpl(m502nextpVg5ArA());
     }
 
-    /* JADX WARN: Multi-variable type inference failed */
-    public ScopeCoroutine(CoroutineContext coroutineContext, Continuation<? super T> continuation) {
-        super(coroutineContext, true);
-        this.uCont = continuation;
-    }
-
-    @Override // kotlin.coroutines.jvm.internal.CoroutineStackFrame
-    public final CoroutineStackFrame getCallerFrame() {
-        Continuation<T> continuation = this.uCont;
-        if (!(continuation instanceof CoroutineStackFrame)) {
-            continuation = null;
-        }
-        return (CoroutineStackFrame) continuation;
-    }
-
-    public final Job getParent$kotlinx_coroutines_core() {
-        return (Job) this.parentContext.get(Job.Key);
-    }
-
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // kotlinx.coroutines.JobSupport
-    public void afterCompletion(Object obj) {
-        DispatchedContinuationKt.resumeCancellableWith$default(IntrinsicsKt.intercepted(this.uCont), CompletionStateKt.recoverResult(obj, this.uCont), null, 2, null);
-    }
-
-    @Override // kotlinx.coroutines.AbstractCoroutine
-    protected void afterResume(Object obj) {
-        Continuation<T> continuation = this.uCont;
-        continuation.resumeWith(CompletionStateKt.recoverResult(obj, continuation));
+    /* renamed from: next-pVg5ArA  reason: not valid java name */
+    public final int m502nextpVg5ArA() {
+        return mo205nextUIntpVg5ArA();
     }
 }

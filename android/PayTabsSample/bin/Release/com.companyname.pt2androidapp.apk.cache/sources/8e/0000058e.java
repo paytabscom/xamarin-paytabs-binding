@@ -1,30 +1,50 @@
-package androidx.core.transition;
+package androidx.core.graphics.drawable;
 
-import android.transition.Transition;
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.internal.Intrinsics;
-import kotlin.jvm.internal.Lambda;
+import android.content.res.ColorStateList;
+import androidx.versionedparcelable.VersionedParcel;
 
-/* compiled from: Transition.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u000e\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0003H\n¢\u0006\u0002\b\u0004"}, d2 = {"<anonymous>", "", "it", "Landroid/transition/Transition;", "invoke"}, k = 3, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class TransitionKt$addListener$1 extends Lambda implements Function1<Transition, Unit> {
-    public static final TransitionKt$addListener$1 INSTANCE = new TransitionKt$addListener$1();
-
-    public TransitionKt$addListener$1() {
-        super(1);
+public class IconCompatParcelizer {
+    public static IconCompat read(VersionedParcel versionedParcel) {
+        IconCompat iconCompat = new IconCompat();
+        iconCompat.mType = versionedParcel.readInt(iconCompat.mType, 1);
+        iconCompat.mData = versionedParcel.readByteArray(iconCompat.mData, 2);
+        iconCompat.mParcelable = versionedParcel.readParcelable(iconCompat.mParcelable, 3);
+        iconCompat.mInt1 = versionedParcel.readInt(iconCompat.mInt1, 4);
+        iconCompat.mInt2 = versionedParcel.readInt(iconCompat.mInt2, 5);
+        iconCompat.mTintList = (ColorStateList) versionedParcel.readParcelable(iconCompat.mTintList, 6);
+        iconCompat.mTintModeStr = versionedParcel.readString(iconCompat.mTintModeStr, 7);
+        iconCompat.mString1 = versionedParcel.readString(iconCompat.mString1, 8);
+        iconCompat.onPostParceling();
+        return iconCompat;
     }
 
-    @Override // kotlin.jvm.functions.Function1
-    public /* bridge */ /* synthetic */ Unit invoke(Transition transition) {
-        invoke2(transition);
-        return Unit.INSTANCE;
-    }
-
-    /* renamed from: invoke  reason: avoid collision after fix types in other method */
-    public final void invoke2(Transition it) {
-        Intrinsics.checkNotNullParameter(it, "it");
+    public static void write(IconCompat iconCompat, VersionedParcel versionedParcel) {
+        versionedParcel.setSerializationFlags(true, true);
+        iconCompat.onPreParceling(versionedParcel.isStream());
+        if (-1 != iconCompat.mType) {
+            versionedParcel.writeInt(iconCompat.mType, 1);
+        }
+        if (iconCompat.mData != null) {
+            versionedParcel.writeByteArray(iconCompat.mData, 2);
+        }
+        if (iconCompat.mParcelable != null) {
+            versionedParcel.writeParcelable(iconCompat.mParcelable, 3);
+        }
+        if (iconCompat.mInt1 != 0) {
+            versionedParcel.writeInt(iconCompat.mInt1, 4);
+        }
+        if (iconCompat.mInt2 != 0) {
+            versionedParcel.writeInt(iconCompat.mInt2, 5);
+        }
+        if (iconCompat.mTintList != null) {
+            versionedParcel.writeParcelable(iconCompat.mTintList, 6);
+        }
+        if (iconCompat.mTintModeStr != null) {
+            versionedParcel.writeString(iconCompat.mTintModeStr, 7);
+        }
+        if (iconCompat.mString1 != null) {
+            versionedParcel.writeString(iconCompat.mString1, 8);
+        }
     }
 }

@@ -1,160 +1,265 @@
-package androidx.core.view;
+package androidx.core.location;
 
-import android.content.ClipData;
-import android.content.ClipDescription;
-import android.net.Uri;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Pair;
-import androidx.core.util.Preconditions;
-import androidx.core.util.Predicate;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
-import java.util.List;
+import android.os.SystemClock;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.concurrent.TimeUnit;
 
 /* loaded from: classes.dex */
-public final class ContentInfoCompat {
-    public static final int FLAG_CONVERT_TO_PLAIN_TEXT = 1;
-    public static final int SOURCE_APP = 0;
-    public static final int SOURCE_CLIPBOARD = 1;
-    public static final int SOURCE_DRAG_AND_DROP = 3;
-    public static final int SOURCE_INPUT_METHOD = 2;
-    final ClipData mClip;
-    final Bundle mExtras;
-    final int mFlags;
-    final Uri mLinkUri;
-    final int mSource;
+public final class LocationCompat {
+    public static final String EXTRA_BEARING_ACCURACY = "bearingAccuracy";
+    public static final String EXTRA_IS_MOCK = "mockLocation";
+    public static final String EXTRA_SPEED_ACCURACY = "speedAccuracy";
+    public static final String EXTRA_VERTICAL_ACCURACY = "verticalAccuracy";
+    private static Method sSetIsFromMockProviderMethod;
 
-    @Retention(RetentionPolicy.SOURCE)
-    /* loaded from: classes.dex */
-    public @interface Flags {
+    private LocationCompat() {
     }
 
-    @Retention(RetentionPolicy.SOURCE)
-    /* loaded from: classes.dex */
-    public @interface Source {
-    }
-
-    static String sourceToString(int i2) {
-        return i2 != 0 ? i2 != 1 ? i2 != 2 ? i2 != 3 ? String.valueOf(i2) : "SOURCE_DRAG_AND_DROP" : "SOURCE_INPUT_METHOD" : "SOURCE_CLIPBOARD" : "SOURCE_APP";
-    }
-
-    static String flagsToString(int i2) {
-        return (i2 & 1) != 0 ? "FLAG_CONVERT_TO_PLAIN_TEXT" : String.valueOf(i2);
-    }
-
-    ContentInfoCompat(Builder builder) {
-        this.mClip = (ClipData) Preconditions.checkNotNull(builder.mClip);
-        this.mSource = Preconditions.checkArgumentInRange(builder.mSource, 0, 3, "source");
-        this.mFlags = Preconditions.checkFlagsArgument(builder.mFlags, 1);
-        this.mLinkUri = builder.mLinkUri;
-        this.mExtras = builder.mExtras;
-    }
-
-    public String toString() {
-        return "ContentInfoCompat{clip=" + this.mClip + ", source=" + sourceToString(this.mSource) + ", flags=" + flagsToString(this.mFlags) + ", linkUri=" + this.mLinkUri + ", extras=" + this.mExtras + "}";
-    }
-
-    public ClipData getClip() {
-        return this.mClip;
-    }
-
-    public int getSource() {
-        return this.mSource;
-    }
-
-    public int getFlags() {
-        return this.mFlags;
-    }
-
-    public Uri getLinkUri() {
-        return this.mLinkUri;
-    }
-
-    public Bundle getExtras() {
-        return this.mExtras;
-    }
-
-    public Pair<ContentInfoCompat, ContentInfoCompat> partition(Predicate<ClipData.Item> predicate) {
-        if (this.mClip.getItemCount() == 1) {
-            boolean test = predicate.test(this.mClip.getItemAt(0));
-            return Pair.create(test ? this : null, test ? null : this);
+    public static long getElapsedRealtimeNanos(Location location) {
+        if (Build.VERSION.SDK_INT >= 17) {
+            return Api17Impl.getElapsedRealtimeNanos(location);
         }
-        ArrayList arrayList = new ArrayList();
-        ArrayList arrayList2 = new ArrayList();
-        for (int i2 = 0; i2 < this.mClip.getItemCount(); i2++) {
-            ClipData.Item itemAt = this.mClip.getItemAt(i2);
-            if (predicate.test(itemAt)) {
-                arrayList.add(itemAt);
-            } else {
-                arrayList2.add(itemAt);
+        return TimeUnit.MILLISECONDS.toNanos(getElapsedRealtimeMillis(location));
+    }
+
+    public static long getElapsedRealtimeMillis(Location location) {
+        if (Build.VERSION.SDK_INT >= 17) {
+            return TimeUnit.NANOSECONDS.toMillis(Api17Impl.getElapsedRealtimeNanos(location));
+        }
+        long currentTimeMillis = System.currentTimeMillis() - location.getTime();
+        long elapsedRealtime = SystemClock.elapsedRealtime();
+        if (currentTimeMillis < 0) {
+            return elapsedRealtime;
+        }
+        if (currentTimeMillis > elapsedRealtime) {
+            return 0L;
+        }
+        return elapsedRealtime - currentTimeMillis;
+    }
+
+    public static boolean hasVerticalAccuracy(Location location) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            return Api26Impl.hasVerticalAccuracy(location);
+        }
+        Bundle extras = location.getExtras();
+        if (extras == null) {
+            return false;
+        }
+        return extras.containsKey(EXTRA_VERTICAL_ACCURACY);
+    }
+
+    public static float getVerticalAccuracyMeters(Location location) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            return Api26Impl.getVerticalAccuracyMeters(location);
+        }
+        Bundle extras = location.getExtras();
+        if (extras == null) {
+            return 0.0f;
+        }
+        return extras.getFloat(EXTRA_VERTICAL_ACCURACY, 0.0f);
+    }
+
+    public static void setVerticalAccuracyMeters(Location location, float f2) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            Api26Impl.setVerticalAccuracyMeters(location, f2);
+            return;
+        }
+        Bundle extras = location.getExtras();
+        if (extras == null) {
+            location.setExtras(new Bundle());
+            extras = location.getExtras();
+        }
+        extras.putFloat(EXTRA_VERTICAL_ACCURACY, f2);
+    }
+
+    public static boolean hasSpeedAccuracy(Location location) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            return Api26Impl.hasSpeedAccuracy(location);
+        }
+        Bundle extras = location.getExtras();
+        if (extras == null) {
+            return false;
+        }
+        return extras.containsKey(EXTRA_SPEED_ACCURACY);
+    }
+
+    public static float getSpeedAccuracyMetersPerSecond(Location location) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            return Api26Impl.getSpeedAccuracyMetersPerSecond(location);
+        }
+        Bundle extras = location.getExtras();
+        if (extras == null) {
+            return 0.0f;
+        }
+        return extras.getFloat(EXTRA_SPEED_ACCURACY, 0.0f);
+    }
+
+    public static void setSpeedAccuracyMetersPerSecond(Location location, float f2) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            Api26Impl.setSpeedAccuracyMetersPerSecond(location, f2);
+            return;
+        }
+        Bundle extras = location.getExtras();
+        if (extras == null) {
+            location.setExtras(new Bundle());
+            extras = location.getExtras();
+        }
+        extras.putFloat(EXTRA_SPEED_ACCURACY, f2);
+    }
+
+    public static boolean hasBearingAccuracy(Location location) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            return Api26Impl.hasBearingAccuracy(location);
+        }
+        Bundle extras = location.getExtras();
+        if (extras == null) {
+            return false;
+        }
+        return extras.containsKey(EXTRA_BEARING_ACCURACY);
+    }
+
+    public static float getBearingAccuracyDegrees(Location location) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            return Api26Impl.getBearingAccuracyDegrees(location);
+        }
+        Bundle extras = location.getExtras();
+        if (extras == null) {
+            return 0.0f;
+        }
+        return extras.getFloat(EXTRA_BEARING_ACCURACY, 0.0f);
+    }
+
+    public static void setBearingAccuracyDegrees(Location location, float f2) {
+        if (Build.VERSION.SDK_INT >= 26) {
+            Api26Impl.setBearingAccuracyDegrees(location, f2);
+            return;
+        }
+        Bundle extras = location.getExtras();
+        if (extras == null) {
+            location.setExtras(new Bundle());
+            extras = location.getExtras();
+        }
+        extras.putFloat(EXTRA_BEARING_ACCURACY, f2);
+    }
+
+    public static boolean isMock(Location location) {
+        if (Build.VERSION.SDK_INT >= 18) {
+            return Api18Impl.isMock(location);
+        }
+        Bundle extras = location.getExtras();
+        if (extras == null) {
+            return false;
+        }
+        return extras.getBoolean(EXTRA_IS_MOCK, false);
+    }
+
+    public static void setMock(Location location, boolean z2) {
+        if (Build.VERSION.SDK_INT >= 18) {
+            try {
+                getSetIsFromMockProviderMethod().invoke(location, Boolean.valueOf(z2));
+                return;
+            } catch (IllegalAccessException e2) {
+                IllegalAccessError illegalAccessError = new IllegalAccessError();
+                illegalAccessError.initCause(e2);
+                throw illegalAccessError;
+            } catch (NoSuchMethodException e3) {
+                NoSuchMethodError noSuchMethodError = new NoSuchMethodError();
+                noSuchMethodError.initCause(e3);
+                throw noSuchMethodError;
+            } catch (InvocationTargetException e4) {
+                throw new RuntimeException(e4);
             }
         }
-        if (arrayList.isEmpty()) {
-            return Pair.create(null, this);
+        Bundle extras = location.getExtras();
+        if (extras == null) {
+            if (z2) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(EXTRA_IS_MOCK, true);
+                location.setExtras(bundle);
+            }
+        } else if (z2) {
+            extras.putBoolean(EXTRA_IS_MOCK, true);
+        } else {
+            extras.remove(EXTRA_IS_MOCK);
+            if (extras.isEmpty()) {
+                location.setExtras(null);
+            }
         }
-        if (arrayList2.isEmpty()) {
-            return Pair.create(this, null);
-        }
-        return Pair.create(new Builder(this).setClip(buildClipData(this.mClip.getDescription(), arrayList)).build(), new Builder(this).setClip(buildClipData(this.mClip.getDescription(), arrayList2)).build());
-    }
-
-    private static ClipData buildClipData(ClipDescription clipDescription, List<ClipData.Item> list) {
-        ClipData clipData = new ClipData(new ClipDescription(clipDescription), list.get(0));
-        for (int i2 = 1; i2 < list.size(); i2++) {
-            clipData.addItem(list.get(i2));
-        }
-        return clipData;
     }
 
     /* loaded from: classes.dex */
-    public static final class Builder {
-        ClipData mClip;
-        Bundle mExtras;
-        int mFlags;
-        Uri mLinkUri;
-        int mSource;
-
-        public Builder(ContentInfoCompat contentInfoCompat) {
-            this.mClip = contentInfoCompat.mClip;
-            this.mSource = contentInfoCompat.mSource;
-            this.mFlags = contentInfoCompat.mFlags;
-            this.mLinkUri = contentInfoCompat.mLinkUri;
-            this.mExtras = contentInfoCompat.mExtras;
+    private static class Api26Impl {
+        private Api26Impl() {
         }
 
-        public Builder(ClipData clipData, int i2) {
-            this.mClip = clipData;
-            this.mSource = i2;
+        static boolean hasVerticalAccuracy(Location location) {
+            return location.hasVerticalAccuracy();
         }
 
-        public Builder setClip(ClipData clipData) {
-            this.mClip = clipData;
-            return this;
+        static float getVerticalAccuracyMeters(Location location) {
+            return location.getVerticalAccuracyMeters();
         }
 
-        public Builder setSource(int i2) {
-            this.mSource = i2;
-            return this;
+        static void setVerticalAccuracyMeters(Location location, float f2) {
+            location.setVerticalAccuracyMeters(f2);
         }
 
-        public Builder setFlags(int i2) {
-            this.mFlags = i2;
-            return this;
+        static boolean hasSpeedAccuracy(Location location) {
+            return location.hasSpeedAccuracy();
         }
 
-        public Builder setLinkUri(Uri uri) {
-            this.mLinkUri = uri;
-            return this;
+        static float getSpeedAccuracyMetersPerSecond(Location location) {
+            return location.getSpeedAccuracyMetersPerSecond();
         }
 
-        public Builder setExtras(Bundle bundle) {
-            this.mExtras = bundle;
-            return this;
+        static void setSpeedAccuracyMetersPerSecond(Location location, float f2) {
+            location.setSpeedAccuracyMetersPerSecond(f2);
         }
 
-        public ContentInfoCompat build() {
-            return new ContentInfoCompat(this);
+        static boolean hasBearingAccuracy(Location location) {
+            return location.hasBearingAccuracy();
         }
+
+        static float getBearingAccuracyDegrees(Location location) {
+            return location.getBearingAccuracyDegrees();
+        }
+
+        static void setBearingAccuracyDegrees(Location location, float f2) {
+            location.setBearingAccuracyDegrees(f2);
+        }
+    }
+
+    /* loaded from: classes.dex */
+    private static class Api18Impl {
+        private Api18Impl() {
+        }
+
+        static boolean isMock(Location location) {
+            return location.isFromMockProvider();
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    /* loaded from: classes.dex */
+    public static class Api17Impl {
+        private Api17Impl() {
+        }
+
+        static long getElapsedRealtimeNanos(Location location) {
+            return location.getElapsedRealtimeNanos();
+        }
+    }
+
+    private static Method getSetIsFromMockProviderMethod() throws NoSuchMethodException {
+        if (sSetIsFromMockProviderMethod == null) {
+            Method declaredMethod = Location.class.getDeclaredMethod("setIsFromMockProvider", Boolean.TYPE);
+            sSetIsFromMockProviderMethod = declaredMethod;
+            declaredMethod.setAccessible(true);
+        }
+        return sSetIsFromMockProviderMethod;
     }
 }

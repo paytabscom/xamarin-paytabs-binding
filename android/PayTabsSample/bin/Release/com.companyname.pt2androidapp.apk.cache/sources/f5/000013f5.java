@@ -1,69 +1,118 @@
-package kotlinx.coroutines.flow;
+package com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.gles;
 
-import java.util.concurrent.CancellationException;
-import kotlin.Metadata;
-import kotlin.ResultKt;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-import kotlin.coroutines.jvm.internal.SuspendLambda;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.internal.Ref;
-import kotlinx.coroutines.channels.ReceiveChannel;
-import kotlinx.coroutines.flow.internal.ChildCancelledException;
-import kotlinx.coroutines.flow.internal.NullSurrogateKt;
+import android.graphics.Bitmap;
+import android.opengl.GLES20;
+import android.util.Log;
+import android.view.Surface;
+import android.view.SurfaceHolder;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import javax.microedition.khronos.egl.EGLSurface;
 
-/* compiled from: Delay.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0012\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0010\u0000\n\u0002\b\u0003\u0010\u0000\u001a\u00020\u0001\"\u0004\b\u0000\u0010\u00022\b\u0010\u0003\u001a\u0004\u0018\u00010\u0004H\u008a@¢\u0006\u0004\b\u0005\u0010\u0006¨\u0006\u0007"}, d2 = {"<anonymous>", "", "T", "it", "", "invoke", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", "kotlinx/coroutines/flow/FlowKt__DelayKt$sample$2$1$1"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__DelayKt$sample$2$1$1", f = "Delay.kt", i = {}, l = {}, m = "invokeSuspend", n = {}, s = {})
 /* loaded from: classes.dex */
-final class FlowKt__DelayKt$sample$2$invokeSuspend$$inlined$select$lambda$1 extends SuspendLambda implements Function2<Object, Continuation<? super Unit>, Object> {
-    final /* synthetic */ FlowCollector $downstream$inlined;
-    final /* synthetic */ Ref.ObjectRef $lastValue$inlined;
-    final /* synthetic */ ReceiveChannel $ticker$inlined;
-    final /* synthetic */ Ref.ObjectRef $values$inlined;
-    private /* synthetic */ Object L$0;
-    int label;
+public final class WindowSurface {
+    private static final boolean DBG = GlUtil.DBG;
+    protected static final String TAG = "gles";
+    protected EglCore mEglCore;
+    private boolean mReleaseSurface;
+    private Surface mSurface;
+    private EGLSurface mEGLSurface = null;
+    private int mWidth = -1;
+    private int mHeight = -1;
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public FlowKt__DelayKt$sample$2$invokeSuspend$$inlined$select$lambda$1(Continuation continuation, Ref.ObjectRef objectRef, ReceiveChannel receiveChannel, Ref.ObjectRef objectRef2, FlowCollector flowCollector) {
-        super(2, continuation);
-        this.$values$inlined = objectRef;
-        this.$ticker$inlined = receiveChannel;
-        this.$lastValue$inlined = objectRef2;
-        this.$downstream$inlined = flowCollector;
+    public WindowSurface(EglCore eglCore, SurfaceHolder surfaceHolder, boolean z2) {
+        this.mEglCore = eglCore;
+        createWindowSurface(surfaceHolder);
+        this.mSurface = surfaceHolder.getSurface();
+        this.mReleaseSurface = z2;
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Continuation<Unit> create(Object obj, Continuation<?> continuation) {
-        FlowKt__DelayKt$sample$2$invokeSuspend$$inlined$select$lambda$1 flowKt__DelayKt$sample$2$invokeSuspend$$inlined$select$lambda$1 = new FlowKt__DelayKt$sample$2$invokeSuspend$$inlined$select$lambda$1(continuation, this.$values$inlined, this.$ticker$inlined, this.$lastValue$inlined, this.$downstream$inlined);
-        flowKt__DelayKt$sample$2$invokeSuspend$$inlined$select$lambda$1.L$0 = obj;
-        return flowKt__DelayKt$sample$2$invokeSuspend$$inlined$select$lambda$1;
-    }
-
-    @Override // kotlin.jvm.functions.Function2
-    public final Object invoke(Object obj, Continuation<? super Unit> continuation) {
-        return ((FlowKt__DelayKt$sample$2$invokeSuspend$$inlined$select$lambda$1) create(obj, continuation)).invokeSuspend(Unit.INSTANCE);
-    }
-
-    /* JADX WARN: Type inference failed for: r0v5, types: [kotlinx.coroutines.internal.Symbol, T] */
-    /* JADX WARN: Type inference failed for: r2v2, types: [T, java.lang.Object] */
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        IntrinsicsKt.getCOROUTINE_SUSPENDED();
-        if (this.label == 0) {
-            ResultKt.throwOnFailure(obj);
-            ?? r2 = this.L$0;
-            if (r2 == 0) {
-                this.$ticker$inlined.cancel((CancellationException) new ChildCancelledException());
-                this.$lastValue$inlined.element = NullSurrogateKt.DONE;
-            } else {
-                this.$lastValue$inlined.element = r2;
+    public void release() {
+        releaseEglSurface();
+        Surface surface = this.mSurface;
+        if (surface != null) {
+            if (this.mReleaseSurface) {
+                surface.release();
             }
-            return Unit.INSTANCE;
+            this.mSurface = null;
         }
-        throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+    }
+
+    public void createWindowSurface(Object obj) {
+        if (this.mEGLSurface != null) {
+            throw new IllegalStateException("surface already created");
+        }
+        this.mEGLSurface = this.mEglCore.createWindowSurface(obj);
+    }
+
+    public int getWidth() {
+        int i2 = this.mWidth;
+        return i2 < 0 ? this.mEglCore.querySurface(this.mEGLSurface, 12375) : i2;
+    }
+
+    public int getHeight() {
+        int i2 = this.mHeight;
+        return i2 < 0 ? this.mEglCore.querySurface(this.mEGLSurface, 12374) : i2;
+    }
+
+    public void releaseEglSurface() {
+        this.mEglCore.releaseSurface(this.mEGLSurface);
+        this.mEGLSurface = null;
+        this.mHeight = -1;
+        this.mWidth = -1;
+    }
+
+    public void makeCurrent() {
+        this.mEglCore.makeCurrent(this.mEGLSurface);
+    }
+
+    public boolean swapBuffers() {
+        boolean swapBuffers = this.mEglCore.swapBuffers(this.mEGLSurface);
+        if (!swapBuffers) {
+            Log.d("gles", "WARNING: swapBuffers() failed");
+        }
+        return swapBuffers;
+    }
+
+    public void saveFrame(File file) throws IOException {
+        BufferedOutputStream bufferedOutputStream;
+        if (!this.mEglCore.isCurrent(this.mEGLSurface)) {
+            throw new RuntimeException("Expected EGL context/surface is not current");
+        }
+        String file2 = file.toString();
+        int width = getWidth();
+        int height = getHeight();
+        ByteBuffer allocateDirect = ByteBuffer.allocateDirect(width * height * 4);
+        allocateDirect.order(ByteOrder.LITTLE_ENDIAN);
+        GLES20.glReadPixels(0, 0, width, height, 6408, 5121, allocateDirect);
+        GlUtil.checkGlError("glReadPixels");
+        allocateDirect.rewind();
+        BufferedOutputStream bufferedOutputStream2 = null;
+        try {
+            bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file2));
+        } catch (Throwable th) {
+            th = th;
+        }
+        try {
+            Bitmap createBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            createBitmap.copyPixelsFromBuffer(allocateDirect);
+            createBitmap.compress(Bitmap.CompressFormat.PNG, 90, bufferedOutputStream);
+            createBitmap.recycle();
+            bufferedOutputStream.close();
+            if (DBG) {
+                Log.d("gles", "Saved " + width + "x" + height + " frame as '" + file2 + "'");
+            }
+        } catch (Throwable th2) {
+            th = th2;
+            bufferedOutputStream2 = bufferedOutputStream;
+            if (bufferedOutputStream2 != null) {
+                bufferedOutputStream2.close();
+            }
+            throw th;
+        }
     }
 }

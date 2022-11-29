@@ -1,92 +1,42 @@
-package com.google.android.material.circularreveal.cardview;
+package androidx.transition;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
-import android.util.AttributeSet;
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.circularreveal.CircularRevealHelper;
-import com.google.android.material.circularreveal.CircularRevealWidget;
+import android.graphics.Matrix;
+import android.view.View;
 
 /* loaded from: classes.dex */
-public class CircularRevealCardView extends MaterialCardView implements CircularRevealWidget {
-    private final CircularRevealHelper helper;
-
-    public CircularRevealCardView(Context context) {
-        this(context, null);
+class ViewUtilsApi29 extends ViewUtilsApi23 {
+    @Override // androidx.transition.ViewUtilsApi19, androidx.transition.ViewUtilsBase
+    public void setTransitionAlpha(View view, float f2) {
+        view.setTransitionAlpha(f2);
     }
 
-    public CircularRevealCardView(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        this.helper = new CircularRevealHelper(this);
+    @Override // androidx.transition.ViewUtilsApi19, androidx.transition.ViewUtilsBase
+    public float getTransitionAlpha(View view) {
+        return view.getTransitionAlpha();
     }
 
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public void buildCircularRevealCache() {
-        this.helper.buildCircularRevealCache();
+    @Override // androidx.transition.ViewUtilsApi23, androidx.transition.ViewUtilsBase
+    public void setTransitionVisibility(View view, int i2) {
+        view.setTransitionVisibility(i2);
     }
 
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public void destroyCircularRevealCache() {
-        this.helper.destroyCircularRevealCache();
+    @Override // androidx.transition.ViewUtilsApi22, androidx.transition.ViewUtilsBase
+    public void setLeftTopRightBottom(View view, int i2, int i3, int i4, int i5) {
+        view.setLeftTopRightBottom(i2, i3, i4, i5);
     }
 
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public void setRevealInfo(CircularRevealWidget.RevealInfo revealInfo) {
-        this.helper.setRevealInfo(revealInfo);
+    @Override // androidx.transition.ViewUtilsApi21, androidx.transition.ViewUtilsBase
+    public void transformMatrixToGlobal(View view, Matrix matrix) {
+        view.transformMatrixToGlobal(matrix);
     }
 
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public CircularRevealWidget.RevealInfo getRevealInfo() {
-        return this.helper.getRevealInfo();
+    @Override // androidx.transition.ViewUtilsApi21, androidx.transition.ViewUtilsBase
+    public void transformMatrixToLocal(View view, Matrix matrix) {
+        view.transformMatrixToLocal(matrix);
     }
 
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public void setCircularRevealScrimColor(int i2) {
-        this.helper.setCircularRevealScrimColor(i2);
-    }
-
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public int getCircularRevealScrimColor() {
-        return this.helper.getCircularRevealScrimColor();
-    }
-
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public Drawable getCircularRevealOverlayDrawable() {
-        return this.helper.getCircularRevealOverlayDrawable();
-    }
-
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public void setCircularRevealOverlayDrawable(Drawable drawable) {
-        this.helper.setCircularRevealOverlayDrawable(drawable);
-    }
-
-    @Override // android.view.View, com.google.android.material.circularreveal.CircularRevealWidget
-    public void draw(Canvas canvas) {
-        CircularRevealHelper circularRevealHelper = this.helper;
-        if (circularRevealHelper != null) {
-            circularRevealHelper.draw(canvas);
-        } else {
-            super.draw(canvas);
-        }
-    }
-
-    @Override // com.google.android.material.circularreveal.CircularRevealHelper.Delegate
-    public void actualDraw(Canvas canvas) {
-        super.draw(canvas);
-    }
-
-    @Override // android.view.View, com.google.android.material.circularreveal.CircularRevealWidget
-    public boolean isOpaque() {
-        CircularRevealHelper circularRevealHelper = this.helper;
-        if (circularRevealHelper != null) {
-            return circularRevealHelper.isOpaque();
-        }
-        return super.isOpaque();
-    }
-
-    @Override // com.google.android.material.circularreveal.CircularRevealHelper.Delegate
-    public boolean actualIsOpaque() {
-        return super.isOpaque();
+    @Override // androidx.transition.ViewUtilsApi21, androidx.transition.ViewUtilsBase
+    public void setAnimationMatrix(View view, Matrix matrix) {
+        view.setAnimationMatrix(matrix);
     }
 }

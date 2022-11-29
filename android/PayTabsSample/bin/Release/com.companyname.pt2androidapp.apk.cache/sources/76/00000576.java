@@ -1,42 +1,169 @@
-package androidx.core.text;
+package androidx.core.graphics;
 
-import android.text.Spannable;
-import android.text.SpannableString;
-import kotlin.Metadata;
-import kotlin.jvm.internal.Intrinsics;
-import kotlin.ranges.IntRange;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Typeface;
+import android.os.CancellationSignal;
+import android.os.ParcelFileDescriptor;
+import android.system.ErrnoException;
+import android.system.Os;
+import android.system.OsConstants;
+import android.util.Log;
+import androidx.core.content.res.FontResourcesParserCompat;
+import androidx.core.provider.FontsContractCompat;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
-/* compiled from: SpannableString.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000(\n\u0000\n\u0002\u0010\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\r\n\u0000\u001a\r\u0010\u0000\u001a\u00020\u0001*\u00020\u0002H\u0087\b\u001a%\u0010\u0003\u001a\u00020\u0001*\u00020\u00022\u0006\u0010\u0004\u001a\u00020\u00052\u0006\u0010\u0006\u001a\u00020\u00052\u0006\u0010\u0007\u001a\u00020\bH\u0086\n\u001a\u001d\u0010\u0003\u001a\u00020\u0001*\u00020\u00022\u0006\u0010\t\u001a\u00020\n2\u0006\u0010\u0007\u001a\u00020\bH\u0086\n\u001a\r\u0010\u000b\u001a\u00020\u0002*\u00020\fH\u0086\b¨\u0006\r"}, d2 = {"clearSpans", "", "Landroid/text/Spannable;", "set", "start", "", "end", "span", "", "range", "Lkotlin/ranges/IntRange;", "toSpannable", "", "core-ktx_release"}, k = 2, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class SpannableStringKt {
-    public static final Spannable toSpannable(CharSequence toSpannable) {
-        Intrinsics.checkNotNullParameter(toSpannable, "$this$toSpannable");
-        SpannableString valueOf = SpannableString.valueOf(toSpannable);
-        Intrinsics.checkNotNullExpressionValue(valueOf, "SpannableString.valueOf(this)");
-        return valueOf;
+class TypefaceCompatApi21Impl extends TypefaceCompatBaseImpl {
+    private static final String ADD_FONT_WEIGHT_STYLE_METHOD = "addFontWeightStyle";
+    private static final String CREATE_FROM_FAMILIES_WITH_DEFAULT_METHOD = "createFromFamiliesWithDefault";
+    private static final String FONT_FAMILY_CLASS = "android.graphics.FontFamily";
+    private static final String TAG = "TypefaceCompatApi21Impl";
+    private static Method sAddFontWeightStyle = null;
+    private static Method sCreateFromFamiliesWithDefault = null;
+    private static Class<?> sFontFamily = null;
+    private static Constructor<?> sFontFamilyCtor = null;
+    private static boolean sHasInitBeenCalled = false;
+
+    private static void init() {
+        Method method;
+        Class<?> cls;
+        Method method2;
+        if (sHasInitBeenCalled) {
+            return;
+        }
+        sHasInitBeenCalled = true;
+        Constructor<?> constructor = null;
+        try {
+            cls = Class.forName(FONT_FAMILY_CLASS);
+            Constructor<?> constructor2 = cls.getConstructor(new Class[0]);
+            method2 = cls.getMethod(ADD_FONT_WEIGHT_STYLE_METHOD, String.class, Integer.TYPE, Boolean.TYPE);
+            method = Typeface.class.getMethod(CREATE_FROM_FAMILIES_WITH_DEFAULT_METHOD, Array.newInstance(cls, 1).getClass());
+            constructor = constructor2;
+        } catch (ClassNotFoundException | NoSuchMethodException e2) {
+            Log.e(TAG, e2.getClass().getName(), e2);
+            method = null;
+            cls = null;
+            method2 = null;
+        }
+        sFontFamilyCtor = constructor;
+        sFontFamily = cls;
+        sAddFontWeightStyle = method2;
+        sCreateFromFamiliesWithDefault = method;
     }
 
-    public static final void clearSpans(Spannable clearSpans) {
-        Intrinsics.checkNotNullParameter(clearSpans, "$this$clearSpans");
-        Spannable spannable = clearSpans;
-        Object[] spans = spannable.getSpans(0, spannable.length(), Object.class);
-        Intrinsics.checkNotNullExpressionValue(spans, "getSpans(start, end, T::class.java)");
-        for (Object obj : spans) {
-            clearSpans.removeSpan(obj);
+    private File getFile(ParcelFileDescriptor parcelFileDescriptor) {
+        try {
+            String readlink = Os.readlink("/proc/self/fd/" + parcelFileDescriptor.getFd());
+            if (OsConstants.S_ISREG(Os.stat(readlink).st_mode)) {
+                return new File(readlink);
+            }
+        } catch (ErrnoException unused) {
+        }
+        return null;
+    }
+
+    private static Object newFamily() {
+        init();
+        try {
+            return sFontFamilyCtor.newInstance(new Object[0]);
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e2) {
+            throw new RuntimeException(e2);
         }
     }
 
-    public static final void set(Spannable set, int i2, int i3, Object span) {
-        Intrinsics.checkNotNullParameter(set, "$this$set");
-        Intrinsics.checkNotNullParameter(span, "span");
-        set.setSpan(span, i2, i3, 17);
+    private static Typeface createFromFamiliesWithDefault(Object obj) {
+        init();
+        try {
+            Object newInstance = Array.newInstance(sFontFamily, 1);
+            Array.set(newInstance, 0, obj);
+            return (Typeface) sCreateFromFamiliesWithDefault.invoke(null, newInstance);
+        } catch (IllegalAccessException | InvocationTargetException e2) {
+            throw new RuntimeException(e2);
+        }
     }
 
-    public static final void set(Spannable set, IntRange range, Object span) {
-        Intrinsics.checkNotNullParameter(set, "$this$set");
-        Intrinsics.checkNotNullParameter(range, "range");
-        Intrinsics.checkNotNullParameter(span, "span");
-        set.setSpan(span, range.getStart().intValue(), range.getEndInclusive().intValue(), 17);
+    private static boolean addFontWeightStyle(Object obj, String str, int i2, boolean z2) {
+        init();
+        try {
+            return ((Boolean) sAddFontWeightStyle.invoke(obj, str, Integer.valueOf(i2), Boolean.valueOf(z2))).booleanValue();
+        } catch (IllegalAccessException | InvocationTargetException e2) {
+            throw new RuntimeException(e2);
+        }
+    }
+
+    @Override // androidx.core.graphics.TypefaceCompatBaseImpl
+    public Typeface createFromFontInfo(Context context, CancellationSignal cancellationSignal, FontsContractCompat.FontInfo[] fontInfoArr, int i2) {
+        if (fontInfoArr.length < 1) {
+            return null;
+        }
+        FontsContractCompat.FontInfo findBestInfo = findBestInfo(fontInfoArr, i2);
+        try {
+            ParcelFileDescriptor openFileDescriptor = context.getContentResolver().openFileDescriptor(findBestInfo.getUri(), "r", cancellationSignal);
+            if (openFileDescriptor == null) {
+                if (openFileDescriptor != null) {
+                    openFileDescriptor.close();
+                }
+                return null;
+            }
+            File file = getFile(openFileDescriptor);
+            if (file != null && file.canRead()) {
+                Typeface createFromFile = Typeface.createFromFile(file);
+                if (openFileDescriptor != null) {
+                    openFileDescriptor.close();
+                }
+                return createFromFile;
+            }
+            FileInputStream fileInputStream = new FileInputStream(openFileDescriptor.getFileDescriptor());
+            try {
+                Typeface createFromInputStream = super.createFromInputStream(context, fileInputStream);
+                fileInputStream.close();
+                if (openFileDescriptor != null) {
+                    openFileDescriptor.close();
+                }
+                return createFromInputStream;
+            } catch (Throwable th) {
+                try {
+                    fileInputStream.close();
+                } catch (Throwable th2) {
+                    th.addSuppressed(th2);
+                }
+                throw th;
+            }
+        } catch (IOException unused) {
+            return null;
+        }
+    }
+
+    @Override // androidx.core.graphics.TypefaceCompatBaseImpl
+    public Typeface createFromFontFamilyFilesResourceEntry(Context context, FontResourcesParserCompat.FontFamilyFilesResourceEntry fontFamilyFilesResourceEntry, Resources resources, int i2) {
+        FontResourcesParserCompat.FontFileResourceEntry[] entries;
+        Object newFamily = newFamily();
+        for (FontResourcesParserCompat.FontFileResourceEntry fontFileResourceEntry : fontFamilyFilesResourceEntry.getEntries()) {
+            File tempFile = TypefaceCompatUtil.getTempFile(context);
+            if (tempFile == null) {
+                return null;
+            }
+            try {
+                if (!TypefaceCompatUtil.copyToFile(tempFile, resources, fontFileResourceEntry.getResourceId())) {
+                    return null;
+                }
+                if (!addFontWeightStyle(newFamily, tempFile.getPath(), fontFileResourceEntry.getWeight(), fontFileResourceEntry.isItalic())) {
+                    return null;
+                }
+                tempFile.delete();
+            } catch (RuntimeException unused) {
+                return null;
+            } finally {
+                tempFile.delete();
+            }
+        }
+        return createFromFamiliesWithDefault(newFamily);
     }
 }

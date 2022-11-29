@@ -1,48 +1,112 @@
-package androidx.core.content;
+package androidx.core.app;
 
-import android.content.SharedPreferences;
+import android.app.NotificationChannel;
+import android.app.NotificationChannelGroup;
+import android.os.Build;
+import androidx.core.util.Preconditions;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-@Deprecated
 /* loaded from: classes.dex */
-public final class SharedPreferencesCompat {
+public class NotificationChannelGroupCompat {
+    private boolean mBlocked;
+    private List<NotificationChannelCompat> mChannels;
+    String mDescription;
+    final String mId;
+    CharSequence mName;
 
-    @Deprecated
     /* loaded from: classes.dex */
-    public static final class EditorCompat {
-        private static EditorCompat sInstance;
-        private final Helper mHelper = new Helper();
+    public static class Builder {
+        final NotificationChannelGroupCompat mGroup;
 
-        /* loaded from: classes.dex */
-        private static class Helper {
-            Helper() {
-            }
-
-            public void apply(SharedPreferences.Editor editor) {
-                try {
-                    editor.apply();
-                } catch (AbstractMethodError unused) {
-                    editor.commit();
-                }
-            }
+        public Builder(String str) {
+            this.mGroup = new NotificationChannelGroupCompat(str);
         }
 
-        private EditorCompat() {
+        public Builder setName(CharSequence charSequence) {
+            this.mGroup.mName = charSequence;
+            return this;
         }
 
-        @Deprecated
-        public static EditorCompat getInstance() {
-            if (sInstance == null) {
-                sInstance = new EditorCompat();
-            }
-            return sInstance;
+        public Builder setDescription(String str) {
+            this.mGroup.mDescription = str;
+            return this;
         }
 
-        @Deprecated
-        public void apply(SharedPreferences.Editor editor) {
-            this.mHelper.apply(editor);
+        public NotificationChannelGroupCompat build() {
+            return this.mGroup;
         }
     }
 
-    private SharedPreferencesCompat() {
+    NotificationChannelGroupCompat(String str) {
+        this.mChannels = Collections.emptyList();
+        this.mId = (String) Preconditions.checkNotNull(str);
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public NotificationChannelGroupCompat(NotificationChannelGroup notificationChannelGroup) {
+        this(notificationChannelGroup, Collections.emptyList());
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public NotificationChannelGroupCompat(NotificationChannelGroup notificationChannelGroup, List<NotificationChannel> list) {
+        this(notificationChannelGroup.getId());
+        this.mName = notificationChannelGroup.getName();
+        if (Build.VERSION.SDK_INT >= 28) {
+            this.mDescription = notificationChannelGroup.getDescription();
+        }
+        if (Build.VERSION.SDK_INT >= 28) {
+            this.mBlocked = notificationChannelGroup.isBlocked();
+            this.mChannels = getChannelsCompat(notificationChannelGroup.getChannels());
+            return;
+        }
+        this.mChannels = getChannelsCompat(list);
+    }
+
+    private List<NotificationChannelCompat> getChannelsCompat(List<NotificationChannel> list) {
+        ArrayList arrayList = new ArrayList();
+        for (NotificationChannel notificationChannel : list) {
+            if (this.mId.equals(notificationChannel.getGroup())) {
+                arrayList.add(new NotificationChannelCompat(notificationChannel));
+            }
+        }
+        return arrayList;
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public NotificationChannelGroup getNotificationChannelGroup() {
+        if (Build.VERSION.SDK_INT < 26) {
+            return null;
+        }
+        NotificationChannelGroup notificationChannelGroup = new NotificationChannelGroup(this.mId, this.mName);
+        if (Build.VERSION.SDK_INT >= 28) {
+            notificationChannelGroup.setDescription(this.mDescription);
+        }
+        return notificationChannelGroup;
+    }
+
+    public Builder toBuilder() {
+        return new Builder(this.mId).setName(this.mName).setDescription(this.mDescription);
+    }
+
+    public String getId() {
+        return this.mId;
+    }
+
+    public CharSequence getName() {
+        return this.mName;
+    }
+
+    public String getDescription() {
+        return this.mDescription;
+    }
+
+    public boolean isBlocked() {
+        return this.mBlocked;
+    }
+
+    public List<NotificationChannelCompat> getChannels() {
+        return this.mChannels;
     }
 }

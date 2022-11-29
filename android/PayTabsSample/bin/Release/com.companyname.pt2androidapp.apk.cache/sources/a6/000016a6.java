@@ -1,47 +1,60 @@
-package mono.android.view;
+package kotlin.jvm.internal;
 
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.reflect.KCallable;
+import kotlin.reflect.KProperty;
 
 /* loaded from: classes.dex */
-public class GestureDetector_OnContextClickListenerImplementor implements IGCUserPeer, GestureDetector.OnContextClickListener {
-    public static final String __md_methods = "n_onContextClick:(Landroid/view/MotionEvent;)Z:GetOnContextClick_Landroid_view_MotionEvent_Handler:Android.Views.GestureDetector/IOnContextClickListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native boolean n_onContextClick(MotionEvent motionEvent);
-
-    static {
-        Runtime.register("Android.Views.GestureDetector+IOnContextClickListenerImplementor, Mono.Android", GestureDetector_OnContextClickListenerImplementor.class, __md_methods);
+public abstract class PropertyReference extends CallableReference implements KProperty {
+    public PropertyReference() {
     }
 
-    public GestureDetector_OnContextClickListenerImplementor() {
-        if (getClass() == GestureDetector_OnContextClickListenerImplementor.class) {
-            TypeManager.Activate("Android.Views.GestureDetector+IOnContextClickListenerImplementor, Mono.Android", "", this, new Object[0]);
+    public PropertyReference(Object obj) {
+        super(obj);
+    }
+
+    public PropertyReference(Object obj, Class cls, String str, String str2, int i2) {
+        super(obj, cls, str, str2, (i2 & 1) == 1);
+    }
+
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // kotlin.jvm.internal.CallableReference
+    public KProperty getReflected() {
+        return (KProperty) super.getReflected();
+    }
+
+    @Override // kotlin.reflect.KProperty
+    public boolean isLateinit() {
+        return getReflected().isLateinit();
+    }
+
+    @Override // kotlin.reflect.KProperty
+    public boolean isConst() {
+        return getReflected().isConst();
+    }
+
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj instanceof PropertyReference) {
+            PropertyReference propertyReference = (PropertyReference) obj;
+            return getOwner().equals(propertyReference.getOwner()) && getName().equals(propertyReference.getName()) && getSignature().equals(propertyReference.getSignature()) && Intrinsics.areEqual(getBoundReceiver(), propertyReference.getBoundReceiver());
+        } else if (obj instanceof KProperty) {
+            return obj.equals(compute());
+        } else {
+            return false;
         }
     }
 
-    @Override // android.view.GestureDetector.OnContextClickListener
-    public boolean onContextClick(MotionEvent motionEvent) {
-        return n_onContextClick(motionEvent);
+    public int hashCode() {
+        return (((getOwner().hashCode() * 31) + getName().hashCode()) * 31) + getSignature().hashCode();
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
+    public String toString() {
+        KCallable compute = compute();
+        if (compute != this) {
+            return compute.toString();
         }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+        return "property " + getName() + " (Kotlin reflection is not available)";
     }
 }

@@ -1,28 +1,22 @@
-package v;
+package kotlin.sequences;
 
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import kotlin.Metadata;
-import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.internal.Lambda;
 
-@Metadata(bv = {}, d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0004\u0018\u00002\u00020\u0001B\u000f\u0012\u0006\u0010\t\u001a\u00020\b¢\u0006\u0004\b\n\u0010\u000bJ'\u0010\u0006\u001a\u00028\u0000\"\b\b\u0000\u0010\u0003*\u00020\u00022\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u00028\u00000\u0004H\u0016¢\u0006\u0004\b\u0006\u0010\u0007¨\u0006\f"}, d2 = {"Lv/a;", "Landroidx/lifecycle/ViewModelProvider$Factory;", "Landroidx/lifecycle/ViewModel;", "T", "Ljava/lang/Class;", "modelClass", "create", "(Ljava/lang/Class;)Landroidx/lifecycle/ViewModel;", "Lq/a;", "repo", "<init>", "(Lq/a;)V", "paymentsdk_release"}, k = 1, mv = {1, 7, 1})
+/* JADX INFO: Access modifiers changed from: package-private */
+/* compiled from: Sequences.kt */
+@Metadata(d1 = {"\u0000\u0004\n\u0002\b\u0006\u0010\u0000\u001a\u0002H\u0001\"\u0004\b\u0000\u0010\u0001\"\u0004\b\u0001\u0010\u00022\u0006\u0010\u0003\u001a\u0002H\u0001H\n¢\u0006\u0004\b\u0004\u0010\u0005"}, d2 = {"<anonymous>", "T", "R", "it", "invoke", "(Ljava/lang/Object;)Ljava/lang/Object;"}, k = 3, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class a implements ViewModelProvider.Factory {
+public final class SequencesKt__SequencesKt$flatten$3 extends Lambda implements Function1<T, T> {
+    public static final SequencesKt__SequencesKt$flatten$3 INSTANCE = new SequencesKt__SequencesKt$flatten$3();
 
-    /* renamed from: a  reason: collision with root package name */
-    private final q.a f477a;
-
-    public a(q.a repo) {
-        Intrinsics.checkNotNullParameter(repo, "repo");
-        this.f477a = repo;
+    SequencesKt__SequencesKt$flatten$3() {
+        super(1);
     }
 
-    @Override // androidx.lifecycle.ViewModelProvider.Factory
-    public <T extends ViewModel> T create(Class<T> modelClass) {
-        Intrinsics.checkNotNullParameter(modelClass, "modelClass");
-        if (modelClass.isAssignableFrom(u.a.class)) {
-            return new u.a(this.f477a);
-        }
-        throw new IllegalArgumentException("Unknown ViewModel class");
+    @Override // kotlin.jvm.functions.Function1
+    public final T invoke(T t2) {
+        return t2;
     }
 }

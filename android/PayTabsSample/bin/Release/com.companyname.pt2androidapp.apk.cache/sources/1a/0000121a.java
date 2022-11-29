@@ -1,38 +1,133 @@
-package kotlin.time;
+package com.google.crypto.tink.streamingaead;
 
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.internal.Intrinsics;
-import kotlin.time.TimeSource;
+import com.google.crypto.tink.PrimitiveSet;
+import com.google.crypto.tink.StreamingAead;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.NonWritableChannelException;
+import java.nio.channels.SeekableByteChannel;
+import java.security.GeneralSecurityException;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-/* compiled from: measureTime.kt */
-@Metadata(d1 = {"\u0000\"\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\u001a/\u0010\u0000\u001a\u00020\u00012\f\u0010\u0002\u001a\b\u0012\u0004\u0012\u00020\u00040\u0003H\u0087\bø\u0001\u0000ø\u0001\u0001\u0082\u0002\n\n\b\b\u0001\u0012\u0002\u0010\u0001 \u0001¢\u0006\u0002\u0010\u0005\u001a3\u0010\u0006\u001a\b\u0012\u0004\u0012\u0002H\b0\u0007\"\u0004\b\u0000\u0010\b2\f\u0010\u0002\u001a\b\u0012\u0004\u0012\u0002H\b0\u0003H\u0087\bø\u0001\u0001\u0082\u0002\n\n\b\b\u0001\u0012\u0002\u0010\u0001 \u0001\u001a3\u0010\u0000\u001a\u00020\u0001*\u00020\t2\f\u0010\u0002\u001a\b\u0012\u0004\u0012\u00020\u00040\u0003H\u0087\bø\u0001\u0000ø\u0001\u0001\u0082\u0002\n\n\b\b\u0001\u0012\u0002\u0010\u0001 \u0001¢\u0006\u0002\u0010\n\u001a7\u0010\u0006\u001a\b\u0012\u0004\u0012\u0002H\b0\u0007\"\u0004\b\u0000\u0010\b*\u00020\t2\f\u0010\u0002\u001a\b\u0012\u0004\u0012\u0002H\b0\u0003H\u0087\bø\u0001\u0001\u0082\u0002\n\n\b\b\u0001\u0012\u0002\u0010\u0001 \u0001\u0082\u0002\u000b\n\u0002\b\u0019\n\u0005\b\u009920\u0001¨\u0006\u000b"}, d2 = {"measureTime", "Lkotlin/time/Duration;", "block", "Lkotlin/Function0;", "", "(Lkotlin/jvm/functions/Function0;)J", "measureTimedValue", "Lkotlin/time/TimedValue;", "T", "Lkotlin/time/TimeSource;", "(Lkotlin/time/TimeSource;Lkotlin/jvm/functions/Function0;)J", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class MeasureTimeKt {
-    public static final long measureTime(Function0<Unit> block) {
-        Intrinsics.checkNotNullParameter(block, "block");
-        TimeMark markNow = TimeSource.Monotonic.INSTANCE.markNow();
-        block.invoke();
-        return markNow.mo1296elapsedNowUwyO8pc();
+final class SeekableByteChannelDecrypter implements SeekableByteChannel {
+    byte[] associatedData;
+    long cachedPosition;
+    SeekableByteChannel ciphertextChannel;
+    long startingPosition;
+    SeekableByteChannel attemptingChannel = null;
+    SeekableByteChannel matchingChannel = null;
+    Deque<StreamingAead> remainingPrimitives = new ArrayDeque();
+
+    public SeekableByteChannelDecrypter(PrimitiveSet<StreamingAead> primitives, SeekableByteChannel ciphertextChannel, final byte[] associatedData) throws IOException {
+        for (PrimitiveSet.Entry<StreamingAead> entry : primitives.getRawPrimitives()) {
+            this.remainingPrimitives.add(entry.getPrimitive());
+        }
+        this.ciphertextChannel = ciphertextChannel;
+        this.cachedPosition = -1L;
+        this.startingPosition = ciphertextChannel.position();
+        this.associatedData = (byte[]) associatedData.clone();
     }
 
-    public static final long measureTime(TimeSource measureTime, Function0<Unit> block) {
-        Intrinsics.checkNotNullParameter(measureTime, "$this$measureTime");
-        Intrinsics.checkNotNullParameter(block, "block");
-        TimeMark markNow = measureTime.markNow();
-        block.invoke();
-        return markNow.mo1296elapsedNowUwyO8pc();
+    private synchronized SeekableByteChannel nextAttemptingChannel() throws IOException {
+        SeekableByteChannel newSeekableDecryptingChannel;
+        while (!this.remainingPrimitives.isEmpty()) {
+            this.ciphertextChannel.position(this.startingPosition);
+            try {
+                newSeekableDecryptingChannel = this.remainingPrimitives.removeFirst().newSeekableDecryptingChannel(this.ciphertextChannel, this.associatedData);
+                long j2 = this.cachedPosition;
+                if (j2 >= 0) {
+                    newSeekableDecryptingChannel.position(j2);
+                }
+            } catch (GeneralSecurityException unused) {
+            }
+        }
+        throw new IOException("No matching key found for the ciphertext in the stream.");
+        return newSeekableDecryptingChannel;
     }
 
-    public static final <T> TimedValue<T> measureTimedValue(Function0<? extends T> block) {
-        Intrinsics.checkNotNullParameter(block, "block");
-        return new TimedValue<>(block.invoke(), TimeSource.Monotonic.INSTANCE.markNow().mo1296elapsedNowUwyO8pc(), null);
+    @Override // java.nio.channels.SeekableByteChannel, java.nio.channels.ReadableByteChannel
+    public synchronized int read(ByteBuffer dst) throws IOException {
+        if (dst.remaining() == 0) {
+            return 0;
+        }
+        SeekableByteChannel seekableByteChannel = this.matchingChannel;
+        if (seekableByteChannel != null) {
+            return seekableByteChannel.read(dst);
+        }
+        if (this.attemptingChannel == null) {
+            this.attemptingChannel = nextAttemptingChannel();
+        }
+        while (true) {
+            try {
+                int read = this.attemptingChannel.read(dst);
+                if (read == 0) {
+                    return 0;
+                }
+                this.matchingChannel = this.attemptingChannel;
+                this.attemptingChannel = null;
+                return read;
+            } catch (IOException unused) {
+                this.attemptingChannel = nextAttemptingChannel();
+            }
+        }
     }
 
-    public static final <T> TimedValue<T> measureTimedValue(TimeSource measureTimedValue, Function0<? extends T> block) {
-        Intrinsics.checkNotNullParameter(measureTimedValue, "$this$measureTimedValue");
-        Intrinsics.checkNotNullParameter(block, "block");
-        return new TimedValue<>(block.invoke(), measureTimedValue.markNow().mo1296elapsedNowUwyO8pc(), null);
+    @Override // java.nio.channels.SeekableByteChannel
+    public synchronized SeekableByteChannel position(long newPosition) throws IOException {
+        SeekableByteChannel seekableByteChannel = this.matchingChannel;
+        if (seekableByteChannel != null) {
+            seekableByteChannel.position(newPosition);
+        } else if (newPosition < 0) {
+            throw new IllegalArgumentException("Position must be non-negative");
+        } else {
+            this.cachedPosition = newPosition;
+            SeekableByteChannel seekableByteChannel2 = this.attemptingChannel;
+            if (seekableByteChannel2 != null) {
+                seekableByteChannel2.position(newPosition);
+            }
+        }
+        return this;
+    }
+
+    @Override // java.nio.channels.SeekableByteChannel
+    public synchronized long position() throws IOException {
+        SeekableByteChannel seekableByteChannel = this.matchingChannel;
+        if (seekableByteChannel != null) {
+            return seekableByteChannel.position();
+        }
+        return this.cachedPosition;
+    }
+
+    @Override // java.nio.channels.SeekableByteChannel
+    public synchronized long size() throws IOException {
+        SeekableByteChannel seekableByteChannel;
+        seekableByteChannel = this.matchingChannel;
+        if (seekableByteChannel != null) {
+        } else {
+            throw new IOException("Cannot determine size before first read()-call.");
+        }
+        return seekableByteChannel.size();
+    }
+
+    @Override // java.nio.channels.SeekableByteChannel
+    public SeekableByteChannel truncate(long size) throws IOException {
+        throw new NonWritableChannelException();
+    }
+
+    @Override // java.nio.channels.SeekableByteChannel, java.nio.channels.WritableByteChannel
+    public int write(ByteBuffer src) throws IOException {
+        throw new NonWritableChannelException();
+    }
+
+    @Override // java.nio.channels.Channel, java.io.Closeable, java.lang.AutoCloseable
+    public synchronized void close() throws IOException {
+        this.ciphertextChannel.close();
+    }
+
+    @Override // java.nio.channels.Channel
+    public synchronized boolean isOpen() {
+        return this.ciphertextChannel.isOpen();
     }
 }

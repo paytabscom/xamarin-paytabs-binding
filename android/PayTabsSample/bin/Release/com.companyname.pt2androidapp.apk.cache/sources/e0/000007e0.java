@@ -1,14 +1,15 @@
-package androidx.lifecycle;
+package androidx.core.widget;
 
-import androidx.lifecycle.Lifecycle;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
 
-@Target({ElementType.METHOD})
-@Retention(RetentionPolicy.RUNTIME)
 /* loaded from: classes.dex */
-public @interface OnLifecycleEvent {
-    Lifecycle.Event value();
+public interface TintableCheckedTextView {
+    ColorStateList getSupportCheckMarkTintList();
+
+    PorterDuff.Mode getSupportCheckMarkTintMode();
+
+    void setSupportCheckMarkTintList(ColorStateList colorStateList);
+
+    void setSupportCheckMarkTintMode(PorterDuff.Mode mode);
 }

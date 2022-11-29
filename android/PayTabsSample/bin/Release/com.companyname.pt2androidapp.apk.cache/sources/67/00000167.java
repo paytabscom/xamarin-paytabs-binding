@@ -1,154 +1,155 @@
-package androidx.appcompat.view.menu;
+package androidx.appcompat.view;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
+import android.view.ActionMode;
 import android.view.KeyEvent;
+import android.view.KeyboardShortcutGroup;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SubMenu;
-import androidx.core.internal.view.SupportMenu;
+import android.view.MotionEvent;
+import android.view.SearchEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.accessibility.AccessibilityEvent;
+import java.util.List;
 
 /* loaded from: classes.dex */
-public class MenuWrapperICS extends BaseMenuWrapper implements Menu {
-    private final SupportMenu mWrappedObject;
+public class WindowCallbackWrapper implements Window.Callback {
+    final Window.Callback mWrapped;
 
-    public MenuWrapperICS(Context context, SupportMenu supportMenu) {
-        super(context);
-        if (supportMenu == null) {
-            throw new IllegalArgumentException("Wrapped Object can not be null.");
+    public WindowCallbackWrapper(Window.Callback callback) {
+        if (callback == null) {
+            throw new IllegalArgumentException("Window callback may not be null");
         }
-        this.mWrappedObject = supportMenu;
+        this.mWrapped = callback;
     }
 
-    @Override // android.view.Menu
-    public MenuItem add(CharSequence charSequence) {
-        return getMenuItemWrapper(this.mWrappedObject.add(charSequence));
+    @Override // android.view.Window.Callback
+    public boolean dispatchKeyEvent(KeyEvent keyEvent) {
+        return this.mWrapped.dispatchKeyEvent(keyEvent);
     }
 
-    @Override // android.view.Menu
-    public MenuItem add(int i2) {
-        return getMenuItemWrapper(this.mWrappedObject.add(i2));
+    @Override // android.view.Window.Callback
+    public boolean dispatchKeyShortcutEvent(KeyEvent keyEvent) {
+        return this.mWrapped.dispatchKeyShortcutEvent(keyEvent);
     }
 
-    @Override // android.view.Menu
-    public MenuItem add(int i2, int i3, int i4, CharSequence charSequence) {
-        return getMenuItemWrapper(this.mWrappedObject.add(i2, i3, i4, charSequence));
+    @Override // android.view.Window.Callback
+    public boolean dispatchTouchEvent(MotionEvent motionEvent) {
+        return this.mWrapped.dispatchTouchEvent(motionEvent);
     }
 
-    @Override // android.view.Menu
-    public MenuItem add(int i2, int i3, int i4, int i5) {
-        return getMenuItemWrapper(this.mWrappedObject.add(i2, i3, i4, i5));
+    @Override // android.view.Window.Callback
+    public boolean dispatchTrackballEvent(MotionEvent motionEvent) {
+        return this.mWrapped.dispatchTrackballEvent(motionEvent);
     }
 
-    @Override // android.view.Menu
-    public SubMenu addSubMenu(CharSequence charSequence) {
-        return getSubMenuWrapper(this.mWrappedObject.addSubMenu(charSequence));
+    @Override // android.view.Window.Callback
+    public boolean dispatchGenericMotionEvent(MotionEvent motionEvent) {
+        return this.mWrapped.dispatchGenericMotionEvent(motionEvent);
     }
 
-    @Override // android.view.Menu
-    public SubMenu addSubMenu(int i2) {
-        return getSubMenuWrapper(this.mWrappedObject.addSubMenu(i2));
+    @Override // android.view.Window.Callback
+    public boolean dispatchPopulateAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+        return this.mWrapped.dispatchPopulateAccessibilityEvent(accessibilityEvent);
     }
 
-    @Override // android.view.Menu
-    public SubMenu addSubMenu(int i2, int i3, int i4, CharSequence charSequence) {
-        return getSubMenuWrapper(this.mWrappedObject.addSubMenu(i2, i3, i4, charSequence));
+    @Override // android.view.Window.Callback
+    public View onCreatePanelView(int i2) {
+        return this.mWrapped.onCreatePanelView(i2);
     }
 
-    @Override // android.view.Menu
-    public SubMenu addSubMenu(int i2, int i3, int i4, int i5) {
-        return getSubMenuWrapper(this.mWrappedObject.addSubMenu(i2, i3, i4, i5));
+    @Override // android.view.Window.Callback
+    public boolean onCreatePanelMenu(int i2, Menu menu) {
+        return this.mWrapped.onCreatePanelMenu(i2, menu);
     }
 
-    @Override // android.view.Menu
-    public int addIntentOptions(int i2, int i3, int i4, ComponentName componentName, Intent[] intentArr, Intent intent, int i5, MenuItem[] menuItemArr) {
-        MenuItem[] menuItemArr2 = menuItemArr != null ? new MenuItem[menuItemArr.length] : null;
-        int addIntentOptions = this.mWrappedObject.addIntentOptions(i2, i3, i4, componentName, intentArr, intent, i5, menuItemArr2);
-        if (menuItemArr2 != null) {
-            int length = menuItemArr2.length;
-            for (int i6 = 0; i6 < length; i6++) {
-                menuItemArr[i6] = getMenuItemWrapper(menuItemArr2[i6]);
-            }
-        }
-        return addIntentOptions;
+    @Override // android.view.Window.Callback
+    public boolean onPreparePanel(int i2, View view, Menu menu) {
+        return this.mWrapped.onPreparePanel(i2, view, menu);
     }
 
-    @Override // android.view.Menu
-    public void removeItem(int i2) {
-        internalRemoveItem(i2);
-        this.mWrappedObject.removeItem(i2);
+    @Override // android.view.Window.Callback
+    public boolean onMenuOpened(int i2, Menu menu) {
+        return this.mWrapped.onMenuOpened(i2, menu);
     }
 
-    @Override // android.view.Menu
-    public void removeGroup(int i2) {
-        internalRemoveGroup(i2);
-        this.mWrappedObject.removeGroup(i2);
+    @Override // android.view.Window.Callback
+    public boolean onMenuItemSelected(int i2, MenuItem menuItem) {
+        return this.mWrapped.onMenuItemSelected(i2, menuItem);
     }
 
-    @Override // android.view.Menu
-    public void clear() {
-        internalClear();
-        this.mWrappedObject.clear();
+    @Override // android.view.Window.Callback
+    public void onWindowAttributesChanged(WindowManager.LayoutParams layoutParams) {
+        this.mWrapped.onWindowAttributesChanged(layoutParams);
     }
 
-    @Override // android.view.Menu
-    public void setGroupCheckable(int i2, boolean z2, boolean z3) {
-        this.mWrappedObject.setGroupCheckable(i2, z2, z3);
+    @Override // android.view.Window.Callback
+    public void onContentChanged() {
+        this.mWrapped.onContentChanged();
     }
 
-    @Override // android.view.Menu
-    public void setGroupVisible(int i2, boolean z2) {
-        this.mWrappedObject.setGroupVisible(i2, z2);
+    @Override // android.view.Window.Callback
+    public void onWindowFocusChanged(boolean z2) {
+        this.mWrapped.onWindowFocusChanged(z2);
     }
 
-    @Override // android.view.Menu
-    public void setGroupEnabled(int i2, boolean z2) {
-        this.mWrappedObject.setGroupEnabled(i2, z2);
+    @Override // android.view.Window.Callback
+    public void onAttachedToWindow() {
+        this.mWrapped.onAttachedToWindow();
     }
 
-    @Override // android.view.Menu
-    public boolean hasVisibleItems() {
-        return this.mWrappedObject.hasVisibleItems();
+    @Override // android.view.Window.Callback
+    public void onDetachedFromWindow() {
+        this.mWrapped.onDetachedFromWindow();
     }
 
-    @Override // android.view.Menu
-    public MenuItem findItem(int i2) {
-        return getMenuItemWrapper(this.mWrappedObject.findItem(i2));
+    @Override // android.view.Window.Callback
+    public void onPanelClosed(int i2, Menu menu) {
+        this.mWrapped.onPanelClosed(i2, menu);
     }
 
-    @Override // android.view.Menu
-    public int size() {
-        return this.mWrappedObject.size();
+    @Override // android.view.Window.Callback
+    public boolean onSearchRequested(SearchEvent searchEvent) {
+        return this.mWrapped.onSearchRequested(searchEvent);
     }
 
-    @Override // android.view.Menu
-    public MenuItem getItem(int i2) {
-        return getMenuItemWrapper(this.mWrappedObject.getItem(i2));
+    @Override // android.view.Window.Callback
+    public boolean onSearchRequested() {
+        return this.mWrapped.onSearchRequested();
     }
 
-    @Override // android.view.Menu
-    public void close() {
-        this.mWrappedObject.close();
+    @Override // android.view.Window.Callback
+    public android.view.ActionMode onWindowStartingActionMode(ActionMode.Callback callback) {
+        return this.mWrapped.onWindowStartingActionMode(callback);
     }
 
-    @Override // android.view.Menu
-    public boolean performShortcut(int i2, KeyEvent keyEvent, int i3) {
-        return this.mWrappedObject.performShortcut(i2, keyEvent, i3);
+    @Override // android.view.Window.Callback
+    public android.view.ActionMode onWindowStartingActionMode(ActionMode.Callback callback, int i2) {
+        return this.mWrapped.onWindowStartingActionMode(callback, i2);
     }
 
-    @Override // android.view.Menu
-    public boolean isShortcutKey(int i2, KeyEvent keyEvent) {
-        return this.mWrappedObject.isShortcutKey(i2, keyEvent);
+    @Override // android.view.Window.Callback
+    public void onActionModeStarted(android.view.ActionMode actionMode) {
+        this.mWrapped.onActionModeStarted(actionMode);
     }
 
-    @Override // android.view.Menu
-    public boolean performIdentifierAction(int i2, int i3) {
-        return this.mWrappedObject.performIdentifierAction(i2, i3);
+    @Override // android.view.Window.Callback
+    public void onActionModeFinished(android.view.ActionMode actionMode) {
+        this.mWrapped.onActionModeFinished(actionMode);
     }
 
-    @Override // android.view.Menu
-    public void setQwertyMode(boolean z2) {
-        this.mWrappedObject.setQwertyMode(z2);
+    @Override // android.view.Window.Callback
+    public void onProvideKeyboardShortcuts(List<KeyboardShortcutGroup> list, Menu menu, int i2) {
+        this.mWrapped.onProvideKeyboardShortcuts(list, menu, i2);
+    }
+
+    @Override // android.view.Window.Callback
+    public void onPointerCaptureChanged(boolean z2) {
+        this.mWrapped.onPointerCaptureChanged(z2);
+    }
+
+    public final Window.Callback getWrapped() {
+        return this.mWrapped;
     }
 }

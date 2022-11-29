@@ -1,89 +1,21 @@
-package androidx.constraintlayout.motion.utils;
+package androidx.cardview.widget;
+
+import android.graphics.drawable.Drawable;
+import android.view.View;
 
 /* loaded from: classes.dex */
-public abstract class CurveFit {
-    public static final int CONSTANT = 2;
-    public static final int LINEAR = 1;
-    public static final int SPLINE = 0;
+interface CardViewDelegate {
+    Drawable getCardBackground();
 
-    public abstract double getPos(double d2, int i2);
+    View getCardView();
 
-    public abstract void getPos(double d2, double[] dArr);
+    boolean getPreventCornerOverlap();
 
-    public abstract void getPos(double d2, float[] fArr);
+    boolean getUseCompatPadding();
 
-    public abstract double getSlope(double d2, int i2);
+    void setCardBackground(Drawable drawable);
 
-    public abstract void getSlope(double d2, double[] dArr);
+    void setMinWidthHeightInternal(int i2, int i3);
 
-    public abstract double[] getTimePoints();
-
-    public static CurveFit get(int i2, double[] dArr, double[][] dArr2) {
-        if (dArr.length == 1) {
-            i2 = 2;
-        }
-        if (i2 != 0) {
-            if (i2 == 2) {
-                return new Constant(dArr[0], dArr2[0]);
-            }
-            return new LinearCurveFit(dArr, dArr2);
-        }
-        return new MonotonicCurveFit(dArr, dArr2);
-    }
-
-    public static CurveFit getArc(int[] iArr, double[] dArr, double[][] dArr2) {
-        return new ArcCurveFit(iArr, dArr, dArr2);
-    }
-
-    /* loaded from: classes.dex */
-    static class Constant extends CurveFit {
-        double mTime;
-        double[] mValue;
-
-        @Override // androidx.constraintlayout.motion.utils.CurveFit
-        public double getSlope(double d2, int i2) {
-            return 0.0d;
-        }
-
-        Constant(double d2, double[] dArr) {
-            this.mTime = d2;
-            this.mValue = dArr;
-        }
-
-        @Override // androidx.constraintlayout.motion.utils.CurveFit
-        public void getPos(double d2, double[] dArr) {
-            double[] dArr2 = this.mValue;
-            System.arraycopy(dArr2, 0, dArr, 0, dArr2.length);
-        }
-
-        @Override // androidx.constraintlayout.motion.utils.CurveFit
-        public void getPos(double d2, float[] fArr) {
-            int i2 = 0;
-            while (true) {
-                double[] dArr = this.mValue;
-                if (i2 >= dArr.length) {
-                    return;
-                }
-                fArr[i2] = (float) dArr[i2];
-                i2++;
-            }
-        }
-
-        @Override // androidx.constraintlayout.motion.utils.CurveFit
-        public double getPos(double d2, int i2) {
-            return this.mValue[i2];
-        }
-
-        @Override // androidx.constraintlayout.motion.utils.CurveFit
-        public void getSlope(double d2, double[] dArr) {
-            for (int i2 = 0; i2 < this.mValue.length; i2++) {
-                dArr[i2] = 0.0d;
-            }
-        }
-
-        @Override // androidx.constraintlayout.motion.utils.CurveFit
-        public double[] getTimePoints() {
-            return new double[]{this.mTime};
-        }
-    }
+    void setShadowPadding(int i2, int i3, int i4, int i5);
 }

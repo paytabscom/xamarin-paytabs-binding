@@ -1,81 +1,133 @@
-package androidx.core.view;
+package androidx.core.os;
 
-import android.view.View;
-import android.view.ViewGroup;
-import kotlin.Metadata;
-import kotlin.ResultKt;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-import kotlin.coroutines.jvm.internal.RestrictedSuspendLambda;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.internal.Intrinsics;
-import kotlin.sequences.Sequence;
-import kotlin.sequences.SequenceScope;
+import android.os.Build;
+import android.os.Trace;
+import android.util.Log;
+import java.lang.reflect.Method;
 
-/* compiled from: View.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0012\n\u0000\n\u0002\u0010\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\u0010\u0000\u001a\u00020\u0001*\b\u0012\u0004\u0012\u00020\u00030\u0002H\u008a@¢\u0006\u0004\b\u0004\u0010\u0005"}, d2 = {"<anonymous>", "", "Lkotlin/sequences/SequenceScope;", "Landroid/view/View;", "invoke", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "androidx.core.view.ViewKt$allViews$1", f = "View.kt", i = {0}, l = {406, 408}, m = "invokeSuspend", n = {"$this$sequence"}, s = {"L$0"})
+@Deprecated
 /* loaded from: classes.dex */
-final class ViewKt$allViews$1 extends RestrictedSuspendLambda implements Function2<SequenceScope<? super View>, Continuation<? super Unit>, Object> {
-    final /* synthetic */ View $this_allViews;
-    private /* synthetic */ Object L$0;
-    int label;
+public final class TraceCompat {
+    private static final String TAG = "TraceCompat";
+    private static Method sAsyncTraceBeginMethod;
+    private static Method sAsyncTraceEndMethod;
+    private static Method sIsTagEnabledMethod;
+    private static Method sTraceCounterMethod;
+    private static long sTraceTagApp;
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public ViewKt$allViews$1(View view, Continuation continuation) {
-        super(2, continuation);
-        this.$this_allViews = view;
-    }
-
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Continuation<Unit> create(Object obj, Continuation<?> completion) {
-        Intrinsics.checkNotNullParameter(completion, "completion");
-        ViewKt$allViews$1 viewKt$allViews$1 = new ViewKt$allViews$1(this.$this_allViews, completion);
-        viewKt$allViews$1.L$0 = obj;
-        return viewKt$allViews$1;
-    }
-
-    @Override // kotlin.jvm.functions.Function2
-    public final Object invoke(SequenceScope<? super View> sequenceScope, Continuation<? super Unit> continuation) {
-        return ((ViewKt$allViews$1) create(sequenceScope, continuation)).invokeSuspend(Unit.INSTANCE);
-    }
-
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        SequenceScope sequenceScope;
-        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
-        int i2 = this.label;
-        if (i2 == 0) {
-            ResultKt.throwOnFailure(obj);
-            sequenceScope = (SequenceScope) this.L$0;
-            View view = this.$this_allViews;
-            this.L$0 = sequenceScope;
-            this.label = 1;
-            if (sequenceScope.yield(view, this) == coroutine_suspended) {
-                return coroutine_suspended;
-            }
-        } else if (i2 != 1) {
-            if (i2 == 2) {
-                ResultKt.throwOnFailure(obj);
-                return Unit.INSTANCE;
-            }
-            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
-        } else {
-            sequenceScope = (SequenceScope) this.L$0;
-            ResultKt.throwOnFailure(obj);
+    static {
+        if (Build.VERSION.SDK_INT < 18 || Build.VERSION.SDK_INT >= 29) {
+            return;
         }
-        View view2 = this.$this_allViews;
-        if (view2 instanceof ViewGroup) {
-            Sequence<View> descendants = ViewGroupKt.getDescendants((ViewGroup) view2);
-            this.L$0 = null;
-            this.label = 2;
-            if (sequenceScope.yieldAll(descendants, this) == coroutine_suspended) {
-                return coroutine_suspended;
+        try {
+            sTraceTagApp = Trace.class.getField("TRACE_TAG_APP").getLong(null);
+            sIsTagEnabledMethod = Trace.class.getMethod("isTagEnabled", Long.TYPE);
+            sAsyncTraceBeginMethod = Trace.class.getMethod("asyncTraceBegin", Long.TYPE, String.class, Integer.TYPE);
+            sAsyncTraceEndMethod = Trace.class.getMethod("asyncTraceEnd", Long.TYPE, String.class, Integer.TYPE);
+            sTraceCounterMethod = Trace.class.getMethod("traceCounter", Long.TYPE, String.class, Integer.TYPE);
+        } catch (Exception e2) {
+            Log.i(TAG, "Unable to initialize via reflection.", e2);
+        }
+    }
+
+    public static boolean isEnabled() {
+        if (Build.VERSION.SDK_INT >= 29) {
+            return Api29Impl.isEnabled();
+        }
+        if (Build.VERSION.SDK_INT >= 18) {
+            try {
+                return ((Boolean) sIsTagEnabledMethod.invoke(null, Long.valueOf(sTraceTagApp))).booleanValue();
+            } catch (Exception unused) {
+                Log.v(TAG, "Unable to invoke isTagEnabled() via reflection.");
             }
         }
-        return Unit.INSTANCE;
+        return false;
+    }
+
+    public static void beginSection(String str) {
+        if (Build.VERSION.SDK_INT >= 18) {
+            Api18Impl.beginSection(str);
+        }
+    }
+
+    public static void endSection() {
+        if (Build.VERSION.SDK_INT >= 18) {
+            Api18Impl.endSection();
+        }
+    }
+
+    public static void beginAsyncSection(String str, int i2) {
+        if (Build.VERSION.SDK_INT >= 29) {
+            Api29Impl.beginAsyncSection(str, i2);
+        } else if (Build.VERSION.SDK_INT >= 18) {
+            try {
+                sAsyncTraceBeginMethod.invoke(null, Long.valueOf(sTraceTagApp), str, Integer.valueOf(i2));
+            } catch (Exception unused) {
+                Log.v(TAG, "Unable to invoke asyncTraceBegin() via reflection.");
+            }
+        }
+    }
+
+    public static void endAsyncSection(String str, int i2) {
+        if (Build.VERSION.SDK_INT >= 29) {
+            Api29Impl.endAsyncSection(str, i2);
+        } else if (Build.VERSION.SDK_INT >= 18) {
+            try {
+                sAsyncTraceEndMethod.invoke(null, Long.valueOf(sTraceTagApp), str, Integer.valueOf(i2));
+            } catch (Exception unused) {
+                Log.v(TAG, "Unable to invoke endAsyncSection() via reflection.");
+            }
+        }
+    }
+
+    public static void setCounter(String str, int i2) {
+        if (Build.VERSION.SDK_INT >= 29) {
+            Api29Impl.setCounter(str, i2);
+        } else if (Build.VERSION.SDK_INT >= 18) {
+            try {
+                sTraceCounterMethod.invoke(null, Long.valueOf(sTraceTagApp), str, Integer.valueOf(i2));
+            } catch (Exception unused) {
+                Log.v(TAG, "Unable to invoke traceCounter() via reflection.");
+            }
+        }
+    }
+
+    private TraceCompat() {
+    }
+
+    /* loaded from: classes.dex */
+    static class Api29Impl {
+        private Api29Impl() {
+        }
+
+        static boolean isEnabled() {
+            return Trace.isEnabled();
+        }
+
+        static void endAsyncSection(String str, int i2) {
+            Trace.endAsyncSection(str, i2);
+        }
+
+        static void beginAsyncSection(String str, int i2) {
+            Trace.beginAsyncSection(str, i2);
+        }
+
+        static void setCounter(String str, long j2) {
+            Trace.setCounter(str, j2);
+        }
+    }
+
+    /* loaded from: classes.dex */
+    static class Api18Impl {
+        private Api18Impl() {
+        }
+
+        static void beginSection(String str) {
+            Trace.beginSection(str);
+        }
+
+        static void endSection() {
+            Trace.endSection();
+        }
     }
 }

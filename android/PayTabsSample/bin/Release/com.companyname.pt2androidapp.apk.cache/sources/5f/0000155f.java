@@ -1,48 +1,37 @@
-package kotlinx.coroutines.internal;
+package kotlin.collections;
 
-import java.util.Objects;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import kotlin.Metadata;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.internal.Intrinsics;
 
-/* compiled from: LockFreeLinkedList.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u00008\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0005\n\u0002\u0010\b\n\u0002\b\t\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\u001a\u0010\u0010\u0010\u001a\u00060\u0011j\u0002`\u0012*\u00020\u0001H\u0001\"\u001c\u0010\u0000\u001a\u00020\u00018\u0000X\u0081\u0004¢\u0006\u000e\n\u0000\u0012\u0004\b\u0002\u0010\u0003\u001a\u0004\b\u0004\u0010\u0005\"\u0016\u0010\u0006\u001a\u00020\u00078\u0000X\u0081T¢\u0006\b\n\u0000\u0012\u0004\b\b\u0010\u0003\"\u001c\u0010\t\u001a\u00020\u00018\u0000X\u0081\u0004¢\u0006\u000e\n\u0000\u0012\u0004\b\n\u0010\u0003\u001a\u0004\b\u000b\u0010\u0005\"\u0016\u0010\f\u001a\u00020\u00078\u0000X\u0081T¢\u0006\b\n\u0000\u0012\u0004\b\r\u0010\u0003\"\u0016\u0010\u000e\u001a\u00020\u00078\u0000X\u0081T¢\u0006\b\n\u0000\u0012\u0004\b\u000f\u0010\u0003*\n\u0010\u0013\"\u00020\u00142\u00020\u0014*\u001c\u0010\u0015\u001a\u0004\b\u0000\u0010\u0016\"\b\u0012\u0004\u0012\u0002H\u00160\u00172\b\u0012\u0004\u0012\u0002H\u00160\u0017*\f\b\u0002\u0010\u0018\"\u00020\u00112\u00020\u0011*\n\u0010\u0019\"\u00020\u001a2\u00020\u001a*\u001c\u0010\u001b\u001a\u0004\b\u0000\u0010\u0016\"\b\u0012\u0004\u0012\u0002H\u00160\u001c2\b\u0012\u0004\u0012\u0002H\u00160\u001c¨\u0006\u001d"}, d2 = {"CONDITION_FALSE", "", "getCONDITION_FALSE$annotations", "()V", "getCONDITION_FALSE", "()Ljava/lang/Object;", "FAILURE", "", "getFAILURE$annotations", "LIST_EMPTY", "getLIST_EMPTY$annotations", "getLIST_EMPTY", "SUCCESS", "getSUCCESS$annotations", "UNDECIDED", "getUNDECIDED$annotations", "unwrap", "Lkotlinx/coroutines/internal/LockFreeLinkedListNode;", "Lkotlinx/coroutines/internal/Node;", "AbstractAtomicDesc", "Lkotlinx/coroutines/internal/LockFreeLinkedListNode$AbstractAtomicDesc;", "AddLastDesc", "T", "Lkotlinx/coroutines/internal/LockFreeLinkedListNode$AddLastDesc;", "Node", "PrepareOp", "Lkotlinx/coroutines/internal/LockFreeLinkedListNode$PrepareOp;", "RemoveFirstDesc", "Lkotlinx/coroutines/internal/LockFreeLinkedListNode$RemoveFirstDesc;", "kotlinx-coroutines-core"}, k = 2, mv = {1, 4, 2})
+/* JADX INFO: Access modifiers changed from: package-private */
+/* compiled from: MapWithDefault.kt */
+@Metadata(d1 = {"\u0000\u001e\n\u0002\b\u0003\n\u0002\u0010$\n\u0002\b\u0005\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010%\n\u0002\b\u0002\u001a3\u0010\u0000\u001a\u0002H\u0001\"\u0004\b\u0000\u0010\u0002\"\u0004\b\u0001\u0010\u0001*\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00010\u00032\u0006\u0010\u0004\u001a\u0002H\u0002H\u0001¢\u0006\u0004\b\u0005\u0010\u0006\u001aQ\u0010\u0007\u001a\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00010\u0003\"\u0004\b\u0000\u0010\u0002\"\u0004\b\u0001\u0010\u0001*\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00010\u00032!\u0010\b\u001a\u001d\u0012\u0013\u0012\u0011H\u0002¢\u0006\f\b\n\u0012\b\b\u000b\u0012\u0004\b\b(\u0004\u0012\u0004\u0012\u0002H\u00010\t\u001aX\u0010\u0007\u001a\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00010\f\"\u0004\b\u0000\u0010\u0002\"\u0004\b\u0001\u0010\u0001*\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00010\f2!\u0010\b\u001a\u001d\u0012\u0013\u0012\u0011H\u0002¢\u0006\f\b\n\u0012\b\b\u000b\u0012\u0004\b\b(\u0004\u0012\u0004\u0012\u0002H\u00010\tH\u0007¢\u0006\u0002\b\r¨\u0006\u000e"}, d2 = {"getOrImplicitDefault", "V", "K", "", "key", "getOrImplicitDefaultNullable", "(Ljava/util/Map;Ljava/lang/Object;)Ljava/lang/Object;", "withDefault", "defaultValue", "Lkotlin/Function1;", "Lkotlin/ParameterName;", "name", "", "withDefaultMutable", "kotlin-stdlib"}, k = 5, mv = {1, 5, 1}, xi = 1, xs = "kotlin/collections/MapsKt")
 /* loaded from: classes.dex */
-public final class LockFreeLinkedListKt {
-    public static final int FAILURE = 2;
-    public static final int SUCCESS = 1;
-    public static final int UNDECIDED = 0;
-    private static final Object CONDITION_FALSE = new Symbol("CONDITION_FALSE");
-    private static final Object LIST_EMPTY = new Symbol("LIST_EMPTY");
-
-    public static /* synthetic */ void getCONDITION_FALSE$annotations() {
-    }
-
-    public static /* synthetic */ void getFAILURE$annotations() {
-    }
-
-    public static /* synthetic */ void getLIST_EMPTY$annotations() {
-    }
-
-    public static /* synthetic */ void getSUCCESS$annotations() {
-    }
-
-    public static /* synthetic */ void getUNDECIDED$annotations() {
-    }
-
-    public static final Object getCONDITION_FALSE() {
-        return CONDITION_FALSE;
-    }
-
-    public static final Object getLIST_EMPTY() {
-        return LIST_EMPTY;
-    }
-
-    public static final LockFreeLinkedListNode unwrap(Object obj) {
-        LockFreeLinkedListNode lockFreeLinkedListNode;
-        Removed removed = (Removed) (!(obj instanceof Removed) ? null : obj);
-        if (removed == null || (lockFreeLinkedListNode = removed.ref) == null) {
-            Objects.requireNonNull(obj, "null cannot be cast to non-null type kotlinx.coroutines.internal.Node /* = kotlinx.coroutines.internal.LockFreeLinkedListNode */");
-            return (LockFreeLinkedListNode) obj;
+public class MapsKt__MapWithDefaultKt {
+    public static final <K, V> V getOrImplicitDefaultNullable(Map<K, ? extends V> getOrImplicitDefault, K k2) {
+        Intrinsics.checkNotNullParameter(getOrImplicitDefault, "$this$getOrImplicitDefault");
+        if (getOrImplicitDefault instanceof MapWithDefault) {
+            return (V) ((MapWithDefault) getOrImplicitDefault).getOrImplicitDefault(k2);
         }
-        return lockFreeLinkedListNode;
+        V v2 = getOrImplicitDefault.get(k2);
+        if (v2 != null || getOrImplicitDefault.containsKey(k2)) {
+            return v2;
+        }
+        throw new NoSuchElementException("Key " + k2 + " is missing in the map.");
+    }
+
+    public static final <K, V> Map<K, V> withDefault(Map<K, ? extends V> withDefault, Function1<? super K, ? extends V> defaultValue) {
+        Intrinsics.checkNotNullParameter(withDefault, "$this$withDefault");
+        Intrinsics.checkNotNullParameter(defaultValue, "defaultValue");
+        return withDefault instanceof MapWithDefault ? MapsKt.withDefault(((MapWithDefault) withDefault).getMap(), defaultValue) : new MapWithDefaultImpl(withDefault, defaultValue);
+    }
+
+    public static final <K, V> Map<K, V> withDefaultMutable(Map<K, V> withDefault, Function1<? super K, ? extends V> defaultValue) {
+        Intrinsics.checkNotNullParameter(withDefault, "$this$withDefault");
+        Intrinsics.checkNotNullParameter(defaultValue, "defaultValue");
+        return withDefault instanceof MutableMapWithDefault ? MapsKt.withDefaultMutable(((MutableMapWithDefault) withDefault).getMap(), defaultValue) : new MutableMapWithDefaultImpl(withDefault, defaultValue);
     }
 }

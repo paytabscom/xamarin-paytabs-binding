@@ -1,47 +1,36 @@
-package mono.android.media.effect;
+package kotlin.jvm.internal;
 
-import android.media.effect.Effect;
-import android.media.effect.EffectUpdateListener;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.NoSuchElementException;
+import kotlin.Metadata;
+import kotlin.collections.DoubleIterator;
 
+/* compiled from: ArrayIterators.kt */
+@Metadata(d1 = {"\u0000$\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0013\n\u0002\b\u0002\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u0006\n\u0000\b\u0002\u0018\u00002\u00020\u0001B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0002\u0010\u0004J\t\u0010\u0007\u001a\u00020\bH\u0096\u0002J\b\u0010\t\u001a\u00020\nH\u0016R\u000e\u0010\u0002\u001a\u00020\u0003X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0006X\u0082\u000e¢\u0006\u0002\n\u0000¨\u0006\u000b"}, d2 = {"Lkotlin/jvm/internal/ArrayDoubleIterator;", "Lkotlin/collections/DoubleIterator;", "array", "", "([D)V", "index", "", "hasNext", "", "nextDouble", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class EffectUpdateListenerImplementor implements IGCUserPeer, EffectUpdateListener {
-    public static final String __md_methods = "n_onEffectUpdated:(Landroid/media/effect/Effect;Ljava/lang/Object;)V:GetOnEffectUpdated_Landroid_media_effect_Effect_Ljava_lang_Object_Handler:Android.Media.Effect.IEffectUpdateListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+final class ArrayDoubleIterator extends DoubleIterator {
+    private final double[] array;
+    private int index;
 
-    private native void n_onEffectUpdated(Effect effect, Object obj);
-
-    static {
-        Runtime.register("Android.Media.Effect.IEffectUpdateListenerImplementor, Mono.Android", EffectUpdateListenerImplementor.class, __md_methods);
+    public ArrayDoubleIterator(double[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        this.array = array;
     }
 
-    public EffectUpdateListenerImplementor() {
-        if (getClass() == EffectUpdateListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.Effect.IEffectUpdateListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    @Override // java.util.Iterator
+    public boolean hasNext() {
+        return this.index < this.array.length;
     }
 
-    @Override // android.media.effect.EffectUpdateListener
-    public void onEffectUpdated(Effect effect, Object obj) {
-        n_onEffectUpdated(effect, obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
+    @Override // kotlin.collections.DoubleIterator
+    public double nextDouble() {
+        try {
+            double[] dArr = this.array;
+            int i2 = this.index;
+            this.index = i2 + 1;
+            return dArr[i2];
+        } catch (ArrayIndexOutOfBoundsException e2) {
+            this.index--;
+            throw new NoSuchElementException(e2.getMessage());
         }
     }
 }

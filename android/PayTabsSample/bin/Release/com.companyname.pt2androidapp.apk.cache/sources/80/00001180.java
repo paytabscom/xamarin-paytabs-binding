@@ -1,24 +1,96 @@
-package kotlin.sequences;
+package com.google.crypto.tink.shaded.protobuf;
 
-import java.util.Iterator;
-import kotlin.Metadata;
-import kotlin.collections.IndexedValue;
-import kotlin.jvm.internal.Intrinsics;
+import java.io.IOException;
 
-/* compiled from: Sequences.kt */
-@Metadata(d1 = {"\u0000\u0018\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010(\n\u0000\b\u0000\u0018\u0000*\u0004\b\u0000\u0010\u00012\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u0002H\u00010\u00030\u0002B\u0013\u0012\f\u0010\u0004\u001a\b\u0012\u0004\u0012\u00028\u00000\u0002¢\u0006\u0002\u0010\u0005J\u0015\u0010\u0006\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00028\u00000\u00030\u0007H\u0096\u0002R\u0014\u0010\u0004\u001a\b\u0012\u0004\u0012\u00028\u00000\u0002X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\b"}, d2 = {"Lkotlin/sequences/IndexingSequence;", "T", "Lkotlin/sequences/Sequence;", "Lkotlin/collections/IndexedValue;", "sequence", "(Lkotlin/sequences/Sequence;)V", "iterator", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class IndexingSequence<T> implements Sequence<IndexedValue<? extends T>> {
-    private final Sequence<T> sequence;
+public class InvalidProtocolBufferException extends IOException {
+    private static final long serialVersionUID = -1616151763072450476L;
+    private MessageLite unfinishedMessage;
 
-    /* JADX WARN: Multi-variable type inference failed */
-    public IndexingSequence(Sequence<? extends T> sequence) {
-        Intrinsics.checkNotNullParameter(sequence, "sequence");
-        this.sequence = sequence;
+    public InvalidProtocolBufferException(final String description) {
+        super(description);
+        this.unfinishedMessage = null;
     }
 
-    @Override // kotlin.sequences.Sequence
-    public Iterator<IndexedValue<T>> iterator() {
-        return new IndexingSequence$iterator$1(this);
+    public InvalidProtocolBufferException(IOException e2) {
+        super(e2.getMessage(), e2);
+        this.unfinishedMessage = null;
+    }
+
+    public InvalidProtocolBufferException(final String description, IOException e2) {
+        super(description, e2);
+        this.unfinishedMessage = null;
+    }
+
+    public InvalidProtocolBufferException setUnfinishedMessage(MessageLite unfinishedMessage) {
+        this.unfinishedMessage = unfinishedMessage;
+        return this;
+    }
+
+    public MessageLite getUnfinishedMessage() {
+        return this.unfinishedMessage;
+    }
+
+    public IOException unwrapIOException() {
+        return getCause() instanceof IOException ? (IOException) getCause() : this;
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static InvalidProtocolBufferException truncatedMessage() {
+        return new InvalidProtocolBufferException("While parsing a protocol message, the input ended unexpectedly in the middle of a field.  This could mean either that the input has been truncated or that an embedded message misreported its own length.");
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static InvalidProtocolBufferException negativeSize() {
+        return new InvalidProtocolBufferException("CodedInputStream encountered an embedded string or message which claimed to have negative size.");
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static InvalidProtocolBufferException malformedVarint() {
+        return new InvalidProtocolBufferException("CodedInputStream encountered a malformed varint.");
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static InvalidProtocolBufferException invalidTag() {
+        return new InvalidProtocolBufferException("Protocol message contained an invalid tag (zero).");
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static InvalidProtocolBufferException invalidEndTag() {
+        return new InvalidProtocolBufferException("Protocol message end-group tag did not match expected tag.");
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static InvalidWireTypeException invalidWireType() {
+        return new InvalidWireTypeException("Protocol message tag had invalid wire type.");
+    }
+
+    /* loaded from: classes.dex */
+    public static class InvalidWireTypeException extends InvalidProtocolBufferException {
+        private static final long serialVersionUID = 3283890091615336259L;
+
+        public InvalidWireTypeException(String description) {
+            super(description);
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static InvalidProtocolBufferException recursionLimitExceeded() {
+        return new InvalidProtocolBufferException("Protocol message had too many levels of nesting.  May be malicious.  Use CodedInputStream.setRecursionLimit() to increase the depth limit.");
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static InvalidProtocolBufferException sizeLimitExceeded() {
+        return new InvalidProtocolBufferException("Protocol message was too large.  May be malicious.  Use CodedInputStream.setSizeLimit() to increase the size limit.");
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static InvalidProtocolBufferException parseFailure() {
+        return new InvalidProtocolBufferException("Failed to parse the message.");
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static InvalidProtocolBufferException invalidUtf8() {
+        return new InvalidProtocolBufferException("Protocol message had invalid UTF-8.");
     }
 }

@@ -1,46 +1,27 @@
-package mono.android.se.omapi;
+package kotlin.jvm.internal;
 
-import android.se.omapi.SEService;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.reflect.KClass;
+import kotlin.reflect.KDeclarationContainer;
 
 /* loaded from: classes.dex */
-public class SEService_OnConnectedListenerImplementor implements IGCUserPeer, SEService.OnConnectedListener {
-    public static final String __md_methods = "n_onConnected:()V:GetOnConnectedHandler:Android.SE.Omapi.SEService/IOnConnectedListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onConnected();
-
-    static {
-        Runtime.register("Android.SE.Omapi.SEService+IOnConnectedListenerImplementor, Mono.Android", SEService_OnConnectedListenerImplementor.class, __md_methods);
+public class MutablePropertyReference0Impl extends MutablePropertyReference0 {
+    public MutablePropertyReference0Impl(KDeclarationContainer kDeclarationContainer, String str, String str2) {
+        super(NO_RECEIVER, ((ClassBasedDeclarationContainer) kDeclarationContainer).getJClass(), str, str2, !(kDeclarationContainer instanceof KClass) ? 1 : 0);
     }
 
-    public SEService_OnConnectedListenerImplementor() {
-        if (getClass() == SEService_OnConnectedListenerImplementor.class) {
-            TypeManager.Activate("Android.SE.Omapi.SEService+IOnConnectedListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    public MutablePropertyReference0Impl(Class cls, String str, String str2, int i2) {
+        super(NO_RECEIVER, cls, str, str2, i2);
     }
 
-    @Override // android.se.omapi.SEService.OnConnectedListener
-    public void onConnected() {
-        n_onConnected();
+    public MutablePropertyReference0Impl(Object obj, Class cls, String str, String str2, int i2) {
+        super(obj, cls, str, str2, i2);
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
+    public Object get() {
+        return getGetter().call(new Object[0]);
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public void set(Object obj) {
+        getSetter().call(obj);
     }
 }

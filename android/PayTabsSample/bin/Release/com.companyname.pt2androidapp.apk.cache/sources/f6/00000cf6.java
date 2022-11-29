@@ -1,35 +1,34 @@
-package com.google.android.material.timepicker;
+package com.google.android.material.dialog;
 
-import android.text.InputFilter;
-import android.text.Spanned;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
+import android.os.Build;
+import com.google.android.material.R;
+import com.google.android.material.internal.ThemeEnforcement;
 
 /* loaded from: classes.dex */
-class MaxInputValidator implements InputFilter {
-    private int max;
-
-    public MaxInputValidator(int i2) {
-        this.max = i2;
+public class MaterialDialogs {
+    private MaterialDialogs() {
     }
 
-    public void setMax(int i2) {
-        this.max = i2;
+    public static InsetDrawable insetDrawable(Drawable drawable, Rect rect) {
+        return new InsetDrawable(drawable, rect.left, rect.top, rect.right, rect.bottom);
     }
 
-    public int getMax() {
-        return this.max;
-    }
-
-    @Override // android.text.InputFilter
-    public CharSequence filter(CharSequence charSequence, int i2, int i3, Spanned spanned, int i4, int i5) {
-        try {
-            StringBuilder sb = new StringBuilder(spanned);
-            sb.replace(i4, i5, charSequence.subSequence(i2, i3).toString());
-            if (Integer.parseInt(sb.toString()) <= this.max) {
-                return null;
-            }
-            return "";
-        } catch (NumberFormatException unused) {
-            return "";
+    public static Rect getDialogBackgroundInsets(Context context, int i2, int i3) {
+        TypedArray obtainStyledAttributes = ThemeEnforcement.obtainStyledAttributes(context, null, R.styleable.MaterialAlertDialog, i2, i3, new int[0]);
+        int dimensionPixelSize = obtainStyledAttributes.getDimensionPixelSize(R.styleable.MaterialAlertDialog_backgroundInsetStart, context.getResources().getDimensionPixelSize(R.dimen.mtrl_alert_dialog_background_inset_start));
+        int dimensionPixelSize2 = obtainStyledAttributes.getDimensionPixelSize(R.styleable.MaterialAlertDialog_backgroundInsetTop, context.getResources().getDimensionPixelSize(R.dimen.mtrl_alert_dialog_background_inset_top));
+        int dimensionPixelSize3 = obtainStyledAttributes.getDimensionPixelSize(R.styleable.MaterialAlertDialog_backgroundInsetEnd, context.getResources().getDimensionPixelSize(R.dimen.mtrl_alert_dialog_background_inset_end));
+        int dimensionPixelSize4 = obtainStyledAttributes.getDimensionPixelSize(R.styleable.MaterialAlertDialog_backgroundInsetBottom, context.getResources().getDimensionPixelSize(R.dimen.mtrl_alert_dialog_background_inset_bottom));
+        obtainStyledAttributes.recycle();
+        if (Build.VERSION.SDK_INT >= 17 && context.getResources().getConfiguration().getLayoutDirection() == 1) {
+            dimensionPixelSize3 = dimensionPixelSize;
+            dimensionPixelSize = dimensionPixelSize3;
         }
+        return new Rect(dimensionPixelSize, dimensionPixelSize2, dimensionPixelSize3, dimensionPixelSize4);
     }
 }

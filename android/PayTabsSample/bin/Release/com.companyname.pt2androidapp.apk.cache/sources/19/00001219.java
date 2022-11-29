@@ -1,84 +1,78 @@
-package kotlin.time;
+package com.google.crypto.tink.streamingaead;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
-import kotlin.Metadata;
-import kotlin.jvm.internal.Intrinsics;
+import com.google.crypto.tink.PrimitiveSet;
+import com.google.crypto.tink.StreamingAead;
+import com.google.crypto.tink.subtle.RewindableReadableByteChannel;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.ReadableByteChannel;
+import java.security.GeneralSecurityException;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-/* compiled from: formatToDecimals.kt */
-@Metadata(d1 = {"\u0000.\n\u0000\n\u0002\u0010\u0011\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000e\n\u0000\n\u0002\u0010\u0006\n\u0002\b\u0003\u001a\u0010\u0010\t\u001a\u00020\u00032\u0006\u0010\n\u001a\u00020\u000bH\u0002\u001a\u0010\u0010\f\u001a\u00020\r2\u0006\u0010\u000e\u001a\u00020\u000fH\u0000\u001a\u0018\u0010\u0010\u001a\u00020\r2\u0006\u0010\u000e\u001a\u00020\u000f2\u0006\u0010\n\u001a\u00020\u000bH\u0000\u001a\u0018\u0010\u0011\u001a\u00020\r2\u0006\u0010\u000e\u001a\u00020\u000f2\u0006\u0010\n\u001a\u00020\u000bH\u0000\"\u001c\u0010\u0000\u001a\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00030\u00020\u0001X\u0082\u0004¢\u0006\u0004\n\u0002\u0010\u0004\"\u000e\u0010\u0005\u001a\u00020\u0006X\u0082\u0004¢\u0006\u0002\n\u0000\"\u000e\u0010\u0007\u001a\u00020\u0006X\u0082\u0004¢\u0006\u0002\n\u0000\"\u0014\u0010\b\u001a\b\u0012\u0004\u0012\u00020\u00030\u0002X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\u0012"}, d2 = {"precisionFormats", "", "Ljava/lang/ThreadLocal;", "Ljava/text/DecimalFormat;", "[Ljava/lang/ThreadLocal;", "rootNegativeExpFormatSymbols", "Ljava/text/DecimalFormatSymbols;", "rootPositiveExpFormatSymbols", "scientificFormat", "createFormatForDecimals", "decimals", "", "formatScientific", "", "value", "", "formatToExactDecimals", "formatUpToDecimals", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class FormatToDecimalsKt {
-    private static final ThreadLocal<DecimalFormat>[] precisionFormats;
-    private static final DecimalFormatSymbols rootNegativeExpFormatSymbols;
-    private static final DecimalFormatSymbols rootPositiveExpFormatSymbols;
-    private static final ThreadLocal<DecimalFormat> scientificFormat;
+final class ReadableByteChannelDecrypter implements ReadableByteChannel {
+    byte[] associatedData;
+    RewindableReadableByteChannel ciphertextChannel;
+    ReadableByteChannel attemptingChannel = null;
+    ReadableByteChannel matchingChannel = null;
+    Deque<StreamingAead> remainingPrimitives = new ArrayDeque();
 
-    static {
-        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ROOT);
-        decimalFormatSymbols.setExponentSeparator("e");
-        rootNegativeExpFormatSymbols = decimalFormatSymbols;
-        DecimalFormatSymbols decimalFormatSymbols2 = new DecimalFormatSymbols(Locale.ROOT);
-        decimalFormatSymbols2.setExponentSeparator("e+");
-        rootPositiveExpFormatSymbols = decimalFormatSymbols2;
-        ThreadLocal<DecimalFormat>[] threadLocalArr = new ThreadLocal[4];
-        for (int i2 = 0; i2 < 4; i2++) {
-            threadLocalArr[i2] = new ThreadLocal<>();
+    public ReadableByteChannelDecrypter(PrimitiveSet<StreamingAead> primitives, ReadableByteChannel ciphertextChannel, final byte[] associatedData) {
+        for (PrimitiveSet.Entry<StreamingAead> entry : primitives.getRawPrimitives()) {
+            this.remainingPrimitives.add(entry.getPrimitive());
         }
-        precisionFormats = threadLocalArr;
-        scientificFormat = new ThreadLocal<>();
+        this.ciphertextChannel = new RewindableReadableByteChannel(ciphertextChannel);
+        this.associatedData = (byte[]) associatedData.clone();
     }
 
-    private static final DecimalFormat createFormatForDecimals(int i2) {
-        DecimalFormat decimalFormat = new DecimalFormat("0", rootNegativeExpFormatSymbols);
-        if (i2 > 0) {
-            decimalFormat.setMinimumFractionDigits(i2);
-        }
-        decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
-        return decimalFormat;
-    }
-
-    public static final String formatToExactDecimals(double d2, int i2) {
-        DecimalFormat createFormatForDecimals;
-        ThreadLocal<DecimalFormat>[] threadLocalArr = precisionFormats;
-        if (i2 < threadLocalArr.length) {
-            ThreadLocal<DecimalFormat> threadLocal = threadLocalArr[i2];
-            DecimalFormat decimalFormat = threadLocal.get();
-            if (decimalFormat == null) {
-                decimalFormat = createFormatForDecimals(i2);
-                threadLocal.set(decimalFormat);
+    private synchronized ReadableByteChannel nextAttemptingChannel() throws IOException {
+        while (!this.remainingPrimitives.isEmpty()) {
+            try {
+            } catch (GeneralSecurityException unused) {
+                this.ciphertextChannel.rewind();
             }
-            createFormatForDecimals = decimalFormat;
-        } else {
-            createFormatForDecimals = createFormatForDecimals(i2);
         }
-        String format = createFormatForDecimals.format(d2);
-        Intrinsics.checkNotNullExpressionValue(format, "format.format(value)");
-        return format;
+        throw new IOException("No matching key found for the ciphertext in the stream.");
+        return this.remainingPrimitives.removeFirst().newDecryptingChannel(this.ciphertextChannel, this.associatedData);
     }
 
-    public static final String formatUpToDecimals(double d2, int i2) {
-        DecimalFormat createFormatForDecimals = createFormatForDecimals(0);
-        createFormatForDecimals.setMaximumFractionDigits(i2);
-        String format = createFormatForDecimals.format(d2);
-        Intrinsics.checkNotNullExpressionValue(format, "createFormatForDecimals(… }\n        .format(value)");
-        return format;
+    @Override // java.nio.channels.ReadableByteChannel
+    public synchronized int read(ByteBuffer dst) throws IOException {
+        if (dst.remaining() == 0) {
+            return 0;
+        }
+        ReadableByteChannel readableByteChannel = this.matchingChannel;
+        if (readableByteChannel != null) {
+            return readableByteChannel.read(dst);
+        }
+        if (this.attemptingChannel == null) {
+            this.attemptingChannel = nextAttemptingChannel();
+        }
+        while (true) {
+            try {
+                int read = this.attemptingChannel.read(dst);
+                if (read == 0) {
+                    return 0;
+                }
+                this.matchingChannel = this.attemptingChannel;
+                this.attemptingChannel = null;
+                this.ciphertextChannel.disableRewinding();
+                return read;
+            } catch (IOException unused) {
+                this.ciphertextChannel.rewind();
+                this.attemptingChannel = nextAttemptingChannel();
+            }
+        }
     }
 
-    public static final String formatScientific(double d2) {
-        ThreadLocal<DecimalFormat> threadLocal = scientificFormat;
-        DecimalFormat decimalFormat = threadLocal.get();
-        if (decimalFormat == null) {
-            decimalFormat = new DecimalFormat("0E0", rootNegativeExpFormatSymbols);
-            decimalFormat.setMinimumFractionDigits(2);
-            threadLocal.set(decimalFormat);
-        }
-        DecimalFormat decimalFormat2 = decimalFormat;
-        decimalFormat2.setDecimalFormatSymbols((d2 >= ((double) 1) || d2 <= ((double) (-1))) ? rootPositiveExpFormatSymbols : rootNegativeExpFormatSymbols);
-        String format = decimalFormat2.format(d2);
-        Intrinsics.checkNotNullExpressionValue(format, "scientificFormat.getOrSe… }\n        .format(value)");
-        return format;
+    @Override // java.nio.channels.Channel, java.io.Closeable, java.lang.AutoCloseable
+    public synchronized void close() throws IOException {
+        this.ciphertextChannel.close();
+    }
+
+    @Override // java.nio.channels.Channel
+    public synchronized boolean isOpen() {
+        return this.ciphertextChannel.isOpen();
     }
 }

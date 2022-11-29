@@ -1,18 +1,41 @@
-package kotlin;
+package com.google.android.material.transition.platform;
 
-import kotlin.jvm.JvmStatic;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
+import android.view.View;
+import android.view.ViewGroup;
 
-/* compiled from: KotlinVersion.kt */
-@Metadata(d1 = {"\u0000\u0012\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\bÂ\u0002\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J\b\u0010\u0003\u001a\u00020\u0004H\u0007¨\u0006\u0005"}, d2 = {"Lkotlin/KotlinVersionCurrentValue;", "", "()V", "get", "Lkotlin/KotlinVersion;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-final class KotlinVersionCurrentValue {
-    public static final KotlinVersionCurrentValue INSTANCE = new KotlinVersionCurrentValue();
+public final class FadeThroughProvider implements VisibilityAnimatorProvider {
+    static final float PROGRESS_THRESHOLD = 0.35f;
 
-    private KotlinVersionCurrentValue() {
+    @Override // com.google.android.material.transition.platform.VisibilityAnimatorProvider
+    public Animator createAppear(ViewGroup viewGroup, View view) {
+        float alpha = view.getAlpha() == 0.0f ? 1.0f : view.getAlpha();
+        return createFadeThroughAnimator(view, 0.0f, alpha, PROGRESS_THRESHOLD, 1.0f, alpha);
     }
 
-    @JvmStatic
-    public static final KotlinVersion get() {
-        return new KotlinVersion(1, 5, 10);
+    @Override // com.google.android.material.transition.platform.VisibilityAnimatorProvider
+    public Animator createDisappear(ViewGroup viewGroup, View view) {
+        float alpha = view.getAlpha() == 0.0f ? 1.0f : view.getAlpha();
+        return createFadeThroughAnimator(view, alpha, 0.0f, 0.0f, PROGRESS_THRESHOLD, alpha);
+    }
+
+    private static Animator createFadeThroughAnimator(final View view, final float f2, final float f3, final float f4, final float f5, final float f6) {
+        ValueAnimator ofFloat = ValueAnimator.ofFloat(0.0f, 1.0f);
+        ofFloat.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() { // from class: com.google.android.material.transition.platform.FadeThroughProvider.1
+            @Override // android.animation.ValueAnimator.AnimatorUpdateListener
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                view.setAlpha(TransitionUtils.lerp(f2, f3, f4, f5, ((Float) valueAnimator.getAnimatedValue()).floatValue()));
+            }
+        });
+        ofFloat.addListener(new AnimatorListenerAdapter() { // from class: com.google.android.material.transition.platform.FadeThroughProvider.2
+            @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
+            public void onAnimationEnd(Animator animator) {
+                view.setAlpha(f6);
+            }
+        });
+        return ofFloat;
     }
 }

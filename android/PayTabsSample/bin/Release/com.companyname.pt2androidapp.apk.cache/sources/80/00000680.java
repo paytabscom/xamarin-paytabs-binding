@@ -1,81 +1,15 @@
-package androidx.core.widget;
+package androidx.core.util;
 
-import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.util.Log;
-import android.widget.CompoundButton;
-import java.lang.reflect.Field;
+import kotlin.Metadata;
+import kotlin.coroutines.Continuation;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: Consumer.kt */
+@Metadata(d1 = {"\u0000\u000e\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\u001a\u001e\u0010\u0000\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0001\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u0003H\u0007¨\u0006\u0004"}, d2 = {"asConsumer", "Ljava/util/function/Consumer;", "T", "Lkotlin/coroutines/Continuation;", "core-ktx_release"}, k = 2, mv = {1, 6, 0}, xi = 48)
 /* loaded from: classes.dex */
-public final class CompoundButtonCompat {
-    private static final String TAG = "CompoundButtonCompat";
-    private static Field sButtonDrawableField;
-    private static boolean sButtonDrawableFieldFetched;
-
-    private CompoundButtonCompat() {
-    }
-
-    public static void setButtonTintList(CompoundButton compoundButton, ColorStateList colorStateList) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            compoundButton.setButtonTintList(colorStateList);
-        } else if (compoundButton instanceof TintableCompoundButton) {
-            ((TintableCompoundButton) compoundButton).setSupportButtonTintList(colorStateList);
-        }
-    }
-
-    public static ColorStateList getButtonTintList(CompoundButton compoundButton) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            return compoundButton.getButtonTintList();
-        }
-        if (compoundButton instanceof TintableCompoundButton) {
-            return ((TintableCompoundButton) compoundButton).getSupportButtonTintList();
-        }
-        return null;
-    }
-
-    public static void setButtonTintMode(CompoundButton compoundButton, PorterDuff.Mode mode) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            compoundButton.setButtonTintMode(mode);
-        } else if (compoundButton instanceof TintableCompoundButton) {
-            ((TintableCompoundButton) compoundButton).setSupportButtonTintMode(mode);
-        }
-    }
-
-    public static PorterDuff.Mode getButtonTintMode(CompoundButton compoundButton) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            return compoundButton.getButtonTintMode();
-        }
-        if (compoundButton instanceof TintableCompoundButton) {
-            return ((TintableCompoundButton) compoundButton).getSupportButtonTintMode();
-        }
-        return null;
-    }
-
-    public static Drawable getButtonDrawable(CompoundButton compoundButton) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            return compoundButton.getButtonDrawable();
-        }
-        if (!sButtonDrawableFieldFetched) {
-            try {
-                Field declaredField = CompoundButton.class.getDeclaredField("mButtonDrawable");
-                sButtonDrawableField = declaredField;
-                declaredField.setAccessible(true);
-            } catch (NoSuchFieldException e2) {
-                Log.i(TAG, "Failed to retrieve mButtonDrawable field", e2);
-            }
-            sButtonDrawableFieldFetched = true;
-        }
-        Field field = sButtonDrawableField;
-        if (field != null) {
-            try {
-                return (Drawable) field.get(compoundButton);
-            } catch (IllegalAccessException e3) {
-                Log.i(TAG, "Failed to get button drawable via reflection", e3);
-                sButtonDrawableField = null;
-            }
-        }
-        return null;
+public final class ConsumerKt {
+    public static final <T> java.util.function.Consumer<T> asConsumer(Continuation<? super T> continuation) {
+        Intrinsics.checkNotNullParameter(continuation, "<this>");
+        return new ContinuationConsumer(continuation);
     }
 }

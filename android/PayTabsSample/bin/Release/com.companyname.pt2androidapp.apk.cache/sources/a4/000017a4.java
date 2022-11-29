@@ -1,72 +1,71 @@
-package z;
+package kotlin.text;
 
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentResultListener;
-import com.payment.paymentsdk.R;
+import java.util.Map;
+import kotlin.Lazy;
+import kotlin.LazyKt;
 import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.internal.DefaultConstructorMarker;
 
-@Metadata(bv = {}, d1 = {"\u0000*\n\u0002\u0018\u0002\n\u0002\u0010\u000e\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u0002\u001a5\u0010\n\u001a\u00020\b*\u00020\u00002\u0006\u0010\u0002\u001a\u00020\u00012!\u0010\t\u001a\u001d\u0012\u0013\u0012\u00110\u0004¢\u0006\f\b\u0005\u0012\b\b\u0006\u0012\u0004\b\b(\u0007\u0012\u0004\u0012\u00020\b0\u0003\u001a\u0012\u0010\n\u001a\u00020\b*\u00020\u00002\u0006\u0010\u000b\u001a\u00020\u0001\u001a(\u0010\n\u001a\u00020\b*\u00020\u00002\u0006\u0010\f\u001a\u00020\u00012\u0006\u0010\u000b\u001a\u00020\u00012\f\u0010\u000e\u001a\b\u0012\u0004\u0012\u00020\b0\r¨\u0006\u000f"}, d2 = {"Landroidx/fragment/app/Fragment;", "", "reqKey", "Lkotlin/Function1;", "Landroid/os/Bundle;", "Lkotlin/ParameterName;", "name", "bundle", "", "callback", "a", NotificationCompat.CATEGORY_MESSAGE, "title", "Lkotlin/Function0;", "onPositiveClicked", "paymentsdk_release"}, k = 2, mv = {1, 7, 1})
+/* compiled from: CharDirectionality.kt */
+@Metadata(d1 = {"\u0000\u0012\n\u0002\u0018\u0002\n\u0002\u0010\u0010\n\u0000\n\u0002\u0010\b\n\u0002\b\u0019\b\u0086\u0001\u0018\u0000 \u001b2\b\u0012\u0004\u0012\u00020\u00000\u0001:\u0001\u001bB\u000f\b\u0002\u0012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0002\u0010\u0004R\u0011\u0010\u0002\u001a\u00020\u0003¢\u0006\b\n\u0000\u001a\u0004\b\u0005\u0010\u0006j\u0002\b\u0007j\u0002\b\bj\u0002\b\tj\u0002\b\nj\u0002\b\u000bj\u0002\b\fj\u0002\b\rj\u0002\b\u000ej\u0002\b\u000fj\u0002\b\u0010j\u0002\b\u0011j\u0002\b\u0012j\u0002\b\u0013j\u0002\b\u0014j\u0002\b\u0015j\u0002\b\u0016j\u0002\b\u0017j\u0002\b\u0018j\u0002\b\u0019j\u0002\b\u001a¨\u0006\u001c"}, d2 = {"Lkotlin/text/CharDirectionality;", "", "value", "", "(Ljava/lang/String;II)V", "getValue", "()I", "UNDEFINED", "LEFT_TO_RIGHT", "RIGHT_TO_LEFT", "RIGHT_TO_LEFT_ARABIC", "EUROPEAN_NUMBER", "EUROPEAN_NUMBER_SEPARATOR", "EUROPEAN_NUMBER_TERMINATOR", "ARABIC_NUMBER", "COMMON_NUMBER_SEPARATOR", "NONSPACING_MARK", "BOUNDARY_NEUTRAL", "PARAGRAPH_SEPARATOR", "SEGMENT_SEPARATOR", "WHITESPACE", "OTHER_NEUTRALS", "LEFT_TO_RIGHT_EMBEDDING", "LEFT_TO_RIGHT_OVERRIDE", "RIGHT_TO_LEFT_EMBEDDING", "RIGHT_TO_LEFT_OVERRIDE", "POP_DIRECTIONAL_FORMAT", "Companion", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class a {
-    public static final void a(Fragment fragment, String msg) {
-        Intrinsics.checkNotNullParameter(fragment, "<this>");
-        Intrinsics.checkNotNullParameter(msg, "msg");
-        Toast.makeText(fragment.requireContext(), msg, 0).show();
+public enum CharDirectionality {
+    UNDEFINED(-1),
+    LEFT_TO_RIGHT(0),
+    RIGHT_TO_LEFT(1),
+    RIGHT_TO_LEFT_ARABIC(2),
+    EUROPEAN_NUMBER(3),
+    EUROPEAN_NUMBER_SEPARATOR(4),
+    EUROPEAN_NUMBER_TERMINATOR(5),
+    ARABIC_NUMBER(6),
+    COMMON_NUMBER_SEPARATOR(7),
+    NONSPACING_MARK(8),
+    BOUNDARY_NEUTRAL(9),
+    PARAGRAPH_SEPARATOR(10),
+    SEGMENT_SEPARATOR(11),
+    WHITESPACE(12),
+    OTHER_NEUTRALS(13),
+    LEFT_TO_RIGHT_EMBEDDING(14),
+    LEFT_TO_RIGHT_OVERRIDE(15),
+    RIGHT_TO_LEFT_EMBEDDING(16),
+    RIGHT_TO_LEFT_OVERRIDE(17),
+    POP_DIRECTIONAL_FORMAT(18);
+    
+    private final int value;
+    public static final Companion Companion = new Companion(null);
+    private static final Lazy directionalityMap$delegate = LazyKt.lazy(CharDirectionality$Companion$directionalityMap$2.INSTANCE);
+
+    CharDirectionality(int i2) {
+        this.value = i2;
     }
 
-    public static final void a(Fragment fragment, String title, String msg, final Function0<Unit> onPositiveClicked) {
-        Intrinsics.checkNotNullParameter(fragment, "<this>");
-        Intrinsics.checkNotNullParameter(title, "title");
-        Intrinsics.checkNotNullParameter(msg, "msg");
-        Intrinsics.checkNotNullParameter(onPositiveClicked, "onPositiveClicked");
-        new AlertDialog.Builder(fragment.requireContext()).setTitle(title).setMessage(msg).setPositiveButton(R.string.payment_sdk_yes, new DialogInterface.OnClickListener() { // from class: z.-$$Lambda$a$77XVLEs-wdQkOssvA3BX8iL5M_I
-            @Override // android.content.DialogInterface.OnClickListener
-            public final void onClick(DialogInterface dialogInterface, int i2) {
-                a.m1453lambda$77XVLEswdQkOssvA3BX8iL5M_I(Function0.this, dialogInterface, i2);
+    public final int getValue() {
+        return this.value;
+    }
+
+    /* compiled from: CharDirectionality.kt */
+    @Metadata(d1 = {"\u0000\u001c\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010$\n\u0002\u0010\b\n\u0002\u0018\u0002\n\u0002\b\u0007\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J\u000e\u0010\u000b\u001a\u00020\u00062\u0006\u0010\f\u001a\u00020\u0005R'\u0010\u0003\u001a\u000e\u0012\u0004\u0012\u00020\u0005\u0012\u0004\u0012\u00020\u00060\u00048BX\u0082\u0084\u0002¢\u0006\f\n\u0004\b\t\u0010\n\u001a\u0004\b\u0007\u0010\b¨\u0006\r"}, d2 = {"Lkotlin/text/CharDirectionality$Companion;", "", "()V", "directionalityMap", "", "", "Lkotlin/text/CharDirectionality;", "getDirectionalityMap", "()Ljava/util/Map;", "directionalityMap$delegate", "Lkotlin/Lazy;", "valueOf", "directionality", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+    /* loaded from: classes.dex */
+    public static final class Companion {
+        private final Map<Integer, CharDirectionality> getDirectionalityMap() {
+            Lazy lazy = CharDirectionality.directionalityMap$delegate;
+            Companion companion = CharDirectionality.Companion;
+            return (Map) lazy.getValue();
+        }
+
+        private Companion() {
+        }
+
+        public /* synthetic */ Companion(DefaultConstructorMarker defaultConstructorMarker) {
+            this();
+        }
+
+        public final CharDirectionality valueOf(int i2) {
+            CharDirectionality charDirectionality = getDirectionalityMap().get(Integer.valueOf(i2));
+            if (charDirectionality != null) {
+                return charDirectionality;
             }
-        }).setNegativeButton(R.string.payment_sdk_no, (DialogInterface.OnClickListener) null).show();
-    }
-
-    public static final void a(Fragment fragment, String reqKey, final Function1<? super Bundle, Unit> callback) {
-        Intrinsics.checkNotNullParameter(fragment, "<this>");
-        Intrinsics.checkNotNullParameter(reqKey, "reqKey");
-        Intrinsics.checkNotNullParameter(callback, "callback");
-        fragment.getChildFragmentManager().setFragmentResultListener(reqKey, fragment.getViewLifecycleOwner(), new FragmentResultListener() { // from class: z.-$$Lambda$a$65hecHwr_rseiGAtVkt3-5x1poI
-            @Override // androidx.fragment.app.FragmentResultListener
-            public final void onFragmentResult(String str, Bundle bundle) {
-                a.m1452lambda$65hecHwr_rseiGAtVkt35x1poI(Function1.this, str, bundle);
-            }
-        });
-    }
-
-    public static final void a(Function0 onPositiveClicked, DialogInterface dialogInterface, int i2) {
-        Intrinsics.checkNotNullParameter(onPositiveClicked, "$onPositiveClicked");
-        onPositiveClicked.invoke();
-    }
-
-    public static final void a(Function1 callback, String str, Bundle b2) {
-        Intrinsics.checkNotNullParameter(callback, "$callback");
-        Intrinsics.checkNotNullParameter(str, "<anonymous parameter 0>");
-        Intrinsics.checkNotNullParameter(b2, "b");
-        callback.invoke(b2);
-    }
-
-    /* renamed from: lambda$65hecHwr_rseiGAtVkt3-5x1poI */
-    public static /* synthetic */ void m1452lambda$65hecHwr_rseiGAtVkt35x1poI(Function1 function1, String str, Bundle bundle) {
-        a(function1, str, bundle);
-    }
-
-    /* renamed from: lambda$77XVLEs-wdQkOssvA3BX8iL5M_I */
-    public static /* synthetic */ void m1453lambda$77XVLEswdQkOssvA3BX8iL5M_I(Function0 function0, DialogInterface dialogInterface, int i2) {
-        a(function0, dialogInterface, i2);
+            throw new IllegalArgumentException("Directionality #" + i2 + " is not defined.");
+        }
     }
 }

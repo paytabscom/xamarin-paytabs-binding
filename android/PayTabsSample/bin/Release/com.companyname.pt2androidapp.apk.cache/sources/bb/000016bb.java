@@ -1,46 +1,54 @@
-package mono.android.view;
+package kotlin.jvm.internal;
 
-import android.view.View;
 import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 
 /* loaded from: classes.dex */
-public class View_OnClickListenerImplementor implements IGCUserPeer, View.OnClickListener {
-    public static final String __md_methods = "n_onClick:(Landroid/view/View;)V:GetOnClick_Landroid_view_View_Handler:Android.Views.View/IOnClickListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public class SpreadBuilder {
+    private final ArrayList<Object> list;
 
-    private native void n_onClick(View view);
-
-    static {
-        Runtime.register("Android.Views.View+IOnClickListenerImplementor, Mono.Android", View_OnClickListenerImplementor.class, "n_onClick:(Landroid/view/View;)V:GetOnClick_Landroid_view_View_Handler:Android.Views.View/IOnClickListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n");
+    public SpreadBuilder(int i2) {
+        this.list = new ArrayList<>(i2);
     }
 
-    public View_OnClickListenerImplementor() {
-        if (getClass() == View_OnClickListenerImplementor.class) {
-            TypeManager.Activate("Android.Views.View+IOnClickListenerImplementor, Mono.Android", "", this, new Object[0]);
+    public void addSpread(Object obj) {
+        if (obj == null) {
+            return;
+        }
+        if (obj instanceof Object[]) {
+            Object[] objArr = (Object[]) obj;
+            if (objArr.length > 0) {
+                ArrayList<Object> arrayList = this.list;
+                arrayList.ensureCapacity(arrayList.size() + objArr.length);
+                Collections.addAll(this.list, objArr);
+            }
+        } else if (obj instanceof Collection) {
+            this.list.addAll((Collection) obj);
+        } else if (obj instanceof Iterable) {
+            for (Object obj2 : (Iterable) obj) {
+                this.list.add(obj2);
+            }
+        } else if (obj instanceof Iterator) {
+            Iterator it = (Iterator) obj;
+            while (it.hasNext()) {
+                this.list.add(it.next());
+            }
+        } else {
+            throw new UnsupportedOperationException("Don't know how to spread " + obj.getClass());
         }
     }
 
-    @Override // android.view.View.OnClickListener
-    public void onClick(View view) {
-        n_onClick(view);
+    public int size() {
+        return this.list.size();
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
+    public void add(Object obj) {
+        this.list.add(obj);
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public Object[] toArray(Object[] objArr) {
+        return this.list.toArray(objArr);
     }
 }

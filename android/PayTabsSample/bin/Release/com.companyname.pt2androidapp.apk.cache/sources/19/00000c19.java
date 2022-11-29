@@ -1,41 +1,10 @@
-package com.google.android.material.resources;
+package com.google.android.material.animation;
 
-import android.graphics.Typeface;
+import android.view.View;
 
 /* loaded from: classes.dex */
-public final class CancelableFontCallback extends TextAppearanceFontCallback {
-    private final ApplyFont applyFont;
-    private boolean cancelled;
-    private final Typeface fallbackFont;
+public interface TransformationCallback<T extends View> {
+    void onScaleChanged(T t2);
 
-    /* loaded from: classes.dex */
-    public interface ApplyFont {
-        void apply(Typeface typeface);
-    }
-
-    public CancelableFontCallback(ApplyFont applyFont, Typeface typeface) {
-        this.fallbackFont = typeface;
-        this.applyFont = applyFont;
-    }
-
-    @Override // com.google.android.material.resources.TextAppearanceFontCallback
-    public void onFontRetrieved(Typeface typeface, boolean z2) {
-        updateIfNotCancelled(typeface);
-    }
-
-    @Override // com.google.android.material.resources.TextAppearanceFontCallback
-    public void onFontRetrievalFailed(int i2) {
-        updateIfNotCancelled(this.fallbackFont);
-    }
-
-    public void cancel() {
-        this.cancelled = true;
-    }
-
-    private void updateIfNotCancelled(Typeface typeface) {
-        if (this.cancelled) {
-            return;
-        }
-        this.applyFont.apply(typeface);
-    }
+    void onTranslationChanged(T t2);
 }

@@ -1,67 +1,25 @@
-package com.google.android.material.datepicker;
+package androidx.vectordrawable.graphics.drawable;
 
-import android.os.Build;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
-import com.google.android.material.R;
-import java.util.Calendar;
-import java.util.Locale;
+import android.animation.TypeEvaluator;
 
 /* loaded from: classes.dex */
-class DaysOfWeekAdapter extends BaseAdapter {
-    private static final int CALENDAR_DAY_STYLE;
-    private static final int NARROW_FORMAT = 4;
-    private final Calendar calendar;
-    private final int daysInWeek;
-    private final int firstDayOfWeek;
+public class ArgbEvaluator implements TypeEvaluator {
+    private static final ArgbEvaluator sInstance = new ArgbEvaluator();
 
-    @Override // android.widget.Adapter
-    public long getItemId(int i2) {
-        return 0L;
+    public static ArgbEvaluator getInstance() {
+        return sInstance;
     }
 
-    static {
-        CALENDAR_DAY_STYLE = Build.VERSION.SDK_INT >= 26 ? 4 : 1;
-    }
-
-    public DaysOfWeekAdapter() {
-        Calendar utcCalendar = UtcDates.getUtcCalendar();
-        this.calendar = utcCalendar;
-        this.daysInWeek = utcCalendar.getMaximum(7);
-        this.firstDayOfWeek = utcCalendar.getFirstDayOfWeek();
-    }
-
-    @Override // android.widget.Adapter
-    public Integer getItem(int i2) {
-        if (i2 >= this.daysInWeek) {
-            return null;
-        }
-        return Integer.valueOf(positionToDayOfWeek(i2));
-    }
-
-    @Override // android.widget.Adapter
-    public int getCount() {
-        return this.daysInWeek;
-    }
-
-    @Override // android.widget.Adapter
-    public View getView(int i2, View view, ViewGroup viewGroup) {
-        TextView textView = (TextView) view;
-        if (view == null) {
-            textView = (TextView) LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.mtrl_calendar_day_of_week, viewGroup, false);
-        }
-        this.calendar.set(7, positionToDayOfWeek(i2));
-        textView.setText(this.calendar.getDisplayName(7, CALENDAR_DAY_STYLE, textView.getResources().getConfiguration().locale));
-        textView.setContentDescription(String.format(viewGroup.getContext().getString(R.string.mtrl_picker_day_of_week_column_header), this.calendar.getDisplayName(7, 2, Locale.getDefault())));
-        return textView;
-    }
-
-    private int positionToDayOfWeek(int i2) {
-        int i3 = i2 + this.firstDayOfWeek;
-        int i4 = this.daysInWeek;
-        return i3 > i4 ? i3 - i4 : i3;
+    @Override // android.animation.TypeEvaluator
+    public Object evaluate(float f2, Object obj, Object obj2) {
+        int intValue = ((Integer) obj).intValue();
+        float f3 = ((intValue >> 24) & 255) / 255.0f;
+        int intValue2 = ((Integer) obj2).intValue();
+        float pow = (float) Math.pow(((intValue >> 16) & 255) / 255.0f, 2.2d);
+        float pow2 = (float) Math.pow(((intValue >> 8) & 255) / 255.0f, 2.2d);
+        float pow3 = (float) Math.pow((intValue & 255) / 255.0f, 2.2d);
+        float pow4 = (float) Math.pow(((intValue2 >> 16) & 255) / 255.0f, 2.2d);
+        float pow5 = pow3 + (f2 * (((float) Math.pow((intValue2 & 255) / 255.0f, 2.2d)) - pow3));
+        return Integer.valueOf((Math.round(((float) Math.pow(pow + ((pow4 - pow) * f2), 0.45454545454545453d)) * 255.0f) << 16) | (Math.round((f3 + (((((intValue2 >> 24) & 255) / 255.0f) - f3) * f2)) * 255.0f) << 24) | (Math.round(((float) Math.pow(pow2 + ((((float) Math.pow(((intValue2 >> 8) & 255) / 255.0f, 2.2d)) - pow2) * f2), 0.45454545454545453d)) * 255.0f) << 8) | Math.round(((float) Math.pow(pow5, 0.45454545454545453d)) * 255.0f));
     }
 }

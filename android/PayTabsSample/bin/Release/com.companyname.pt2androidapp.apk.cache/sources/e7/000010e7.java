@@ -1,91 +1,25 @@
-package kotlin.jvm.internal;
+package com.google.crypto.tink.proto;
 
-import java.util.List;
-import kotlin.reflect.KClass;
-import kotlin.reflect.KClassifier;
-import kotlin.reflect.KDeclarationContainer;
-import kotlin.reflect.KFunction;
-import kotlin.reflect.KMutableProperty0;
-import kotlin.reflect.KMutableProperty1;
-import kotlin.reflect.KMutableProperty2;
-import kotlin.reflect.KProperty0;
-import kotlin.reflect.KProperty1;
-import kotlin.reflect.KProperty2;
-import kotlin.reflect.KType;
-import kotlin.reflect.KTypeParameter;
-import kotlin.reflect.KTypeProjection;
-import kotlin.reflect.KVariance;
+import com.google.crypto.tink.shaded.protobuf.ByteString;
+import com.google.crypto.tink.shaded.protobuf.MessageLiteOrBuilder;
 
 /* loaded from: classes.dex */
-public class ReflectionFactory {
-    private static final String KOTLIN_JVM_FUNCTIONS = "kotlin.jvm.functions.";
+public interface RsaSsaPkcs1PrivateKeyOrBuilder extends MessageLiteOrBuilder {
+    ByteString getCrt();
 
-    public KFunction function(FunctionReference functionReference) {
-        return functionReference;
-    }
+    ByteString getD();
 
-    public KMutableProperty0 mutableProperty0(MutablePropertyReference0 mutablePropertyReference0) {
-        return mutablePropertyReference0;
-    }
+    ByteString getDp();
 
-    public KMutableProperty1 mutableProperty1(MutablePropertyReference1 mutablePropertyReference1) {
-        return mutablePropertyReference1;
-    }
+    ByteString getDq();
 
-    public KMutableProperty2 mutableProperty2(MutablePropertyReference2 mutablePropertyReference2) {
-        return mutablePropertyReference2;
-    }
+    ByteString getP();
 
-    public KProperty0 property0(PropertyReference0 propertyReference0) {
-        return propertyReference0;
-    }
+    RsaSsaPkcs1PublicKey getPublicKey();
 
-    public KProperty1 property1(PropertyReference1 propertyReference1) {
-        return propertyReference1;
-    }
+    ByteString getQ();
 
-    public KProperty2 property2(PropertyReference2 propertyReference2) {
-        return propertyReference2;
-    }
+    int getVersion();
 
-    public KClass createKotlinClass(Class cls) {
-        return new ClassReference(cls);
-    }
-
-    public KClass createKotlinClass(Class cls, String str) {
-        return new ClassReference(cls);
-    }
-
-    public KDeclarationContainer getOrCreateKotlinPackage(Class cls, String str) {
-        return new PackageReference(cls, str);
-    }
-
-    public KClass getOrCreateKotlinClass(Class cls) {
-        return new ClassReference(cls);
-    }
-
-    public KClass getOrCreateKotlinClass(Class cls, String str) {
-        return new ClassReference(cls);
-    }
-
-    public String renderLambdaToString(Lambda lambda) {
-        return renderLambdaToString((FunctionBase) lambda);
-    }
-
-    public String renderLambdaToString(FunctionBase functionBase) {
-        String obj = functionBase.getClass().getGenericInterfaces()[0].toString();
-        return obj.startsWith(KOTLIN_JVM_FUNCTIONS) ? obj.substring(21) : obj;
-    }
-
-    public KType typeOf(KClassifier kClassifier, List<KTypeProjection> list, boolean z2) {
-        return new TypeReference(kClassifier, list, z2);
-    }
-
-    public KTypeParameter typeParameter(Object obj, String str, KVariance kVariance, boolean z2) {
-        return new TypeParameterReference(obj, str, kVariance, z2);
-    }
-
-    public void setUpperBounds(KTypeParameter kTypeParameter, List<KType> list) {
-        ((TypeParameterReference) kTypeParameter).setUpperBounds(list);
-    }
+    boolean hasPublicKey();
 }

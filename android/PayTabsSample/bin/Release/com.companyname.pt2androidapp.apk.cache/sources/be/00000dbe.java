@@ -1,62 +1,33 @@
-package com.payment.paymentsdk.creditcard.view.cardform.view;
+package com.google.android.material.shape;
 
-import android.content.Context;
-import android.text.InputFilter;
-import android.util.AttributeSet;
-import com.payment.paymentsdk.R;
-import i.b;
+import android.graphics.RectF;
+import java.util.Arrays;
 
 /* loaded from: classes.dex */
-public class CardholderNameEditText extends l.a {
+public final class RelativeCornerSize implements CornerSize {
+    private final float percent;
 
-    /* renamed from: d  reason: collision with root package name */
-    int f137d;
-
-    public CardholderNameEditText(Context context) {
-        super(context);
-        this.f137d = R.string.payment_sdk_card_error_invalid_name_on_card;
-        b();
+    public RelativeCornerSize(float f2) {
+        this.percent = f2;
     }
 
-    public CardholderNameEditText(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        this.f137d = R.string.payment_sdk_card_error_invalid_name_on_card;
-        b();
+    public float getRelativePercent() {
+        return this.percent;
     }
 
-    public CardholderNameEditText(Context context, AttributeSet attributeSet, int i2) {
-        super(context, attributeSet, i2);
-        this.f137d = R.string.payment_sdk_card_error_invalid_name_on_card;
-        b();
+    @Override // com.google.android.material.shape.CornerSize
+    public float getCornerSize(RectF rectF) {
+        return this.percent * rectF.height();
     }
 
-    private void b() {
-        setInputType(1);
-        setFilters(new InputFilter[]{new InputFilter.LengthFilter(255)});
-    }
-
-    @Override // l.a
-    public boolean d() {
-        int i2;
-        if (c()) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
             return true;
         }
-        boolean z2 = !getText().toString().trim().isEmpty();
-        boolean a2 = b.a(getText().toString());
-        if (z2) {
-            if (!a2) {
-                i2 = R.string.payment_sdk_card_error_invalid_name_on_card;
-            }
-            return !z2 && a2;
-        }
-        i2 = R.string.payment_sdk_card_error_empty_name_on_card;
-        this.f137d = i2;
-        if (z2) {
-        }
+        return (obj instanceof RelativeCornerSize) && this.percent == ((RelativeCornerSize) obj).percent;
     }
 
-    @Override // l.a
-    public String getErrorMessage() {
-        return getContext().getString(this.f137d);
+    public int hashCode() {
+        return Arrays.hashCode(new Object[]{Float.valueOf(this.percent)});
     }
 }

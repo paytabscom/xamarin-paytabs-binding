@@ -1,10 +1,16 @@
-package kotlin.comparisons;
+package com.google.crypto.tink.proto;
 
-import kotlin.Metadata;
+import com.google.crypto.tink.shaded.protobuf.MessageLiteOrBuilder;
 
-@Metadata(d1 = {"kotlin/comparisons/ComparisonsKt__ComparisonsKt", "kotlin/comparisons/ComparisonsKt___ComparisonsJvmKt", "kotlin/comparisons/ComparisonsKt___ComparisonsKt"}, k = 4, mv = {1, 5, 1}, xi = 1)
 /* loaded from: classes.dex */
-public final class ComparisonsKt extends ComparisonsKt___ComparisonsKt {
-    private ComparisonsKt() {
-    }
+public interface AesCtrHmacAeadKeyOrBuilder extends MessageLiteOrBuilder {
+    AesCtrKey getAesCtrKey();
+
+    HmacKey getHmacKey();
+
+    int getVersion();
+
+    boolean hasAesCtrKey();
+
+    boolean hasHmacKey();
 }

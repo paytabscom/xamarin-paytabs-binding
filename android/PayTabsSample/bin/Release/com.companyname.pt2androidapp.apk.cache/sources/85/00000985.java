@@ -1,26 +1,35 @@
-package androidx.transition;
+package androidx.lifecycle;
 
-import androidx.transition.Transition;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /* loaded from: classes.dex */
-public class TransitionListenerAdapter implements Transition.TransitionListener {
-    @Override // androidx.transition.Transition.TransitionListener
-    public void onTransitionCancel(Transition transition) {
+public class ViewModelStore {
+    private final HashMap<String, ViewModel> mMap = new HashMap<>();
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public final void put(String str, ViewModel viewModel) {
+        ViewModel put = this.mMap.put(str, viewModel);
+        if (put != null) {
+            put.onCleared();
+        }
     }
 
-    @Override // androidx.transition.Transition.TransitionListener
-    public void onTransitionEnd(Transition transition) {
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public final ViewModel get(String str) {
+        return this.mMap.get(str);
     }
 
-    @Override // androidx.transition.Transition.TransitionListener
-    public void onTransitionPause(Transition transition) {
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public Set<String> keys() {
+        return new HashSet(this.mMap.keySet());
     }
 
-    @Override // androidx.transition.Transition.TransitionListener
-    public void onTransitionResume(Transition transition) {
-    }
-
-    @Override // androidx.transition.Transition.TransitionListener
-    public void onTransitionStart(Transition transition) {
+    public final void clear() {
+        for (ViewModel viewModel : this.mMap.values()) {
+            viewModel.clear();
+        }
+        this.mMap.clear();
     }
 }

@@ -1,24 +1,14 @@
-package com.google.android.material.transition;
+package com.google.android.material.internal;
 
-import android.graphics.Path;
-import android.graphics.PointF;
-import androidx.transition.PathMotion;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
+@Target({ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
+@Retention(RetentionPolicy.CLASS)
+@Deprecated
 /* loaded from: classes.dex */
-public final class MaterialArcMotion extends PathMotion {
-    @Override // androidx.transition.PathMotion
-    public Path getPath(float f2, float f3, float f4, float f5) {
-        Path path = new Path();
-        path.moveTo(f2, f3);
-        PointF controlPoint = getControlPoint(f2, f3, f4, f5);
-        path.quadTo(controlPoint.x, controlPoint.y, f4, f5);
-        return path;
-    }
-
-    private static PointF getControlPoint(float f2, float f3, float f4, float f5) {
-        if (f3 > f5) {
-            return new PointF(f4, f3);
-        }
-        return new PointF(f2, f5);
-    }
+public @interface Experimental {
+    String value() default "";
 }

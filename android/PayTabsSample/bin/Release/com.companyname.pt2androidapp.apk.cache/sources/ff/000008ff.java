@@ -1,86 +1,31 @@
-package androidx.recyclerview.widget;
+package androidx.interpolator.view.animation;
 
-import android.util.SparseArray;
-import java.lang.reflect.Array;
+import android.view.animation.Interpolator;
 
 /* loaded from: classes.dex */
-class TileList<T> {
-    Tile<T> mLastAccessedTile;
-    final int mTileSize;
-    private final SparseArray<Tile<T>> mTiles = new SparseArray<>(10);
+abstract class LookupTableInterpolator implements Interpolator {
+    private final float mStepSize;
+    private final float[] mValues;
 
-    public TileList(int i2) {
-        this.mTileSize = i2;
+    /* JADX INFO: Access modifiers changed from: protected */
+    public LookupTableInterpolator(float[] fArr) {
+        this.mValues = fArr;
+        this.mStepSize = 1.0f / (fArr.length - 1);
     }
 
-    public T getItemAt(int i2) {
-        Tile<T> tile = this.mLastAccessedTile;
-        if (tile == null || !tile.containsPosition(i2)) {
-            int indexOfKey = this.mTiles.indexOfKey(i2 - (i2 % this.mTileSize));
-            if (indexOfKey < 0) {
-                return null;
-            }
-            this.mLastAccessedTile = this.mTiles.valueAt(indexOfKey);
+    @Override // android.animation.TimeInterpolator
+    public float getInterpolation(float f2) {
+        if (f2 >= 1.0f) {
+            return 1.0f;
         }
-        return this.mLastAccessedTile.getByPosition(i2);
-    }
-
-    public int size() {
-        return this.mTiles.size();
-    }
-
-    public void clear() {
-        this.mTiles.clear();
-    }
-
-    public Tile<T> getAtIndex(int i2) {
-        if (i2 < 0 || i2 >= this.mTiles.size()) {
-            return null;
+        if (f2 <= 0.0f) {
+            return 0.0f;
         }
-        return this.mTiles.valueAt(i2);
-    }
-
-    public Tile<T> addOrReplace(Tile<T> tile) {
-        int indexOfKey = this.mTiles.indexOfKey(tile.mStartPosition);
-        if (indexOfKey < 0) {
-            this.mTiles.put(tile.mStartPosition, tile);
-            return null;
-        }
-        Tile<T> valueAt = this.mTiles.valueAt(indexOfKey);
-        this.mTiles.setValueAt(indexOfKey, tile);
-        if (this.mLastAccessedTile == valueAt) {
-            this.mLastAccessedTile = tile;
-        }
-        return valueAt;
-    }
-
-    public Tile<T> removeAtPos(int i2) {
-        Tile<T> tile = this.mTiles.get(i2);
-        if (this.mLastAccessedTile == tile) {
-            this.mLastAccessedTile = null;
-        }
-        this.mTiles.delete(i2);
-        return tile;
-    }
-
-    /* loaded from: classes.dex */
-    public static class Tile<T> {
-        public int mItemCount;
-        public final T[] mItems;
-        Tile<T> mNext;
-        public int mStartPosition;
-
-        public Tile(Class<T> cls, int i2) {
-            this.mItems = (T[]) ((Object[]) Array.newInstance((Class<?>) cls, i2));
-        }
-
-        boolean containsPosition(int i2) {
-            int i3 = this.mStartPosition;
-            return i3 <= i2 && i2 < i3 + this.mItemCount;
-        }
-
-        T getByPosition(int i2) {
-            return this.mItems[i2 - this.mStartPosition];
-        }
+        float[] fArr = this.mValues;
+        int min = Math.min((int) ((fArr.length - 1) * f2), fArr.length - 2);
+        float f3 = this.mStepSize;
+        float f4 = (f2 - (min * f3)) / f3;
+        float[] fArr2 = this.mValues;
+        return fArr2[min] + (f4 * (fArr2[min + 1] - fArr2[min]));
     }
 }

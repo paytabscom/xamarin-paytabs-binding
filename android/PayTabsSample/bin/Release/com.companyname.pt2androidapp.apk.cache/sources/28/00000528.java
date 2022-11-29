@@ -1,48 +1,108 @@
-package androidx.core.net;
+package androidx.core.content.res;
 
-import android.net.Uri;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.content.res.XmlResourceParser;
+import android.graphics.Shader;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.util.Xml;
+import java.io.IOException;
+import org.xmlpull.v1.XmlPullParserException;
 
 /* loaded from: classes.dex */
-public final class UriCompat {
-    private UriCompat() {
+public final class ComplexColorCompat {
+    private static final String LOG_TAG = "ComplexColorCompat";
+    private int mColor;
+    private final ColorStateList mColorStateList;
+    private final Shader mShader;
+
+    private ComplexColorCompat(Shader shader, ColorStateList colorStateList, int i2) {
+        this.mShader = shader;
+        this.mColorStateList = colorStateList;
+        this.mColor = i2;
     }
 
-    public static String toSafeString(Uri uri) {
-        String scheme = uri.getScheme();
-        String schemeSpecificPart = uri.getSchemeSpecificPart();
-        if (scheme != null) {
-            if (scheme.equalsIgnoreCase("tel") || scheme.equalsIgnoreCase("sip") || scheme.equalsIgnoreCase("sms") || scheme.equalsIgnoreCase("smsto") || scheme.equalsIgnoreCase("mailto") || scheme.equalsIgnoreCase("nfc")) {
-                StringBuilder sb = new StringBuilder(64);
-                sb.append(scheme);
-                sb.append(':');
-                if (schemeSpecificPart != null) {
-                    for (int i2 = 0; i2 < schemeSpecificPart.length(); i2++) {
-                        char charAt = schemeSpecificPart.charAt(i2);
-                        if (charAt == '-' || charAt == '@' || charAt == '.') {
-                            sb.append(charAt);
-                        } else {
-                            sb.append('x');
-                        }
-                    }
-                }
-                return sb.toString();
-            } else if (scheme.equalsIgnoreCase("http") || scheme.equalsIgnoreCase("https") || scheme.equalsIgnoreCase("ftp") || scheme.equalsIgnoreCase("rtsp")) {
-                StringBuilder sb2 = new StringBuilder();
-                sb2.append("//");
-                sb2.append(uri.getHost() != null ? uri.getHost() : "");
-                sb2.append(uri.getPort() != -1 ? ":" + uri.getPort() : "");
-                sb2.append("/...");
-                schemeSpecificPart = sb2.toString();
+    static ComplexColorCompat from(Shader shader) {
+        return new ComplexColorCompat(shader, null, 0);
+    }
+
+    static ComplexColorCompat from(ColorStateList colorStateList) {
+        return new ComplexColorCompat(null, colorStateList, colorStateList.getDefaultColor());
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static ComplexColorCompat from(int i2) {
+        return new ComplexColorCompat(null, null, i2);
+    }
+
+    public Shader getShader() {
+        return this.mShader;
+    }
+
+    public int getColor() {
+        return this.mColor;
+    }
+
+    public void setColor(int i2) {
+        this.mColor = i2;
+    }
+
+    public boolean isGradient() {
+        return this.mShader != null;
+    }
+
+    public boolean isStateful() {
+        ColorStateList colorStateList;
+        return this.mShader == null && (colorStateList = this.mColorStateList) != null && colorStateList.isStateful();
+    }
+
+    public boolean onStateChanged(int[] iArr) {
+        if (isStateful()) {
+            ColorStateList colorStateList = this.mColorStateList;
+            int colorForState = colorStateList.getColorForState(iArr, colorStateList.getDefaultColor());
+            if (colorForState != this.mColor) {
+                this.mColor = colorForState;
+                return true;
             }
         }
-        StringBuilder sb3 = new StringBuilder(64);
-        if (scheme != null) {
-            sb3.append(scheme);
-            sb3.append(':');
+        return false;
+    }
+
+    public boolean willDraw() {
+        return isGradient() || this.mColor != 0;
+    }
+
+    public static ComplexColorCompat inflate(Resources resources, int i2, Resources.Theme theme) {
+        try {
+            return createFromXml(resources, i2, theme);
+        } catch (Exception e2) {
+            Log.e(LOG_TAG, "Failed to inflate ComplexColor.", e2);
+            return null;
         }
-        if (schemeSpecificPart != null) {
-            sb3.append(schemeSpecificPart);
+    }
+
+    private static ComplexColorCompat createFromXml(Resources resources, int i2, Resources.Theme theme) throws IOException, XmlPullParserException {
+        int next;
+        XmlResourceParser xml = resources.getXml(i2);
+        AttributeSet asAttributeSet = Xml.asAttributeSet(xml);
+        do {
+            next = xml.next();
+            if (next == 2) {
+                break;
+            }
+        } while (next != 1);
+        if (next != 2) {
+            throw new XmlPullParserException("No start tag found");
         }
-        return sb3.toString();
+        String name = xml.getName();
+        name.hashCode();
+        if (name.equals("gradient")) {
+            return from(GradientColorInflaterCompat.createFromXmlInner(resources, xml, asAttributeSet, theme));
+        }
+        if (name.equals("selector")) {
+            return from(ColorStateListInflaterCompat.createFromXmlInner(resources, xml, asAttributeSet, theme));
+        }
+        throw new XmlPullParserException(xml.getPositionDescription() + ": unsupported complex color tag " + name);
     }
 }

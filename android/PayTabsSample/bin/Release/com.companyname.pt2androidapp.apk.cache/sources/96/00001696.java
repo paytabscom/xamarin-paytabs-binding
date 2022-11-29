@@ -1,46 +1,26 @@
-package mono.android.preference;
+package kotlin.jvm.internal;
 
-import android.preference.Preference;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.io.Serializable;
+import kotlin.Metadata;
 
+/* compiled from: Lambda.kt */
+@Metadata(d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0004\n\u0002\u0010\u000e\n\u0000\b&\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u00012\b\u0012\u0004\u0012\u0002H\u00010\u00022\u00020\u0003B\r\u0012\u0006\u0010\u0004\u001a\u00020\u0005¢\u0006\u0002\u0010\u0006J\b\u0010\t\u001a\u00020\nH\u0016R\u0014\u0010\u0004\u001a\u00020\u0005X\u0096\u0004¢\u0006\b\n\u0000\u001a\u0004\b\u0007\u0010\b¨\u0006\u000b"}, d2 = {"Lkotlin/jvm/internal/Lambda;", "R", "Lkotlin/jvm/internal/FunctionBase;", "Ljava/io/Serializable;", "arity", "", "(I)V", "getArity", "()I", "toString", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class Preference_OnPreferenceChangeListenerImplementor implements IGCUserPeer, Preference.OnPreferenceChangeListener {
-    public static final String __md_methods = "n_onPreferenceChange:(Landroid/preference/Preference;Ljava/lang/Object;)Z:GetOnPreferenceChange_Landroid_preference_Preference_Ljava_lang_Object_Handler:Android.Preferences.Preference/IOnPreferenceChangeListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public abstract class Lambda<R> implements FunctionBase<R>, Serializable {
+    private final int arity;
 
-    private native boolean n_onPreferenceChange(Preference preference, Object obj);
-
-    static {
-        Runtime.register("Android.Preferences.Preference+IOnPreferenceChangeListenerImplementor, Mono.Android", Preference_OnPreferenceChangeListenerImplementor.class, __md_methods);
+    public Lambda(int i2) {
+        this.arity = i2;
     }
 
-    public Preference_OnPreferenceChangeListenerImplementor() {
-        if (getClass() == Preference_OnPreferenceChangeListenerImplementor.class) {
-            TypeManager.Activate("Android.Preferences.Preference+IOnPreferenceChangeListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    @Override // kotlin.jvm.internal.FunctionBase
+    public int getArity() {
+        return this.arity;
     }
 
-    @Override // android.preference.Preference.OnPreferenceChangeListener
-    public boolean onPreferenceChange(Preference preference, Object obj) {
-        return n_onPreferenceChange(preference, obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public String toString() {
+        String renderLambdaToString = Reflection.renderLambdaToString((Lambda) this);
+        Intrinsics.checkNotNullExpressionValue(renderLambdaToString, "Reflection.renderLambdaToString(this)");
+        return renderLambdaToString;
     }
 }

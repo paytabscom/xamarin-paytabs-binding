@@ -1,47 +1,44 @@
-package mono.android.sax;
+package kotlin.jvm.internal;
 
-import android.sax.StartElementListener;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
-import org.xml.sax.Attributes;
+import kotlin.reflect.KCallable;
+import kotlin.reflect.KMutableProperty0;
+import kotlin.reflect.KProperty0;
 
 /* loaded from: classes.dex */
-public class StartElementListenerImplementor implements IGCUserPeer, StartElementListener {
-    public static final String __md_methods = "n_start:(Lorg/xml/sax/Attributes;)V:GetStart_Lorg_xml_sax_Attributes_Handler:Android.Sax.IStartElementListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_start(Attributes attributes);
-
-    static {
-        Runtime.register("Android.Sax.IStartElementListenerImplementor, Mono.Android", StartElementListenerImplementor.class, __md_methods);
+public abstract class MutablePropertyReference0 extends MutablePropertyReference implements KMutableProperty0 {
+    public MutablePropertyReference0() {
     }
 
-    public StartElementListenerImplementor() {
-        if (getClass() == StartElementListenerImplementor.class) {
-            TypeManager.Activate("Android.Sax.IStartElementListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    public MutablePropertyReference0(Object obj) {
+        super(obj);
     }
 
-    @Override // android.sax.StartElementListener
-    public void start(Attributes attributes) {
-        n_start(attributes);
+    public MutablePropertyReference0(Object obj, Class cls, String str, String str2, int i2) {
+        super(obj, cls, str, str2, i2);
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
+    @Override // kotlin.jvm.internal.CallableReference
+    protected KCallable computeReflected() {
+        return Reflection.mutableProperty0(this);
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    @Override // kotlin.jvm.functions.Function0
+    public Object invoke() {
+        return get();
+    }
+
+    @Override // kotlin.reflect.KProperty, kotlin.reflect.KProperty0
+    public KProperty0.Getter getGetter() {
+        return ((KMutableProperty0) getReflected()).getGetter();
+    }
+
+    @Override // kotlin.reflect.KMutableProperty, kotlin.reflect.KMutableProperty0
+    public KMutableProperty0.Setter getSetter() {
+        return ((KMutableProperty0) getReflected()).getSetter();
+    }
+
+    @Override // kotlin.reflect.KProperty0
+    public Object getDelegate() {
+        return ((KMutableProperty0) getReflected()).getDelegate();
     }
 }

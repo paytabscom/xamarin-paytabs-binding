@@ -1,29 +1,29 @@
-package com.google.android.material.animation;
+package androidx.savedstate;
 
-import android.animation.TimeInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
-import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
-import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
+import android.view.View;
+import android.view.ViewParent;
+import kotlin.Metadata;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.internal.Lambda;
 
+/* compiled from: ViewTreeSavedStateRegistryOwner.kt */
+@Metadata(d1 = {"\u0000\n\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\u0010\u0000\u001a\u0004\u0018\u00010\u00012\u0006\u0010\u0002\u001a\u00020\u0001H\n¢\u0006\u0002\b\u0003"}, d2 = {"<anonymous>", "Landroid/view/View;", "view", "invoke"}, k = 3, mv = {1, 6, 0}, xi = 48)
 /* loaded from: classes.dex */
-public class AnimationUtils {
-    public static final TimeInterpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
-    public static final TimeInterpolator FAST_OUT_SLOW_IN_INTERPOLATOR = new FastOutSlowInInterpolator();
-    public static final TimeInterpolator FAST_OUT_LINEAR_IN_INTERPOLATOR = new FastOutLinearInInterpolator();
-    public static final TimeInterpolator LINEAR_OUT_SLOW_IN_INTERPOLATOR = new LinearOutSlowInInterpolator();
-    public static final TimeInterpolator DECELERATE_INTERPOLATOR = new DecelerateInterpolator();
+final class ViewTreeSavedStateRegistryOwner$findViewTreeSavedStateRegistryOwner$1 extends Lambda implements Function1<View, View> {
+    public static final ViewTreeSavedStateRegistryOwner$findViewTreeSavedStateRegistryOwner$1 INSTANCE = new ViewTreeSavedStateRegistryOwner$findViewTreeSavedStateRegistryOwner$1();
 
-    public static float lerp(float f2, float f3, float f4) {
-        return f2 + (f4 * (f3 - f2));
+    ViewTreeSavedStateRegistryOwner$findViewTreeSavedStateRegistryOwner$1() {
+        super(1);
     }
 
-    public static int lerp(int i2, int i3, float f2) {
-        return i2 + Math.round(f2 * (i3 - i2));
-    }
-
-    public static float lerp(float f2, float f3, float f4, float f5, float f6) {
-        return f6 < f4 ? f2 : f6 > f5 ? f3 : lerp(f2, f3, (f6 - f4) / (f5 - f4));
+    @Override // kotlin.jvm.functions.Function1
+    public final View invoke(View view) {
+        Intrinsics.checkNotNullParameter(view, "view");
+        ViewParent parent = view.getParent();
+        if (parent instanceof View) {
+            return (View) parent;
+        }
+        return null;
     }
 }

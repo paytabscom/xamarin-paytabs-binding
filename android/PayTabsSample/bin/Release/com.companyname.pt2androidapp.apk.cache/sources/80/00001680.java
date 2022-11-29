@@ -1,46 +1,33 @@
-package mono.android.net.wifi.p2p;
+package kotlin.jvm.internal;
 
-import android.net.wifi.p2p.WifiP2pManager;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: PrimitiveSpreadBuilders.kt */
+@Metadata(d1 = {"\u0000$\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0019\n\u0000\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\f\n\u0002\b\u0003\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\r\u0012\u0006\u0010\u0003\u001a\u00020\u0004¢\u0006\u0002\u0010\u0005J\u000e\u0010\u0007\u001a\u00020\b2\u0006\u0010\t\u001a\u00020\nJ\u0006\u0010\u000b\u001a\u00020\u0002J\f\u0010\f\u001a\u00020\u0004*\u00020\u0002H\u0014R\u000e\u0010\u0006\u001a\u00020\u0002X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\r"}, d2 = {"Lkotlin/jvm/internal/CharSpreadBuilder;", "Lkotlin/jvm/internal/PrimitiveSpreadBuilder;", "", "size", "", "(I)V", "values", "add", "", "value", "", "toArray", "getSize", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class WifiP2pManager_DiscoveryStateListenerImplementor implements IGCUserPeer, WifiP2pManager.DiscoveryStateListener {
-    public static final String __md_methods = "n_onDiscoveryStateAvailable:(I)V:GetOnDiscoveryStateAvailable_IHandler:Android.Net.Wifi.P2p.WifiP2pManager/IDiscoveryStateListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public final class CharSpreadBuilder extends PrimitiveSpreadBuilder<char[]> {
+    private final char[] values;
 
-    private native void n_onDiscoveryStateAvailable(int i2);
-
-    static {
-        Runtime.register("Android.Net.Wifi.P2p.WifiP2pManager+IDiscoveryStateListenerImplementor, Mono.Android", WifiP2pManager_DiscoveryStateListenerImplementor.class, __md_methods);
+    public CharSpreadBuilder(int i2) {
+        super(i2);
+        this.values = new char[i2];
     }
 
-    public WifiP2pManager_DiscoveryStateListenerImplementor() {
-        if (getClass() == WifiP2pManager_DiscoveryStateListenerImplementor.class) {
-            TypeManager.Activate("Android.Net.Wifi.P2p.WifiP2pManager+IDiscoveryStateListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // kotlin.jvm.internal.PrimitiveSpreadBuilder
+    public int getSize(char[] getSize) {
+        Intrinsics.checkNotNullParameter(getSize, "$this$getSize");
+        return getSize.length;
     }
 
-    @Override // android.net.wifi.p2p.WifiP2pManager.DiscoveryStateListener
-    public void onDiscoveryStateAvailable(int i2) {
-        n_onDiscoveryStateAvailable(i2);
+    public final void add(char c2) {
+        char[] cArr = this.values;
+        int position = getPosition();
+        setPosition(position + 1);
+        cArr[position] = c2;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public final char[] toArray() {
+        return toArray(this.values, new char[size()]);
     }
 }

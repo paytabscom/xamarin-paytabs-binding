@@ -1,39 +1,139 @@
-package androidx.collection;
+package androidx.browser.trusted.sharing;
 
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.functions.Function4;
-import kotlin.jvm.internal.Intrinsics;
+import android.os.Bundle;
+import android.os.Parcelable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-/* compiled from: LruCache.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000:\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u000b\n\u0002\b\u0003\n\u0002\u0010\u0002\n\u0000\u001aø\u0001\u0010\u0000\u001a\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00030\u0001\"\b\b\u0000\u0010\u0002*\u00020\u0004\"\b\b\u0001\u0010\u0003*\u00020\u00042\u0006\u0010\u0005\u001a\u00020\u000628\b\u0006\u0010\u0007\u001a2\u0012\u0013\u0012\u0011H\u0002¢\u0006\f\b\t\u0012\b\b\n\u0012\u0004\b\b(\u000b\u0012\u0013\u0012\u0011H\u0003¢\u0006\f\b\t\u0012\b\b\n\u0012\u0004\b\b(\f\u0012\u0004\u0012\u00020\u00060\b2%\b\u0006\u0010\r\u001a\u001f\u0012\u0013\u0012\u0011H\u0002¢\u0006\f\b\t\u0012\b\b\n\u0012\u0004\b\b(\u000b\u0012\u0006\u0012\u0004\u0018\u0001H\u00030\u000e2d\b\u0006\u0010\u000f\u001a^\u0012\u0013\u0012\u00110\u0011¢\u0006\f\b\t\u0012\b\b\n\u0012\u0004\b\b(\u0012\u0012\u0013\u0012\u0011H\u0002¢\u0006\f\b\t\u0012\b\b\n\u0012\u0004\b\b(\u000b\u0012\u0013\u0012\u0011H\u0003¢\u0006\f\b\t\u0012\b\b\n\u0012\u0004\b\b(\u0013\u0012\u0015\u0012\u0013\u0018\u0001H\u0003¢\u0006\f\b\t\u0012\b\b\n\u0012\u0004\b\b(\u0014\u0012\u0004\u0012\u00020\u00150\u0010H\u0086\b¨\u0006\u0016"}, d2 = {"lruCache", "Landroidx/collection/LruCache;", "K", "V", "", "maxSize", "", "sizeOf", "Lkotlin/Function2;", "Lkotlin/ParameterName;", "name", "key", "value", "create", "Lkotlin/Function1;", "onEntryRemoved", "Lkotlin/Function4;", "", "evicted", "oldValue", "newValue", "", "collection-ktx"}, k = 2, mv = {1, 1, 13})
 /* loaded from: classes.dex */
-public final class LruCacheKt {
-    public static /* synthetic */ LruCache lruCache$default(int i2, Function2 function2, Function1 function1, Function4 function4, int i3, Object obj) {
-        if ((i3 & 2) != 0) {
-            function2 = LruCacheKt$lruCache$1.INSTANCE;
-        }
-        Function2 sizeOf = function2;
-        if ((i3 & 4) != 0) {
-            function1 = LruCacheKt$lruCache$2.INSTANCE;
-        }
-        Function1 create = function1;
-        if ((i3 & 8) != 0) {
-            function4 = LruCacheKt$lruCache$3.INSTANCE;
-        }
-        Function4 onEntryRemoved = function4;
-        Intrinsics.checkParameterIsNotNull(sizeOf, "sizeOf");
-        Intrinsics.checkParameterIsNotNull(create, "create");
-        Intrinsics.checkParameterIsNotNull(onEntryRemoved, "onEntryRemoved");
-        return new LruCacheKt$lruCache$4(sizeOf, create, onEntryRemoved, i2, i2);
+public final class ShareTarget {
+    public static final String ENCODING_TYPE_MULTIPART = "multipart/form-data";
+    public static final String ENCODING_TYPE_URL_ENCODED = "application/x-www-form-urlencoded";
+    public static final String KEY_ACTION = "androidx.browser.trusted.sharing.KEY_ACTION";
+    public static final String KEY_ENCTYPE = "androidx.browser.trusted.sharing.KEY_ENCTYPE";
+    public static final String KEY_METHOD = "androidx.browser.trusted.sharing.KEY_METHOD";
+    public static final String KEY_PARAMS = "androidx.browser.trusted.sharing.KEY_PARAMS";
+    public static final String METHOD_GET = "GET";
+    public static final String METHOD_POST = "POST";
+    public final String action;
+    public final String encodingType;
+    public final String method;
+    public final Params params;
+
+    @Retention(RetentionPolicy.SOURCE)
+    /* loaded from: classes.dex */
+    public @interface EncodingType {
     }
 
-    public static final <K, V> LruCache<K, V> lruCache(int i2, Function2<? super K, ? super V, Integer> sizeOf, Function1<? super K, ? extends V> create, Function4<? super Boolean, ? super K, ? super V, ? super V, Unit> onEntryRemoved) {
-        Intrinsics.checkParameterIsNotNull(sizeOf, "sizeOf");
-        Intrinsics.checkParameterIsNotNull(create, "create");
-        Intrinsics.checkParameterIsNotNull(onEntryRemoved, "onEntryRemoved");
-        return new LruCacheKt$lruCache$4(sizeOf, create, onEntryRemoved, i2, i2);
+    @Retention(RetentionPolicy.SOURCE)
+    /* loaded from: classes.dex */
+    public @interface RequestMethod {
+    }
+
+    public ShareTarget(String action, String method, String encodingType, Params params) {
+        this.action = action;
+        this.method = method;
+        this.encodingType = encodingType;
+        this.params = params;
+    }
+
+    public Bundle toBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putString(KEY_ACTION, this.action);
+        bundle.putString(KEY_METHOD, this.method);
+        bundle.putString(KEY_ENCTYPE, this.encodingType);
+        bundle.putBundle(KEY_PARAMS, this.params.toBundle());
+        return bundle;
+    }
+
+    public static ShareTarget fromBundle(Bundle bundle) {
+        String string = bundle.getString(KEY_ACTION);
+        String string2 = bundle.getString(KEY_METHOD);
+        String string3 = bundle.getString(KEY_ENCTYPE);
+        Params fromBundle = Params.fromBundle(bundle.getBundle(KEY_PARAMS));
+        if (string == null || fromBundle == null) {
+            return null;
+        }
+        return new ShareTarget(string, string2, string3, fromBundle);
+    }
+
+    /* loaded from: classes.dex */
+    public static class Params {
+        public static final String KEY_FILES = "androidx.browser.trusted.sharing.KEY_FILES";
+        public static final String KEY_TEXT = "androidx.browser.trusted.sharing.KEY_TEXT";
+        public static final String KEY_TITLE = "androidx.browser.trusted.sharing.KEY_TITLE";
+        public final List<FileFormField> files;
+        public final String text;
+        public final String title;
+
+        public Params(String title, String text, List<FileFormField> files) {
+            this.title = title;
+            this.text = text;
+            this.files = files;
+        }
+
+        Bundle toBundle() {
+            Bundle bundle = new Bundle();
+            bundle.putString("androidx.browser.trusted.sharing.KEY_TITLE", this.title);
+            bundle.putString("androidx.browser.trusted.sharing.KEY_TEXT", this.text);
+            if (this.files != null) {
+                ArrayList<? extends Parcelable> arrayList = new ArrayList<>();
+                for (FileFormField fileFormField : this.files) {
+                    arrayList.add(fileFormField.toBundle());
+                }
+                bundle.putParcelableArrayList(KEY_FILES, arrayList);
+            }
+            return bundle;
+        }
+
+        static Params fromBundle(Bundle bundle) {
+            ArrayList arrayList = null;
+            if (bundle == null) {
+                return null;
+            }
+            ArrayList<Bundle> parcelableArrayList = bundle.getParcelableArrayList(KEY_FILES);
+            if (parcelableArrayList != null) {
+                arrayList = new ArrayList();
+                for (Bundle bundle2 : parcelableArrayList) {
+                    arrayList.add(FileFormField.fromBundle(bundle2));
+                }
+            }
+            return new Params(bundle.getString("androidx.browser.trusted.sharing.KEY_TITLE"), bundle.getString("androidx.browser.trusted.sharing.KEY_TEXT"), arrayList);
+        }
+    }
+
+    /* loaded from: classes.dex */
+    public static final class FileFormField {
+        public static final String KEY_ACCEPTED_TYPES = "androidx.browser.trusted.sharing.KEY_ACCEPTED_TYPES";
+        public static final String KEY_NAME = "androidx.browser.trusted.sharing.KEY_FILE_NAME";
+        public final List<String> acceptedTypes;
+        public final String name;
+
+        public FileFormField(String name, List<String> acceptedTypes) {
+            this.name = name;
+            this.acceptedTypes = Collections.unmodifiableList(acceptedTypes);
+        }
+
+        Bundle toBundle() {
+            Bundle bundle = new Bundle();
+            bundle.putString(KEY_NAME, this.name);
+            bundle.putStringArrayList(KEY_ACCEPTED_TYPES, new ArrayList<>(this.acceptedTypes));
+            return bundle;
+        }
+
+        static FileFormField fromBundle(Bundle bundle) {
+            if (bundle == null) {
+                return null;
+            }
+            String string = bundle.getString(KEY_NAME);
+            ArrayList<String> stringArrayList = bundle.getStringArrayList(KEY_ACCEPTED_TYPES);
+            if (string == null || stringArrayList == null) {
+                return null;
+            }
+            return new FileFormField(string, stringArrayList);
+        }
     }
 }

@@ -1,47 +1,35 @@
-package mono.android.net.wifi.p2p;
+package kotlin.jvm.internal;
 
-import android.net.wifi.p2p.WifiP2pDevice;
-import android.net.wifi.p2p.WifiP2pManager;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: PrimitiveCompanionObjects.kt */
+@Metadata(d1 = {"\u0000\u001c\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\f\n\u0002\b\n\n\u0002\u0010\b\n\u0002\b\u0004\bÀ\u0002\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002R\u000e\u0010\u0003\u001a\u00020\u0004X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0004X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u0006\u001a\u00020\u0004X\u0086T¢\u0006\u0002\n\u0000R\u0016\u0010\u0007\u001a\u00020\u00048\u0006X\u0087T¢\u0006\b\n\u0000\u0012\u0004\b\b\u0010\u0002R\u000e\u0010\t\u001a\u00020\u0004X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\n\u001a\u00020\u0004X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u000b\u001a\u00020\u0004X\u0086T¢\u0006\u0002\n\u0000R\u0016\u0010\f\u001a\u00020\u00048\u0006X\u0087T¢\u0006\b\n\u0000\u0012\u0004\b\r\u0010\u0002R\u0016\u0010\u000e\u001a\u00020\u000f8\u0006X\u0087T¢\u0006\b\n\u0000\u0012\u0004\b\u0010\u0010\u0002R\u0016\u0010\u0011\u001a\u00020\u000f8\u0006X\u0087T¢\u0006\b\n\u0000\u0012\u0004\b\u0012\u0010\u0002¨\u0006\u0013"}, d2 = {"Lkotlin/jvm/internal/CharCompanionObject;", "", "()V", "MAX_HIGH_SURROGATE", "", "MAX_LOW_SURROGATE", "MAX_SURROGATE", "MAX_VALUE", "getMAX_VALUE$annotations", "MIN_HIGH_SURROGATE", "MIN_LOW_SURROGATE", "MIN_SURROGATE", "MIN_VALUE", "getMIN_VALUE$annotations", "SIZE_BITS", "", "getSIZE_BITS$annotations", "SIZE_BYTES", "getSIZE_BYTES$annotations", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class WifiP2pManager_DeviceInfoListenerImplementor implements IGCUserPeer, WifiP2pManager.DeviceInfoListener {
-    public static final String __md_methods = "n_onDeviceInfoAvailable:(Landroid/net/wifi/p2p/WifiP2pDevice;)V:GetOnDeviceInfoAvailable_Landroid_net_wifi_p2p_WifiP2pDevice_Handler:Android.Net.Wifi.P2p.WifiP2pManager/IDeviceInfoListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public final class CharCompanionObject {
+    public static final CharCompanionObject INSTANCE = new CharCompanionObject();
+    public static final char MAX_HIGH_SURROGATE = 56319;
+    public static final char MAX_LOW_SURROGATE = 57343;
+    public static final char MAX_SURROGATE = 57343;
+    public static final char MAX_VALUE = 65535;
+    public static final char MIN_HIGH_SURROGATE = 55296;
+    public static final char MIN_LOW_SURROGATE = 56320;
+    public static final char MIN_SURROGATE = 55296;
+    public static final char MIN_VALUE = 0;
+    public static final int SIZE_BITS = 16;
+    public static final int SIZE_BYTES = 2;
 
-    private native void n_onDeviceInfoAvailable(WifiP2pDevice wifiP2pDevice);
-
-    static {
-        Runtime.register("Android.Net.Wifi.P2p.WifiP2pManager+IDeviceInfoListenerImplementor, Mono.Android", WifiP2pManager_DeviceInfoListenerImplementor.class, __md_methods);
+    public static /* synthetic */ void getMAX_VALUE$annotations() {
     }
 
-    public WifiP2pManager_DeviceInfoListenerImplementor() {
-        if (getClass() == WifiP2pManager_DeviceInfoListenerImplementor.class) {
-            TypeManager.Activate("Android.Net.Wifi.P2p.WifiP2pManager+IDeviceInfoListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    public static /* synthetic */ void getMIN_VALUE$annotations() {
     }
 
-    @Override // android.net.wifi.p2p.WifiP2pManager.DeviceInfoListener
-    public void onDeviceInfoAvailable(WifiP2pDevice wifiP2pDevice) {
-        n_onDeviceInfoAvailable(wifiP2pDevice);
+    public static /* synthetic */ void getSIZE_BITS$annotations() {
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
+    public static /* synthetic */ void getSIZE_BYTES$annotations() {
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    private CharCompanionObject() {
     }
 }

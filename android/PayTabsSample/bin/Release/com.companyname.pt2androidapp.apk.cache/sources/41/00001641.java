@@ -1,46 +1,19 @@
-package mono.android.location;
+package kotlin.jvm;
 
-import android.location.GpsStatus;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import kotlin.Deprecated;
+import kotlin.Metadata;
+import kotlin.annotation.AnnotationTarget;
 
+/* compiled from: JvmDefault.kt */
+@Target({ElementType.METHOD})
+@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\b\u0087\u0002\u0018\u00002\u00020\u0001B\u0000ø\u0001\u0000\u0082\u0002\u0007\n\u0005\b\u0091(0\u0001¨\u0006\u0002"}, d2 = {"Lkotlin/jvm/JvmDefault;", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+@Deprecated(message = "Switch to new -Xjvm-default modes: `all` or `all-compatibility`")
+@kotlin.annotation.Target(allowedTargets = {AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY})
+@Retention(RetentionPolicy.RUNTIME)
 /* loaded from: classes.dex */
-public class GpsStatus_NmeaListenerImplementor implements IGCUserPeer, GpsStatus.NmeaListener {
-    public static final String __md_methods = "n_onNmeaReceived:(JLjava/lang/String;)V:GetOnNmeaReceived_JLjava_lang_String_Handler:Android.Locations.GpsStatus/INmeaListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onNmeaReceived(long j2, String str);
-
-    static {
-        Runtime.register("Android.Locations.GpsStatus+INmeaListenerImplementor, Mono.Android", GpsStatus_NmeaListenerImplementor.class, __md_methods);
-    }
-
-    public GpsStatus_NmeaListenerImplementor() {
-        if (getClass() == GpsStatus_NmeaListenerImplementor.class) {
-            TypeManager.Activate("Android.Locations.GpsStatus+INmeaListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.location.GpsStatus.NmeaListener
-    public void onNmeaReceived(long j2, String str) {
-        n_onNmeaReceived(j2, str);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public @interface JvmDefault {
 }

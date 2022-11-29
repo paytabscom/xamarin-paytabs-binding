@@ -1,177 +1,156 @@
 package androidx.appcompat.widget;
 
-import android.graphics.Insets;
+import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.InsetDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ScaleDrawable;
 import android.os.Build;
-import android.util.Log;
-import androidx.appcompat.graphics.drawable.DrawableWrapper;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.graphics.drawable.WrappedDrawable;
-import java.lang.reflect.Field;
+import android.text.Editable;
+import android.util.AttributeSet;
+import android.view.ActionMode;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputConnection;
+import android.view.textclassifier.TextClassifier;
+import android.widget.EditText;
+import androidx.appcompat.R;
+import androidx.core.view.TintableBackgroundView;
+import androidx.core.widget.TextViewCompat;
 
 /* loaded from: classes.dex */
-public class DrawableUtils {
-    private static final int[] CHECKED_STATE_SET = {16842912};
-    private static final int[] EMPTY_STATE_SET = new int[0];
-    public static final Rect INSETS_NONE = new Rect();
-    private static final String TAG = "DrawableUtils";
-    private static final String VECTOR_DRAWABLE_CLAZZ_NAME = "android.graphics.drawable.VectorDrawable";
-    private static Class<?> sInsetsClazz;
+public class AppCompatEditText extends EditText implements TintableBackgroundView {
+    private final AppCompatBackgroundHelper mBackgroundTintHelper;
+    private final AppCompatTextClassifierHelper mTextClassifierHelper;
+    private final AppCompatTextHelper mTextHelper;
 
-    static {
-        if (Build.VERSION.SDK_INT >= 18) {
-            try {
-                sInsetsClazz = Class.forName("android.graphics.Insets");
-            } catch (ClassNotFoundException unused) {
-            }
+    public AppCompatEditText(Context context) {
+        this(context, null);
+    }
+
+    public AppCompatEditText(Context context, AttributeSet attributeSet) {
+        this(context, attributeSet, R.attr.editTextStyle);
+    }
+
+    public AppCompatEditText(Context context, AttributeSet attributeSet, int i2) {
+        super(TintContextWrapper.wrap(context), attributeSet, i2);
+        ThemeUtils.checkAppCompatTheme(this, getContext());
+        AppCompatBackgroundHelper appCompatBackgroundHelper = new AppCompatBackgroundHelper(this);
+        this.mBackgroundTintHelper = appCompatBackgroundHelper;
+        appCompatBackgroundHelper.loadFromAttributes(attributeSet, i2);
+        AppCompatTextHelper appCompatTextHelper = new AppCompatTextHelper(this);
+        this.mTextHelper = appCompatTextHelper;
+        appCompatTextHelper.loadFromAttributes(attributeSet, i2);
+        appCompatTextHelper.applyCompoundDrawablesTints();
+        this.mTextClassifierHelper = new AppCompatTextClassifierHelper(this);
+    }
+
+    @Override // android.widget.EditText, android.widget.TextView
+    public Editable getText() {
+        if (Build.VERSION.SDK_INT >= 28) {
+            return super.getText();
+        }
+        return super.getEditableText();
+    }
+
+    @Override // android.view.View
+    public void setBackgroundResource(int i2) {
+        super.setBackgroundResource(i2);
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.onSetBackgroundResource(i2);
         }
     }
 
-    private DrawableUtils() {
-    }
-
-    public static Rect getOpticalBounds(Drawable drawable) {
-        Field[] fields;
-        if (Build.VERSION.SDK_INT >= 29) {
-            Insets opticalInsets = drawable.getOpticalInsets();
-            Rect rect = new Rect();
-            rect.left = opticalInsets.left;
-            rect.right = opticalInsets.right;
-            rect.top = opticalInsets.top;
-            rect.bottom = opticalInsets.bottom;
-            return rect;
-        }
-        if (sInsetsClazz != null) {
-            try {
-                Drawable unwrap = DrawableCompat.unwrap(drawable);
-                Object invoke = unwrap.getClass().getMethod("getOpticalInsets", new Class[0]).invoke(unwrap, new Object[0]);
-                if (invoke != null) {
-                    Rect rect2 = new Rect();
-                    for (Field field : sInsetsClazz.getFields()) {
-                        String name = field.getName();
-                        char c2 = 65535;
-                        switch (name.hashCode()) {
-                            case -1383228885:
-                                if (name.equals("bottom")) {
-                                    c2 = 3;
-                                    break;
-                                }
-                                break;
-                            case 115029:
-                                if (name.equals("top")) {
-                                    c2 = 1;
-                                    break;
-                                }
-                                break;
-                            case 3317767:
-                                if (name.equals("left")) {
-                                    c2 = 0;
-                                    break;
-                                }
-                                break;
-                            case 108511772:
-                                if (name.equals("right")) {
-                                    c2 = 2;
-                                    break;
-                                }
-                                break;
-                        }
-                        if (c2 == 0) {
-                            rect2.left = field.getInt(invoke);
-                        } else if (c2 == 1) {
-                            rect2.top = field.getInt(invoke);
-                        } else if (c2 == 2) {
-                            rect2.right = field.getInt(invoke);
-                        } else if (c2 == 3) {
-                            rect2.bottom = field.getInt(invoke);
-                        }
-                    }
-                    return rect2;
-                }
-            } catch (Exception unused) {
-                Log.e(TAG, "Couldn't obtain the optical insets. Ignoring.");
-            }
-        }
-        return INSETS_NONE;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public static void fixDrawable(Drawable drawable) {
-        if (Build.VERSION.SDK_INT == 21 && VECTOR_DRAWABLE_CLAZZ_NAME.equals(drawable.getClass().getName())) {
-            fixVectorDrawableTinting(drawable);
+    @Override // android.view.View
+    public void setBackgroundDrawable(Drawable drawable) {
+        super.setBackgroundDrawable(drawable);
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.onSetBackgroundDrawable(drawable);
         }
     }
 
-    public static boolean canSafelyMutateDrawable(Drawable drawable) {
-        if (Build.VERSION.SDK_INT >= 15 || !(drawable instanceof InsetDrawable)) {
-            if (Build.VERSION.SDK_INT >= 15 || !(drawable instanceof GradientDrawable)) {
-                if (Build.VERSION.SDK_INT >= 17 || !(drawable instanceof LayerDrawable)) {
-                    if (drawable instanceof DrawableContainer) {
-                        Drawable.ConstantState constantState = drawable.getConstantState();
-                        if (constantState instanceof DrawableContainer.DrawableContainerState) {
-                            for (Drawable drawable2 : ((DrawableContainer.DrawableContainerState) constantState).getChildren()) {
-                                if (!canSafelyMutateDrawable(drawable2)) {
-                                    return false;
-                                }
-                            }
-                            return true;
-                        }
-                        return true;
-                    } else if (drawable instanceof WrappedDrawable) {
-                        return canSafelyMutateDrawable(((WrappedDrawable) drawable).getWrappedDrawable());
-                    } else {
-                        if (drawable instanceof DrawableWrapper) {
-                            return canSafelyMutateDrawable(((DrawableWrapper) drawable).getWrappedDrawable());
-                        }
-                        if (drawable instanceof ScaleDrawable) {
-                            return canSafelyMutateDrawable(((ScaleDrawable) drawable).getDrawable());
-                        }
-                        return true;
-                    }
-                }
-                return false;
-            }
-            return false;
+    @Override // androidx.core.view.TintableBackgroundView
+    public void setSupportBackgroundTintList(ColorStateList colorStateList) {
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.setSupportBackgroundTintList(colorStateList);
         }
-        return false;
     }
 
-    private static void fixVectorDrawableTinting(Drawable drawable) {
-        int[] state = drawable.getState();
-        if (state == null || state.length == 0) {
-            drawable.setState(CHECKED_STATE_SET);
+    @Override // androidx.core.view.TintableBackgroundView
+    public ColorStateList getSupportBackgroundTintList() {
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            return appCompatBackgroundHelper.getSupportBackgroundTintList();
+        }
+        return null;
+    }
+
+    @Override // androidx.core.view.TintableBackgroundView
+    public void setSupportBackgroundTintMode(PorterDuff.Mode mode) {
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.setSupportBackgroundTintMode(mode);
+        }
+    }
+
+    @Override // androidx.core.view.TintableBackgroundView
+    public PorterDuff.Mode getSupportBackgroundTintMode() {
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            return appCompatBackgroundHelper.getSupportBackgroundTintMode();
+        }
+        return null;
+    }
+
+    @Override // android.widget.TextView, android.view.View
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.applySupportBackgroundTint();
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.applyCompoundDrawablesTints();
+        }
+    }
+
+    @Override // android.widget.TextView
+    public void setTextAppearance(Context context, int i2) {
+        super.setTextAppearance(context, i2);
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.onSetTextAppearance(context, i2);
+        }
+    }
+
+    @Override // android.widget.TextView, android.view.View
+    public InputConnection onCreateInputConnection(EditorInfo editorInfo) {
+        return AppCompatHintHelper.onCreateInputConnection(super.onCreateInputConnection(editorInfo), editorInfo, this);
+    }
+
+    @Override // android.widget.TextView
+    public void setCustomSelectionActionModeCallback(ActionMode.Callback callback) {
+        super.setCustomSelectionActionModeCallback(TextViewCompat.wrapCustomSelectionActionModeCallback(this, callback));
+    }
+
+    @Override // android.widget.TextView
+    public void setTextClassifier(TextClassifier textClassifier) {
+        AppCompatTextClassifierHelper appCompatTextClassifierHelper;
+        if (Build.VERSION.SDK_INT >= 28 || (appCompatTextClassifierHelper = this.mTextClassifierHelper) == null) {
+            super.setTextClassifier(textClassifier);
         } else {
-            drawable.setState(EMPTY_STATE_SET);
+            appCompatTextClassifierHelper.setTextClassifier(textClassifier);
         }
-        drawable.setState(state);
     }
 
-    public static PorterDuff.Mode parseTintMode(int i2, PorterDuff.Mode mode) {
-        if (i2 != 3) {
-            if (i2 != 5) {
-                if (i2 == 9) {
-                    return PorterDuff.Mode.SRC_ATOP;
-                }
-                switch (i2) {
-                    case 14:
-                        return PorterDuff.Mode.MULTIPLY;
-                    case 15:
-                        return PorterDuff.Mode.SCREEN;
-                    case 16:
-                        return PorterDuff.Mode.ADD;
-                    default:
-                        return mode;
-                }
-            }
-            return PorterDuff.Mode.SRC_IN;
+    @Override // android.widget.TextView
+    public TextClassifier getTextClassifier() {
+        AppCompatTextClassifierHelper appCompatTextClassifierHelper;
+        if (Build.VERSION.SDK_INT >= 28 || (appCompatTextClassifierHelper = this.mTextClassifierHelper) == null) {
+            return super.getTextClassifier();
         }
-        return PorterDuff.Mode.SRC_OVER;
+        return appCompatTextClassifierHelper.getTextClassifier();
     }
 }

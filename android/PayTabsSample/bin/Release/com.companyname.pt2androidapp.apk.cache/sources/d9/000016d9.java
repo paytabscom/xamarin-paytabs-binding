@@ -1,47 +1,41 @@
-package mono.android.widget;
+package kotlin.properties;
 
-import android.view.View;
-import android.widget.AdapterView;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.reflect.KProperty;
 
+/* compiled from: ObservableProperty.kt */
+@Metadata(d1 = {"\u0000(\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0005\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0010\u000b\n\u0002\b\u0007\b&\u0018\u0000*\u0004\b\u0000\u0010\u00012\u0010\u0012\u0006\u0012\u0004\u0018\u00010\u0003\u0012\u0004\u0012\u0002H\u00010\u0002B\r\u0012\u0006\u0010\u0004\u001a\u00028\u0000¢\u0006\u0002\u0010\u0005J)\u0010\b\u001a\u00020\t2\n\u0010\n\u001a\u0006\u0012\u0002\b\u00030\u000b2\u0006\u0010\f\u001a\u00028\u00002\u0006\u0010\r\u001a\u00028\u0000H\u0014¢\u0006\u0002\u0010\u000eJ)\u0010\u000f\u001a\u00020\u00102\n\u0010\n\u001a\u0006\u0012\u0002\b\u00030\u000b2\u0006\u0010\f\u001a\u00028\u00002\u0006\u0010\r\u001a\u00028\u0000H\u0014¢\u0006\u0002\u0010\u0011J$\u0010\u0012\u001a\u00028\u00002\b\u0010\u0013\u001a\u0004\u0018\u00010\u00032\n\u0010\n\u001a\u0006\u0012\u0002\b\u00030\u000bH\u0096\u0002¢\u0006\u0002\u0010\u0014J,\u0010\u0015\u001a\u00020\t2\b\u0010\u0013\u001a\u0004\u0018\u00010\u00032\n\u0010\n\u001a\u0006\u0012\u0002\b\u00030\u000b2\u0006\u0010\u0006\u001a\u00028\u0000H\u0096\u0002¢\u0006\u0002\u0010\u0016R\u0010\u0010\u0006\u001a\u00028\u0000X\u0082\u000e¢\u0006\u0004\n\u0002\u0010\u0007¨\u0006\u0017"}, d2 = {"Lkotlin/properties/ObservableProperty;", "V", "Lkotlin/properties/ReadWriteProperty;", "", "initialValue", "(Ljava/lang/Object;)V", "value", "Ljava/lang/Object;", "afterChange", "", "property", "Lkotlin/reflect/KProperty;", "oldValue", "newValue", "(Lkotlin/reflect/KProperty;Ljava/lang/Object;Ljava/lang/Object;)V", "beforeChange", "", "(Lkotlin/reflect/KProperty;Ljava/lang/Object;Ljava/lang/Object;)Z", "getValue", "thisRef", "(Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/lang/Object;", "setValue", "(Ljava/lang/Object;Lkotlin/reflect/KProperty;Ljava/lang/Object;)V", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class AdapterView_OnItemLongClickListenerImplementor implements IGCUserPeer, AdapterView.OnItemLongClickListener {
-    public static final String __md_methods = "n_onItemLongClick:(Landroid/widget/AdapterView;Landroid/view/View;IJ)Z:GetOnItemLongClick_Landroid_widget_AdapterView_Landroid_view_View_IJHandler:Android.Widget.AdapterView/IOnItemLongClickListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public abstract class ObservableProperty<V> implements ReadWriteProperty<Object, V> {
+    private V value;
 
-    private native boolean n_onItemLongClick(AdapterView adapterView, View view, int i2, long j2);
-
-    static {
-        Runtime.register("Android.Widget.AdapterView+IOnItemLongClickListenerImplementor, Mono.Android", AdapterView_OnItemLongClickListenerImplementor.class, __md_methods);
+    protected void afterChange(KProperty<?> property, V v2, V v3) {
+        Intrinsics.checkNotNullParameter(property, "property");
     }
 
-    public AdapterView_OnItemLongClickListenerImplementor() {
-        if (getClass() == AdapterView_OnItemLongClickListenerImplementor.class) {
-            TypeManager.Activate("Android.Widget.AdapterView+IOnItemLongClickListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    protected boolean beforeChange(KProperty<?> property, V v2, V v3) {
+        Intrinsics.checkNotNullParameter(property, "property");
+        return true;
     }
 
-    @Override // android.widget.AdapterView.OnItemLongClickListener
-    public boolean onItemLongClick(AdapterView adapterView, View view, int i2, long j2) {
-        return n_onItemLongClick(adapterView, view, i2, j2);
+    public ObservableProperty(V v2) {
+        this.value = v2;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
+    @Override // kotlin.properties.ReadWriteProperty, kotlin.properties.ReadOnlyProperty
+    public V getValue(Object obj, KProperty<?> property) {
+        Intrinsics.checkNotNullParameter(property, "property");
+        return this.value;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
+    @Override // kotlin.properties.ReadWriteProperty
+    public void setValue(Object obj, KProperty<?> property, V v2) {
+        Intrinsics.checkNotNullParameter(property, "property");
+        V v3 = this.value;
+        if (beforeChange(property, v3, v2)) {
+            this.value = v2;
+            afterChange(property, v3, v2);
         }
     }
 }

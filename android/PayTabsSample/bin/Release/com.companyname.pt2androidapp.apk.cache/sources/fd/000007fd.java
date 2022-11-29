@@ -1,15 +1,93 @@
-package androidx.lifecycle;
+package androidx.documentfile.provider;
 
-import android.view.View;
-import kotlin.Metadata;
-import kotlin.jvm.internal.Intrinsics;
+import android.content.Context;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.DocumentsContract;
+import java.io.File;
 
-/* compiled from: View.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\f\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\u001a\f\u0010\u0000\u001a\u0004\u0018\u00010\u0001*\u00020\u0002¨\u0006\u0003"}, d2 = {"findViewTreeLifecycleOwner", "Landroidx/lifecycle/LifecycleOwner;", "Landroid/view/View;", "lifecycle-runtime-ktx_release"}, k = 2, mv = {1, 4, 1})
 /* loaded from: classes.dex */
-public final class ViewKt {
-    public static final LifecycleOwner findViewTreeLifecycleOwner(View findViewTreeLifecycleOwner) {
-        Intrinsics.checkNotNullParameter(findViewTreeLifecycleOwner, "$this$findViewTreeLifecycleOwner");
-        return ViewTreeLifecycleOwner.get(findViewTreeLifecycleOwner);
+public abstract class DocumentFile {
+    static final String TAG = "DocumentFile";
+    private final DocumentFile mParent;
+
+    public abstract boolean canRead();
+
+    public abstract boolean canWrite();
+
+    public abstract DocumentFile createDirectory(String str);
+
+    public abstract DocumentFile createFile(String str, String str2);
+
+    public abstract boolean delete();
+
+    public abstract boolean exists();
+
+    public abstract String getName();
+
+    public abstract String getType();
+
+    public abstract Uri getUri();
+
+    public abstract boolean isDirectory();
+
+    public abstract boolean isFile();
+
+    public abstract boolean isVirtual();
+
+    public abstract long lastModified();
+
+    public abstract long length();
+
+    public abstract DocumentFile[] listFiles();
+
+    public abstract boolean renameTo(String str);
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public DocumentFile(DocumentFile documentFile) {
+        this.mParent = documentFile;
+    }
+
+    public static DocumentFile fromFile(File file) {
+        return new RawDocumentFile(null, file);
+    }
+
+    public static DocumentFile fromSingleUri(Context context, Uri uri) {
+        if (Build.VERSION.SDK_INT >= 19) {
+            return new SingleDocumentFile(null, context, uri);
+        }
+        return null;
+    }
+
+    public static DocumentFile fromTreeUri(Context context, Uri uri) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            String treeDocumentId = DocumentsContract.getTreeDocumentId(uri);
+            if (DocumentsContract.isDocumentUri(context, uri)) {
+                treeDocumentId = DocumentsContract.getDocumentId(uri);
+            }
+            return new TreeDocumentFile(null, context, DocumentsContract.buildDocumentUriUsingTree(uri, treeDocumentId));
+        }
+        return null;
+    }
+
+    public static boolean isDocumentUri(Context context, Uri uri) {
+        if (Build.VERSION.SDK_INT >= 19) {
+            return DocumentsContract.isDocumentUri(context, uri);
+        }
+        return false;
+    }
+
+    public DocumentFile getParentFile() {
+        return this.mParent;
+    }
+
+    public DocumentFile findFile(String str) {
+        DocumentFile[] listFiles;
+        for (DocumentFile documentFile : listFiles()) {
+            if (str.equals(documentFile.getName())) {
+                return documentFile;
+            }
+        }
+        return null;
     }
 }

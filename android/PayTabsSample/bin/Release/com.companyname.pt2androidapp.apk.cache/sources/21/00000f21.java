@@ -1,21 +1,126 @@
-package kotlin;
+package com.google.crypto.tink;
 
-import kotlin.jvm.functions.Function1;
+import com.google.crypto.tink.shaded.protobuf.ByteString;
+import com.google.errorprone.annotations.Immutable;
 
-/* compiled from: ULongArray.kt */
-@Metadata(d1 = {"\u0000\u001a\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0006\u001a0\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u00032\u0012\u0010\u0004\u001a\u000e\u0012\u0004\u0012\u00020\u0003\u0012\u0004\u0012\u00020\u00060\u0005H\u0087\bø\u0001\u0000ø\u0001\u0001¢\u0006\u0002\u0010\u0007\u001a\u001f\u0010\b\u001a\u00020\u00012\n\u0010\t\u001a\u00020\u0001\"\u00020\u0006H\u0087\bø\u0001\u0000¢\u0006\u0004\b\n\u0010\u000b\u0082\u0002\u000b\n\u0002\b\u0019\n\u0005\b\u009920\u0001¨\u0006\f"}, d2 = {"ULongArray", "Lkotlin/ULongArray;", "size", "", "init", "Lkotlin/Function1;", "Lkotlin/ULong;", "(ILkotlin/jvm/functions/Function1;)[J", "ulongArrayOf", "elements", "ulongArrayOf-QwZRm1k", "([J)[J", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
+@Immutable
 /* loaded from: classes.dex */
-public final class ULongArrayKt {
-    /* renamed from: ulongArrayOf-QwZRm1k  reason: not valid java name */
-    private static final long[] m263ulongArrayOfQwZRm1k(long... jArr) {
-        return jArr;
+public final class KeyTemplate {
+    private final com.google.crypto.tink.proto.KeyTemplate kt;
+
+    /* loaded from: classes.dex */
+    public enum OutputPrefixType {
+        TINK,
+        LEGACY,
+        RAW,
+        CRUNCHY
     }
 
-    private static final long[] ULongArray(int i2, Function1<? super Integer, ULong> function1) {
-        long[] jArr = new long[i2];
-        for (int i3 = 0; i3 < i2; i3++) {
-            jArr[i3] = function1.invoke(Integer.valueOf(i3)).m244unboximpl();
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static OutputPrefixType fromProto(com.google.crypto.tink.proto.OutputPrefixType outputPrefixType) {
+        int i2 = AnonymousClass1.$SwitchMap$com$google$crypto$tink$proto$OutputPrefixType[outputPrefixType.ordinal()];
+        if (i2 != 1) {
+            if (i2 != 2) {
+                if (i2 != 3) {
+                    if (i2 == 4) {
+                        return OutputPrefixType.CRUNCHY;
+                    }
+                    throw new IllegalArgumentException("Unknown output prefix type");
+                }
+                return OutputPrefixType.RAW;
+            }
+            return OutputPrefixType.LEGACY;
         }
-        return ULongArray.m247constructorimpl(jArr);
+        return OutputPrefixType.TINK;
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* renamed from: com.google.crypto.tink.KeyTemplate$1  reason: invalid class name */
+    /* loaded from: classes.dex */
+    public static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$com$google$crypto$tink$KeyTemplate$OutputPrefixType;
+        static final /* synthetic */ int[] $SwitchMap$com$google$crypto$tink$proto$OutputPrefixType;
+
+        static {
+            int[] iArr = new int[OutputPrefixType.values().length];
+            $SwitchMap$com$google$crypto$tink$KeyTemplate$OutputPrefixType = iArr;
+            try {
+                iArr[OutputPrefixType.TINK.ordinal()] = 1;
+            } catch (NoSuchFieldError unused) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$KeyTemplate$OutputPrefixType[OutputPrefixType.LEGACY.ordinal()] = 2;
+            } catch (NoSuchFieldError unused2) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$KeyTemplate$OutputPrefixType[OutputPrefixType.RAW.ordinal()] = 3;
+            } catch (NoSuchFieldError unused3) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$KeyTemplate$OutputPrefixType[OutputPrefixType.CRUNCHY.ordinal()] = 4;
+            } catch (NoSuchFieldError unused4) {
+            }
+            int[] iArr2 = new int[com.google.crypto.tink.proto.OutputPrefixType.values().length];
+            $SwitchMap$com$google$crypto$tink$proto$OutputPrefixType = iArr2;
+            try {
+                iArr2[com.google.crypto.tink.proto.OutputPrefixType.TINK.ordinal()] = 1;
+            } catch (NoSuchFieldError unused5) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$proto$OutputPrefixType[com.google.crypto.tink.proto.OutputPrefixType.LEGACY.ordinal()] = 2;
+            } catch (NoSuchFieldError unused6) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$proto$OutputPrefixType[com.google.crypto.tink.proto.OutputPrefixType.RAW.ordinal()] = 3;
+            } catch (NoSuchFieldError unused7) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$proto$OutputPrefixType[com.google.crypto.tink.proto.OutputPrefixType.CRUNCHY.ordinal()] = 4;
+            } catch (NoSuchFieldError unused8) {
+            }
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static com.google.crypto.tink.proto.OutputPrefixType toProto(OutputPrefixType outputPrefixType) {
+        int i2 = AnonymousClass1.$SwitchMap$com$google$crypto$tink$KeyTemplate$OutputPrefixType[outputPrefixType.ordinal()];
+        if (i2 != 1) {
+            if (i2 != 2) {
+                if (i2 != 3) {
+                    if (i2 == 4) {
+                        return com.google.crypto.tink.proto.OutputPrefixType.CRUNCHY;
+                    }
+                    throw new IllegalArgumentException("Unknown output prefix type");
+                }
+                return com.google.crypto.tink.proto.OutputPrefixType.RAW;
+            }
+            return com.google.crypto.tink.proto.OutputPrefixType.LEGACY;
+        }
+        return com.google.crypto.tink.proto.OutputPrefixType.TINK;
+    }
+
+    public static KeyTemplate create(String typeUrl, byte[] value, OutputPrefixType outputPrefixType) {
+        return new KeyTemplate(com.google.crypto.tink.proto.KeyTemplate.newBuilder().setTypeUrl(typeUrl).setValue(ByteString.copyFrom(value)).setOutputPrefixType(toProto(outputPrefixType)).build());
+    }
+
+    private KeyTemplate(com.google.crypto.tink.proto.KeyTemplate kt) {
+        this.kt = kt;
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public com.google.crypto.tink.proto.KeyTemplate getProto() {
+        return this.kt;
+    }
+
+    public String getTypeUrl() {
+        return this.kt.getTypeUrl();
+    }
+
+    public byte[] getValue() {
+        return this.kt.getValue().toByteArray();
+    }
+
+    public OutputPrefixType getOutputPrefixType() {
+        return fromProto(this.kt.getOutputPrefixType());
     }
 }

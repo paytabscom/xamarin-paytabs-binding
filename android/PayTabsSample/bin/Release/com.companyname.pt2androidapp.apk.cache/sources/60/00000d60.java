@@ -1,13 +1,35 @@
-package com.google.android.material.transition.platform;
+package com.google.android.material.internal;
 
-import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroupOverlay;
 
-/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-public interface FitModeEvaluator {
-    void applyMask(RectF rectF, float f2, FitModeResult fitModeResult);
+class ViewGroupOverlayApi18 implements ViewGroupOverlayImpl {
+    private final ViewGroupOverlay viewGroupOverlay;
 
-    FitModeResult evaluate(float f2, float f3, float f4, float f5, float f6, float f7, float f8);
+    ViewGroupOverlayApi18(ViewGroup viewGroup) {
+        this.viewGroupOverlay = viewGroup.getOverlay();
+    }
 
-    boolean shouldMaskStartBounds(FitModeResult fitModeResult);
+    @Override // com.google.android.material.internal.ViewOverlayImpl
+    public void add(Drawable drawable) {
+        this.viewGroupOverlay.add(drawable);
+    }
+
+    @Override // com.google.android.material.internal.ViewOverlayImpl
+    public void remove(Drawable drawable) {
+        this.viewGroupOverlay.remove(drawable);
+    }
+
+    @Override // com.google.android.material.internal.ViewGroupOverlayImpl
+    public void add(View view) {
+        this.viewGroupOverlay.add(view);
+    }
+
+    @Override // com.google.android.material.internal.ViewGroupOverlayImpl
+    public void remove(View view) {
+        this.viewGroupOverlay.remove(view);
+    }
 }

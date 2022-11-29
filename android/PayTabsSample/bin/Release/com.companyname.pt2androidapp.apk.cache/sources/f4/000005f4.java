@@ -1,15 +1,51 @@
-package androidx.core.view;
+package androidx.core.os;
 
-import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
+import android.os.Build;
+import android.os.Environment;
+import android.util.Log;
+import java.io.File;
+import java.io.IOException;
 
 /* loaded from: classes.dex */
-public interface TintableBackgroundView {
-    ColorStateList getSupportBackgroundTintList();
+public final class EnvironmentCompat {
+    public static final String MEDIA_UNKNOWN = "unknown";
+    private static final String TAG = "EnvironmentCompat";
 
-    PorterDuff.Mode getSupportBackgroundTintMode();
+    public static String getStorageState(File file) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            return Api21Impl.getExternalStorageState(file);
+        }
+        if (Build.VERSION.SDK_INT >= 19) {
+            return Api19Impl.getStorageState(file);
+        }
+        try {
+            return file.getCanonicalPath().startsWith(Environment.getExternalStorageDirectory().getCanonicalPath()) ? Environment.getExternalStorageState() : MEDIA_UNKNOWN;
+        } catch (IOException e2) {
+            Log.w(TAG, "Failed to resolve canonical path: " + e2);
+            return MEDIA_UNKNOWN;
+        }
+    }
 
-    void setSupportBackgroundTintList(ColorStateList colorStateList);
+    private EnvironmentCompat() {
+    }
 
-    void setSupportBackgroundTintMode(PorterDuff.Mode mode);
+    /* loaded from: classes.dex */
+    static class Api21Impl {
+        private Api21Impl() {
+        }
+
+        static String getExternalStorageState(File file) {
+            return Environment.getExternalStorageState(file);
+        }
+    }
+
+    /* loaded from: classes.dex */
+    static class Api19Impl {
+        private Api19Impl() {
+        }
+
+        static String getStorageState(File file) {
+            return Environment.getStorageState(file);
+        }
+    }
 }

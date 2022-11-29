@@ -1,47 +1,9 @@
-package mono.android.view;
+package kotlin.jvm.internal.markers;
 
-import android.view.MotionEvent;
-import android.view.View;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: KMarkers.kt */
+@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\bf\u0018\u00002\u00020\u0001¨\u0006\u0002"}, d2 = {"Lkotlin/jvm/internal/markers/KMutableIterator;", "Lkotlin/jvm/internal/markers/KMappedMarker;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class View_OnTouchListenerImplementor implements IGCUserPeer, View.OnTouchListener {
-    public static final String __md_methods = "n_onTouch:(Landroid/view/View;Landroid/view/MotionEvent;)Z:GetOnTouch_Landroid_view_View_Landroid_view_MotionEvent_Handler:Android.Views.View/IOnTouchListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native boolean n_onTouch(View view, MotionEvent motionEvent);
-
-    static {
-        Runtime.register("Android.Views.View+IOnTouchListenerImplementor, Mono.Android", View_OnTouchListenerImplementor.class, __md_methods);
-    }
-
-    public View_OnTouchListenerImplementor() {
-        if (getClass() == View_OnTouchListenerImplementor.class) {
-            TypeManager.Activate("Android.Views.View+IOnTouchListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.view.View.OnTouchListener
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        return n_onTouch(view, motionEvent);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public interface KMutableIterator extends KMappedMarker {
 }

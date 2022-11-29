@@ -1,176 +1,194 @@
-package androidx.constraintlayout.motion.widget;
+package androidx.concurrent.futures;
 
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.RectF;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.util.SparseIntArray;
-import android.view.View;
-import androidx.constraintlayout.widget.R;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.HashSet;
+import com.google.common.util.concurrent.ListenableFuture;
+import java.lang.ref.WeakReference;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /* loaded from: classes.dex */
-public class KeyTrigger extends Key {
-    public static final int KEY_TYPE = 5;
-    static final String NAME = "KeyTrigger";
-    private static final String TAG = "KeyTrigger";
-    private Method mFireCross;
-    private float mFireLastPos;
-    private Method mFireNegativeCross;
-    private Method mFirePositiveCross;
-    private int mCurveFit = -1;
-    private String mCross = null;
-    private int mTriggerReceiver = UNSET;
-    private String mNegativeCross = null;
-    private String mPositiveCross = null;
-    private int mTriggerID = UNSET;
-    private int mTriggerCollisionId = UNSET;
-    private View mTriggerCollisionView = null;
-    float mTriggerSlack = 0.1f;
-    private boolean mFireCrossReset = true;
-    private boolean mFireNegativeReset = true;
-    private boolean mFirePositiveReset = true;
-    private float mFireThreshold = Float.NaN;
-    private boolean mPostLayout = false;
-    RectF mCollisionRect = new RectF();
-    RectF mTargetRect = new RectF();
+public final class CallbackToFutureAdapter {
 
-    @Override // androidx.constraintlayout.motion.widget.Key
-    public void addValues(HashMap<String, SplineSet> hashMap) {
+    /* loaded from: classes.dex */
+    public interface Resolver<T> {
+        Object attachCompleter(Completer<T> completer) throws Exception;
     }
 
-    @Override // androidx.constraintlayout.motion.widget.Key
-    public void getAttributeNames(HashSet<String> hashSet) {
+    private CallbackToFutureAdapter() {
     }
 
-    @Override // androidx.constraintlayout.motion.widget.Key
-    public void setValue(String str, Object obj) {
-    }
-
-    public KeyTrigger() {
-        this.mType = 5;
-        this.mCustomConstraints = new HashMap<>();
-    }
-
-    @Override // androidx.constraintlayout.motion.widget.Key
-    public void load(Context context, AttributeSet attributeSet) {
-        Loader.read(this, context.obtainStyledAttributes(attributeSet, R.styleable.KeyTrigger), context);
-    }
-
-    int getCurveFit() {
-        return this.mCurveFit;
-    }
-
-    private void setUpRect(RectF rectF, View view, boolean z2) {
-        rectF.top = view.getTop();
-        rectF.bottom = view.getBottom();
-        rectF.left = view.getLeft();
-        rectF.right = view.getRight();
-        if (z2) {
-            view.getMatrix().mapRect(rectF);
+    public static <T> ListenableFuture<T> getFuture(Resolver<T> resolver) {
+        Completer<T> completer = new Completer<>();
+        SafeFuture<T> safeFuture = new SafeFuture<>(completer);
+        completer.future = safeFuture;
+        completer.tag = resolver.getClass();
+        try {
+            Object attachCompleter = resolver.attachCompleter(completer);
+            if (attachCompleter != null) {
+                completer.tag = attachCompleter;
+            }
+        } catch (Exception e2) {
+            safeFuture.setException(e2);
         }
+        return safeFuture;
     }
 
-    /* JADX WARN: Removed duplicated region for block: B:38:0x008d  */
-    /* JADX WARN: Removed duplicated region for block: B:43:0x00a2  */
-    /* JADX WARN: Removed duplicated region for block: B:49:0x00b7  */
-    /* JADX WARN: Removed duplicated region for block: B:56:0x00ce  */
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct code enable 'Show inconsistent code' option in preferences
-    */
-    public void conditionallyFire(float r11, android.view.View r12) {
-        /*
-            Method dump skipped, instructions count: 636
-            To view this dump change 'Code comments level' option to 'DEBUG'
-        */
-        throw new UnsupportedOperationException("Method not decompiled: androidx.constraintlayout.motion.widget.KeyTrigger.conditionallyFire(float, android.view.View):void");
+    /* JADX INFO: Access modifiers changed from: private */
+    /* loaded from: classes.dex */
+    public static final class SafeFuture<T> implements ListenableFuture<T> {
+        final WeakReference<Completer<T>> completerWeakReference;
+        private final AbstractResolvableFuture<T> delegate = new AbstractResolvableFuture<T>() { // from class: androidx.concurrent.futures.CallbackToFutureAdapter.SafeFuture.1
+            @Override // androidx.concurrent.futures.AbstractResolvableFuture
+            protected String pendingToString() {
+                Completer<T> completer = SafeFuture.this.completerWeakReference.get();
+                if (completer == null) {
+                    return "Completer object has been garbage collected, future will fail soon";
+                }
+                return "tag=[" + completer.tag + "]";
+            }
+        };
+
+        SafeFuture(Completer<T> completer) {
+            this.completerWeakReference = new WeakReference<>(completer);
+        }
+
+        @Override // java.util.concurrent.Future
+        public boolean cancel(boolean z2) {
+            Completer<T> completer = this.completerWeakReference.get();
+            boolean cancel = this.delegate.cancel(z2);
+            if (cancel && completer != null) {
+                completer.fireCancellationListeners();
+            }
+            return cancel;
+        }
+
+        boolean cancelWithoutNotifyingCompleter(boolean z2) {
+            return this.delegate.cancel(z2);
+        }
+
+        boolean set(T t2) {
+            return this.delegate.set(t2);
+        }
+
+        boolean setException(Throwable th) {
+            return this.delegate.setException(th);
+        }
+
+        @Override // java.util.concurrent.Future
+        public boolean isCancelled() {
+            return this.delegate.isCancelled();
+        }
+
+        @Override // java.util.concurrent.Future
+        public boolean isDone() {
+            return this.delegate.isDone();
+        }
+
+        @Override // java.util.concurrent.Future
+        public T get() throws InterruptedException, ExecutionException {
+            return this.delegate.get();
+        }
+
+        @Override // java.util.concurrent.Future
+        public T get(long j2, TimeUnit timeUnit) throws InterruptedException, ExecutionException, TimeoutException {
+            return this.delegate.get(j2, timeUnit);
+        }
+
+        @Override // com.google.common.util.concurrent.ListenableFuture
+        public void addListener(Runnable runnable, Executor executor) {
+            this.delegate.addListener(runnable, executor);
+        }
+
+        public String toString() {
+            return this.delegate.toString();
+        }
     }
 
     /* loaded from: classes.dex */
-    private static class Loader {
-        private static final int COLLISION = 9;
-        private static final int CROSS = 4;
-        private static final int FRAME_POS = 8;
-        private static final int NEGATIVE_CROSS = 1;
-        private static final int POSITIVE_CROSS = 2;
-        private static final int POST_LAYOUT = 10;
-        private static final int TARGET_ID = 7;
-        private static final int TRIGGER_ID = 6;
-        private static final int TRIGGER_RECEIVER = 11;
-        private static final int TRIGGER_SLACK = 5;
-        private static SparseIntArray mAttrMap;
+    public static final class Completer<T> {
+        private boolean attemptedSetting;
+        private ResolvableFuture<Void> cancellationFuture = ResolvableFuture.create();
+        SafeFuture<T> future;
+        Object tag;
 
-        private Loader() {
+        Completer() {
         }
 
-        static {
-            SparseIntArray sparseIntArray = new SparseIntArray();
-            mAttrMap = sparseIntArray;
-            sparseIntArray.append(R.styleable.KeyTrigger_framePosition, 8);
-            mAttrMap.append(R.styleable.KeyTrigger_onCross, 4);
-            mAttrMap.append(R.styleable.KeyTrigger_onNegativeCross, 1);
-            mAttrMap.append(R.styleable.KeyTrigger_onPositiveCross, 2);
-            mAttrMap.append(R.styleable.KeyTrigger_motionTarget, 7);
-            mAttrMap.append(R.styleable.KeyTrigger_triggerId, 6);
-            mAttrMap.append(R.styleable.KeyTrigger_triggerSlack, 5);
-            mAttrMap.append(R.styleable.KeyTrigger_motion_triggerOnCollision, 9);
-            mAttrMap.append(R.styleable.KeyTrigger_motion_postLayoutCollision, 10);
-            mAttrMap.append(R.styleable.KeyTrigger_triggerReceiver, 11);
-        }
-
-        public static void read(KeyTrigger keyTrigger, TypedArray typedArray, Context context) {
-            int indexCount = typedArray.getIndexCount();
-            for (int i2 = 0; i2 < indexCount; i2++) {
-                int index = typedArray.getIndex(i2);
-                switch (mAttrMap.get(index)) {
-                    case 1:
-                        keyTrigger.mNegativeCross = typedArray.getString(index);
-                        continue;
-                    case 2:
-                        keyTrigger.mPositiveCross = typedArray.getString(index);
-                        continue;
-                    case 4:
-                        keyTrigger.mCross = typedArray.getString(index);
-                        continue;
-                    case 5:
-                        keyTrigger.mTriggerSlack = typedArray.getFloat(index, keyTrigger.mTriggerSlack);
-                        continue;
-                    case 6:
-                        keyTrigger.mTriggerID = typedArray.getResourceId(index, keyTrigger.mTriggerID);
-                        continue;
-                    case 7:
-                        if (MotionLayout.IS_IN_EDIT_MODE) {
-                            keyTrigger.mTargetId = typedArray.getResourceId(index, keyTrigger.mTargetId);
-                            if (keyTrigger.mTargetId == -1) {
-                                keyTrigger.mTargetString = typedArray.getString(index);
-                            } else {
-                                continue;
-                            }
-                        } else if (typedArray.peekValue(index).type == 3) {
-                            keyTrigger.mTargetString = typedArray.getString(index);
-                        } else {
-                            keyTrigger.mTargetId = typedArray.getResourceId(index, keyTrigger.mTargetId);
-                        }
-                    case 8:
-                        keyTrigger.mFramePosition = typedArray.getInteger(index, keyTrigger.mFramePosition);
-                        keyTrigger.mFireThreshold = (keyTrigger.mFramePosition + 0.5f) / 100.0f;
-                        continue;
-                    case 9:
-                        keyTrigger.mTriggerCollisionId = typedArray.getResourceId(index, keyTrigger.mTriggerCollisionId);
-                        continue;
-                    case 10:
-                        keyTrigger.mPostLayout = typedArray.getBoolean(index, keyTrigger.mPostLayout);
-                        continue;
-                    case 11:
-                        keyTrigger.mTriggerReceiver = typedArray.getResourceId(index, keyTrigger.mTriggerReceiver);
-                        break;
-                }
-                Log.e("KeyTrigger", "unused attribute 0x" + Integer.toHexString(index) + "   " + mAttrMap.get(index));
+        public boolean set(T t2) {
+            boolean z2 = true;
+            this.attemptedSetting = true;
+            SafeFuture<T> safeFuture = this.future;
+            z2 = (safeFuture == null || !safeFuture.set(t2)) ? false : false;
+            if (z2) {
+                setCompletedNormally();
             }
+            return z2;
+        }
+
+        public boolean setException(Throwable th) {
+            boolean z2 = true;
+            this.attemptedSetting = true;
+            SafeFuture<T> safeFuture = this.future;
+            z2 = (safeFuture == null || !safeFuture.setException(th)) ? false : false;
+            if (z2) {
+                setCompletedNormally();
+            }
+            return z2;
+        }
+
+        public boolean setCancelled() {
+            boolean z2 = true;
+            this.attemptedSetting = true;
+            SafeFuture<T> safeFuture = this.future;
+            z2 = (safeFuture == null || !safeFuture.cancelWithoutNotifyingCompleter(true)) ? false : false;
+            if (z2) {
+                setCompletedNormally();
+            }
+            return z2;
+        }
+
+        public void addCancellationListener(Runnable runnable, Executor executor) {
+            ResolvableFuture<Void> resolvableFuture = this.cancellationFuture;
+            if (resolvableFuture != null) {
+                resolvableFuture.addListener(runnable, executor);
+            }
+        }
+
+        void fireCancellationListeners() {
+            this.tag = null;
+            this.future = null;
+            this.cancellationFuture.set(null);
+        }
+
+        private void setCompletedNormally() {
+            this.tag = null;
+            this.future = null;
+            this.cancellationFuture = null;
+        }
+
+        protected void finalize() {
+            ResolvableFuture<Void> resolvableFuture;
+            SafeFuture<T> safeFuture = this.future;
+            if (safeFuture != null && !safeFuture.isDone()) {
+                safeFuture.setException(new FutureGarbageCollectedException("The completer object was garbage collected - this future would otherwise never complete. The tag was: " + this.tag));
+            }
+            if (this.attemptedSetting || (resolvableFuture = this.cancellationFuture) == null) {
+                return;
+            }
+            resolvableFuture.set(null);
+        }
+    }
+
+    /* loaded from: classes.dex */
+    static final class FutureGarbageCollectedException extends Throwable {
+        FutureGarbageCollectedException(String str) {
+            super(str);
+        }
+
+        @Override // java.lang.Throwable
+        public synchronized Throwable fillInStackTrace() {
+            return this;
         }
     }
 }

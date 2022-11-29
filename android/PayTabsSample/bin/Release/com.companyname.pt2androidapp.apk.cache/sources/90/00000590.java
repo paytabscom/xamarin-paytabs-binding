@@ -1,30 +1,258 @@
-package androidx.core.transition;
+package androidx.core.graphics.drawable;
 
-import android.transition.Transition;
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.internal.Intrinsics;
-import kotlin.jvm.internal.Lambda;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
+import android.util.DisplayMetrics;
 
-/* compiled from: Transition.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u000e\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0003H\n¢\u0006\u0002\b\u0004"}, d2 = {"<anonymous>", "", "it", "Landroid/transition/Transition;", "invoke"}, k = 3, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class TransitionKt$addListener$3 extends Lambda implements Function1<Transition, Unit> {
-    public static final TransitionKt$addListener$3 INSTANCE = new TransitionKt$addListener$3();
+public abstract class RoundedBitmapDrawable extends Drawable {
+    private static final int DEFAULT_PAINT_FLAGS = 3;
+    final Bitmap mBitmap;
+    private int mBitmapHeight;
+    private final BitmapShader mBitmapShader;
+    private int mBitmapWidth;
+    private float mCornerRadius;
+    private boolean mIsCircular;
+    private int mTargetDensity;
+    private int mGravity = 119;
+    private final Paint mPaint = new Paint(3);
+    private final Matrix mShaderMatrix = new Matrix();
+    final Rect mDstRect = new Rect();
+    private final RectF mDstRectF = new RectF();
+    private boolean mApplyGravity = true;
 
-    public TransitionKt$addListener$3() {
-        super(1);
+    private static boolean isGreaterThanZero(float f2) {
+        return f2 > 0.05f;
     }
 
-    @Override // kotlin.jvm.functions.Function1
-    public /* bridge */ /* synthetic */ Unit invoke(Transition transition) {
-        invoke2(transition);
-        return Unit.INSTANCE;
+    public final Paint getPaint() {
+        return this.mPaint;
     }
 
-    /* renamed from: invoke  reason: avoid collision after fix types in other method */
-    public final void invoke2(Transition it) {
-        Intrinsics.checkNotNullParameter(it, "it");
+    public final Bitmap getBitmap() {
+        return this.mBitmap;
+    }
+
+    private void computeBitmapSize() {
+        this.mBitmapWidth = this.mBitmap.getScaledWidth(this.mTargetDensity);
+        this.mBitmapHeight = this.mBitmap.getScaledHeight(this.mTargetDensity);
+    }
+
+    public void setTargetDensity(Canvas canvas) {
+        setTargetDensity(canvas.getDensity());
+    }
+
+    public void setTargetDensity(DisplayMetrics displayMetrics) {
+        setTargetDensity(displayMetrics.densityDpi);
+    }
+
+    public void setTargetDensity(int i2) {
+        if (this.mTargetDensity != i2) {
+            if (i2 == 0) {
+                i2 = 160;
+            }
+            this.mTargetDensity = i2;
+            if (this.mBitmap != null) {
+                computeBitmapSize();
+            }
+            invalidateSelf();
+        }
+    }
+
+    public int getGravity() {
+        return this.mGravity;
+    }
+
+    public void setGravity(int i2) {
+        if (this.mGravity != i2) {
+            this.mGravity = i2;
+            this.mApplyGravity = true;
+            invalidateSelf();
+        }
+    }
+
+    public void setMipMap(boolean z2) {
+        throw new UnsupportedOperationException();
+    }
+
+    public boolean hasMipMap() {
+        throw new UnsupportedOperationException();
+    }
+
+    public void setAntiAlias(boolean z2) {
+        this.mPaint.setAntiAlias(z2);
+        invalidateSelf();
+    }
+
+    public boolean hasAntiAlias() {
+        return this.mPaint.isAntiAlias();
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public void setFilterBitmap(boolean z2) {
+        this.mPaint.setFilterBitmap(z2);
+        invalidateSelf();
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public void setDither(boolean z2) {
+        this.mPaint.setDither(z2);
+        invalidateSelf();
+    }
+
+    void gravityCompatApply(int i2, int i3, int i4, Rect rect, Rect rect2) {
+        throw new UnsupportedOperationException();
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public void updateDstRect() {
+        if (this.mApplyGravity) {
+            if (this.mIsCircular) {
+                int min = Math.min(this.mBitmapWidth, this.mBitmapHeight);
+                gravityCompatApply(this.mGravity, min, min, getBounds(), this.mDstRect);
+                int min2 = Math.min(this.mDstRect.width(), this.mDstRect.height());
+                this.mDstRect.inset(Math.max(0, (this.mDstRect.width() - min2) / 2), Math.max(0, (this.mDstRect.height() - min2) / 2));
+                this.mCornerRadius = min2 * 0.5f;
+            } else {
+                gravityCompatApply(this.mGravity, this.mBitmapWidth, this.mBitmapHeight, getBounds(), this.mDstRect);
+            }
+            this.mDstRectF.set(this.mDstRect);
+            if (this.mBitmapShader != null) {
+                this.mShaderMatrix.setTranslate(this.mDstRectF.left, this.mDstRectF.top);
+                this.mShaderMatrix.preScale(this.mDstRectF.width() / this.mBitmap.getWidth(), this.mDstRectF.height() / this.mBitmap.getHeight());
+                this.mBitmapShader.setLocalMatrix(this.mShaderMatrix);
+                this.mPaint.setShader(this.mBitmapShader);
+            }
+            this.mApplyGravity = false;
+        }
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public void draw(Canvas canvas) {
+        Bitmap bitmap = this.mBitmap;
+        if (bitmap == null) {
+            return;
+        }
+        updateDstRect();
+        if (this.mPaint.getShader() == null) {
+            canvas.drawBitmap(bitmap, (Rect) null, this.mDstRect, this.mPaint);
+            return;
+        }
+        RectF rectF = this.mDstRectF;
+        float f2 = this.mCornerRadius;
+        canvas.drawRoundRect(rectF, f2, f2, this.mPaint);
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public void setAlpha(int i2) {
+        if (i2 != this.mPaint.getAlpha()) {
+            this.mPaint.setAlpha(i2);
+            invalidateSelf();
+        }
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public int getAlpha() {
+        return this.mPaint.getAlpha();
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public void setColorFilter(ColorFilter colorFilter) {
+        this.mPaint.setColorFilter(colorFilter);
+        invalidateSelf();
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public ColorFilter getColorFilter() {
+        return this.mPaint.getColorFilter();
+    }
+
+    public void setCircular(boolean z2) {
+        this.mIsCircular = z2;
+        this.mApplyGravity = true;
+        if (z2) {
+            updateCircularCornerRadius();
+            this.mPaint.setShader(this.mBitmapShader);
+            invalidateSelf();
+            return;
+        }
+        setCornerRadius(0.0f);
+    }
+
+    private void updateCircularCornerRadius() {
+        this.mCornerRadius = Math.min(this.mBitmapHeight, this.mBitmapWidth) / 2;
+    }
+
+    public boolean isCircular() {
+        return this.mIsCircular;
+    }
+
+    public void setCornerRadius(float f2) {
+        if (this.mCornerRadius == f2) {
+            return;
+        }
+        this.mIsCircular = false;
+        if (isGreaterThanZero(f2)) {
+            this.mPaint.setShader(this.mBitmapShader);
+        } else {
+            this.mPaint.setShader(null);
+        }
+        this.mCornerRadius = f2;
+        invalidateSelf();
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    protected void onBoundsChange(Rect rect) {
+        super.onBoundsChange(rect);
+        if (this.mIsCircular) {
+            updateCircularCornerRadius();
+        }
+        this.mApplyGravity = true;
+    }
+
+    public float getCornerRadius() {
+        return this.mCornerRadius;
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public int getIntrinsicWidth() {
+        return this.mBitmapWidth;
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public int getIntrinsicHeight() {
+        return this.mBitmapHeight;
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public int getOpacity() {
+        Bitmap bitmap;
+        return (this.mGravity != 119 || this.mIsCircular || (bitmap = this.mBitmap) == null || bitmap.hasAlpha() || this.mPaint.getAlpha() < 255 || isGreaterThanZero(this.mCornerRadius)) ? -3 : -1;
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public RoundedBitmapDrawable(Resources resources, Bitmap bitmap) {
+        this.mTargetDensity = 160;
+        if (resources != null) {
+            this.mTargetDensity = resources.getDisplayMetrics().densityDpi;
+        }
+        this.mBitmap = bitmap;
+        if (bitmap != null) {
+            computeBitmapSize();
+            this.mBitmapShader = new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+            return;
+        }
+        this.mBitmapHeight = -1;
+        this.mBitmapWidth = -1;
+        this.mBitmapShader = null;
     }
 }

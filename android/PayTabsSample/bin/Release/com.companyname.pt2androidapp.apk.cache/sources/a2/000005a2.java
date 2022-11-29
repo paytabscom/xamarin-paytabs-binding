@@ -1,36 +1,16 @@
-package androidx.core.util;
+package androidx.core.internal.view;
 
-import android.os.Build;
-import java.util.Arrays;
-import java.util.Objects;
+import android.view.Menu;
 
 /* loaded from: classes.dex */
-public class ObjectsCompat {
-    private ObjectsCompat() {
-    }
+public interface SupportMenu extends Menu {
+    public static final int CATEGORY_MASK = -65536;
+    public static final int CATEGORY_SHIFT = 16;
+    public static final int FLAG_KEEP_OPEN_ON_SUBMENU_OPENED = 4;
+    public static final int SUPPORTED_MODIFIERS_MASK = 69647;
+    public static final int USER_MASK = 65535;
+    public static final int USER_SHIFT = 0;
 
-    public static boolean equals(Object obj, Object obj2) {
-        if (Build.VERSION.SDK_INT >= 19) {
-            return Objects.equals(obj, obj2);
-        }
-        return obj == obj2 || (obj != null && obj.equals(obj2));
-    }
-
-    public static int hashCode(Object obj) {
-        if (obj != null) {
-            return obj.hashCode();
-        }
-        return 0;
-    }
-
-    public static int hash(Object... objArr) {
-        if (Build.VERSION.SDK_INT >= 19) {
-            return Objects.hash(objArr);
-        }
-        return Arrays.hashCode(objArr);
-    }
-
-    public static String toString(Object obj, String str) {
-        return obj != null ? obj.toString() : str;
-    }
+    @Override // android.view.Menu
+    void setGroupDividerEnabled(boolean z2);
 }

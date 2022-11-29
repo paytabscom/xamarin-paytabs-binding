@@ -1,32 +1,120 @@
-package kotlinx.coroutines.channels;
+package com.google.gson.internal.bind.util;
 
-import kotlin.Metadata;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.jvm.internal.ContinuationImpl;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-import kotlin.jvm.functions.Function1;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
-/* compiled from: Channels.common.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000$\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u000b\n\u0000\n\u0002\u0018\u0002\u0010\u0000\u001a\u0004\u0018\u00010\u0001\"\u0004\b\u0000\u0010\u0002\"\u000e\b\u0001\u0010\u0003*\b\u0012\u0004\u0012\u0002H\u00020\u0004*\b\u0012\u0004\u0012\u0002H\u00020\u00052\u0006\u0010\u0006\u001a\u0002H\u00032\u0012\u0010\u0007\u001a\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u00020\t0\b2\f\u0010\n\u001a\b\u0012\u0004\u0012\u0002H\u00030\u000bH\u0087H"}, d2 = {"filterTo", "", "E", "C", "Lkotlinx/coroutines/channels/SendChannel;", "Lkotlinx/coroutines/channels/ReceiveChannel;", "destination", "predicate", "Lkotlin/Function1;", "", "continuation", "Lkotlin/coroutines/Continuation;"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.channels.ChannelsKt__Channels_commonKt", f = "Channels.common.kt", i = {0, 0, 0, 0, 1, 1, 1, 1}, l = {2625, 984}, m = "filterTo", n = {"destination", "predicate", "$this$consume$iv$iv", "cause$iv$iv", "destination", "predicate", "$this$consume$iv$iv", "cause$iv$iv"}, s = {"L$0", "L$1", "L$2", "L$3", "L$0", "L$1", "L$2", "L$3"})
 /* loaded from: classes.dex */
-public final class ChannelsKt__Channels_commonKt$filterTo$3 extends ContinuationImpl {
-    Object L$0;
-    Object L$1;
-    Object L$2;
-    Object L$3;
-    Object L$4;
-    int label;
-    /* synthetic */ Object result;
+public class ISO8601Utils {
+    private static final String UTC_ID = "UTC";
+    private static final TimeZone TIMEZONE_UTC = TimeZone.getTimeZone(UTC_ID);
 
-    public ChannelsKt__Channels_commonKt$filterTo$3(Continuation continuation) {
-        super(continuation);
+    public static String format(Date date) {
+        return format(date, false, TIMEZONE_UTC);
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        this.result = obj;
-        this.label |= Integer.MIN_VALUE;
-        return ChannelsKt.filterTo((ReceiveChannel) null, (SendChannel) null, (Function1) null, this);
+    public static String format(Date date, boolean z2) {
+        return format(date, z2, TIMEZONE_UTC);
+    }
+
+    public static String format(Date date, boolean z2, TimeZone timeZone) {
+        GregorianCalendar gregorianCalendar = new GregorianCalendar(timeZone, Locale.US);
+        gregorianCalendar.setTime(date);
+        StringBuilder sb = new StringBuilder(19 + (z2 ? 4 : 0) + (timeZone.getRawOffset() == 0 ? 1 : 6));
+        padInt(sb, gregorianCalendar.get(1), 4);
+        sb.append('-');
+        padInt(sb, gregorianCalendar.get(2) + 1, 2);
+        sb.append('-');
+        padInt(sb, gregorianCalendar.get(5), 2);
+        sb.append('T');
+        padInt(sb, gregorianCalendar.get(11), 2);
+        sb.append(':');
+        padInt(sb, gregorianCalendar.get(12), 2);
+        sb.append(':');
+        padInt(sb, gregorianCalendar.get(13), 2);
+        if (z2) {
+            sb.append('.');
+            padInt(sb, gregorianCalendar.get(14), 3);
+        }
+        int offset = timeZone.getOffset(gregorianCalendar.getTimeInMillis());
+        if (offset != 0) {
+            int i2 = offset / 60000;
+            int abs = Math.abs(i2 / 60);
+            int abs2 = Math.abs(i2 % 60);
+            sb.append(offset >= 0 ? '+' : '-');
+            padInt(sb, abs, 2);
+            sb.append(':');
+            padInt(sb, abs2, 2);
+        } else {
+            sb.append('Z');
+        }
+        return sb.toString();
+    }
+
+    /* JADX WARN: Removed duplicated region for block: B:49:0x00cf A[Catch: IllegalArgumentException | IndexOutOfBoundsException | NumberFormatException -> 0x01bc, NumberFormatException -> 0x01be, IndexOutOfBoundsException -> 0x01c0, TryCatch #2 {IllegalArgumentException | IndexOutOfBoundsException | NumberFormatException -> 0x01bc, blocks: (B:3:0x0004, B:5:0x0016, B:6:0x0018, B:8:0x0024, B:9:0x0026, B:11:0x0035, B:13:0x003b, B:17:0x0050, B:19:0x0060, B:20:0x0062, B:22:0x006e, B:23:0x0070, B:25:0x0076, B:29:0x0080, B:34:0x0090, B:36:0x0098, B:47:0x00c9, B:49:0x00cf, B:51:0x00d6, B:75:0x0183, B:55:0x00e0, B:56:0x00fb, B:57:0x00fc, B:61:0x0118, B:63:0x0125, B:66:0x012e, B:68:0x014d, B:71:0x015c, B:72:0x017e, B:74:0x0181, B:60:0x0107, B:77:0x01b4, B:78:0x01bb, B:40:0x00b0, B:41:0x00b3), top: B:94:0x0004 }] */
+    /* JADX WARN: Removed duplicated region for block: B:77:0x01b4 A[Catch: IllegalArgumentException | IndexOutOfBoundsException | NumberFormatException -> 0x01bc, NumberFormatException -> 0x01be, IndexOutOfBoundsException -> 0x01c0, TryCatch #2 {IllegalArgumentException | IndexOutOfBoundsException | NumberFormatException -> 0x01bc, blocks: (B:3:0x0004, B:5:0x0016, B:6:0x0018, B:8:0x0024, B:9:0x0026, B:11:0x0035, B:13:0x003b, B:17:0x0050, B:19:0x0060, B:20:0x0062, B:22:0x006e, B:23:0x0070, B:25:0x0076, B:29:0x0080, B:34:0x0090, B:36:0x0098, B:47:0x00c9, B:49:0x00cf, B:51:0x00d6, B:75:0x0183, B:55:0x00e0, B:56:0x00fb, B:57:0x00fc, B:61:0x0118, B:63:0x0125, B:66:0x012e, B:68:0x014d, B:71:0x015c, B:72:0x017e, B:74:0x0181, B:60:0x0107, B:77:0x01b4, B:78:0x01bb, B:40:0x00b0, B:41:0x00b3), top: B:94:0x0004 }] */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+        To view partially-correct code enable 'Show inconsistent code' option in preferences
+    */
+    public static java.util.Date parse(java.lang.String r17, java.text.ParsePosition r18) throws java.text.ParseException {
+        /*
+            Method dump skipped, instructions count: 553
+            To view this dump change 'Code comments level' option to 'DEBUG'
+        */
+        throw new UnsupportedOperationException("Method not decompiled: com.google.gson.internal.bind.util.ISO8601Utils.parse(java.lang.String, java.text.ParsePosition):java.util.Date");
+    }
+
+    private static boolean checkOffset(String str, int i2, char c2) {
+        return i2 < str.length() && str.charAt(i2) == c2;
+    }
+
+    private static int parseInt(String str, int i2, int i3) throws NumberFormatException {
+        int i4;
+        int i5;
+        if (i2 < 0 || i3 > str.length() || i2 > i3) {
+            throw new NumberFormatException(str);
+        }
+        if (i2 < i3) {
+            i5 = i2 + 1;
+            int digit = Character.digit(str.charAt(i2), 10);
+            if (digit < 0) {
+                throw new NumberFormatException("Invalid number: " + str.substring(i2, i3));
+            }
+            i4 = -digit;
+        } else {
+            i4 = 0;
+            i5 = i2;
+        }
+        while (i5 < i3) {
+            int i6 = i5 + 1;
+            int digit2 = Character.digit(str.charAt(i5), 10);
+            if (digit2 < 0) {
+                throw new NumberFormatException("Invalid number: " + str.substring(i2, i3));
+            }
+            i4 = (i4 * 10) - digit2;
+            i5 = i6;
+        }
+        return -i4;
+    }
+
+    private static void padInt(StringBuilder sb, int i2, int i3) {
+        String num = Integer.toString(i2);
+        for (int length = i3 - num.length(); length > 0; length--) {
+            sb.append('0');
+        }
+        sb.append(num);
+    }
+
+    private static int indexOfNonDigit(String str, int i2) {
+        while (i2 < str.length()) {
+            char charAt = str.charAt(i2);
+            if (charAt < '0' || charAt > '9') {
+                return i2;
+            }
+            i2++;
+        }
+        return str.length();
     }
 }

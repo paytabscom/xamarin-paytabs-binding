@@ -1,46 +1,9 @@
-package mono.android.view;
+package kotlin.jvm.internal.markers;
 
-import android.view.View;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: KMarkers.kt */
+@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\bf\u0018\u00002\u00020\u0001¨\u0006\u0002"}, d2 = {"Lkotlin/jvm/internal/markers/KMutableCollection;", "Lkotlin/jvm/internal/markers/KMutableIterable;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class View_OnScrollChangeListenerImplementor implements IGCUserPeer, View.OnScrollChangeListener {
-    public static final String __md_methods = "n_onScrollChange:(Landroid/view/View;IIII)V:GetOnScrollChange_Landroid_view_View_IIIIHandler:Android.Views.View/IOnScrollChangeListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onScrollChange(View view, int i2, int i3, int i4, int i5);
-
-    static {
-        Runtime.register("Android.Views.View+IOnScrollChangeListenerImplementor, Mono.Android", View_OnScrollChangeListenerImplementor.class, __md_methods);
-    }
-
-    public View_OnScrollChangeListenerImplementor() {
-        if (getClass() == View_OnScrollChangeListenerImplementor.class) {
-            TypeManager.Activate("Android.Views.View+IOnScrollChangeListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.view.View.OnScrollChangeListener
-    public void onScrollChange(View view, int i2, int i3, int i4, int i5) {
-        n_onScrollChange(view, i2, i3, i4, i5);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public interface KMutableCollection extends KMutableIterable {
 }

@@ -1,32 +1,194 @@
-package kotlinx.coroutines.channels;
+package com.google.gson.reflect;
 
-import kotlin.Metadata;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.jvm.internal.ContinuationImpl;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
+import com.google.gson.internal.C$Gson$Preconditions;
+import com.google.gson.internal.C$Gson$Types;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.HashMap;
+import java.util.Map;
 
-/* compiled from: Channels.common.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000$\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0010$\n\u0002\u0010 \u0010\u0000\u001a\u0004\u0018\u00010\u0001\"\u0004\b\u0000\u0010\u0002\"\u0004\b\u0001\u0010\u0003\"\u0004\b\u0002\u0010\u0004*\b\u0012\u0004\u0012\u0002H\u00020\u00052\u0012\u0010\u0006\u001a\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00030\u00072\u0012\u0010\b\u001a\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00040\u00072\u001e\u0010\t\u001a\u001a\u0012\u0016\u0012\u0014\u0012\u0004\u0012\u0002H\u0003\u0012\n\u0012\b\u0012\u0004\u0012\u0002H\u00040\f0\u000b0\nH\u0087H"}, d2 = {"groupBy", "", "E", "K", "V", "Lkotlinx/coroutines/channels/ReceiveChannel;", "keySelector", "Lkotlin/Function1;", "valueTransform", "continuation", "Lkotlin/coroutines/Continuation;", "", ""}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.channels.ChannelsKt__Channels_commonKt", f = "Channels.common.kt", i = {0, 0, 0, 0, 0}, l = {2794}, m = "groupBy", n = {"keySelector", "valueTransform", "destination$iv", "$this$consume$iv$iv$iv", "cause$iv$iv$iv"}, s = {"L$0", "L$1", "L$2", "L$3", "L$4"})
 /* loaded from: classes.dex */
-public final class ChannelsKt__Channels_commonKt$groupBy$2 extends ContinuationImpl {
-    Object L$0;
-    Object L$1;
-    Object L$2;
-    Object L$3;
-    Object L$4;
-    Object L$5;
-    int label;
-    /* synthetic */ Object result;
+public class TypeToken<T> {
+    final int hashCode;
+    final Class<? super T> rawType;
+    final Type type;
 
-    public ChannelsKt__Channels_commonKt$groupBy$2(Continuation continuation) {
-        super(continuation);
+    /* JADX INFO: Access modifiers changed from: protected */
+    public TypeToken() {
+        Type superclassTypeParameter = getSuperclassTypeParameter(getClass());
+        this.type = superclassTypeParameter;
+        this.rawType = (Class<? super T>) C$Gson$Types.getRawType(superclassTypeParameter);
+        this.hashCode = superclassTypeParameter.hashCode();
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        this.result = obj;
-        this.label |= Integer.MIN_VALUE;
-        return ChannelsKt.groupBy(null, null, null, this);
+    TypeToken(Type type) {
+        Type canonicalize = C$Gson$Types.canonicalize((Type) C$Gson$Preconditions.checkNotNull(type));
+        this.type = canonicalize;
+        this.rawType = (Class<? super T>) C$Gson$Types.getRawType(canonicalize);
+        this.hashCode = canonicalize.hashCode();
+    }
+
+    static Type getSuperclassTypeParameter(Class<?> cls) {
+        Type genericSuperclass = cls.getGenericSuperclass();
+        if (genericSuperclass instanceof Class) {
+            throw new RuntimeException("Missing type parameter.");
+        }
+        return C$Gson$Types.canonicalize(((ParameterizedType) genericSuperclass).getActualTypeArguments()[0]);
+    }
+
+    public final Class<? super T> getRawType() {
+        return this.rawType;
+    }
+
+    public final Type getType() {
+        return this.type;
+    }
+
+    @Deprecated
+    public boolean isAssignableFrom(Class<?> cls) {
+        return isAssignableFrom((Type) cls);
+    }
+
+    @Deprecated
+    public boolean isAssignableFrom(Type type) {
+        if (type == null) {
+            return false;
+        }
+        if (this.type.equals(type)) {
+            return true;
+        }
+        Type type2 = this.type;
+        if (type2 instanceof Class) {
+            return this.rawType.isAssignableFrom(C$Gson$Types.getRawType(type));
+        }
+        if (type2 instanceof ParameterizedType) {
+            return isAssignableFrom(type, (ParameterizedType) type2, new HashMap());
+        }
+        if (type2 instanceof GenericArrayType) {
+            return this.rawType.isAssignableFrom(C$Gson$Types.getRawType(type)) && isAssignableFrom(type, (GenericArrayType) this.type);
+        }
+        throw buildUnexpectedTypeError(type2, Class.class, ParameterizedType.class, GenericArrayType.class);
+    }
+
+    @Deprecated
+    public boolean isAssignableFrom(TypeToken<?> typeToken) {
+        return isAssignableFrom(typeToken.getType());
+    }
+
+    /* JADX WARN: Multi-variable type inference failed */
+    /* JADX WARN: Type inference failed for: r1v0, types: [java.lang.reflect.Type] */
+    /* JADX WARN: Type inference failed for: r1v10 */
+    /* JADX WARN: Type inference failed for: r1v3, types: [java.lang.Class] */
+    /* JADX WARN: Type inference failed for: r1v5, types: [java.lang.reflect.Type] */
+    /* JADX WARN: Type inference failed for: r1v8, types: [java.lang.reflect.Type] */
+    /* JADX WARN: Type inference failed for: r1v9 */
+    private static boolean isAssignableFrom(Type type, GenericArrayType genericArrayType) {
+        Type genericComponentType = genericArrayType.getGenericComponentType();
+        if (genericComponentType instanceof ParameterizedType) {
+            if (type instanceof GenericArrayType) {
+                type = ((GenericArrayType) type).getGenericComponentType();
+            } else if (type instanceof Class) {
+                type = (Class) type;
+                while (type.isArray()) {
+                    type = type.getComponentType();
+                }
+            }
+            return isAssignableFrom(type, (ParameterizedType) genericComponentType, new HashMap());
+        }
+        return true;
+    }
+
+    private static boolean isAssignableFrom(Type type, ParameterizedType parameterizedType, Map<String, Type> map) {
+        if (type == null) {
+            return false;
+        }
+        if (parameterizedType.equals(type)) {
+            return true;
+        }
+        Class<?> rawType = C$Gson$Types.getRawType(type);
+        ParameterizedType parameterizedType2 = type instanceof ParameterizedType ? (ParameterizedType) type : null;
+        if (parameterizedType2 != null) {
+            Type[] actualTypeArguments = parameterizedType2.getActualTypeArguments();
+            TypeVariable<Class<?>>[] typeParameters = rawType.getTypeParameters();
+            for (int i2 = 0; i2 < actualTypeArguments.length; i2++) {
+                Type type2 = actualTypeArguments[i2];
+                TypeVariable<Class<?>> typeVariable = typeParameters[i2];
+                while (type2 instanceof TypeVariable) {
+                    type2 = map.get(((TypeVariable) type2).getName());
+                }
+                map.put(typeVariable.getName(), type2);
+            }
+            if (typeEquals(parameterizedType2, parameterizedType, map)) {
+                return true;
+            }
+        }
+        for (Type type3 : rawType.getGenericInterfaces()) {
+            if (isAssignableFrom(type3, parameterizedType, new HashMap(map))) {
+                return true;
+            }
+        }
+        return isAssignableFrom(rawType.getGenericSuperclass(), parameterizedType, new HashMap(map));
+    }
+
+    private static boolean typeEquals(ParameterizedType parameterizedType, ParameterizedType parameterizedType2, Map<String, Type> map) {
+        if (parameterizedType.getRawType().equals(parameterizedType2.getRawType())) {
+            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+            Type[] actualTypeArguments2 = parameterizedType2.getActualTypeArguments();
+            for (int i2 = 0; i2 < actualTypeArguments.length; i2++) {
+                if (!matches(actualTypeArguments[i2], actualTypeArguments2[i2], map)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private static AssertionError buildUnexpectedTypeError(Type type, Class<?>... clsArr) {
+        StringBuilder sb = new StringBuilder("Unexpected type. Expected one of: ");
+        for (Class<?> cls : clsArr) {
+            sb.append(cls.getName());
+            sb.append(", ");
+        }
+        sb.append("but got: ");
+        sb.append(type.getClass().getName());
+        sb.append(", for type token: ");
+        sb.append(type.toString());
+        sb.append('.');
+        return new AssertionError(sb.toString());
+    }
+
+    private static boolean matches(Type type, Type type2, Map<String, Type> map) {
+        return type2.equals(type) || ((type instanceof TypeVariable) && type2.equals(map.get(((TypeVariable) type).getName())));
+    }
+
+    public final int hashCode() {
+        return this.hashCode;
+    }
+
+    public final boolean equals(Object obj) {
+        return (obj instanceof TypeToken) && C$Gson$Types.equals(this.type, ((TypeToken) obj).type);
+    }
+
+    public final String toString() {
+        return C$Gson$Types.typeToString(this.type);
+    }
+
+    public static TypeToken<?> get(Type type) {
+        return new TypeToken<>(type);
+    }
+
+    public static <T> TypeToken<T> get(Class<T> cls) {
+        return new TypeToken<>(cls);
+    }
+
+    public static TypeToken<?> getParameterized(Type type, Type... typeArr) {
+        return new TypeToken<>(C$Gson$Types.newParameterizedTypeWithOwner(null, type, typeArr));
+    }
+
+    public static TypeToken<?> getArray(Type type) {
+        return new TypeToken<>(C$Gson$Types.arrayOf(type));
     }
 }

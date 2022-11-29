@@ -1,119 +1,69 @@
-package com.google.android.material.internal;
+package c0;
 
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.Canvas;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.FrameLayout;
-import androidx.core.view.OnApplyWindowInsetsListener;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import com.google.android.material.R;
+import android.app.Application;
+import android.content.SharedPreferences;
+import android.security.keystore.KeyGenParameterSpec;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
 
+@Metadata(bv = {}, d1 = {"\u00000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u000e\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u0006\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0004\b\u0001\u0018\u00002\u00020\u0001B\u0017\u0012\u0006\u0010\u0018\u001a\u00020\u0017\u0012\u0006\u0010\u0003\u001a\u00020\u0002¢\u0006\u0004\b\u0019\u0010\u001aR\u001a\u0010\u0003\u001a\u00020\u00028\u0016X\u0096\u0004¢\u0006\f\n\u0004\b\u0003\u0010\u0004\u001a\u0004\b\u0005\u0010\u0006R\u001a\u0010\b\u001a\u00020\u00078\u0016X\u0096\u0004¢\u0006\f\n\u0004\b\b\u0010\t\u001a\u0004\b\n\u0010\u000bR\u001a\u0010\f\u001a\u00020\u00028\u0016X\u0096\u0004¢\u0006\f\n\u0004\b\f\u0010\u0004\u001a\u0004\b\r\u0010\u0006R\u001a\u0010\u000f\u001a\u00020\u000e8\u0016X\u0096\u0004¢\u0006\f\n\u0004\b\u000f\u0010\u0010\u001a\u0004\b\u0011\u0010\u0012R\u0014\u0010\u0016\u001a\u00020\u00138VX\u0096\u0004¢\u0006\u0006\u001a\u0004\b\u0014\u0010\u0015¨\u0006\u001b"}, d2 = {"Lc0/a;", "Lc0/c;", "", "sharedPrefFileName", "Ljava/lang/String;", "e", "()Ljava/lang/String;", "Landroid/security/keystore/KeyGenParameterSpec;", "keyGenParameterSpec", "Landroid/security/keystore/KeyGenParameterSpec;", "d", "()Landroid/security/keystore/KeyGenParameterSpec;", "alias", "c", "Landroid/content/SharedPreferences;", "sharedPref", "Landroid/content/SharedPreferences;", "a", "()Landroid/content/SharedPreferences;", "Landroid/content/SharedPreferences$Editor;", "b", "()Landroid/content/SharedPreferences$Editor;", "editor", "Landroid/app/Application;", "app", "<init>", "(Landroid/app/Application;Ljava/lang/String;)V", "paymentsdk_release"}, k = 1, mv = {1, 7, 1})
 /* loaded from: classes.dex */
-public class ScrimInsetsFrameLayout extends FrameLayout {
-    private boolean drawBottomInsetForeground;
-    private boolean drawTopInsetForeground;
-    Drawable insetForeground;
-    Rect insets;
-    private Rect tempRect;
+public final class a implements c {
 
-    protected void onInsetsChanged(WindowInsetsCompat windowInsetsCompat) {
+    /* renamed from: a  reason: collision with root package name */
+    private final Application f45a;
+
+    /* renamed from: b  reason: collision with root package name */
+    private final String f46b;
+
+    /* renamed from: c  reason: collision with root package name */
+    private final KeyGenParameterSpec f47c;
+
+    /* renamed from: d  reason: collision with root package name */
+    private final String f48d;
+
+    /* renamed from: e  reason: collision with root package name */
+    private final SharedPreferences f49e;
+
+    public a(Application app, String sharedPrefFileName) {
+        Intrinsics.checkNotNullParameter(app, "app");
+        Intrinsics.checkNotNullParameter(sharedPrefFileName, "sharedPrefFileName");
+        this.f45a = app;
+        this.f46b = sharedPrefFileName;
+        KeyGenParameterSpec AES256_GCM_SPEC = MasterKeys.AES256_GCM_SPEC;
+        Intrinsics.checkNotNullExpressionValue(AES256_GCM_SPEC, "AES256_GCM_SPEC");
+        this.f47c = AES256_GCM_SPEC;
+        String orCreate = MasterKeys.getOrCreate(d());
+        Intrinsics.checkNotNullExpressionValue(orCreate, "getOrCreate(keyGenParameterSpec)");
+        this.f48d = orCreate;
+        SharedPreferences create = EncryptedSharedPreferences.create(e(), c(), app, EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV, EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
+        Intrinsics.checkNotNullExpressionValue(create, "create(\n        sharedPr…onScheme.AES256_GCM\n    )");
+        this.f49e = create;
     }
 
-    public ScrimInsetsFrameLayout(Context context) {
-        this(context, null);
+    @Override // c0.d
+    public SharedPreferences a() {
+        return this.f49e;
     }
 
-    public ScrimInsetsFrameLayout(Context context, AttributeSet attributeSet) {
-        this(context, attributeSet, 0);
+    @Override // c0.d
+    public SharedPreferences.Editor b() {
+        SharedPreferences.Editor edit = a().edit();
+        Intrinsics.checkNotNullExpressionValue(edit, "sharedPref.edit()");
+        return edit;
     }
 
-    public ScrimInsetsFrameLayout(Context context, AttributeSet attributeSet, int i2) {
-        super(context, attributeSet, i2);
-        this.tempRect = new Rect();
-        this.drawTopInsetForeground = true;
-        this.drawBottomInsetForeground = true;
-        TypedArray obtainStyledAttributes = ThemeEnforcement.obtainStyledAttributes(context, attributeSet, R.styleable.ScrimInsetsFrameLayout, i2, R.style.Widget_Design_ScrimInsetsFrameLayout, new int[0]);
-        this.insetForeground = obtainStyledAttributes.getDrawable(R.styleable.ScrimInsetsFrameLayout_insetForeground);
-        obtainStyledAttributes.recycle();
-        setWillNotDraw(true);
-        ViewCompat.setOnApplyWindowInsetsListener(this, new OnApplyWindowInsetsListener() { // from class: com.google.android.material.internal.ScrimInsetsFrameLayout.1
-            @Override // androidx.core.view.OnApplyWindowInsetsListener
-            public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat windowInsetsCompat) {
-                if (ScrimInsetsFrameLayout.this.insets == null) {
-                    ScrimInsetsFrameLayout.this.insets = new Rect();
-                }
-                ScrimInsetsFrameLayout.this.insets.set(windowInsetsCompat.getSystemWindowInsetLeft(), windowInsetsCompat.getSystemWindowInsetTop(), windowInsetsCompat.getSystemWindowInsetRight(), windowInsetsCompat.getSystemWindowInsetBottom());
-                ScrimInsetsFrameLayout.this.onInsetsChanged(windowInsetsCompat);
-                ScrimInsetsFrameLayout.this.setWillNotDraw(!windowInsetsCompat.hasSystemWindowInsets() || ScrimInsetsFrameLayout.this.insetForeground == null);
-                ViewCompat.postInvalidateOnAnimation(ScrimInsetsFrameLayout.this);
-                return windowInsetsCompat.consumeSystemWindowInsets();
-            }
-        });
+    public String c() {
+        return this.f48d;
     }
 
-    public void setScrimInsetForeground(Drawable drawable) {
-        this.insetForeground = drawable;
+    public KeyGenParameterSpec d() {
+        return this.f47c;
     }
 
-    public void setDrawTopInsetForeground(boolean z2) {
-        this.drawTopInsetForeground = z2;
-    }
-
-    public void setDrawBottomInsetForeground(boolean z2) {
-        this.drawBottomInsetForeground = z2;
-    }
-
-    @Override // android.view.View
-    public void draw(Canvas canvas) {
-        super.draw(canvas);
-        int width = getWidth();
-        int height = getHeight();
-        if (this.insets == null || this.insetForeground == null) {
-            return;
-        }
-        int save = canvas.save();
-        canvas.translate(getScrollX(), getScrollY());
-        if (this.drawTopInsetForeground) {
-            this.tempRect.set(0, 0, width, this.insets.top);
-            this.insetForeground.setBounds(this.tempRect);
-            this.insetForeground.draw(canvas);
-        }
-        if (this.drawBottomInsetForeground) {
-            this.tempRect.set(0, height - this.insets.bottom, width, height);
-            this.insetForeground.setBounds(this.tempRect);
-            this.insetForeground.draw(canvas);
-        }
-        this.tempRect.set(0, this.insets.top, this.insets.left, height - this.insets.bottom);
-        this.insetForeground.setBounds(this.tempRect);
-        this.insetForeground.draw(canvas);
-        this.tempRect.set(width - this.insets.right, this.insets.top, width, height - this.insets.bottom);
-        this.insetForeground.setBounds(this.tempRect);
-        this.insetForeground.draw(canvas);
-        canvas.restoreToCount(save);
-    }
-
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // android.view.ViewGroup, android.view.View
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        Drawable drawable = this.insetForeground;
-        if (drawable != null) {
-            drawable.setCallback(this);
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // android.view.ViewGroup, android.view.View
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        Drawable drawable = this.insetForeground;
-        if (drawable != null) {
-            drawable.setCallback(null);
-        }
+    public String e() {
+        return this.f46b;
     }
 }

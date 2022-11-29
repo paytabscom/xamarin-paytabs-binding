@@ -1,46 +1,27 @@
-package kotlinx.coroutines.scheduling;
+package kotlin.collections.unsigned;
 
+import java.util.Iterator;
 import kotlin.Metadata;
-import kotlin.ranges.RangesKt;
-import kotlinx.coroutines.CoroutineDispatcher;
-import kotlinx.coroutines.DispatchersKt;
-import kotlinx.coroutines.internal.SystemPropsKt;
-import kotlinx.coroutines.internal.SystemPropsKt__SystemProps_commonKt;
+import kotlin.UByte;
+import kotlin.UByteArray;
+import kotlin.jvm.functions.Function0;
+import kotlin.jvm.internal.Lambda;
 
-/* compiled from: Dispatcher.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\"\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0002\bÀ\u0002\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J\b\u0010\u0007\u001a\u00020\bH\u0016J\b\u0010\t\u001a\u00020\nH\u0007J\b\u0010\u000b\u001a\u00020\nH\u0016R\u0011\u0010\u0003\u001a\u00020\u0004¢\u0006\b\n\u0000\u001a\u0004\b\u0005\u0010\u0006¨\u0006\f"}, d2 = {"Lkotlinx/coroutines/scheduling/DefaultScheduler;", "Lkotlinx/coroutines/scheduling/ExperimentalCoroutineDispatcher;", "()V", "IO", "Lkotlinx/coroutines/CoroutineDispatcher;", "getIO", "()Lkotlinx/coroutines/CoroutineDispatcher;", "close", "", "toDebugString", "", "toString", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
+/* compiled from: _UArrays.kt */
+@Metadata(d1 = {"\u0000\f\n\u0000\n\u0002\u0010(\n\u0002\u0018\u0002\n\u0000\u0010\u0000\u001a\b\u0012\u0004\u0012\u00020\u00020\u0001H\n¢\u0006\u0002\b\u0003"}, d2 = {"<anonymous>", "", "Lkotlin/UByte;", "invoke"}, k = 3, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class DefaultScheduler extends ExperimentalCoroutineDispatcher {
-    public static final DefaultScheduler INSTANCE;
-    private static final CoroutineDispatcher IO;
+final class UArraysKt___UArraysKt$withIndex$3 extends Lambda implements Function0<Iterator<? extends UByte>> {
+    final /* synthetic */ byte[] $this_withIndex;
 
-    @Override // kotlinx.coroutines.scheduling.ExperimentalCoroutineDispatcher, kotlinx.coroutines.CoroutineDispatcher
-    public String toString() {
-        return TasksKt.DEFAULT_DISPATCHER_NAME;
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public UArraysKt___UArraysKt$withIndex$3(byte[] bArr) {
+        super(0);
+        this.$this_withIndex = bArr;
     }
 
-    static {
-        int systemProp$default;
-        DefaultScheduler defaultScheduler = new DefaultScheduler();
-        INSTANCE = defaultScheduler;
-        systemProp$default = SystemPropsKt__SystemProps_commonKt.systemProp$default(DispatchersKt.IO_PARALLELISM_PROPERTY_NAME, RangesKt.coerceAtLeast(64, SystemPropsKt.getAVAILABLE_PROCESSORS()), 0, 0, 12, (Object) null);
-        IO = new LimitingDispatcher(defaultScheduler, systemProp$default, "Dispatchers.IO", 1);
-    }
-
-    private DefaultScheduler() {
-        super(0, 0, null, 7, null);
-    }
-
-    public final CoroutineDispatcher getIO() {
-        return IO;
-    }
-
-    @Override // kotlinx.coroutines.scheduling.ExperimentalCoroutineDispatcher, kotlinx.coroutines.ExecutorCoroutineDispatcher, java.io.Closeable, java.lang.AutoCloseable
-    public void close() {
-        throw new UnsupportedOperationException("Dispatchers.Default cannot be closed");
-    }
-
-    public final String toDebugString() {
-        return super.toString();
+    @Override // kotlin.jvm.functions.Function0
+    public final Iterator<? extends UByte> invoke() {
+        return UByteArray.m121iteratorimpl(this.$this_withIndex);
     }
 }

@@ -1,0 +1,57 @@
+﻿<metadata>
+	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkBillingDetails.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
+		   name="managedReturn">Java.Lang.Object</attr>
+	
+	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkBillingDetails.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
+		   name="managedReturn">Java.Lang.Object[]</attr>
+
+	
+	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
+		   name="managedReturn">Java.Lang.Object</attr>
+
+	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
+		   name="managedReturn">Java.Lang.Object[]</attr>
+
+	
+	
+	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkLanguageCode.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
+	   name="managedReturn">Java.Lang.Object</attr>
+
+	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkLanguageCode.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
+		   name="managedReturn">Java.Lang.Object[]</attr>
+
+	
+	
+	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkShippingDetails.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
+	   name="managedReturn">Java.Lang.Object</attr>
+
+	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkShippingDetails.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
+		   name="managedReturn">Java.Lang.Object[]</attr>
+
+	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='BaseBillingShippingDetails.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
+	   name="managedReturn">Java.Lang.Object</attr>
+
+	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='BaseBillingShippingDetails.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
+		   name="managedReturn">Java.Lang.Object[]</attr>
+
+   <attr  path="/api/package[@name='com.payment.paymentsdk.save_cards.entities']/class[@name='PaymentSDKSavedCardInfo.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
+	   name="managedReturn">Java.Lang.Object</attr>
+   <attr  path="/api/package[@name='com.payment.paymentsdk.save_cards.entities']/class[@name='PaymentSDKSavedCardInfo.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
+		   name="managedReturn">Java.Lang.Object[]</attr>
+
+
+	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkRegion.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
+	   name="managedReturn">Java.Lang.Object</attr>
+
+	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkRegion.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
+		   name="managedReturn">Java.Lang.Object[]</attr>
+
+	<remove-node  path="/api/package[@name='com.payment.paymentsdk.creditcard']/class[@name='StringArrayBottomSheetListAdapter']/method[@name='onBindViewHolder' and count(parameter)=2 and parameter[1][@type='com.payment.paymentsdk.creditcard.StringArrayBottomSheetListAdapter.VH'] and parameter[2][@type='int']]"/>
+
+	<remove-node  path="/api/package[@name='com.payment.paymentsdk.creditcard']/class[@name='StringArrayBottomSheetListAdapter']/method[@name='onCreateViewHolder' and count(parameter)=2 and parameter[1][@type='android.view.ViewGroup'] and parameter[2][@type='int']]"/>
+	<remove-node   path="/api/package[@name='com.payment.paymentsdk.creditcard.model']/class[@name='ScanCardActivityResultCallback']/method[@name='createIntent' and count(parameter)=2 and parameter[1][@type='android.content.Context'] and parameter[2][@type='java.lang.String']]"/>
+	<remove-node   path="/api/package[@name='com.payment.paymentsdk.creditcard.model']/class[@name='ScanCardActivityResultCallback']/method[@name='parseResult' and count(parameter)=2 and parameter[1][@type='int'] and parameter[2][@type='android.content.Intent']]"/>
+
+	<remove-node   path="/api/package[@name='com.payment.paymentsdk.creditcard.model']/class[@name='ScanCardActivityResultCallback']/method[@name='parseResult' and count(parameter)=2 and parameter[1][@type='int'] and parameter[2][@type='android.content.Intent']]"/>
+
+</metadata>

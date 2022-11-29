@@ -1,47 +1,36 @@
-package mono.android.media.session;
+package kotlin.jvm.internal;
 
-import android.media.session.MediaSessionManager;
-import java.util.ArrayList;
-import java.util.List;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.NoSuchElementException;
+import kotlin.Metadata;
+import kotlin.collections.IntIterator;
 
+/* compiled from: ArrayIterators.kt */
+@Metadata(d1 = {"\u0000 \n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0015\n\u0002\b\u0002\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0002\b\u0002\u0018\u00002\u00020\u0001B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0002\u0010\u0004J\t\u0010\u0007\u001a\u00020\bH\u0096\u0002J\b\u0010\t\u001a\u00020\u0006H\u0016R\u000e\u0010\u0002\u001a\u00020\u0003X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0006X\u0082\u000e¢\u0006\u0002\n\u0000¨\u0006\n"}, d2 = {"Lkotlin/jvm/internal/ArrayIntIterator;", "Lkotlin/collections/IntIterator;", "array", "", "([I)V", "index", "", "hasNext", "", "nextInt", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class MediaSessionManager_OnActiveSessionsChangedListenerImplementor implements IGCUserPeer, MediaSessionManager.OnActiveSessionsChangedListener {
-    public static final String __md_methods = "n_onActiveSessionsChanged:(Ljava/util/List;)V:GetOnActiveSessionsChanged_Ljava_util_List_Handler:Android.Media.Session.MediaSessionManager/IOnActiveSessionsChangedListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+final class ArrayIntIterator extends IntIterator {
+    private final int[] array;
+    private int index;
 
-    private native void n_onActiveSessionsChanged(List list);
-
-    static {
-        Runtime.register("Android.Media.Session.MediaSessionManager+IOnActiveSessionsChangedListenerImplementor, Mono.Android", MediaSessionManager_OnActiveSessionsChangedListenerImplementor.class, __md_methods);
+    public ArrayIntIterator(int[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        this.array = array;
     }
 
-    public MediaSessionManager_OnActiveSessionsChangedListenerImplementor() {
-        if (getClass() == MediaSessionManager_OnActiveSessionsChangedListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.Session.MediaSessionManager+IOnActiveSessionsChangedListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    @Override // java.util.Iterator
+    public boolean hasNext() {
+        return this.index < this.array.length;
     }
 
-    @Override // android.media.session.MediaSessionManager.OnActiveSessionsChangedListener
-    public void onActiveSessionsChanged(List list) {
-        n_onActiveSessionsChanged(list);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
+    @Override // kotlin.collections.IntIterator
+    public int nextInt() {
+        try {
+            int[] iArr = this.array;
+            int i2 = this.index;
+            this.index = i2 + 1;
+            return iArr[i2];
+        } catch (ArrayIndexOutOfBoundsException e2) {
+            this.index--;
+            throw new NoSuchElementException(e2.getMessage());
         }
     }
 }

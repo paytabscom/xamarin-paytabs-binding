@@ -1,13 +1,49 @@
-package kotlin;
+package com.google.android.material.transition.platform;
 
-/* compiled from: KotlinNullPointerException.kt */
-@Metadata(d1 = {"\u0000\u0018\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0002\b\u0002\b\u0016\u0018\u00002\u00060\u0001j\u0002`\u0002B\u0007\b\u0016¢\u0006\u0002\u0010\u0003B\u0011\b\u0016\u0012\b\u0010\u0004\u001a\u0004\u0018\u00010\u0005¢\u0006\u0002\u0010\u0006¨\u0006\u0007"}, d2 = {"Lkotlin/KotlinNullPointerException;", "Ljava/lang/NullPointerException;", "Lkotlin/NullPointerException;", "()V", "message", "", "(Ljava/lang/String;)V", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
+import android.view.View;
+import android.view.ViewGroup;
+
 /* loaded from: classes.dex */
-public class KotlinNullPointerException extends NullPointerException {
-    public KotlinNullPointerException() {
+public final class FadeProvider implements VisibilityAnimatorProvider {
+    private float incomingEndThreshold = 1.0f;
+
+    public float getIncomingEndThreshold() {
+        return this.incomingEndThreshold;
     }
 
-    public KotlinNullPointerException(String str) {
-        super(str);
+    public void setIncomingEndThreshold(float f2) {
+        this.incomingEndThreshold = f2;
+    }
+
+    @Override // com.google.android.material.transition.platform.VisibilityAnimatorProvider
+    public Animator createAppear(ViewGroup viewGroup, View view) {
+        float alpha = view.getAlpha() == 0.0f ? 1.0f : view.getAlpha();
+        return createFadeAnimator(view, 0.0f, alpha, 0.0f, this.incomingEndThreshold, alpha);
+    }
+
+    @Override // com.google.android.material.transition.platform.VisibilityAnimatorProvider
+    public Animator createDisappear(ViewGroup viewGroup, View view) {
+        float alpha = view.getAlpha() == 0.0f ? 1.0f : view.getAlpha();
+        return createFadeAnimator(view, alpha, 0.0f, 0.0f, 1.0f, alpha);
+    }
+
+    private static Animator createFadeAnimator(final View view, final float f2, final float f3, final float f4, final float f5, final float f6) {
+        ValueAnimator ofFloat = ValueAnimator.ofFloat(0.0f, 1.0f);
+        ofFloat.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() { // from class: com.google.android.material.transition.platform.FadeProvider.1
+            @Override // android.animation.ValueAnimator.AnimatorUpdateListener
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                view.setAlpha(TransitionUtils.lerp(f2, f3, f4, f5, ((Float) valueAnimator.getAnimatedValue()).floatValue()));
+            }
+        });
+        ofFloat.addListener(new AnimatorListenerAdapter() { // from class: com.google.android.material.transition.platform.FadeProvider.2
+            @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
+            public void onAnimationEnd(Animator animator) {
+                view.setAlpha(f6);
+            }
+        });
+        return ofFloat;
     }
 }

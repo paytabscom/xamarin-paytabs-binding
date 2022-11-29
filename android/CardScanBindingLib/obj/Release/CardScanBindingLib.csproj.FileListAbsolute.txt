@@ -3,7 +3,10 @@
 /Volumes/Work/PayTabs/xamarin-paytabs-binding/android/CardScanBindingLib/bin/Release/Xamarin.Android.Device.YearClass.dll
 /Volumes/Work/PayTabs/xamarin-paytabs-binding/android/CardScanBindingLib/obj/Release/__AndroidLibraryProjects__.zip
 /Volumes/Work/PayTabs/xamarin-paytabs-binding/android/CardScanBindingLib/obj/Release/MonoAndroid,Version=v11.0.AssemblyAttributes.cs
+/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/CardScanBindingLib/obj/Release/CardScanBindingLib.csproj.AssemblyReference.cache
 /Volumes/Work/PayTabs/xamarin-paytabs-binding/android/CardScanBindingLib/obj/Release/stamp/_BuildLibraryImportsCache.stamp
+/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/CardScanBindingLib/obj/Release/class-parse.rsp
+/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/CardScanBindingLib/obj/Release/java-resolution-report.log
 /Volumes/Work/PayTabs/xamarin-paytabs-binding/android/CardScanBindingLib/obj/Release/CardScanBindingLib.csproj.CoreCompileInputs.cache
 /Volumes/Work/PayTabs/xamarin-paytabs-binding/android/CardScanBindingLib/obj/Release/CardScanBindingLib.csproj.CopyComplete
 /Volumes/Work/PayTabs/xamarin-paytabs-binding/android/CardScanBindingLib/obj/Release/CardScanBindingLib.dll

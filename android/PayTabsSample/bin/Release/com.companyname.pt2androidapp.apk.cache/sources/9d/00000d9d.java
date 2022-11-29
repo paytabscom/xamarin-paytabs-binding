@@ -1,9 +1,41 @@
-package com.payment.paymentsdk;
+package com.google.android.material.resources;
+
+import android.graphics.Typeface;
 
 /* loaded from: classes.dex */
-public class PaymentSdkParams {
-    public static final String RESPONSE_CODE = "RESPONSE_CODE";
-    public static final String RESULT_MESSAGE = "RESULT_MESSAGE";
-    public static final String TOKEN = "token";
-    public static final String TRANSACTION_REFERENCE = "TRANSACTION_ID";
+public final class CancelableFontCallback extends TextAppearanceFontCallback {
+    private final ApplyFont applyFont;
+    private boolean cancelled;
+    private final Typeface fallbackFont;
+
+    /* loaded from: classes.dex */
+    public interface ApplyFont {
+        void apply(Typeface typeface);
+    }
+
+    public CancelableFontCallback(ApplyFont applyFont, Typeface typeface) {
+        this.fallbackFont = typeface;
+        this.applyFont = applyFont;
+    }
+
+    @Override // com.google.android.material.resources.TextAppearanceFontCallback
+    public void onFontRetrieved(Typeface typeface, boolean z2) {
+        updateIfNotCancelled(typeface);
+    }
+
+    @Override // com.google.android.material.resources.TextAppearanceFontCallback
+    public void onFontRetrievalFailed(int i2) {
+        updateIfNotCancelled(this.fallbackFont);
+    }
+
+    public void cancel() {
+        this.cancelled = true;
+    }
+
+    private void updateIfNotCancelled(Typeface typeface) {
+        if (this.cancelled) {
+            return;
+        }
+        this.applyFont.apply(typeface);
+    }
 }

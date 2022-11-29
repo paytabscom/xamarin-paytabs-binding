@@ -1,46 +1,21 @@
-package mono.android.content;
+package kotlin.io;
 
-import android.content.SharedPreferences;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.io.File;
+import kotlin.Metadata;
+import kotlin.jvm.internal.DefaultConstructorMarker;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: Exceptions.kt */
+@Metadata(d1 = {"\u0000\u001a\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0002\b\u0002\u0018\u00002\u00020\u0001B%\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\n\b\u0002\u0010\u0004\u001a\u0004\u0018\u00010\u0003\u0012\n\b\u0002\u0010\u0005\u001a\u0004\u0018\u00010\u0006¢\u0006\u0002\u0010\u0007¨\u0006\b"}, d2 = {"Lkotlin/io/NoSuchFileException;", "Lkotlin/io/FileSystemException;", "file", "Ljava/io/File;", "other", "reason", "", "(Ljava/io/File;Ljava/io/File;Ljava/lang/String;)V", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class SharedPreferences_OnSharedPreferenceChangeListenerImplementor implements IGCUserPeer, SharedPreferences.OnSharedPreferenceChangeListener {
-    public static final String __md_methods = "n_onSharedPreferenceChanged:(Landroid/content/SharedPreferences;Ljava/lang/String;)V:GetOnSharedPreferenceChanged_Landroid_content_SharedPreferences_Ljava_lang_String_Handler:Android.Content.ISharedPreferencesOnSharedPreferenceChangeListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onSharedPreferenceChanged(SharedPreferences sharedPreferences, String str);
-
-    static {
-        Runtime.register("Android.Content.ISharedPreferencesOnSharedPreferenceChangeListenerImplementor, Mono.Android", SharedPreferences_OnSharedPreferenceChangeListenerImplementor.class, __md_methods);
+public final class NoSuchFileException extends FileSystemException {
+    public /* synthetic */ NoSuchFileException(File file, File file2, String str, int i2, DefaultConstructorMarker defaultConstructorMarker) {
+        this(file, (i2 & 2) != 0 ? null : file2, (i2 & 4) != 0 ? null : str);
     }
 
-    public SharedPreferences_OnSharedPreferenceChangeListenerImplementor() {
-        if (getClass() == SharedPreferences_OnSharedPreferenceChangeListenerImplementor.class) {
-            TypeManager.Activate("Android.Content.ISharedPreferencesOnSharedPreferenceChangeListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.content.SharedPreferences.OnSharedPreferenceChangeListener
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String str) {
-        n_onSharedPreferenceChanged(sharedPreferences, str);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public NoSuchFileException(File file, File file2, String str) {
+        super(file, file2, str);
+        Intrinsics.checkNotNullParameter(file, "file");
     }
 }

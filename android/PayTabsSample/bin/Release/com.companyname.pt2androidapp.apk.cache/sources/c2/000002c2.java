@@ -1,21 +1,28 @@
-package androidx.cardview.widget;
+package androidx.browser.trusted;
 
-import android.graphics.drawable.Drawable;
-import android.view.View;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.support.customtabs.trusted.ITrustedWebActivityCallback;
 
 /* loaded from: classes.dex */
-interface CardViewDelegate {
-    Drawable getCardBackground();
+public class TrustedWebActivityCallbackRemote {
+    private final ITrustedWebActivityCallback mCallbackBinder;
 
-    View getCardView();
+    private TrustedWebActivityCallbackRemote(ITrustedWebActivityCallback callbackBinder) {
+        this.mCallbackBinder = callbackBinder;
+    }
 
-    boolean getPreventCornerOverlap();
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static TrustedWebActivityCallbackRemote fromBinder(IBinder binder) {
+        ITrustedWebActivityCallback asInterface = binder == null ? null : ITrustedWebActivityCallback.Stub.asInterface(binder);
+        if (asInterface == null) {
+            return null;
+        }
+        return new TrustedWebActivityCallbackRemote(asInterface);
+    }
 
-    boolean getUseCompatPadding();
-
-    void setCardBackground(Drawable drawable);
-
-    void setMinWidthHeightInternal(int i2, int i3);
-
-    void setShadowPadding(int i2, int i3, int i4, int i5);
+    public void runExtraCallback(String callbackName, Bundle args) throws RemoteException {
+        this.mCallbackBinder.onExtraCallback(callbackName, args);
+    }
 }

@@ -1,387 +1,279 @@
-package androidx.core.text;
+package androidx.core.graphics;
 
-import android.os.Build;
-import android.text.Layout;
-import android.text.PrecomputedText;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.StaticLayout;
-import android.text.TextDirectionHeuristic;
-import android.text.TextDirectionHeuristics;
-import android.text.TextPaint;
-import android.text.TextUtils;
-import android.text.style.MetricAffectingSpan;
-import androidx.core.os.TraceCompat;
-import androidx.core.util.ObjectsCompat;
-import androidx.core.util.Preconditions;
-import java.util.ArrayList;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.FutureTask;
+import android.graphics.Matrix;
+import android.graphics.Point;
+import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.Region;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: Rect.kt */
+@Metadata(d1 = {"\u0000<\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\u0010\u0007\n\u0002\b\u0004\n\u0002\u0010\u000b\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\t\n\u0002\u0018\u0002\n\u0002\b\u0002\u001a\u0015\u0010\u0000\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0001H\u0087\f\u001a\u0015\u0010\u0000\u001a\u00020\u0003*\u00020\u00032\u0006\u0010\u0002\u001a\u00020\u0003H\u0087\f\u001a\r\u0010\u0004\u001a\u00020\u0005*\u00020\u0001H\u0086\n\u001a\r\u0010\u0004\u001a\u00020\u0006*\u00020\u0003H\u0086\n\u001a\r\u0010\u0007\u001a\u00020\u0005*\u00020\u0001H\u0086\n\u001a\r\u0010\u0007\u001a\u00020\u0006*\u00020\u0003H\u0086\n\u001a\r\u0010\b\u001a\u00020\u0005*\u00020\u0001H\u0086\n\u001a\r\u0010\b\u001a\u00020\u0006*\u00020\u0003H\u0086\n\u001a\r\u0010\t\u001a\u00020\u0005*\u00020\u0001H\u0086\n\u001a\r\u0010\t\u001a\u00020\u0006*\u00020\u0003H\u0086\n\u001a\u0015\u0010\n\u001a\u00020\u000b*\u00020\u00012\u0006\u0010\f\u001a\u00020\rH\u0086\n\u001a\u0015\u0010\n\u001a\u00020\u000b*\u00020\u00032\u0006\u0010\f\u001a\u00020\u000eH\u0086\n\u001a\u0015\u0010\u000f\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0010\u001a\u00020\rH\u0086\n\u001a\u0015\u0010\u000f\u001a\u00020\u0011*\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0001H\u0086\n\u001a\u0015\u0010\u000f\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0010\u001a\u00020\u0005H\u0086\n\u001a\u0015\u0010\u000f\u001a\u00020\u0003*\u00020\u00032\u0006\u0010\u0010\u001a\u00020\u000eH\u0086\n\u001a\u0015\u0010\u000f\u001a\u00020\u0011*\u00020\u00032\u0006\u0010\u0002\u001a\u00020\u0003H\u0086\n\u001a\u0015\u0010\u000f\u001a\u00020\u0003*\u00020\u00032\u0006\u0010\u0010\u001a\u00020\u0006H\u0086\n\u001a\u0015\u0010\u0012\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0001H\u0086\f\u001a\u0015\u0010\u0012\u001a\u00020\u0003*\u00020\u00032\u0006\u0010\u0002\u001a\u00020\u0003H\u0086\f\u001a\u0015\u0010\u0013\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0010\u001a\u00020\rH\u0086\n\u001a\u0015\u0010\u0013\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0001H\u0086\n\u001a\u0015\u0010\u0013\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0010\u001a\u00020\u0005H\u0086\n\u001a\u0015\u0010\u0013\u001a\u00020\u0003*\u00020\u00032\u0006\u0010\u0010\u001a\u00020\u000eH\u0086\n\u001a\u0015\u0010\u0013\u001a\u00020\u0003*\u00020\u00032\u0006\u0010\u0002\u001a\u00020\u0003H\u0086\n\u001a\u0015\u0010\u0013\u001a\u00020\u0003*\u00020\u00032\u0006\u0010\u0010\u001a\u00020\u0006H\u0086\n\u001a\u0015\u0010\u0014\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0015\u001a\u00020\u0005H\u0086\n\u001a\u0015\u0010\u0014\u001a\u00020\u0003*\u00020\u00032\u0006\u0010\u0015\u001a\u00020\u0006H\u0086\n\u001a\u0015\u0010\u0014\u001a\u00020\u0003*\u00020\u00032\u0006\u0010\u0015\u001a\u00020\u0005H\u0086\n\u001a\r\u0010\u0016\u001a\u00020\u0001*\u00020\u0003H\u0086\b\u001a\r\u0010\u0017\u001a\u00020\u0003*\u00020\u0001H\u0086\b\u001a\r\u0010\u0018\u001a\u00020\u0011*\u00020\u0001H\u0086\b\u001a\r\u0010\u0018\u001a\u00020\u0011*\u00020\u0003H\u0086\b\u001a\u0015\u0010\u0019\u001a\u00020\u0003*\u00020\u00032\u0006\u0010\u001a\u001a\u00020\u001bH\u0086\b\u001a\u0015\u0010\u001c\u001a\u00020\u0011*\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0001H\u0086\f\u001a\u0015\u0010\u001c\u001a\u00020\u0011*\u00020\u00032\u0006\u0010\u0002\u001a\u00020\u0003H\u0086\f¨\u0006\u001d"}, d2 = {"and", "Landroid/graphics/Rect;", "r", "Landroid/graphics/RectF;", "component1", "", "", "component2", "component3", "component4", "contains", "", "p", "Landroid/graphics/Point;", "Landroid/graphics/PointF;", "minus", "xy", "Landroid/graphics/Region;", "or", "plus", "times", "factor", "toRect", "toRectF", "toRegion", "transform", "m", "Landroid/graphics/Matrix;", "xor", "core-ktx_release"}, k = 2, mv = {1, 6, 0}, xi = 48)
 /* loaded from: classes.dex */
-public class PrecomputedTextCompat implements Spannable {
-    private static final char LINE_FEED = '\n';
-    private static Executor sExecutor;
-    private static final Object sLock = new Object();
-    private final int[] mParagraphEnds;
-    private final Params mParams;
-    private final Spannable mText;
-    private final PrecomputedText mWrapped;
-
-    /* loaded from: classes.dex */
-    public static final class Params {
-        private final int mBreakStrategy;
-        private final int mHyphenationFrequency;
-        private final TextPaint mPaint;
-        private final TextDirectionHeuristic mTextDir;
-        final PrecomputedText.Params mWrapped;
-
-        /* loaded from: classes.dex */
-        public static class Builder {
-            private int mBreakStrategy;
-            private int mHyphenationFrequency;
-            private final TextPaint mPaint;
-            private TextDirectionHeuristic mTextDir;
-
-            public Builder(TextPaint textPaint) {
-                this.mPaint = textPaint;
-                if (Build.VERSION.SDK_INT >= 23) {
-                    this.mBreakStrategy = 1;
-                    this.mHyphenationFrequency = 1;
-                } else {
-                    this.mHyphenationFrequency = 0;
-                    this.mBreakStrategy = 0;
-                }
-                if (Build.VERSION.SDK_INT >= 18) {
-                    this.mTextDir = TextDirectionHeuristics.FIRSTSTRONG_LTR;
-                } else {
-                    this.mTextDir = null;
-                }
-            }
-
-            public Builder setBreakStrategy(int i2) {
-                this.mBreakStrategy = i2;
-                return this;
-            }
-
-            public Builder setHyphenationFrequency(int i2) {
-                this.mHyphenationFrequency = i2;
-                return this;
-            }
-
-            public Builder setTextDirection(TextDirectionHeuristic textDirectionHeuristic) {
-                this.mTextDir = textDirectionHeuristic;
-                return this;
-            }
-
-            public Params build() {
-                return new Params(this.mPaint, this.mTextDir, this.mBreakStrategy, this.mHyphenationFrequency);
-            }
-        }
-
-        Params(TextPaint textPaint, TextDirectionHeuristic textDirectionHeuristic, int i2, int i3) {
-            if (Build.VERSION.SDK_INT >= 29) {
-                this.mWrapped = new PrecomputedText.Params.Builder(textPaint).setBreakStrategy(i2).setHyphenationFrequency(i3).setTextDirection(textDirectionHeuristic).build();
-            } else {
-                this.mWrapped = null;
-            }
-            this.mPaint = textPaint;
-            this.mTextDir = textDirectionHeuristic;
-            this.mBreakStrategy = i2;
-            this.mHyphenationFrequency = i3;
-        }
-
-        public Params(PrecomputedText.Params params) {
-            this.mPaint = params.getTextPaint();
-            this.mTextDir = params.getTextDirection();
-            this.mBreakStrategy = params.getBreakStrategy();
-            this.mHyphenationFrequency = params.getHyphenationFrequency();
-            this.mWrapped = Build.VERSION.SDK_INT < 29 ? null : params;
-        }
-
-        public TextPaint getTextPaint() {
-            return this.mPaint;
-        }
-
-        public TextDirectionHeuristic getTextDirection() {
-            return this.mTextDir;
-        }
-
-        public int getBreakStrategy() {
-            return this.mBreakStrategy;
-        }
-
-        public int getHyphenationFrequency() {
-            return this.mHyphenationFrequency;
-        }
-
-        public boolean equalsWithoutTextDirection(Params params) {
-            if ((Build.VERSION.SDK_INT < 23 || (this.mBreakStrategy == params.getBreakStrategy() && this.mHyphenationFrequency == params.getHyphenationFrequency())) && this.mPaint.getTextSize() == params.getTextPaint().getTextSize() && this.mPaint.getTextScaleX() == params.getTextPaint().getTextScaleX() && this.mPaint.getTextSkewX() == params.getTextPaint().getTextSkewX()) {
-                if ((Build.VERSION.SDK_INT < 21 || (this.mPaint.getLetterSpacing() == params.getTextPaint().getLetterSpacing() && TextUtils.equals(this.mPaint.getFontFeatureSettings(), params.getTextPaint().getFontFeatureSettings()))) && this.mPaint.getFlags() == params.getTextPaint().getFlags()) {
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        if (!this.mPaint.getTextLocales().equals(params.getTextPaint().getTextLocales())) {
-                            return false;
-                        }
-                    } else if (Build.VERSION.SDK_INT >= 17 && !this.mPaint.getTextLocale().equals(params.getTextPaint().getTextLocale())) {
-                        return false;
-                    }
-                    return this.mPaint.getTypeface() == null ? params.getTextPaint().getTypeface() == null : this.mPaint.getTypeface().equals(params.getTextPaint().getTypeface());
-                }
-                return false;
-            }
-            return false;
-        }
-
-        public boolean equals(Object obj) {
-            if (obj == this) {
-                return true;
-            }
-            if (obj instanceof Params) {
-                Params params = (Params) obj;
-                if (equalsWithoutTextDirection(params)) {
-                    return Build.VERSION.SDK_INT < 18 || this.mTextDir == params.getTextDirection();
-                }
-                return false;
-            }
-            return false;
-        }
-
-        public int hashCode() {
-            if (Build.VERSION.SDK_INT >= 24) {
-                return ObjectsCompat.hash(Float.valueOf(this.mPaint.getTextSize()), Float.valueOf(this.mPaint.getTextScaleX()), Float.valueOf(this.mPaint.getTextSkewX()), Float.valueOf(this.mPaint.getLetterSpacing()), Integer.valueOf(this.mPaint.getFlags()), this.mPaint.getTextLocales(), this.mPaint.getTypeface(), Boolean.valueOf(this.mPaint.isElegantTextHeight()), this.mTextDir, Integer.valueOf(this.mBreakStrategy), Integer.valueOf(this.mHyphenationFrequency));
-            }
-            if (Build.VERSION.SDK_INT >= 21) {
-                return ObjectsCompat.hash(Float.valueOf(this.mPaint.getTextSize()), Float.valueOf(this.mPaint.getTextScaleX()), Float.valueOf(this.mPaint.getTextSkewX()), Float.valueOf(this.mPaint.getLetterSpacing()), Integer.valueOf(this.mPaint.getFlags()), this.mPaint.getTextLocale(), this.mPaint.getTypeface(), Boolean.valueOf(this.mPaint.isElegantTextHeight()), this.mTextDir, Integer.valueOf(this.mBreakStrategy), Integer.valueOf(this.mHyphenationFrequency));
-            }
-            if (Build.VERSION.SDK_INT >= 18) {
-                return ObjectsCompat.hash(Float.valueOf(this.mPaint.getTextSize()), Float.valueOf(this.mPaint.getTextScaleX()), Float.valueOf(this.mPaint.getTextSkewX()), Integer.valueOf(this.mPaint.getFlags()), this.mPaint.getTextLocale(), this.mPaint.getTypeface(), this.mTextDir, Integer.valueOf(this.mBreakStrategy), Integer.valueOf(this.mHyphenationFrequency));
-            }
-            if (Build.VERSION.SDK_INT >= 17) {
-                return ObjectsCompat.hash(Float.valueOf(this.mPaint.getTextSize()), Float.valueOf(this.mPaint.getTextScaleX()), Float.valueOf(this.mPaint.getTextSkewX()), Integer.valueOf(this.mPaint.getFlags()), this.mPaint.getTextLocale(), this.mPaint.getTypeface(), this.mTextDir, Integer.valueOf(this.mBreakStrategy), Integer.valueOf(this.mHyphenationFrequency));
-            }
-            return ObjectsCompat.hash(Float.valueOf(this.mPaint.getTextSize()), Float.valueOf(this.mPaint.getTextScaleX()), Float.valueOf(this.mPaint.getTextSkewX()), Integer.valueOf(this.mPaint.getFlags()), this.mPaint.getTypeface(), this.mTextDir, Integer.valueOf(this.mBreakStrategy), Integer.valueOf(this.mHyphenationFrequency));
-        }
-
-        public String toString() {
-            StringBuilder sb = new StringBuilder("{");
-            sb.append("textSize=" + this.mPaint.getTextSize());
-            sb.append(", textScaleX=" + this.mPaint.getTextScaleX());
-            sb.append(", textSkewX=" + this.mPaint.getTextSkewX());
-            if (Build.VERSION.SDK_INT >= 21) {
-                sb.append(", letterSpacing=" + this.mPaint.getLetterSpacing());
-                sb.append(", elegantTextHeight=" + this.mPaint.isElegantTextHeight());
-            }
-            if (Build.VERSION.SDK_INT >= 24) {
-                sb.append(", textLocale=" + this.mPaint.getTextLocales());
-            } else if (Build.VERSION.SDK_INT >= 17) {
-                sb.append(", textLocale=" + this.mPaint.getTextLocale());
-            }
-            sb.append(", typeface=" + this.mPaint.getTypeface());
-            if (Build.VERSION.SDK_INT >= 26) {
-                sb.append(", variationSettings=" + this.mPaint.getFontVariationSettings());
-            }
-            sb.append(", textDir=" + this.mTextDir);
-            sb.append(", breakStrategy=" + this.mBreakStrategy);
-            sb.append(", hyphenationFrequency=" + this.mHyphenationFrequency);
-            sb.append("}");
-            return sb.toString();
-        }
+public final class RectKt {
+    public static final int component1(Rect rect) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        return rect.left;
     }
 
-    public static PrecomputedTextCompat create(CharSequence charSequence, Params params) {
-        Preconditions.checkNotNull(charSequence);
-        Preconditions.checkNotNull(params);
-        try {
-            TraceCompat.beginSection("PrecomputedText");
-            if (Build.VERSION.SDK_INT >= 29 && params.mWrapped != null) {
-                return new PrecomputedTextCompat(PrecomputedText.create(charSequence, params.mWrapped), params);
-            }
-            ArrayList arrayList = new ArrayList();
-            int length = charSequence.length();
-            int i2 = 0;
-            while (i2 < length) {
-                int indexOf = TextUtils.indexOf(charSequence, (char) LINE_FEED, i2, length);
-                i2 = indexOf < 0 ? length : indexOf + 1;
-                arrayList.add(Integer.valueOf(i2));
-            }
-            int[] iArr = new int[arrayList.size()];
-            for (int i3 = 0; i3 < arrayList.size(); i3++) {
-                iArr[i3] = ((Integer) arrayList.get(i3)).intValue();
-            }
-            if (Build.VERSION.SDK_INT >= 23) {
-                StaticLayout.Builder.obtain(charSequence, 0, charSequence.length(), params.getTextPaint(), Integer.MAX_VALUE).setBreakStrategy(params.getBreakStrategy()).setHyphenationFrequency(params.getHyphenationFrequency()).setTextDirection(params.getTextDirection()).build();
-            } else if (Build.VERSION.SDK_INT >= 21) {
-                new StaticLayout(charSequence, params.getTextPaint(), Integer.MAX_VALUE, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false);
-            }
-            return new PrecomputedTextCompat(charSequence, params, iArr);
-        } finally {
-            TraceCompat.endSection();
-        }
+    public static final int component2(Rect rect) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        return rect.top;
     }
 
-    private PrecomputedTextCompat(CharSequence charSequence, Params params, int[] iArr) {
-        this.mText = new SpannableString(charSequence);
-        this.mParams = params;
-        this.mParagraphEnds = iArr;
-        this.mWrapped = null;
+    public static final int component3(Rect rect) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        return rect.right;
     }
 
-    private PrecomputedTextCompat(PrecomputedText precomputedText, Params params) {
-        this.mText = precomputedText;
-        this.mParams = params;
-        this.mParagraphEnds = null;
-        this.mWrapped = Build.VERSION.SDK_INT < 29 ? null : precomputedText;
+    public static final int component4(Rect rect) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        return rect.bottom;
     }
 
-    public PrecomputedText getPrecomputedText() {
-        Spannable spannable = this.mText;
-        if (spannable instanceof PrecomputedText) {
-            return (PrecomputedText) spannable;
-        }
-        return null;
+    public static final float component1(RectF rectF) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        return rectF.left;
     }
 
-    public Params getParams() {
-        return this.mParams;
+    public static final float component2(RectF rectF) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        return rectF.top;
     }
 
-    public int getParagraphCount() {
-        if (Build.VERSION.SDK_INT >= 29) {
-            return this.mWrapped.getParagraphCount();
-        }
-        return this.mParagraphEnds.length;
+    public static final float component3(RectF rectF) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        return rectF.right;
     }
 
-    public int getParagraphStart(int i2) {
-        Preconditions.checkArgumentInRange(i2, 0, getParagraphCount(), "paraIndex");
-        if (Build.VERSION.SDK_INT >= 29) {
-            return this.mWrapped.getParagraphStart(i2);
-        }
-        if (i2 == 0) {
-            return 0;
-        }
-        return this.mParagraphEnds[i2 - 1];
+    public static final float component4(RectF rectF) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        return rectF.bottom;
     }
 
-    public int getParagraphEnd(int i2) {
-        Preconditions.checkArgumentInRange(i2, 0, getParagraphCount(), "paraIndex");
-        if (Build.VERSION.SDK_INT >= 29) {
-            return this.mWrapped.getParagraphEnd(i2);
-        }
-        return this.mParagraphEnds[i2];
+    public static final Rect plus(Rect rect, Rect r2) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        Intrinsics.checkNotNullParameter(r2, "r");
+        Rect rect2 = new Rect(rect);
+        rect2.union(r2);
+        return rect2;
     }
 
-    /* loaded from: classes.dex */
-    private static class PrecomputedTextFutureTask extends FutureTask<PrecomputedTextCompat> {
-
-        /* loaded from: classes.dex */
-        private static class PrecomputedTextCallback implements Callable<PrecomputedTextCompat> {
-            private Params mParams;
-            private CharSequence mText;
-
-            PrecomputedTextCallback(Params params, CharSequence charSequence) {
-                this.mParams = params;
-                this.mText = charSequence;
-            }
-
-            /* JADX WARN: Can't rename method to resolve collision */
-            @Override // java.util.concurrent.Callable
-            public PrecomputedTextCompat call() throws Exception {
-                return PrecomputedTextCompat.create(this.mText, this.mParams);
-            }
-        }
-
-        PrecomputedTextFutureTask(Params params, CharSequence charSequence) {
-            super(new PrecomputedTextCallback(params, charSequence));
-        }
+    public static final RectF plus(RectF rectF, RectF r2) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        Intrinsics.checkNotNullParameter(r2, "r");
+        RectF rectF2 = new RectF(rectF);
+        rectF2.union(r2);
+        return rectF2;
     }
 
-    public static Future<PrecomputedTextCompat> getTextFuture(CharSequence charSequence, Params params, Executor executor) {
-        PrecomputedTextFutureTask precomputedTextFutureTask = new PrecomputedTextFutureTask(params, charSequence);
-        if (executor == null) {
-            synchronized (sLock) {
-                if (sExecutor == null) {
-                    sExecutor = Executors.newFixedThreadPool(1);
-                }
-                executor = sExecutor;
-            }
-        }
-        executor.execute(precomputedTextFutureTask);
-        return precomputedTextFutureTask;
+    public static final Rect plus(Rect rect, int i2) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        Rect rect2 = new Rect(rect);
+        rect2.offset(i2, i2);
+        return rect2;
     }
 
-    @Override // android.text.Spannable
-    public void setSpan(Object obj, int i2, int i3, int i4) {
-        if (obj instanceof MetricAffectingSpan) {
-            throw new IllegalArgumentException("MetricAffectingSpan can not be set to PrecomputedText.");
-        }
-        if (Build.VERSION.SDK_INT >= 29) {
-            this.mWrapped.setSpan(obj, i2, i3, i4);
-        } else {
-            this.mText.setSpan(obj, i2, i3, i4);
-        }
+    public static final RectF plus(RectF rectF, float f2) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        RectF rectF2 = new RectF(rectF);
+        rectF2.offset(f2, f2);
+        return rectF2;
     }
 
-    @Override // android.text.Spannable
-    public void removeSpan(Object obj) {
-        if (obj instanceof MetricAffectingSpan) {
-            throw new IllegalArgumentException("MetricAffectingSpan can not be removed from PrecomputedText.");
-        }
-        if (Build.VERSION.SDK_INT >= 29) {
-            this.mWrapped.removeSpan(obj);
-        } else {
-            this.mText.removeSpan(obj);
-        }
+    public static final Rect plus(Rect rect, Point xy) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        Intrinsics.checkNotNullParameter(xy, "xy");
+        Rect rect2 = new Rect(rect);
+        rect2.offset(xy.x, xy.y);
+        return rect2;
     }
 
-    @Override // android.text.Spanned
-    public <T> T[] getSpans(int i2, int i3, Class<T> cls) {
-        if (Build.VERSION.SDK_INT >= 29) {
-            return (T[]) this.mWrapped.getSpans(i2, i3, cls);
-        }
-        return (T[]) this.mText.getSpans(i2, i3, cls);
+    public static final RectF plus(RectF rectF, PointF xy) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        Intrinsics.checkNotNullParameter(xy, "xy");
+        RectF rectF2 = new RectF(rectF);
+        rectF2.offset(xy.x, xy.y);
+        return rectF2;
     }
 
-    @Override // android.text.Spanned
-    public int getSpanStart(Object obj) {
-        return this.mText.getSpanStart(obj);
+    public static final Region minus(Rect rect, Rect r2) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        Intrinsics.checkNotNullParameter(r2, "r");
+        Region region = new Region(rect);
+        region.op(r2, Region.Op.DIFFERENCE);
+        return region;
     }
 
-    @Override // android.text.Spanned
-    public int getSpanEnd(Object obj) {
-        return this.mText.getSpanEnd(obj);
+    public static final Region minus(RectF rectF, RectF r2) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        Intrinsics.checkNotNullParameter(r2, "r");
+        Rect rect = new Rect();
+        rectF.roundOut(rect);
+        Region region = new Region(rect);
+        Rect rect2 = new Rect();
+        r2.roundOut(rect2);
+        region.op(rect2, Region.Op.DIFFERENCE);
+        return region;
     }
 
-    @Override // android.text.Spanned
-    public int getSpanFlags(Object obj) {
-        return this.mText.getSpanFlags(obj);
+    public static final Rect minus(Rect rect, int i2) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        Rect rect2 = new Rect(rect);
+        int i3 = -i2;
+        rect2.offset(i3, i3);
+        return rect2;
     }
 
-    @Override // android.text.Spanned
-    public int nextSpanTransition(int i2, int i3, Class cls) {
-        return this.mText.nextSpanTransition(i2, i3, cls);
+    public static final RectF minus(RectF rectF, float f2) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        RectF rectF2 = new RectF(rectF);
+        float f3 = -f2;
+        rectF2.offset(f3, f3);
+        return rectF2;
     }
 
-    @Override // java.lang.CharSequence
-    public int length() {
-        return this.mText.length();
+    public static final Rect minus(Rect rect, Point xy) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        Intrinsics.checkNotNullParameter(xy, "xy");
+        Rect rect2 = new Rect(rect);
+        rect2.offset(-xy.x, -xy.y);
+        return rect2;
     }
 
-    @Override // java.lang.CharSequence
-    public char charAt(int i2) {
-        return this.mText.charAt(i2);
+    public static final RectF minus(RectF rectF, PointF xy) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        Intrinsics.checkNotNullParameter(xy, "xy");
+        RectF rectF2 = new RectF(rectF);
+        rectF2.offset(-xy.x, -xy.y);
+        return rectF2;
     }
 
-    @Override // java.lang.CharSequence
-    public CharSequence subSequence(int i2, int i3) {
-        return this.mText.subSequence(i2, i3);
+    public static final Rect times(Rect rect, int i2) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        Rect rect2 = new Rect(rect);
+        rect2.top *= i2;
+        rect2.left *= i2;
+        rect2.right *= i2;
+        rect2.bottom *= i2;
+        return rect2;
     }
 
-    @Override // java.lang.CharSequence
-    public String toString() {
-        return this.mText.toString();
+    public static final RectF times(RectF rectF, float f2) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        RectF rectF2 = new RectF(rectF);
+        rectF2.top *= f2;
+        rectF2.left *= f2;
+        rectF2.right *= f2;
+        rectF2.bottom *= f2;
+        return rectF2;
+    }
+
+    public static final Rect and(Rect rect, Rect r2) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        Intrinsics.checkNotNullParameter(r2, "r");
+        Rect rect2 = new Rect(rect);
+        rect2.intersect(r2);
+        return rect2;
+    }
+
+    public static final RectF and(RectF rectF, RectF r2) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        Intrinsics.checkNotNullParameter(r2, "r");
+        RectF rectF2 = new RectF(rectF);
+        rectF2.intersect(r2);
+        return rectF2;
+    }
+
+    public static final Region xor(Rect rect, Rect r2) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        Intrinsics.checkNotNullParameter(r2, "r");
+        Region region = new Region(rect);
+        region.op(r2, Region.Op.XOR);
+        return region;
+    }
+
+    public static final Region xor(RectF rectF, RectF r2) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        Intrinsics.checkNotNullParameter(r2, "r");
+        Rect rect = new Rect();
+        rectF.roundOut(rect);
+        Region region = new Region(rect);
+        Rect rect2 = new Rect();
+        r2.roundOut(rect2);
+        region.op(rect2, Region.Op.XOR);
+        return region;
+    }
+
+    public static final boolean contains(Rect rect, Point p2) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        Intrinsics.checkNotNullParameter(p2, "p");
+        return rect.contains(p2.x, p2.y);
+    }
+
+    public static final boolean contains(RectF rectF, PointF p2) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        Intrinsics.checkNotNullParameter(p2, "p");
+        return rectF.contains(p2.x, p2.y);
+    }
+
+    public static final RectF toRectF(Rect rect) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        return new RectF(rect);
+    }
+
+    public static final Rect toRect(RectF rectF) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        Rect rect = new Rect();
+        rectF.roundOut(rect);
+        return rect;
+    }
+
+    public static final Region toRegion(Rect rect) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        return new Region(rect);
+    }
+
+    public static final Region toRegion(RectF rectF) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        Rect rect = new Rect();
+        rectF.roundOut(rect);
+        return new Region(rect);
+    }
+
+    public static final RectF transform(RectF rectF, Matrix m2) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        Intrinsics.checkNotNullParameter(m2, "m");
+        m2.mapRect(rectF);
+        return rectF;
+    }
+
+    public static final RectF times(RectF rectF, int i2) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        float f2 = i2;
+        RectF rectF2 = new RectF(rectF);
+        rectF2.top *= f2;
+        rectF2.left *= f2;
+        rectF2.right *= f2;
+        rectF2.bottom *= f2;
+        return rectF2;
+    }
+
+    public static final Rect or(Rect rect, Rect r2) {
+        Intrinsics.checkNotNullParameter(rect, "<this>");
+        Intrinsics.checkNotNullParameter(r2, "r");
+        Rect rect2 = new Rect(rect);
+        rect2.union(r2);
+        return rect2;
+    }
+
+    public static final RectF or(RectF rectF, RectF r2) {
+        Intrinsics.checkNotNullParameter(rectF, "<this>");
+        Intrinsics.checkNotNullParameter(r2, "r");
+        RectF rectF2 = new RectF(rectF);
+        rectF2.union(r2);
+        return rectF2;
     }
 }

@@ -1,37 +1,32 @@
-package kotlinx.coroutines.selects;
+package kotlin.contracts;
 
+import kotlin.Function;
 import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.internal.Lambda;
 
-/* compiled from: SelectUnbiased.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\n\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0002\u0010\u0000\u001a\u00020\u0001\"\u0006\b\u0000\u0010\u0002 \u0000H\n¢\u0006\u0002\b\u0003"}, d2 = {"<anonymous>", "", "R", "invoke"}, k = 3, mv = {1, 4, 2})
+/* compiled from: ContractBuilder.kt */
+@Metadata(d1 = {"\u0000,\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\bg\u0018\u00002\u00020\u0001J&\u0010\u0002\u001a\u00020\u0003\"\u0004\b\u0000\u0010\u00042\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u0002H\u00040\u00062\b\b\u0002\u0010\u0007\u001a\u00020\bH'J\b\u0010\t\u001a\u00020\nH'J\u0012\u0010\t\u001a\u00020\n2\b\u0010\u000b\u001a\u0004\u0018\u00010\u0001H'J\b\u0010\f\u001a\u00020\rH'¨\u0006\u000e"}, d2 = {"Lkotlin/contracts/ContractBuilder;", "", "callsInPlace", "Lkotlin/contracts/CallsInPlace;", "R", "lambda", "Lkotlin/Function;", "kind", "Lkotlin/contracts/InvocationKind;", "returns", "Lkotlin/contracts/Returns;", "value", "returnsNotNull", "Lkotlin/contracts/ReturnsNotNull;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-final class UnbiasedSelectBuilderImpl$onTimeout$1 extends Lambda implements Function0<Unit> {
-    final /* synthetic */ Function1 $block;
-    final /* synthetic */ long $timeMillis;
-    final /* synthetic */ UnbiasedSelectBuilderImpl this$0;
+public interface ContractBuilder {
+    <R> CallsInPlace callsInPlace(Function<? extends R> function, InvocationKind invocationKind);
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public UnbiasedSelectBuilderImpl$onTimeout$1(UnbiasedSelectBuilderImpl unbiasedSelectBuilderImpl, long j2, Function1 function1) {
-        super(0);
-        this.this$0 = unbiasedSelectBuilderImpl;
-        this.$timeMillis = j2;
-        this.$block = function1;
-    }
+    Returns returns();
 
-    @Override // kotlin.jvm.functions.Function0
-    public /* bridge */ /* synthetic */ Unit invoke() {
-        invoke2();
-        return Unit.INSTANCE;
-    }
+    Returns returns(Object obj);
 
-    @Override // kotlin.jvm.functions.Function0
-    /* renamed from: invoke  reason: avoid collision after fix types in other method */
-    public final void invoke2() {
-        this.this$0.getInstance().onTimeout(this.$timeMillis, this.$block);
+    ReturnsNotNull returnsNotNull();
+
+    /* compiled from: ContractBuilder.kt */
+    @Metadata(k = 3, mv = {1, 5, 1})
+    /* loaded from: classes.dex */
+    public static final class DefaultImpls {
+        public static /* synthetic */ CallsInPlace callsInPlace$default(ContractBuilder contractBuilder, Function function, InvocationKind invocationKind, int i2, Object obj) {
+            if (obj == null) {
+                if ((i2 & 2) != 0) {
+                    invocationKind = InvocationKind.UNKNOWN;
+                }
+                return contractBuilder.callsInPlace(function, invocationKind);
+            }
+            throw new UnsupportedOperationException("Super calls with default arguments not supported in this target, function: callsInPlace");
+        }
     }
 }

@@ -1,46 +1,14 @@
-package mono.android.widget;
+package kotlin.properties;
 
-import android.widget.CalendarView;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
+import kotlin.reflect.KProperty;
 
+/* compiled from: Interfaces.kt */
+@Metadata(d1 = {"\u0000 \n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0002\b\u0003\bf\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u0000*\u0004\b\u0001\u0010\u00022\u000e\u0012\u0004\u0012\u0002H\u0001\u0012\u0004\u0012\u0002H\u00020\u0003J\"\u0010\u0004\u001a\u00028\u00012\u0006\u0010\u0005\u001a\u00028\u00002\n\u0010\u0006\u001a\u0006\u0012\u0002\b\u00030\u0007H¦\u0002¢\u0006\u0002\u0010\bJ*\u0010\t\u001a\u00020\n2\u0006\u0010\u0005\u001a\u00028\u00002\n\u0010\u0006\u001a\u0006\u0012\u0002\b\u00030\u00072\u0006\u0010\u000b\u001a\u00028\u0001H¦\u0002¢\u0006\u0002\u0010\f¨\u0006\r"}, d2 = {"Lkotlin/properties/ReadWriteProperty;", "T", "V", "Lkotlin/properties/ReadOnlyProperty;", "getValue", "thisRef", "property", "Lkotlin/reflect/KProperty;", "(Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/lang/Object;", "setValue", "", "value", "(Ljava/lang/Object;Lkotlin/reflect/KProperty;Ljava/lang/Object;)V", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class CalendarView_OnDateChangeListenerImplementor implements IGCUserPeer, CalendarView.OnDateChangeListener {
-    public static final String __md_methods = "n_onSelectedDayChange:(Landroid/widget/CalendarView;III)V:GetOnSelectedDayChange_Landroid_widget_CalendarView_IIIHandler:Android.Widget.CalendarView/IOnDateChangeListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public interface ReadWriteProperty<T, V> extends ReadOnlyProperty<T, V> {
+    @Override // kotlin.properties.ReadOnlyProperty
+    V getValue(T t2, KProperty<?> kProperty);
 
-    private native void n_onSelectedDayChange(CalendarView calendarView, int i2, int i3, int i4);
-
-    static {
-        Runtime.register("Android.Widget.CalendarView+IOnDateChangeListenerImplementor, Mono.Android", CalendarView_OnDateChangeListenerImplementor.class, __md_methods);
-    }
-
-    public CalendarView_OnDateChangeListenerImplementor() {
-        if (getClass() == CalendarView_OnDateChangeListenerImplementor.class) {
-            TypeManager.Activate("Android.Widget.CalendarView+IOnDateChangeListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.widget.CalendarView.OnDateChangeListener
-    public void onSelectedDayChange(CalendarView calendarView, int i2, int i3, int i4) {
-        n_onSelectedDayChange(calendarView, i2, i3, i4);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+    void setValue(T t2, KProperty<?> kProperty, V v2);
 }

@@ -1,42 +1,87 @@
-package kotlinx.coroutines.flow.internal;
+package kotlin.collections;
 
+import java.util.RandomAccess;
 import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.CoroutineContext;
-import kotlin.coroutines.EmptyCoroutineContext;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.jvm.internal.DefaultConstructorMarker;
-import kotlinx.coroutines.channels.BufferOverflow;
-import kotlinx.coroutines.flow.Flow;
-import kotlinx.coroutines.flow.FlowCollector;
 
-/* compiled from: ChannelFlow.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000<\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\b\u0000\u0018\u0000*\u0004\b\u0000\u0010\u00012\u000e\u0012\u0004\u0012\u0002H\u0001\u0012\u0004\u0012\u0002H\u00010\u0002B1\u0012\f\u0010\u0003\u001a\b\u0012\u0004\u0012\u00028\u00000\u0004\u0012\b\b\u0002\u0010\u0005\u001a\u00020\u0006\u0012\b\b\u0002\u0010\u0007\u001a\u00020\b\u0012\b\b\u0002\u0010\t\u001a\u00020\n¢\u0006\u0002\u0010\u000bJ&\u0010\f\u001a\b\u0012\u0004\u0012\u00028\u00000\r2\u0006\u0010\u0005\u001a\u00020\u00062\u0006\u0010\u0007\u001a\u00020\b2\u0006\u0010\t\u001a\u00020\nH\u0014J\u0010\u0010\u000e\u001a\n\u0012\u0004\u0012\u00028\u0000\u0018\u00010\u0004H\u0016J\u001f\u0010\u000f\u001a\u00020\u00102\f\u0010\u0011\u001a\b\u0012\u0004\u0012\u00028\u00000\u0012H\u0094@ø\u0001\u0000¢\u0006\u0002\u0010\u0013\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\u0014"}, d2 = {"Lkotlinx/coroutines/flow/internal/ChannelFlowOperatorImpl;", "T", "Lkotlinx/coroutines/flow/internal/ChannelFlowOperator;", "flow", "Lkotlinx/coroutines/flow/Flow;", "context", "Lkotlin/coroutines/CoroutineContext;", "capacity", "", "onBufferOverflow", "Lkotlinx/coroutines/channels/BufferOverflow;", "(Lkotlinx/coroutines/flow/Flow;Lkotlin/coroutines/CoroutineContext;ILkotlinx/coroutines/channels/BufferOverflow;)V", "create", "Lkotlinx/coroutines/flow/internal/ChannelFlow;", "dropChannelOperators", "flowCollect", "", "collector", "Lkotlinx/coroutines/flow/FlowCollector;", "(Lkotlinx/coroutines/flow/FlowCollector;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
+/* compiled from: _ArraysJvm.kt */
+@Metadata(d1 = {"\u0000'\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0006\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\u000b\n\u0002\b\b*\u0001\u0000\b\n\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u00012\u00060\u0003j\u0002`\u0004J\u0011\u0010\t\u001a\u00020\n2\u0006\u0010\u000b\u001a\u00020\u0002H\u0096\u0002J\u0016\u0010\f\u001a\u00020\u00022\u0006\u0010\r\u001a\u00020\u0006H\u0096\u0002¢\u0006\u0002\u0010\u000eJ\u0010\u0010\u000f\u001a\u00020\u00062\u0006\u0010\u000b\u001a\u00020\u0002H\u0016J\b\u0010\u0010\u001a\u00020\nH\u0016J\u0010\u0010\u0011\u001a\u00020\u00062\u0006\u0010\u000b\u001a\u00020\u0002H\u0016R\u0014\u0010\u0005\u001a\u00020\u00068VX\u0096\u0004¢\u0006\u0006\u001a\u0004\b\u0007\u0010\b¨\u0006\u0012"}, d2 = {"kotlin/collections/ArraysKt___ArraysJvmKt$asList$6", "Lkotlin/collections/AbstractList;", "", "Ljava/util/RandomAccess;", "Lkotlin/collections/RandomAccess;", "size", "", "getSize", "()I", "contains", "", "element", "get", "index", "(I)Ljava/lang/Double;", "indexOf", "isEmpty", "lastIndexOf", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class ChannelFlowOperatorImpl<T> extends ChannelFlowOperator<T, T> {
-    public /* synthetic */ ChannelFlowOperatorImpl(Flow flow, EmptyCoroutineContext emptyCoroutineContext, int i2, BufferOverflow bufferOverflow, int i3, DefaultConstructorMarker defaultConstructorMarker) {
-        this(flow, (i3 & 2) != 0 ? EmptyCoroutineContext.INSTANCE : emptyCoroutineContext, (i3 & 4) != 0 ? -3 : i2, (i3 & 8) != 0 ? BufferOverflow.SUSPEND : bufferOverflow);
+public final class ArraysKt___ArraysJvmKt$asList$6 extends AbstractList<Double> implements RandomAccess {
+    final /* synthetic */ double[] $this_asList;
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public ArraysKt___ArraysJvmKt$asList$6(double[] dArr) {
+        this.$this_asList = dArr;
     }
 
-    public ChannelFlowOperatorImpl(Flow<? extends T> flow, CoroutineContext coroutineContext, int i2, BufferOverflow bufferOverflow) {
-        super(flow, coroutineContext, i2, bufferOverflow);
+    @Override // kotlin.collections.AbstractCollection, java.util.Collection
+    public final /* bridge */ boolean contains(Object obj) {
+        if (obj instanceof Double) {
+            return contains(((Number) obj).doubleValue());
+        }
+        return false;
     }
 
-    @Override // kotlinx.coroutines.flow.internal.ChannelFlow
-    protected ChannelFlow<T> create(CoroutineContext coroutineContext, int i2, BufferOverflow bufferOverflow) {
-        return new ChannelFlowOperatorImpl(this.flow, coroutineContext, i2, bufferOverflow);
+    @Override // kotlin.collections.AbstractList, java.util.List
+    public final /* bridge */ int indexOf(Object obj) {
+        if (obj instanceof Double) {
+            return indexOf(((Number) obj).doubleValue());
+        }
+        return -1;
     }
 
-    @Override // kotlinx.coroutines.flow.internal.ChannelFlow
-    public Flow<T> dropChannelOperators() {
-        return (Flow<T>) this.flow;
+    @Override // kotlin.collections.AbstractList, java.util.List
+    public final /* bridge */ int lastIndexOf(Object obj) {
+        if (obj instanceof Double) {
+            return lastIndexOf(((Number) obj).doubleValue());
+        }
+        return -1;
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // kotlinx.coroutines.flow.internal.ChannelFlowOperator
-    public Object flowCollect(FlowCollector<? super T> flowCollector, Continuation<? super Unit> continuation) {
-        Object collect = this.flow.collect(flowCollector, continuation);
-        return collect == IntrinsicsKt.getCOROUTINE_SUSPENDED() ? collect : Unit.INSTANCE;
+    @Override // kotlin.collections.AbstractList, kotlin.collections.AbstractCollection
+    public int getSize() {
+        return this.$this_asList.length;
+    }
+
+    @Override // kotlin.collections.AbstractCollection, java.util.Collection
+    public boolean isEmpty() {
+        return this.$this_asList.length == 0;
+    }
+
+    public boolean contains(double d2) {
+        double[] dArr = this.$this_asList;
+        int length = dArr.length;
+        for (int i2 = 0; i2 < length; i2++) {
+            if (Double.doubleToLongBits(dArr[i2]) == Double.doubleToLongBits(d2)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override // kotlin.collections.AbstractList, java.util.List
+    public Double get(int i2) {
+        return Double.valueOf(this.$this_asList[i2]);
+    }
+
+    public int indexOf(double d2) {
+        double[] dArr = this.$this_asList;
+        int length = dArr.length;
+        for (int i2 = 0; i2 < length; i2++) {
+            if (Double.doubleToLongBits(dArr[i2]) == Double.doubleToLongBits(d2)) {
+                return i2;
+            }
+        }
+        return -1;
+    }
+
+    public int lastIndexOf(double d2) {
+        double[] dArr = this.$this_asList;
+        for (int length = dArr.length - 1; length >= 0; length--) {
+            if (Double.doubleToLongBits(dArr[length]) == Double.doubleToLongBits(d2)) {
+                return length;
+            }
+        }
+        return -1;
     }
 }

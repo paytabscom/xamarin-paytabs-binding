@@ -1,46 +1,39 @@
-package mono.android.widget;
+package kotlin.random.jdk8;
 
-import android.widget.SearchView;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.random.AbstractPlatformRandom;
 
+/* compiled from: PlatformThreadLocalRandom.kt */
+@Metadata(d1 = {"\u0000*\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u0006\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\t\n\u0000\b\u0000\u0018\u00002\u00020\u0001B\u0005¢\u0006\u0002\u0010\u0002J\u0010\u0010\u0007\u001a\u00020\b2\u0006\u0010\t\u001a\u00020\bH\u0016J\u0018\u0010\n\u001a\u00020\u000b2\u0006\u0010\f\u001a\u00020\u000b2\u0006\u0010\t\u001a\u00020\u000bH\u0016J\u0010\u0010\r\u001a\u00020\u000e2\u0006\u0010\t\u001a\u00020\u000eH\u0016J\u0018\u0010\r\u001a\u00020\u000e2\u0006\u0010\f\u001a\u00020\u000e2\u0006\u0010\t\u001a\u00020\u000eH\u0016R\u0014\u0010\u0003\u001a\u00020\u00048VX\u0096\u0004¢\u0006\u0006\u001a\u0004\b\u0005\u0010\u0006¨\u0006\u000f"}, d2 = {"Lkotlin/random/jdk8/PlatformThreadLocalRandom;", "Lkotlin/random/AbstractPlatformRandom;", "()V", "impl", "Ljava/util/Random;", "getImpl", "()Ljava/util/Random;", "nextDouble", "", "until", "nextInt", "", "from", "nextLong", "", "kotlin-stdlib-jdk8"}, k = 1, mv = {1, 7, 1}, xi = 48)
 /* loaded from: classes.dex */
-public class SearchView_OnCloseListenerImplementor implements IGCUserPeer, SearchView.OnCloseListener {
-    public static final String __md_methods = "n_onClose:()Z:GetOnCloseHandler:Android.Widget.SearchView/IOnCloseListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native boolean n_onClose();
-
-    static {
-        Runtime.register("Android.Widget.SearchView+IOnCloseListenerImplementor, Mono.Android", SearchView_OnCloseListenerImplementor.class, __md_methods);
+public final class PlatformThreadLocalRandom extends AbstractPlatformRandom {
+    @Override // kotlin.random.AbstractPlatformRandom
+    public Random getImpl() {
+        ThreadLocalRandom current = ThreadLocalRandom.current();
+        Intrinsics.checkNotNullExpressionValue(current, "current()");
+        return current;
     }
 
-    public SearchView_OnCloseListenerImplementor() {
-        if (getClass() == SearchView_OnCloseListenerImplementor.class) {
-            TypeManager.Activate("Android.Widget.SearchView+IOnCloseListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    @Override // kotlin.random.Random
+    public int nextInt(int i2, int i3) {
+        return ThreadLocalRandom.current().nextInt(i2, i3);
     }
 
-    @Override // android.widget.SearchView.OnCloseListener
-    public boolean onClose() {
-        return n_onClose();
+    @Override // kotlin.random.Random
+    public long nextLong(long j2) {
+        return ThreadLocalRandom.current().nextLong(j2);
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
+    @Override // kotlin.random.Random
+    public long nextLong(long j2, long j3) {
+        return ThreadLocalRandom.current().nextLong(j2, j3);
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    @Override // kotlin.random.Random
+    public double nextDouble(double d2) {
+        return ThreadLocalRandom.current().nextDouble(d2);
     }
 }

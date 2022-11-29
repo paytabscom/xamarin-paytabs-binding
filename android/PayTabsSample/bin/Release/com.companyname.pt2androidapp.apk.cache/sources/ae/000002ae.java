@@ -1,139 +1,146 @@
-package androidx.browser.trusted.sharing;
+package androidx.browser.customtabs;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.Parcelable;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.support.customtabs.ICustomTabsCallback;
+import android.support.customtabs.IPostMessageService;
+import android.util.Log;
 
 /* loaded from: classes.dex */
-public final class ShareTarget {
-    public static final String ENCODING_TYPE_MULTIPART = "multipart/form-data";
-    public static final String ENCODING_TYPE_URL_ENCODED = "application/x-www-form-urlencoded";
-    public static final String KEY_ACTION = "androidx.browser.trusted.sharing.KEY_ACTION";
-    public static final String KEY_ENCTYPE = "androidx.browser.trusted.sharing.KEY_ENCTYPE";
-    public static final String KEY_METHOD = "androidx.browser.trusted.sharing.KEY_METHOD";
-    public static final String KEY_PARAMS = "androidx.browser.trusted.sharing.KEY_PARAMS";
-    public static final String METHOD_GET = "GET";
-    public static final String METHOD_POST = "POST";
-    public final String action;
-    public final String encodingType;
-    public final String method;
-    public final Params params;
+public abstract class PostMessageServiceConnection implements PostMessageBackend, ServiceConnection {
+    private static final String TAG = "PostMessageServConn";
+    private final Object mLock = new Object();
+    private boolean mMessageChannelCreated;
+    private String mPackageName;
+    private IPostMessageService mService;
+    private final ICustomTabsCallback mSessionBinder;
 
-    @Retention(RetentionPolicy.SOURCE)
-    /* loaded from: classes.dex */
-    public @interface EncodingType {
+    public void onPostMessageServiceDisconnected() {
     }
 
-    @Retention(RetentionPolicy.SOURCE)
-    /* loaded from: classes.dex */
-    public @interface RequestMethod {
-    }
-
-    public ShareTarget(String action, String method, String encodingType, Params params) {
-        this.action = action;
-        this.method = method;
-        this.encodingType = encodingType;
-        this.params = params;
-    }
-
-    public Bundle toBundle() {
-        Bundle bundle = new Bundle();
-        bundle.putString(KEY_ACTION, this.action);
-        bundle.putString(KEY_METHOD, this.method);
-        bundle.putString(KEY_ENCTYPE, this.encodingType);
-        bundle.putBundle(KEY_PARAMS, this.params.toBundle());
-        return bundle;
-    }
-
-    public static ShareTarget fromBundle(Bundle bundle) {
-        String string = bundle.getString(KEY_ACTION);
-        String string2 = bundle.getString(KEY_METHOD);
-        String string3 = bundle.getString(KEY_ENCTYPE);
-        Params fromBundle = Params.fromBundle(bundle.getBundle(KEY_PARAMS));
-        if (string == null || fromBundle == null) {
-            return null;
+    public PostMessageServiceConnection(CustomTabsSessionToken session) {
+        IBinder callbackBinder = session.getCallbackBinder();
+        if (callbackBinder == null) {
+            throw new IllegalArgumentException("Provided session must have binder.");
         }
-        return new ShareTarget(string, string2, string3, fromBundle);
+        this.mSessionBinder = ICustomTabsCallback.Stub.asInterface(callbackBinder);
     }
 
-    /* loaded from: classes.dex */
-    public static class Params {
-        public static final String KEY_FILES = "androidx.browser.trusted.sharing.KEY_FILES";
-        public static final String KEY_TEXT = "androidx.browser.trusted.sharing.KEY_TEXT";
-        public static final String KEY_TITLE = "androidx.browser.trusted.sharing.KEY_TITLE";
-        public final List<FileFormField> files;
-        public final String text;
-        public final String title;
+    public void setPackageName(String packageName) {
+        this.mPackageName = packageName;
+    }
 
-        public Params(String title, String text, List<FileFormField> files) {
-            this.title = title;
-            this.text = text;
-            this.files = files;
+    public boolean bindSessionToPostMessageService(Context context, String packageName) {
+        Intent intent = new Intent();
+        intent.setClassName(packageName, PostMessageService.class.getName());
+        boolean bindService = context.bindService(intent, this, 1);
+        if (!bindService) {
+            Log.w(TAG, "Could not bind to PostMessageService in client.");
         }
+        return bindService;
+    }
 
-        Bundle toBundle() {
-            Bundle bundle = new Bundle();
-            bundle.putString("androidx.browser.trusted.sharing.KEY_TITLE", this.title);
-            bundle.putString("androidx.browser.trusted.sharing.KEY_TEXT", this.text);
-            if (this.files != null) {
-                ArrayList<? extends Parcelable> arrayList = new ArrayList<>();
-                for (FileFormField fileFormField : this.files) {
-                    arrayList.add(fileFormField.toBundle());
+    public boolean bindSessionToPostMessageService(Context appContext) {
+        String str = this.mPackageName;
+        if (str == null) {
+            throw new IllegalStateException("setPackageName must be called before bindSessionToPostMessageService.");
+        }
+        return bindSessionToPostMessageService(appContext, str);
+    }
+
+    private boolean isBoundToService() {
+        return this.mService != null;
+    }
+
+    public void unbindFromContext(Context context) {
+        if (isBoundToService()) {
+            context.unbindService(this);
+            this.mService = null;
+        }
+    }
+
+    @Override // android.content.ServiceConnection
+    public final void onServiceConnected(ComponentName name, IBinder service) {
+        this.mService = IPostMessageService.Stub.asInterface(service);
+        onPostMessageServiceConnected();
+    }
+
+    @Override // android.content.ServiceConnection
+    public final void onServiceDisconnected(ComponentName name) {
+        this.mService = null;
+        onPostMessageServiceDisconnected();
+    }
+
+    @Override // androidx.browser.customtabs.PostMessageBackend
+    public final boolean onNotifyMessageChannelReady(Bundle extras) {
+        return notifyMessageChannelReady(extras);
+    }
+
+    public final boolean notifyMessageChannelReady(Bundle extras) {
+        this.mMessageChannelCreated = true;
+        return notifyMessageChannelReadyInternal(extras);
+    }
+
+    private boolean notifyMessageChannelReadyInternal(Bundle extras) {
+        if (this.mService == null) {
+            return false;
+        }
+        synchronized (this.mLock) {
+            try {
+                try {
+                    this.mService.onMessageChannelReady(this.mSessionBinder, extras);
+                } catch (RemoteException unused) {
+                    return false;
                 }
-                bundle.putParcelableArrayList(KEY_FILES, arrayList);
+            } catch (Throwable th) {
+                throw th;
             }
-            return bundle;
         }
+        return true;
+    }
 
-        static Params fromBundle(Bundle bundle) {
-            ArrayList arrayList = null;
-            if (bundle == null) {
-                return null;
-            }
-            ArrayList<Bundle> parcelableArrayList = bundle.getParcelableArrayList(KEY_FILES);
-            if (parcelableArrayList != null) {
-                arrayList = new ArrayList();
-                for (Bundle bundle2 : parcelableArrayList) {
-                    arrayList.add(FileFormField.fromBundle(bundle2));
+    @Override // androidx.browser.customtabs.PostMessageBackend
+    public final boolean onPostMessage(String message, Bundle extras) {
+        return postMessage(message, extras);
+    }
+
+    public final boolean postMessage(String message, Bundle extras) {
+        if (this.mService == null) {
+            return false;
+        }
+        synchronized (this.mLock) {
+            try {
+                try {
+                    this.mService.onPostMessage(this.mSessionBinder, message, extras);
+                } catch (RemoteException unused) {
+                    return false;
                 }
+            } catch (Throwable th) {
+                throw th;
             }
-            return new Params(bundle.getString("androidx.browser.trusted.sharing.KEY_TITLE"), bundle.getString("androidx.browser.trusted.sharing.KEY_TEXT"), arrayList);
+        }
+        return true;
+    }
+
+    @Override // androidx.browser.customtabs.PostMessageBackend
+    public void onDisconnectChannel(Context appContext) {
+        unbindFromContext(appContext);
+    }
+
+    public void onPostMessageServiceConnected() {
+        if (this.mMessageChannelCreated) {
+            notifyMessageChannelReadyInternal(null);
         }
     }
 
-    /* loaded from: classes.dex */
-    public static final class FileFormField {
-        public static final String KEY_ACCEPTED_TYPES = "androidx.browser.trusted.sharing.KEY_ACCEPTED_TYPES";
-        public static final String KEY_NAME = "androidx.browser.trusted.sharing.KEY_FILE_NAME";
-        public final List<String> acceptedTypes;
-        public final String name;
-
-        public FileFormField(String name, List<String> acceptedTypes) {
-            this.name = name;
-            this.acceptedTypes = Collections.unmodifiableList(acceptedTypes);
-        }
-
-        Bundle toBundle() {
-            Bundle bundle = new Bundle();
-            bundle.putString(KEY_NAME, this.name);
-            bundle.putStringArrayList(KEY_ACCEPTED_TYPES, new ArrayList<>(this.acceptedTypes));
-            return bundle;
-        }
-
-        static FileFormField fromBundle(Bundle bundle) {
-            if (bundle == null) {
-                return null;
-            }
-            String string = bundle.getString(KEY_NAME);
-            ArrayList<String> stringArrayList = bundle.getStringArrayList(KEY_ACCEPTED_TYPES);
-            if (string == null || stringArrayList == null) {
-                return null;
-            }
-            return new FileFormField(string, stringArrayList);
+    public void cleanup(Context context) {
+        if (isBoundToService()) {
+            unbindFromContext(context);
         }
     }
 }

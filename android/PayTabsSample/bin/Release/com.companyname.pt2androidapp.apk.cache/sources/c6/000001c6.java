@@ -1,118 +1,287 @@
 package androidx.appcompat.widget;
 
 import android.content.Context;
-import android.content.res.TypedArray;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ActionMode;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Button;
 import androidx.appcompat.R;
-import androidx.core.view.ViewCompat;
+import androidx.core.view.TintableBackgroundView;
+import androidx.core.widget.AutoSizeableTextView;
+import androidx.core.widget.TextViewCompat;
+import androidx.core.widget.TintableCompoundDrawablesView;
 
 /* loaded from: classes.dex */
-public class ButtonBarLayout extends LinearLayout {
-    private static final int PEEK_BUTTON_DP = 16;
-    private boolean mAllowStacking;
-    private int mLastWidthSize;
-    private int mMinimumHeight;
+public class AppCompatButton extends Button implements TintableBackgroundView, AutoSizeableTextView, TintableCompoundDrawablesView {
+    private final AppCompatBackgroundHelper mBackgroundTintHelper;
+    private final AppCompatTextHelper mTextHelper;
 
-    public ButtonBarLayout(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        this.mLastWidthSize = -1;
-        this.mMinimumHeight = 0;
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, R.styleable.ButtonBarLayout);
-        ViewCompat.saveAttributeDataForStyleable(this, context, R.styleable.ButtonBarLayout, attributeSet, obtainStyledAttributes, 0, 0);
-        this.mAllowStacking = obtainStyledAttributes.getBoolean(R.styleable.ButtonBarLayout_allowStacking, true);
-        obtainStyledAttributes.recycle();
+    public AppCompatButton(Context context) {
+        this(context, null);
     }
 
-    public void setAllowStacking(boolean z2) {
-        if (this.mAllowStacking != z2) {
-            this.mAllowStacking = z2;
-            if (!z2 && getOrientation() == 1) {
-                setStacked(false);
-            }
-            requestLayout();
-        }
+    public AppCompatButton(Context context, AttributeSet attributeSet) {
+        this(context, attributeSet, R.attr.buttonStyle);
     }
 
-    @Override // android.widget.LinearLayout, android.view.View
-    protected void onMeasure(int i2, int i3) {
-        int i4;
-        boolean z2;
-        int size = View.MeasureSpec.getSize(i2);
-        int i5 = 0;
-        if (this.mAllowStacking) {
-            if (size > this.mLastWidthSize && isStacked()) {
-                setStacked(false);
-            }
-            this.mLastWidthSize = size;
-        }
-        if (isStacked() || View.MeasureSpec.getMode(i2) != 1073741824) {
-            i4 = i2;
-            z2 = false;
-        } else {
-            i4 = View.MeasureSpec.makeMeasureSpec(size, Integer.MIN_VALUE);
-            z2 = true;
-        }
-        super.onMeasure(i4, i3);
-        if (this.mAllowStacking && !isStacked()) {
-            if ((getMeasuredWidthAndState() & ViewCompat.MEASURED_STATE_MASK) == 16777216) {
-                setStacked(true);
-                z2 = true;
-            }
-        }
-        if (z2) {
-            super.onMeasure(i2, i3);
-        }
-        int nextVisibleChildIndex = getNextVisibleChildIndex(0);
-        if (nextVisibleChildIndex >= 0) {
-            View childAt = getChildAt(nextVisibleChildIndex);
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) childAt.getLayoutParams();
-            int paddingTop = getPaddingTop() + childAt.getMeasuredHeight() + layoutParams.topMargin + layoutParams.bottomMargin + 0;
-            if (isStacked()) {
-                int nextVisibleChildIndex2 = getNextVisibleChildIndex(nextVisibleChildIndex + 1);
-                if (nextVisibleChildIndex2 >= 0) {
-                    paddingTop += getChildAt(nextVisibleChildIndex2).getPaddingTop() + ((int) (getResources().getDisplayMetrics().density * 16.0f));
-                }
-                i5 = paddingTop;
-            } else {
-                i5 = paddingTop + getPaddingBottom();
-            }
-        }
-        if (ViewCompat.getMinimumHeight(this) != i5) {
-            setMinimumHeight(i5);
+    public AppCompatButton(Context context, AttributeSet attributeSet, int i2) {
+        super(TintContextWrapper.wrap(context), attributeSet, i2);
+        ThemeUtils.checkAppCompatTheme(this, getContext());
+        AppCompatBackgroundHelper appCompatBackgroundHelper = new AppCompatBackgroundHelper(this);
+        this.mBackgroundTintHelper = appCompatBackgroundHelper;
+        appCompatBackgroundHelper.loadFromAttributes(attributeSet, i2);
+        AppCompatTextHelper appCompatTextHelper = new AppCompatTextHelper(this);
+        this.mTextHelper = appCompatTextHelper;
+        appCompatTextHelper.loadFromAttributes(attributeSet, i2);
+        appCompatTextHelper.applyCompoundDrawablesTints();
+    }
+
+    @Override // android.view.View
+    public void setBackgroundResource(int i2) {
+        super.setBackgroundResource(i2);
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.onSetBackgroundResource(i2);
         }
     }
 
-    private int getNextVisibleChildIndex(int i2) {
-        int childCount = getChildCount();
-        while (i2 < childCount) {
-            if (getChildAt(i2).getVisibility() == 0) {
-                return i2;
-            }
-            i2++;
+    @Override // android.view.View
+    public void setBackgroundDrawable(Drawable drawable) {
+        super.setBackgroundDrawable(drawable);
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.onSetBackgroundDrawable(drawable);
+        }
+    }
+
+    @Override // androidx.core.view.TintableBackgroundView
+    public void setSupportBackgroundTintList(ColorStateList colorStateList) {
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.setSupportBackgroundTintList(colorStateList);
+        }
+    }
+
+    @Override // androidx.core.view.TintableBackgroundView
+    public ColorStateList getSupportBackgroundTintList() {
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            return appCompatBackgroundHelper.getSupportBackgroundTintList();
+        }
+        return null;
+    }
+
+    @Override // androidx.core.view.TintableBackgroundView
+    public void setSupportBackgroundTintMode(PorterDuff.Mode mode) {
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.setSupportBackgroundTintMode(mode);
+        }
+    }
+
+    @Override // androidx.core.view.TintableBackgroundView
+    public PorterDuff.Mode getSupportBackgroundTintMode() {
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            return appCompatBackgroundHelper.getSupportBackgroundTintMode();
+        }
+        return null;
+    }
+
+    @Override // android.widget.TextView, android.view.View
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+        AppCompatBackgroundHelper appCompatBackgroundHelper = this.mBackgroundTintHelper;
+        if (appCompatBackgroundHelper != null) {
+            appCompatBackgroundHelper.applySupportBackgroundTint();
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.applyCompoundDrawablesTints();
+        }
+    }
+
+    @Override // android.widget.TextView
+    public void setTextAppearance(Context context, int i2) {
+        super.setTextAppearance(context, i2);
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.onSetTextAppearance(context, i2);
+        }
+    }
+
+    @Override // android.view.View
+    public void onInitializeAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+        super.onInitializeAccessibilityEvent(accessibilityEvent);
+        accessibilityEvent.setClassName(Button.class.getName());
+    }
+
+    @Override // android.view.View
+    public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo accessibilityNodeInfo) {
+        super.onInitializeAccessibilityNodeInfo(accessibilityNodeInfo);
+        accessibilityNodeInfo.setClassName(Button.class.getName());
+    }
+
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // android.widget.TextView, android.view.View
+    public void onLayout(boolean z2, int i2, int i3, int i4, int i5) {
+        super.onLayout(z2, i2, i3, i4, i5);
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.onLayout(z2, i2, i3, i4, i5);
+        }
+    }
+
+    @Override // android.widget.TextView
+    public void setTextSize(int i2, float f2) {
+        if (PLATFORM_SUPPORTS_AUTOSIZE) {
+            super.setTextSize(i2, f2);
+            return;
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.setTextSize(i2, f2);
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // android.widget.TextView
+    public void onTextChanged(CharSequence charSequence, int i2, int i3, int i4) {
+        super.onTextChanged(charSequence, i2, i3, i4);
+        if (this.mTextHelper == null || PLATFORM_SUPPORTS_AUTOSIZE || !this.mTextHelper.isAutoSizeEnabled()) {
+            return;
+        }
+        this.mTextHelper.autoSizeText();
+    }
+
+    @Override // android.widget.TextView, androidx.core.widget.AutoSizeableTextView
+    public void setAutoSizeTextTypeWithDefaults(int i2) {
+        if (PLATFORM_SUPPORTS_AUTOSIZE) {
+            super.setAutoSizeTextTypeWithDefaults(i2);
+            return;
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.setAutoSizeTextTypeWithDefaults(i2);
+        }
+    }
+
+    @Override // android.widget.TextView, androidx.core.widget.AutoSizeableTextView
+    public void setAutoSizeTextTypeUniformWithConfiguration(int i2, int i3, int i4, int i5) throws IllegalArgumentException {
+        if (PLATFORM_SUPPORTS_AUTOSIZE) {
+            super.setAutoSizeTextTypeUniformWithConfiguration(i2, i3, i4, i5);
+            return;
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.setAutoSizeTextTypeUniformWithConfiguration(i2, i3, i4, i5);
+        }
+    }
+
+    @Override // android.widget.TextView, androidx.core.widget.AutoSizeableTextView
+    public void setAutoSizeTextTypeUniformWithPresetSizes(int[] iArr, int i2) throws IllegalArgumentException {
+        if (PLATFORM_SUPPORTS_AUTOSIZE) {
+            super.setAutoSizeTextTypeUniformWithPresetSizes(iArr, i2);
+            return;
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.setAutoSizeTextTypeUniformWithPresetSizes(iArr, i2);
+        }
+    }
+
+    @Override // android.widget.TextView, androidx.core.widget.AutoSizeableTextView
+    public int getAutoSizeTextType() {
+        if (PLATFORM_SUPPORTS_AUTOSIZE) {
+            return super.getAutoSizeTextType() == 1 ? 1 : 0;
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            return appCompatTextHelper.getAutoSizeTextType();
+        }
+        return 0;
+    }
+
+    @Override // android.widget.TextView, androidx.core.widget.AutoSizeableTextView
+    public int getAutoSizeStepGranularity() {
+        if (PLATFORM_SUPPORTS_AUTOSIZE) {
+            return super.getAutoSizeStepGranularity();
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            return appCompatTextHelper.getAutoSizeStepGranularity();
         }
         return -1;
     }
 
-    @Override // android.view.View
-    public int getMinimumHeight() {
-        return Math.max(this.mMinimumHeight, super.getMinimumHeight());
+    @Override // android.widget.TextView, androidx.core.widget.AutoSizeableTextView
+    public int getAutoSizeMinTextSize() {
+        if (PLATFORM_SUPPORTS_AUTOSIZE) {
+            return super.getAutoSizeMinTextSize();
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            return appCompatTextHelper.getAutoSizeMinTextSize();
+        }
+        return -1;
     }
 
-    private void setStacked(boolean z2) {
-        setOrientation(z2 ? 1 : 0);
-        setGravity(z2 ? 5 : 80);
-        View findViewById = findViewById(R.id.spacer);
-        if (findViewById != null) {
-            findViewById.setVisibility(z2 ? 8 : 4);
+    @Override // android.widget.TextView, androidx.core.widget.AutoSizeableTextView
+    public int getAutoSizeMaxTextSize() {
+        if (PLATFORM_SUPPORTS_AUTOSIZE) {
+            return super.getAutoSizeMaxTextSize();
         }
-        for (int childCount = getChildCount() - 2; childCount >= 0; childCount--) {
-            bringChildToFront(getChildAt(childCount));
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            return appCompatTextHelper.getAutoSizeMaxTextSize();
+        }
+        return -1;
+    }
+
+    @Override // android.widget.TextView, androidx.core.widget.AutoSizeableTextView
+    public int[] getAutoSizeTextAvailableSizes() {
+        if (PLATFORM_SUPPORTS_AUTOSIZE) {
+            return super.getAutoSizeTextAvailableSizes();
+        }
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        return appCompatTextHelper != null ? appCompatTextHelper.getAutoSizeTextAvailableSizes() : new int[0];
+    }
+
+    public void setSupportAllCaps(boolean z2) {
+        AppCompatTextHelper appCompatTextHelper = this.mTextHelper;
+        if (appCompatTextHelper != null) {
+            appCompatTextHelper.setAllCaps(z2);
         }
     }
 
-    private boolean isStacked() {
-        return getOrientation() == 1;
+    @Override // android.widget.TextView
+    public void setCustomSelectionActionModeCallback(ActionMode.Callback callback) {
+        super.setCustomSelectionActionModeCallback(TextViewCompat.wrapCustomSelectionActionModeCallback(this, callback));
+    }
+
+    @Override // androidx.core.widget.TintableCompoundDrawablesView
+    public void setSupportCompoundDrawablesTintList(ColorStateList colorStateList) {
+        this.mTextHelper.setCompoundDrawableTintList(colorStateList);
+        this.mTextHelper.applyCompoundDrawablesTints();
+    }
+
+    @Override // androidx.core.widget.TintableCompoundDrawablesView
+    public ColorStateList getSupportCompoundDrawablesTintList() {
+        return this.mTextHelper.getCompoundDrawableTintList();
+    }
+
+    @Override // androidx.core.widget.TintableCompoundDrawablesView
+    public void setSupportCompoundDrawablesTintMode(PorterDuff.Mode mode) {
+        this.mTextHelper.setCompoundDrawableTintMode(mode);
+        this.mTextHelper.applyCompoundDrawablesTints();
+    }
+
+    @Override // androidx.core.widget.TintableCompoundDrawablesView
+    public PorterDuff.Mode getSupportCompoundDrawablesTintMode() {
+        return this.mTextHelper.getCompoundDrawableTintMode();
     }
 }

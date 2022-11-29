@@ -1,48 +1,11 @@
-package mono.android.media;
+package kotlin.jvm.functions;
 
-import android.media.MediaRoute2Info;
-import android.media.MediaRouter2;
-import android.os.Bundle;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Function;
+import kotlin.Metadata;
 
+/* compiled from: Functions.kt */
+@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0005\bf\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u0000*\u0006\b\u0001\u0010\u0002 \u0000*\u0006\b\u0002\u0010\u0003 \u00012\b\u0012\u0004\u0012\u0002H\u00030\u0004J\u001e\u0010\u0005\u001a\u00028\u00022\u0006\u0010\u0006\u001a\u00028\u00002\u0006\u0010\u0007\u001a\u00028\u0001H¦\u0002¢\u0006\u0002\u0010\b¨\u0006\t"}, d2 = {"Lkotlin/jvm/functions/Function2;", "P1", "P2", "R", "Lkotlin/Function;", "invoke", "p1", "p2", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class MediaRouter2_OnGetControllerHintsListenerImplementor implements IGCUserPeer, MediaRouter2.OnGetControllerHintsListener {
-    public static final String __md_methods = "n_onGetControllerHints:(Landroid/media/MediaRoute2Info;)Landroid/os/Bundle;:GetOnGetControllerHints_Landroid_media_MediaRoute2Info_Handler:Android.Media.MediaRouter2/IOnGetControllerHintsListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native Bundle n_onGetControllerHints(MediaRoute2Info mediaRoute2Info);
-
-    static {
-        Runtime.register("Android.Media.MediaRouter2+IOnGetControllerHintsListenerImplementor, Mono.Android", MediaRouter2_OnGetControllerHintsListenerImplementor.class, __md_methods);
-    }
-
-    public MediaRouter2_OnGetControllerHintsListenerImplementor() {
-        if (getClass() == MediaRouter2_OnGetControllerHintsListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.MediaRouter2+IOnGetControllerHintsListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.media.MediaRouter2.OnGetControllerHintsListener
-    public Bundle onGetControllerHints(MediaRoute2Info mediaRoute2Info) {
-        return n_onGetControllerHints(mediaRoute2Info);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public interface Function2<P1, P2, R> extends Function<R> {
+    R invoke(P1 p1, P2 p2);
 }

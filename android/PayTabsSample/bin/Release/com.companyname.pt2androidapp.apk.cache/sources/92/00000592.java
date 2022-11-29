@@ -1,30 +1,68 @@
-package androidx.core.transition;
+package androidx.core.graphics.drawable;
 
-import android.transition.Transition;
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.internal.Intrinsics;
-import kotlin.jvm.internal.Lambda;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.os.Build;
+import android.util.Log;
+import androidx.core.graphics.BitmapCompat;
+import androidx.core.view.GravityCompat;
+import java.io.InputStream;
 
-/* compiled from: Transition.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u000e\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0003H\n¢\u0006\u0002\b\u0004"}, d2 = {"<anonymous>", "", "it", "Landroid/transition/Transition;", "invoke"}, k = 3, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class TransitionKt$addListener$5 extends Lambda implements Function1<Transition, Unit> {
-    public static final TransitionKt$addListener$5 INSTANCE = new TransitionKt$addListener$5();
+public final class RoundedBitmapDrawableFactory {
+    private static final String TAG = "RoundedBitmapDrawableFa";
 
-    public TransitionKt$addListener$5() {
-        super(1);
+    /* JADX INFO: Access modifiers changed from: private */
+    /* loaded from: classes.dex */
+    public static class DefaultRoundedBitmapDrawable extends RoundedBitmapDrawable {
+        DefaultRoundedBitmapDrawable(Resources resources, Bitmap bitmap) {
+            super(resources, bitmap);
+        }
+
+        @Override // androidx.core.graphics.drawable.RoundedBitmapDrawable
+        public void setMipMap(boolean z2) {
+            if (this.mBitmap != null) {
+                BitmapCompat.setHasMipMap(this.mBitmap, z2);
+                invalidateSelf();
+            }
+        }
+
+        @Override // androidx.core.graphics.drawable.RoundedBitmapDrawable
+        public boolean hasMipMap() {
+            return this.mBitmap != null && BitmapCompat.hasMipMap(this.mBitmap);
+        }
+
+        @Override // androidx.core.graphics.drawable.RoundedBitmapDrawable
+        void gravityCompatApply(int i2, int i3, int i4, Rect rect, Rect rect2) {
+            GravityCompat.apply(i2, i3, i4, rect, rect2, 0);
+        }
     }
 
-    @Override // kotlin.jvm.functions.Function1
-    public /* bridge */ /* synthetic */ Unit invoke(Transition transition) {
-        invoke2(transition);
-        return Unit.INSTANCE;
+    public static RoundedBitmapDrawable create(Resources resources, Bitmap bitmap) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            return new RoundedBitmapDrawable21(resources, bitmap);
+        }
+        return new DefaultRoundedBitmapDrawable(resources, bitmap);
     }
 
-    /* renamed from: invoke  reason: avoid collision after fix types in other method */
-    public final void invoke2(Transition it) {
-        Intrinsics.checkNotNullParameter(it, "it");
+    public static RoundedBitmapDrawable create(Resources resources, String str) {
+        RoundedBitmapDrawable create = create(resources, BitmapFactory.decodeFile(str));
+        if (create.getBitmap() == null) {
+            Log.w(TAG, "RoundedBitmapDrawable cannot decode " + str);
+        }
+        return create;
+    }
+
+    public static RoundedBitmapDrawable create(Resources resources, InputStream inputStream) {
+        RoundedBitmapDrawable create = create(resources, BitmapFactory.decodeStream(inputStream));
+        if (create.getBitmap() == null) {
+            Log.w(TAG, "RoundedBitmapDrawable cannot decode " + inputStream);
+        }
+        return create;
+    }
+
+    private RoundedBitmapDrawableFactory() {
     }
 }

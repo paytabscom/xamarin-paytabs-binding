@@ -1,35 +1,92 @@
-package androidx.core.util;
+package androidx.core.internal.view;
+
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.view.MenuItem;
+import android.view.View;
+import androidx.core.view.ActionProvider;
 
 /* loaded from: classes.dex */
-public class Pair<F, S> {
-    public final F first;
-    public final S second;
+public interface SupportMenuItem extends MenuItem {
+    public static final int SHOW_AS_ACTION_ALWAYS = 2;
+    public static final int SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW = 8;
+    public static final int SHOW_AS_ACTION_IF_ROOM = 1;
+    public static final int SHOW_AS_ACTION_NEVER = 0;
+    public static final int SHOW_AS_ACTION_WITH_TEXT = 4;
 
-    public Pair(F f2, S s2) {
-        this.first = f2;
-        this.second = s2;
-    }
+    @Override // android.view.MenuItem
+    boolean collapseActionView();
 
-    public boolean equals(Object obj) {
-        if (obj instanceof Pair) {
-            Pair pair = (Pair) obj;
-            return ObjectsCompat.equals(pair.first, this.first) && ObjectsCompat.equals(pair.second, this.second);
-        }
-        return false;
-    }
+    @Override // android.view.MenuItem
+    boolean expandActionView();
 
-    public int hashCode() {
-        F f2 = this.first;
-        int hashCode = f2 == null ? 0 : f2.hashCode();
-        S s2 = this.second;
-        return hashCode ^ (s2 != null ? s2.hashCode() : 0);
-    }
+    @Override // android.view.MenuItem
+    View getActionView();
 
-    public String toString() {
-        return "Pair{" + this.first + " " + this.second + "}";
-    }
+    @Override // android.view.MenuItem
+    int getAlphabeticModifiers();
 
-    public static <A, B> Pair<A, B> create(A a2, B b2) {
-        return new Pair<>(a2, b2);
+    @Override // android.view.MenuItem
+    CharSequence getContentDescription();
+
+    @Override // android.view.MenuItem
+    ColorStateList getIconTintList();
+
+    @Override // android.view.MenuItem
+    PorterDuff.Mode getIconTintMode();
+
+    @Override // android.view.MenuItem
+    int getNumericModifiers();
+
+    ActionProvider getSupportActionProvider();
+
+    @Override // android.view.MenuItem
+    CharSequence getTooltipText();
+
+    @Override // android.view.MenuItem
+    boolean isActionViewExpanded();
+
+    boolean requiresActionButton();
+
+    boolean requiresOverflow();
+
+    @Override // android.view.MenuItem
+    MenuItem setActionView(int i2);
+
+    @Override // android.view.MenuItem
+    MenuItem setActionView(View view);
+
+    @Override // android.view.MenuItem
+    MenuItem setAlphabeticShortcut(char c2, int i2);
+
+    @Override // android.view.MenuItem
+    SupportMenuItem setContentDescription(CharSequence charSequence);
+
+    @Override // android.view.MenuItem
+    MenuItem setIconTintList(ColorStateList colorStateList);
+
+    @Override // android.view.MenuItem
+    MenuItem setIconTintMode(PorterDuff.Mode mode);
+
+    @Override // android.view.MenuItem
+    MenuItem setNumericShortcut(char c2, int i2);
+
+    @Override // android.view.MenuItem
+    MenuItem setShortcut(char c2, char c3, int i2, int i3);
+
+    @Override // android.view.MenuItem
+    void setShowAsAction(int i2);
+
+    @Override // android.view.MenuItem
+    MenuItem setShowAsActionFlags(int i2);
+
+    SupportMenuItem setSupportActionProvider(ActionProvider actionProvider);
+
+    @Override // android.view.MenuItem
+    SupportMenuItem setTooltipText(CharSequence charSequence);
+
+    /* renamed from: androidx.core.internal.view.SupportMenuItem$-CC  reason: invalid class name */
+    /* loaded from: classes.dex */
+    public final /* synthetic */ class CC {
     }
 }

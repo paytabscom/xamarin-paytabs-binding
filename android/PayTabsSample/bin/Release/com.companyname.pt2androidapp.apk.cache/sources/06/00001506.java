@@ -1,23 +1,49 @@
-package kotlinx.coroutines.flow;
+package kotlin.collections;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
+import kotlin.jvm.internal.markers.KMutableMap;
 
-/* compiled from: Emitters.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u0003\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0002\b\u0003\b\u0002\u0018\u00002\n\u0012\u0006\u0012\u0004\u0018\u00010\u00020\u0001B\r\u0012\u0006\u0010\u0003\u001a\u00020\u0004¢\u0006\u0002\u0010\u0005J\u001b\u0010\u0006\u001a\u00020\u00072\b\u0010\b\u001a\u0004\u0018\u00010\u0002H\u0096@ø\u0001\u0000¢\u0006\u0002\u0010\tR\u000e\u0010\u0003\u001a\u00020\u0004X\u0082\u0004¢\u0006\u0002\n\u0000\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\n"}, d2 = {"Lkotlinx/coroutines/flow/ThrowingCollector;", "Lkotlinx/coroutines/flow/FlowCollector;", "", "e", "", "(Ljava/lang/Throwable;)V", "emit", "", "value", "(Ljava/lang/Object;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
+/* compiled from: AbstractMutableMap.kt */
+@Metadata(d1 = {"\u0000\u0014\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010%\n\u0002\u0018\u0002\n\u0002\b\u0006\b'\u0018\u0000*\u0004\b\u0000\u0010\u0001*\u0004\b\u0001\u0010\u00022\u000e\u0012\u0004\u0012\u0002H\u0001\u0012\u0004\u0012\u0002H\u00020\u00032\u000e\u0012\u0004\u0012\u0002H\u0001\u0012\u0004\u0012\u0002H\u00020\u0004B\u0007\b\u0004¢\u0006\u0002\u0010\u0005J\u001f\u0010\u0006\u001a\u0004\u0018\u00018\u00012\u0006\u0010\u0007\u001a\u00028\u00002\u0006\u0010\b\u001a\u00028\u0001H&¢\u0006\u0002\u0010\t¨\u0006\n"}, d2 = {"Lkotlin/collections/AbstractMutableMap;", "K", "V", "", "Ljava/util/AbstractMap;", "()V", "put", "key", "value", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-final class ThrowingCollector implements FlowCollector<Object> {
+public abstract class AbstractMutableMap<K, V> extends java.util.AbstractMap<K, V> implements Map<K, V>, KMutableMap {
+    public abstract Set getEntries();
 
-    /* renamed from: e  reason: collision with root package name */
-    private final Throwable f290e;
+    @Override // java.util.AbstractMap, java.util.Map
+    public abstract V put(K k2, V v2);
 
-    public ThrowingCollector(Throwable th) {
-        this.f290e = th;
+    @Override // java.util.AbstractMap, java.util.Map
+    public final /* bridge */ Set<Map.Entry<K, V>> entrySet() {
+        return getEntries();
     }
 
-    @Override // kotlinx.coroutines.flow.FlowCollector
-    public Object emit(Object obj, Continuation<? super Unit> continuation) {
-        throw this.f290e;
+    public /* bridge */ Set getKeys() {
+        return super.keySet();
+    }
+
+    public /* bridge */ int getSize() {
+        return super.size();
+    }
+
+    public /* bridge */ Collection getValues() {
+        return super.values();
+    }
+
+    @Override // java.util.AbstractMap, java.util.Map
+    public final /* bridge */ Set<K> keySet() {
+        return getKeys();
+    }
+
+    @Override // java.util.AbstractMap, java.util.Map
+    public final /* bridge */ int size() {
+        return getSize();
+    }
+
+    @Override // java.util.AbstractMap, java.util.Map
+    public final /* bridge */ Collection<V> values() {
+        return getValues();
     }
 }

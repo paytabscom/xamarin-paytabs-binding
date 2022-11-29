@@ -1,21 +1,73 @@
-package kotlin.sequences;
+package com.google.crypto.tink.shaded.protobuf;
 
-import java.util.Iterator;
-import kotlin.Metadata;
-import kotlin.jvm.internal.markers.KMappedMarker;
+import com.google.crypto.tink.shaded.protobuf.MapEntryLite;
+import java.util.Map;
 
-/* compiled from: Iterables.kt */
-@Metadata(d1 = {"\u0000\u0011\n\u0000\n\u0002\u0010\u001c\n\u0000\n\u0002\u0010(\n\u0000*\u0001\u0000\b\n\u0018\u00002\b\u0012\u0004\u0012\u00028\u00000\u0001J\u000f\u0010\u0002\u001a\b\u0012\u0004\u0012\u00028\u00000\u0003H\u0096\u0002¨\u0006\u0004¸\u0006\u0000"}, d2 = {"kotlin/collections/CollectionsKt__IterablesKt$Iterable$1", "", "iterator", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class SequencesKt___SequencesKt$asIterable$$inlined$Iterable$1 implements Iterable<T>, KMappedMarker {
-    final /* synthetic */ Sequence $this_asIterable$inlined;
-
-    public SequencesKt___SequencesKt$asIterable$$inlined$Iterable$1(Sequence sequence) {
-        this.$this_asIterable$inlined = sequence;
+class MapFieldSchemaLite implements MapFieldSchema {
+    @Override // com.google.crypto.tink.shaded.protobuf.MapFieldSchema
+    public Map<?, ?> forMutableMapData(Object mapField) {
+        return (MapFieldLite) mapField;
     }
 
-    @Override // java.lang.Iterable
-    public Iterator<T> iterator() {
-        return this.$this_asIterable$inlined.iterator();
+    @Override // com.google.crypto.tink.shaded.protobuf.MapFieldSchema
+    public MapEntryLite.Metadata<?, ?> forMapMetadata(Object mapDefaultEntry) {
+        return ((MapEntryLite) mapDefaultEntry).getMetadata();
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.MapFieldSchema
+    public Map<?, ?> forMapData(Object mapField) {
+        return (MapFieldLite) mapField;
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.MapFieldSchema
+    public boolean isImmutable(Object mapField) {
+        return !((MapFieldLite) mapField).isMutable();
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.MapFieldSchema
+    public Object toImmutable(Object mapField) {
+        ((MapFieldLite) mapField).makeImmutable();
+        return mapField;
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.MapFieldSchema
+    public Object newMapField(Object unused) {
+        return MapFieldLite.emptyMapField().mutableCopy();
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.MapFieldSchema
+    public Object mergeFrom(Object destMapField, Object srcMapField) {
+        return mergeFromLite(destMapField, srcMapField);
+    }
+
+    private static <K, V> MapFieldLite<K, V> mergeFromLite(Object destMapField, Object srcMapField) {
+        MapFieldLite<K, V> mapFieldLite = (MapFieldLite) destMapField;
+        MapFieldLite<K, V> mapFieldLite2 = (MapFieldLite) srcMapField;
+        if (!mapFieldLite2.isEmpty()) {
+            if (!mapFieldLite.isMutable()) {
+                mapFieldLite = mapFieldLite.mutableCopy();
+            }
+            mapFieldLite.mergeFrom(mapFieldLite2);
+        }
+        return mapFieldLite;
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.MapFieldSchema
+    public int getSerializedSize(int fieldNumber, Object mapField, Object mapDefaultEntry) {
+        return getSerializedSizeLite(fieldNumber, mapField, mapDefaultEntry);
+    }
+
+    private static <K, V> int getSerializedSizeLite(int fieldNumber, Object mapField, Object defaultEntry) {
+        MapFieldLite mapFieldLite = (MapFieldLite) mapField;
+        MapEntryLite mapEntryLite = (MapEntryLite) defaultEntry;
+        int i2 = 0;
+        if (mapFieldLite.isEmpty()) {
+            return 0;
+        }
+        for (Map.Entry<K, V> entry : mapFieldLite.entrySet()) {
+            i2 += mapEntryLite.computeMessageSize(fieldNumber, entry.getKey(), entry.getValue());
+        }
+        return i2;
     }
 }

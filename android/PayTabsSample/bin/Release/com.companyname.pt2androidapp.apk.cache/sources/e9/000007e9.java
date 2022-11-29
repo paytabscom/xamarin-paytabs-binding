@@ -1,41 +1,55 @@
-package androidx.lifecycle;
+package androidx.cursoradapter.widget;
 
-import android.content.ContentProvider;
-import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 /* loaded from: classes.dex */
-public class ProcessLifecycleOwnerInitializer extends ContentProvider {
-    @Override // android.content.ContentProvider
-    public int delete(Uri uri, String s2, String[] strings) {
-        return 0;
+public abstract class ResourceCursorAdapter extends CursorAdapter {
+    private int mDropDownLayout;
+    private LayoutInflater mInflater;
+    private int mLayout;
+
+    @Deprecated
+    public ResourceCursorAdapter(Context context, int i2, Cursor cursor) {
+        super(context, cursor);
+        this.mDropDownLayout = i2;
+        this.mLayout = i2;
+        this.mInflater = (LayoutInflater) context.getSystemService("layout_inflater");
     }
 
-    @Override // android.content.ContentProvider
-    public String getType(Uri uri) {
-        return null;
+    @Deprecated
+    public ResourceCursorAdapter(Context context, int i2, Cursor cursor, boolean z2) {
+        super(context, cursor, z2);
+        this.mDropDownLayout = i2;
+        this.mLayout = i2;
+        this.mInflater = (LayoutInflater) context.getSystemService("layout_inflater");
     }
 
-    @Override // android.content.ContentProvider
-    public Uri insert(Uri uri, ContentValues contentValues) {
-        return null;
+    public ResourceCursorAdapter(Context context, int i2, Cursor cursor, int i3) {
+        super(context, cursor, i3);
+        this.mDropDownLayout = i2;
+        this.mLayout = i2;
+        this.mInflater = (LayoutInflater) context.getSystemService("layout_inflater");
     }
 
-    @Override // android.content.ContentProvider
-    public Cursor query(Uri uri, String[] strings, String s2, String[] strings1, String s1) {
-        return null;
+    @Override // androidx.cursoradapter.widget.CursorAdapter
+    public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
+        return this.mInflater.inflate(this.mLayout, viewGroup, false);
     }
 
-    @Override // android.content.ContentProvider
-    public int update(Uri uri, ContentValues contentValues, String s2, String[] strings) {
-        return 0;
+    @Override // androidx.cursoradapter.widget.CursorAdapter
+    public View newDropDownView(Context context, Cursor cursor, ViewGroup viewGroup) {
+        return this.mInflater.inflate(this.mDropDownLayout, viewGroup, false);
     }
 
-    @Override // android.content.ContentProvider
-    public boolean onCreate() {
-        LifecycleDispatcher.init(getContext());
-        ProcessLifecycleOwner.init(getContext());
-        return true;
+    public void setViewResource(int i2) {
+        this.mLayout = i2;
+    }
+
+    public void setDropDownViewResource(int i2) {
+        this.mDropDownLayout = i2;
     }
 }

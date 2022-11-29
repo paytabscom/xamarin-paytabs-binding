@@ -1,9 +1,25 @@
-package kotlin.jvm.internal.markers;
+package com.google.crypto.tink.proto;
 
-import kotlin.Metadata;
+import com.google.crypto.tink.shaded.protobuf.ByteString;
+import com.google.crypto.tink.shaded.protobuf.MessageLiteOrBuilder;
 
-/* compiled from: KMarkers.kt */
-@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\bf\u0018\u00002\u00020\u0001¨\u0006\u0002"}, d2 = {"Lkotlin/jvm/internal/markers/KMutableListIterator;", "Lkotlin/jvm/internal/markers/KMutableIterator;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public interface KMutableListIterator extends KMutableIterator {
+public interface RsaSsaPssPrivateKeyOrBuilder extends MessageLiteOrBuilder {
+    ByteString getCrt();
+
+    ByteString getD();
+
+    ByteString getDp();
+
+    ByteString getDq();
+
+    ByteString getP();
+
+    RsaSsaPssPublicKey getPublicKey();
+
+    ByteString getQ();
+
+    int getVersion();
+
+    boolean hasPublicKey();
 }

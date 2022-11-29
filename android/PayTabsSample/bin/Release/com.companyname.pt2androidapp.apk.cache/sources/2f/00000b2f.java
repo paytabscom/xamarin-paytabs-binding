@@ -1,83 +1,55 @@
-package com.google.android.material.datepicker;
+package androidx.transition;
 
-import android.content.Context;
-import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
-import android.graphics.Rect;
-import android.graphics.drawable.InsetDrawable;
-import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
-import android.widget.TextView;
-import androidx.core.util.Preconditions;
-import androidx.core.view.ViewCompat;
-import com.google.android.material.R;
-import com.google.android.material.resources.MaterialResources;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.ShapeAppearanceModel;
+import android.view.View;
 
 /* loaded from: classes.dex */
-final class CalendarItemStyle {
-    private final ColorStateList backgroundColor;
-    private final Rect insets;
-    private final ShapeAppearanceModel itemShape;
-    private final ColorStateList strokeColor;
-    private final int strokeWidth;
-    private final ColorStateList textColor;
+public abstract class VisibilityPropagation extends TransitionPropagation {
+    private static final String PROPNAME_VISIBILITY = "android:visibilityPropagation:visibility";
+    private static final String PROPNAME_VIEW_CENTER = "android:visibilityPropagation:center";
+    private static final String[] VISIBILITY_PROPAGATION_VALUES = {PROPNAME_VISIBILITY, PROPNAME_VIEW_CENTER};
 
-    private CalendarItemStyle(ColorStateList colorStateList, ColorStateList colorStateList2, ColorStateList colorStateList3, int i2, ShapeAppearanceModel shapeAppearanceModel, Rect rect) {
-        Preconditions.checkArgumentNonnegative(rect.left);
-        Preconditions.checkArgumentNonnegative(rect.top);
-        Preconditions.checkArgumentNonnegative(rect.right);
-        Preconditions.checkArgumentNonnegative(rect.bottom);
-        this.insets = rect;
-        this.textColor = colorStateList2;
-        this.backgroundColor = colorStateList;
-        this.strokeColor = colorStateList3;
-        this.strokeWidth = i2;
-        this.itemShape = shapeAppearanceModel;
+    @Override // androidx.transition.TransitionPropagation
+    public void captureValues(TransitionValues transitionValues) {
+        View view = transitionValues.view;
+        Integer num = (Integer) transitionValues.values.get("android:visibility:visibility");
+        if (num == null) {
+            num = Integer.valueOf(view.getVisibility());
+        }
+        transitionValues.values.put(PROPNAME_VISIBILITY, num);
+        view.getLocationOnScreen(r2);
+        int[] iArr = {iArr[0] + Math.round(view.getTranslationX())};
+        iArr[0] = iArr[0] + (view.getWidth() / 2);
+        iArr[1] = iArr[1] + Math.round(view.getTranslationY());
+        iArr[1] = iArr[1] + (view.getHeight() / 2);
+        transitionValues.values.put(PROPNAME_VIEW_CENTER, iArr);
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public static CalendarItemStyle create(Context context, int i2) {
-        Preconditions.checkArgument(i2 != 0, "Cannot create a CalendarItemStyle with a styleResId of 0");
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(i2, R.styleable.MaterialCalendarItem);
-        Rect rect = new Rect(obtainStyledAttributes.getDimensionPixelOffset(R.styleable.MaterialCalendarItem_android_insetLeft, 0), obtainStyledAttributes.getDimensionPixelOffset(R.styleable.MaterialCalendarItem_android_insetTop, 0), obtainStyledAttributes.getDimensionPixelOffset(R.styleable.MaterialCalendarItem_android_insetRight, 0), obtainStyledAttributes.getDimensionPixelOffset(R.styleable.MaterialCalendarItem_android_insetBottom, 0));
-        ColorStateList colorStateList = MaterialResources.getColorStateList(context, obtainStyledAttributes, R.styleable.MaterialCalendarItem_itemFillColor);
-        ColorStateList colorStateList2 = MaterialResources.getColorStateList(context, obtainStyledAttributes, R.styleable.MaterialCalendarItem_itemTextColor);
-        ColorStateList colorStateList3 = MaterialResources.getColorStateList(context, obtainStyledAttributes, R.styleable.MaterialCalendarItem_itemStrokeColor);
-        int dimensionPixelSize = obtainStyledAttributes.getDimensionPixelSize(R.styleable.MaterialCalendarItem_itemStrokeWidth, 0);
-        ShapeAppearanceModel build = ShapeAppearanceModel.builder(context, obtainStyledAttributes.getResourceId(R.styleable.MaterialCalendarItem_itemShapeAppearance, 0), obtainStyledAttributes.getResourceId(R.styleable.MaterialCalendarItem_itemShapeAppearanceOverlay, 0)).build();
-        obtainStyledAttributes.recycle();
-        return new CalendarItemStyle(colorStateList, colorStateList2, colorStateList3, dimensionPixelSize, build, rect);
+    @Override // androidx.transition.TransitionPropagation
+    public String[] getPropagationProperties() {
+        return VISIBILITY_PROPAGATION_VALUES;
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void styleItem(TextView textView) {
-        MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
-        MaterialShapeDrawable materialShapeDrawable2 = new MaterialShapeDrawable();
-        materialShapeDrawable.setShapeAppearanceModel(this.itemShape);
-        materialShapeDrawable2.setShapeAppearanceModel(this.itemShape);
-        materialShapeDrawable.setFillColor(this.backgroundColor);
-        materialShapeDrawable.setStroke(this.strokeWidth, this.strokeColor);
-        textView.setTextColor(this.textColor);
-        ViewCompat.setBackground(textView, new InsetDrawable(Build.VERSION.SDK_INT >= 21 ? new RippleDrawable(this.textColor.withAlpha(30), materialShapeDrawable, materialShapeDrawable2) : materialShapeDrawable, this.insets.left, this.insets.top, this.insets.right, this.insets.bottom));
+    public int getViewVisibility(TransitionValues transitionValues) {
+        Integer num;
+        if (transitionValues == null || (num = (Integer) transitionValues.values.get(PROPNAME_VISIBILITY)) == null) {
+            return 8;
+        }
+        return num.intValue();
     }
 
-    int getLeftInset() {
-        return this.insets.left;
+    public int getViewX(TransitionValues transitionValues) {
+        return getViewCoordinate(transitionValues, 0);
     }
 
-    int getRightInset() {
-        return this.insets.right;
+    public int getViewY(TransitionValues transitionValues) {
+        return getViewCoordinate(transitionValues, 1);
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public int getTopInset() {
-        return this.insets.top;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public int getBottomInset() {
-        return this.insets.bottom;
+    private static int getViewCoordinate(TransitionValues transitionValues, int i2) {
+        int[] iArr;
+        if (transitionValues == null || (iArr = (int[]) transitionValues.values.get(PROPNAME_VIEW_CENTER)) == null) {
+            return -1;
+        }
+        return iArr[i2];
     }
 }

@@ -1,73 +1,117 @@
-package kotlinx.coroutines;
+package com.google.crypto.tink.subtle;
 
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
-import kotlin.Metadata;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.CoroutineContext;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlinx.coroutines.internal.DispatchedContinuationKt;
-import kotlinx.coroutines.internal.ScopeCoroutine;
+import com.google.crypto.tink.PublicKeyVerify;
+import com.google.crypto.tink.config.TinkFips;
+import com.google.crypto.tink.subtle.Enums;
+import com.google.errorprone.annotations.Immutable;
+import java.math.BigInteger;
+import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.interfaces.RSAPublicKey;
+import java.util.Arrays;
 
-/* compiled from: Builders.common.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000.\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0005\n\u0002\u0010\u000b\n\u0002\b\u0004\n\u0002\u0018\u0002\b\u0000\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u00002\b\u0012\u0004\u0012\u00028\u00000\u0015B\u001d\u0012\u0006\u0010\u0003\u001a\u00020\u0002\u0012\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u00028\u00000\u0004¢\u0006\u0004\b\u0006\u0010\u0007J\u0019\u0010\u000b\u001a\u00020\n2\b\u0010\t\u001a\u0004\u0018\u00010\bH\u0014¢\u0006\u0004\b\u000b\u0010\fJ\u0019\u0010\r\u001a\u00020\n2\b\u0010\t\u001a\u0004\u0018\u00010\bH\u0014¢\u0006\u0004\b\r\u0010\fJ\u000f\u0010\u000e\u001a\u0004\u0018\u00010\b¢\u0006\u0004\b\u000e\u0010\u000fJ\u000f\u0010\u0011\u001a\u00020\u0010H\u0002¢\u0006\u0004\b\u0011\u0010\u0012J\u000f\u0010\u0013\u001a\u00020\u0010H\u0002¢\u0006\u0004\b\u0013\u0010\u0012¨\u0006\u0014"}, d2 = {"Lkotlinx/coroutines/DispatchedCoroutine;", "T", "Lkotlin/coroutines/CoroutineContext;", "context", "Lkotlin/coroutines/Continuation;", "uCont", "<init>", "(Lkotlin/coroutines/CoroutineContext;Lkotlin/coroutines/Continuation;)V", "", "state", "", "afterCompletion", "(Ljava/lang/Object;)V", "afterResume", "getResult", "()Ljava/lang/Object;", "", "tryResume", "()Z", "trySuspend", "kotlinx-coroutines-core", "Lkotlinx/coroutines/internal/ScopeCoroutine;"}, k = 1, mv = {1, 4, 2})
+@Immutable
 /* loaded from: classes.dex */
-public final class DispatchedCoroutine<T> extends ScopeCoroutine<T> {
-    private static final /* synthetic */ AtomicIntegerFieldUpdater _decision$FU = AtomicIntegerFieldUpdater.newUpdater(DispatchedCoroutine.class, "_decision");
-    private volatile /* synthetic */ int _decision;
+public final class RsaSsaPssVerifyJce implements PublicKeyVerify {
+    public static final TinkFips.AlgorithmFipsCompatibility FIPS = TinkFips.AlgorithmFipsCompatibility.ALGORITHM_REQUIRES_BORINGCRYPTO;
+    private final Enums.HashType mgf1Hash;
+    private final RSAPublicKey publicKey;
+    private final int saltLength;
+    private final Enums.HashType sigHash;
 
-    public DispatchedCoroutine(CoroutineContext coroutineContext, Continuation<? super T> continuation) {
-        super(coroutineContext, continuation);
-        this._decision = 0;
-    }
-
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // kotlinx.coroutines.internal.ScopeCoroutine, kotlinx.coroutines.JobSupport
-    public void afterCompletion(Object obj) {
-        afterResume(obj);
-    }
-
-    @Override // kotlinx.coroutines.internal.ScopeCoroutine, kotlinx.coroutines.AbstractCoroutine
-    protected void afterResume(Object obj) {
-        if (tryResume()) {
-            return;
+    public RsaSsaPssVerifyJce(final RSAPublicKey pubKey, Enums.HashType sigHash, Enums.HashType mgf1Hash, int saltLength) throws GeneralSecurityException {
+        if (!FIPS.isCompatible()) {
+            throw new GeneralSecurityException("Can not use RSA PSS in FIPS-mode, as BoringCrypto module is not available.");
         }
-        DispatchedContinuationKt.resumeCancellableWith$default(IntrinsicsKt.intercepted(this.uCont), CompletionStateKt.recoverResult(obj, this.uCont), null, 2, null);
+        Validators.validateSignatureHash(sigHash);
+        Validators.validateRsaModulusSize(pubKey.getModulus().bitLength());
+        Validators.validateRsaPublicExponent(pubKey.getPublicExponent());
+        this.publicKey = pubKey;
+        this.sigHash = sigHash;
+        this.mgf1Hash = mgf1Hash;
+        this.saltLength = saltLength;
     }
 
-    public final Object getResult() {
-        if (trySuspend()) {
-            return IntrinsicsKt.getCOROUTINE_SUSPENDED();
+    @Override // com.google.crypto.tink.PublicKeyVerify
+    public void verify(final byte[] signature, final byte[] data) throws GeneralSecurityException {
+        BigInteger publicExponent = this.publicKey.getPublicExponent();
+        BigInteger modulus = this.publicKey.getModulus();
+        int bitLength = (modulus.bitLength() + 7) / 8;
+        int bitLength2 = ((modulus.bitLength() - 1) + 7) / 8;
+        if (bitLength != signature.length) {
+            throw new GeneralSecurityException("invalid signature's length");
         }
-        Object unboxState = JobSupportKt.unboxState(getState$kotlinx_coroutines_core());
-        if (unboxState instanceof CompletedExceptionally) {
-            throw ((CompletedExceptionally) unboxState).cause;
+        BigInteger bytes2Integer = SubtleUtil.bytes2Integer(signature);
+        if (bytes2Integer.compareTo(modulus) >= 0) {
+            throw new GeneralSecurityException("signature out of range");
         }
-        return unboxState;
+        emsaPssVerify(data, SubtleUtil.integer2Bytes(bytes2Integer.modPow(publicExponent, modulus), bitLength2), modulus.bitLength() - 1);
     }
 
-    private final boolean trySuspend() {
-        do {
-            int i2 = this._decision;
-            if (i2 != 0) {
-                if (i2 == 2) {
-                    return false;
+    private void emsaPssVerify(byte[] m2, byte[] em, int emBits) throws GeneralSecurityException {
+        int i2;
+        Validators.validateSignatureHash(this.sigHash);
+        MessageDigest engineFactory = EngineFactory.MESSAGE_DIGEST.getInstance(SubtleUtil.toDigestAlgo(this.sigHash));
+        byte[] digest = engineFactory.digest(m2);
+        int digestLength = engineFactory.getDigestLength();
+        int length = em.length;
+        if (length < this.saltLength + digestLength + 2) {
+            throw new GeneralSecurityException("inconsistent");
+        }
+        if (em[em.length - 1] != -68) {
+            throw new GeneralSecurityException("inconsistent");
+        }
+        int i3 = (length - digestLength) - 1;
+        byte[] copyOf = Arrays.copyOf(em, i3);
+        byte[] copyOfRange = Arrays.copyOfRange(em, copyOf.length, copyOf.length + digestLength);
+        int i4 = 0;
+        while (true) {
+            int i5 = i3;
+            MessageDigest messageDigest = engineFactory;
+            byte[] bArr = digest;
+            long j2 = (length * 8) - emBits;
+            if (i4 < j2) {
+                if (((copyOf[i4 / 8] >> (7 - (i4 % 8))) & 1) != 0) {
+                    throw new GeneralSecurityException("inconsistent");
                 }
-                throw new IllegalStateException("Already suspended".toString());
-            }
-        } while (!_decision$FU.compareAndSet(this, 0, 1));
-        return true;
-    }
-
-    private final boolean tryResume() {
-        do {
-            int i2 = this._decision;
-            if (i2 != 0) {
-                if (i2 == 1) {
-                    return false;
+                i4++;
+                i3 = i5;
+                engineFactory = messageDigest;
+                digest = bArr;
+            } else {
+                byte[] mgf1 = SubtleUtil.mgf1(copyOfRange, i5, this.mgf1Hash);
+                int length2 = mgf1.length;
+                byte[] bArr2 = new byte[length2];
+                for (int i6 = 0; i6 < length2; i6++) {
+                    bArr2[i6] = (byte) (mgf1[i6] ^ copyOf[i6]);
                 }
-                throw new IllegalStateException("Already resumed".toString());
+                for (int i7 = 0; i7 <= j2; i7++) {
+                    int i8 = i7 / 8;
+                    bArr2[i8] = (byte) ((~(1 << (7 - (i7 % 8)))) & bArr2[i8]);
+                }
+                int i9 = 0;
+                while (true) {
+                    int i10 = this.saltLength;
+                    if (i9 < (i2 - i10) - 2) {
+                        if (bArr2[i9] != 0) {
+                            throw new GeneralSecurityException("inconsistent");
+                        }
+                        i9++;
+                    } else if (bArr2[(i2 - i10) - 2] != 1) {
+                        throw new GeneralSecurityException("inconsistent");
+                    } else {
+                        byte[] copyOfRange2 = Arrays.copyOfRange(bArr2, length2 - i10, length2);
+                        int i11 = digestLength + 8;
+                        byte[] bArr3 = new byte[this.saltLength + i11];
+                        System.arraycopy(bArr, 0, bArr3, 8, bArr.length);
+                        System.arraycopy(copyOfRange2, 0, bArr3, i11, copyOfRange2.length);
+                        if (!Bytes.equal(messageDigest.digest(bArr3), copyOfRange)) {
+                            throw new GeneralSecurityException("inconsistent");
+                        }
+                        return;
+                    }
+                }
             }
-        } while (!_decision$FU.compareAndSet(this, 0, 2));
-        return true;
+        }
     }
 }

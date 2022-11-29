@@ -1,85 +1,128 @@
-package androidx.lifecycle;
+package androidx.core.widget;
 
-import androidx.lifecycle.Lifecycle;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.ProgressBar;
 
-/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-public class FullLifecycleObserverAdapter implements LifecycleEventObserver {
-    private final FullLifecycleObserver mFullLifecycleObserver;
-    private final LifecycleEventObserver mLifecycleEventObserver;
+public class ContentLoadingProgressBar extends ProgressBar {
+    private static final int MIN_DELAY_MS = 500;
+    private static final int MIN_SHOW_TIME_MS = 500;
+    private final Runnable mDelayedHide;
+    private final Runnable mDelayedShow;
+    boolean mDismissed;
+    boolean mPostedHide;
+    boolean mPostedShow;
+    long mStartTime;
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public FullLifecycleObserverAdapter(FullLifecycleObserver fullLifecycleObserver, LifecycleEventObserver lifecycleEventObserver) {
-        this.mFullLifecycleObserver = fullLifecycleObserver;
-        this.mLifecycleEventObserver = lifecycleEventObserver;
+    public static /* synthetic */ void lambda$Ije3417V0uZgdBrD9pbxQ2_AHiI(ContentLoadingProgressBar contentLoadingProgressBar) {
+        contentLoadingProgressBar.hideOnUiThread();
     }
 
-    /* renamed from: androidx.lifecycle.FullLifecycleObserverAdapter$1  reason: invalid class name */
-    /* loaded from: classes.dex */
-    static /* synthetic */ class AnonymousClass1 {
-        static final /* synthetic */ int[] $SwitchMap$androidx$lifecycle$Lifecycle$Event;
+    /* renamed from: lambda$tmknj5M20Tn8TaJxR587u-39ZDQ */
+    public static /* synthetic */ void m10lambda$tmknj5M20Tn8TaJxR587u39ZDQ(ContentLoadingProgressBar contentLoadingProgressBar) {
+        contentLoadingProgressBar.showOnUiThread();
+    }
 
-        static {
-            int[] iArr = new int[Lifecycle.Event.values().length];
-            $SwitchMap$androidx$lifecycle$Lifecycle$Event = iArr;
-            try {
-                iArr[Lifecycle.Event.ON_CREATE.ordinal()] = 1;
-            } catch (NoSuchFieldError unused) {
+    public /* synthetic */ void lambda$new$0$ContentLoadingProgressBar() {
+        this.mPostedHide = false;
+        this.mStartTime = -1L;
+        setVisibility(8);
+    }
+
+    public /* synthetic */ void lambda$new$1$ContentLoadingProgressBar() {
+        this.mPostedShow = false;
+        if (this.mDismissed) {
+            return;
+        }
+        this.mStartTime = System.currentTimeMillis();
+        setVisibility(0);
+    }
+
+    public ContentLoadingProgressBar(Context context) {
+        this(context, null);
+    }
+
+    public ContentLoadingProgressBar(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet, 0);
+        this.mStartTime = -1L;
+        this.mPostedHide = false;
+        this.mPostedShow = false;
+        this.mDismissed = false;
+        this.mDelayedHide = new Runnable() { // from class: androidx.core.widget.-$$Lambda$ContentLoadingProgressBar$9ZVtVfM7MwrgGmJEIZNfuhCC7eY
+            @Override // java.lang.Runnable
+            public final void run() {
+                ContentLoadingProgressBar.this.lambda$new$0$ContentLoadingProgressBar();
             }
-            try {
-                $SwitchMap$androidx$lifecycle$Lifecycle$Event[Lifecycle.Event.ON_START.ordinal()] = 2;
-            } catch (NoSuchFieldError unused2) {
+        };
+        this.mDelayedShow = new Runnable() { // from class: androidx.core.widget.-$$Lambda$ContentLoadingProgressBar$ovrYLeWrClCHhOWg8t_Ay80kDrs
+            @Override // java.lang.Runnable
+            public final void run() {
+                ContentLoadingProgressBar.this.lambda$new$1$ContentLoadingProgressBar();
             }
-            try {
-                $SwitchMap$androidx$lifecycle$Lifecycle$Event[Lifecycle.Event.ON_RESUME.ordinal()] = 3;
-            } catch (NoSuchFieldError unused3) {
+        };
+    }
+
+    @Override // android.widget.ProgressBar, android.view.View
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        removeCallbacks();
+    }
+
+    @Override // android.widget.ProgressBar, android.view.View
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        removeCallbacks();
+    }
+
+    private void removeCallbacks() {
+        removeCallbacks(this.mDelayedHide);
+        removeCallbacks(this.mDelayedShow);
+    }
+
+    public void hide() {
+        post(new Runnable() { // from class: androidx.core.widget.-$$Lambda$ContentLoadingProgressBar$Ije3417V0uZgdBrD9pbxQ2_AHiI
+            @Override // java.lang.Runnable
+            public final void run() {
+                ContentLoadingProgressBar.lambda$Ije3417V0uZgdBrD9pbxQ2_AHiI(ContentLoadingProgressBar.this);
             }
-            try {
-                $SwitchMap$androidx$lifecycle$Lifecycle$Event[Lifecycle.Event.ON_PAUSE.ordinal()] = 4;
-            } catch (NoSuchFieldError unused4) {
-            }
-            try {
-                $SwitchMap$androidx$lifecycle$Lifecycle$Event[Lifecycle.Event.ON_STOP.ordinal()] = 5;
-            } catch (NoSuchFieldError unused5) {
-            }
-            try {
-                $SwitchMap$androidx$lifecycle$Lifecycle$Event[Lifecycle.Event.ON_DESTROY.ordinal()] = 6;
-            } catch (NoSuchFieldError unused6) {
-            }
-            try {
-                $SwitchMap$androidx$lifecycle$Lifecycle$Event[Lifecycle.Event.ON_ANY.ordinal()] = 7;
-            } catch (NoSuchFieldError unused7) {
-            }
+        });
+    }
+
+    public void hideOnUiThread() {
+        this.mDismissed = true;
+        removeCallbacks(this.mDelayedShow);
+        this.mPostedShow = false;
+        long currentTimeMillis = System.currentTimeMillis();
+        long j2 = this.mStartTime;
+        long j3 = currentTimeMillis - j2;
+        if (j3 >= 500 || j2 == -1) {
+            setVisibility(8);
+        } else if (this.mPostedHide) {
+        } else {
+            postDelayed(this.mDelayedHide, 500 - j3);
+            this.mPostedHide = true;
         }
     }
 
-    @Override // androidx.lifecycle.LifecycleEventObserver
-    public void onStateChanged(LifecycleOwner lifecycleOwner, Lifecycle.Event event) {
-        switch (AnonymousClass1.$SwitchMap$androidx$lifecycle$Lifecycle$Event[event.ordinal()]) {
-            case 1:
-                this.mFullLifecycleObserver.onCreate(lifecycleOwner);
-                break;
-            case 2:
-                this.mFullLifecycleObserver.onStart(lifecycleOwner);
-                break;
-            case 3:
-                this.mFullLifecycleObserver.onResume(lifecycleOwner);
-                break;
-            case 4:
-                this.mFullLifecycleObserver.onPause(lifecycleOwner);
-                break;
-            case 5:
-                this.mFullLifecycleObserver.onStop(lifecycleOwner);
-                break;
-            case 6:
-                this.mFullLifecycleObserver.onDestroy(lifecycleOwner);
-                break;
-            case 7:
-                throw new IllegalArgumentException("ON_ANY must not been send by anybody");
+    public void show() {
+        post(new Runnable() { // from class: androidx.core.widget.-$$Lambda$ContentLoadingProgressBar$tmknj5M20Tn8TaJxR587u-39ZDQ
+            @Override // java.lang.Runnable
+            public final void run() {
+                ContentLoadingProgressBar.m10lambda$tmknj5M20Tn8TaJxR587u39ZDQ(ContentLoadingProgressBar.this);
+            }
+        });
+    }
+
+    public void showOnUiThread() {
+        this.mStartTime = -1L;
+        this.mDismissed = false;
+        removeCallbacks(this.mDelayedHide);
+        this.mPostedHide = false;
+        if (this.mPostedShow) {
+            return;
         }
-        LifecycleEventObserver lifecycleEventObserver = this.mLifecycleEventObserver;
-        if (lifecycleEventObserver != null) {
-            lifecycleEventObserver.onStateChanged(lifecycleOwner, event);
-        }
+        postDelayed(this.mDelayedShow, 500L);
+        this.mPostedShow = true;
     }
 }

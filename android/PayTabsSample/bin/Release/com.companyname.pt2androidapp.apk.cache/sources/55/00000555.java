@@ -1,187 +1,256 @@
-package androidx.core.provider;
+package androidx.core.graphics;
 
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.content.pm.ProviderInfo;
-import android.content.res.Resources;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.CancellationSignal;
-import android.os.Handler;
-import android.provider.BaseColumns;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.TypefaceCompat;
-import androidx.core.graphics.TypefaceCompatUtil;
-import androidx.core.util.Preconditions;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.nio.ByteBuffer;
-import java.util.Map;
+import android.graphics.BlendMode;
+import android.graphics.PorterDuff;
 
 /* loaded from: classes.dex */
-public class FontsContractCompat {
-    @Deprecated
-    public static final String PARCEL_FONT_RESULTS = "font_results";
-    @Deprecated
-    static final int RESULT_CODE_PROVIDER_NOT_FOUND = -1;
-    @Deprecated
-    static final int RESULT_CODE_WRONG_CERTIFICATES = -2;
-
-    /* loaded from: classes.dex */
-    public static final class Columns implements BaseColumns {
-        public static final String FILE_ID = "file_id";
-        public static final String ITALIC = "font_italic";
-        public static final String RESULT_CODE = "result_code";
-        public static final int RESULT_CODE_FONT_NOT_FOUND = 1;
-        public static final int RESULT_CODE_FONT_UNAVAILABLE = 2;
-        public static final int RESULT_CODE_MALFORMED_QUERY = 3;
-        public static final int RESULT_CODE_OK = 0;
-        public static final String TTC_INDEX = "font_ttc_index";
-        public static final String VARIATION_SETTINGS = "font_variation_settings";
-        public static final String WEIGHT = "font_weight";
+class BlendModeUtils {
+    private BlendModeUtils() {
     }
 
     /* loaded from: classes.dex */
-    public static class FontRequestCallback {
-        public static final int FAIL_REASON_FONT_LOAD_ERROR = -3;
-        public static final int FAIL_REASON_FONT_NOT_FOUND = 1;
-        public static final int FAIL_REASON_FONT_UNAVAILABLE = 2;
-        public static final int FAIL_REASON_MALFORMED_QUERY = 3;
-        public static final int FAIL_REASON_PROVIDER_NOT_FOUND = -1;
-        public static final int FAIL_REASON_SECURITY_VIOLATION = -4;
-        public static final int FAIL_REASON_WRONG_CERTIFICATES = -2;
-        @Deprecated
-        public static final int RESULT_OK = 0;
-        static final int RESULT_SUCCESS = 0;
-
-        @Retention(RetentionPolicy.SOURCE)
-        /* loaded from: classes.dex */
-        public @interface FontRequestFailReason {
-        }
-
-        public void onTypefaceRequestFailed(int i2) {
-        }
-
-        public void onTypefaceRetrieved(Typeface typeface) {
-        }
-    }
-
-    private FontsContractCompat() {
-    }
-
-    public static Typeface buildTypeface(Context context, CancellationSignal cancellationSignal, FontInfo[] fontInfoArr) {
-        return TypefaceCompat.createFromFontInfo(context, cancellationSignal, fontInfoArr, 0);
-    }
-
-    public static FontFamilyResult fetchFonts(Context context, CancellationSignal cancellationSignal, FontRequest fontRequest) throws PackageManager.NameNotFoundException {
-        return FontProvider.getFontFamilyResult(context, fontRequest, cancellationSignal);
-    }
-
-    public static void requestFont(Context context, FontRequest fontRequest, FontRequestCallback fontRequestCallback, Handler handler) {
-        CallbackWithHandler callbackWithHandler = new CallbackWithHandler(fontRequestCallback);
-        FontRequestWorker.requestFontAsync(context.getApplicationContext(), fontRequest, 0, RequestExecutor.createHandlerExecutor(handler), callbackWithHandler);
-    }
-
-    public static Typeface requestFont(Context context, FontRequest fontRequest, int i2, boolean z2, int i3, Handler handler, FontRequestCallback fontRequestCallback) {
-        CallbackWithHandler callbackWithHandler = new CallbackWithHandler(fontRequestCallback, handler);
-        if (z2) {
-            return FontRequestWorker.requestFontSync(context, fontRequest, callbackWithHandler, i2, i3);
-        }
-        return FontRequestWorker.requestFontAsync(context, fontRequest, i2, null, callbackWithHandler);
-    }
-
-    public static void resetTypefaceCache() {
-        FontRequestWorker.resetTypefaceCache();
-    }
-
-    /* loaded from: classes.dex */
-    public static class FontInfo {
-        private final boolean mItalic;
-        private final int mResultCode;
-        private final int mTtcIndex;
-        private final Uri mUri;
-        private final int mWeight;
-
-        @Deprecated
-        public FontInfo(Uri uri, int i2, int i3, boolean z2, int i4) {
-            this.mUri = (Uri) Preconditions.checkNotNull(uri);
-            this.mTtcIndex = i2;
-            this.mWeight = i3;
-            this.mItalic = z2;
-            this.mResultCode = i4;
+    static class Api29Impl {
+        private Api29Impl() {
         }
 
         /* JADX INFO: Access modifiers changed from: package-private */
-        public static FontInfo create(Uri uri, int i2, int i3, boolean z2, int i4) {
-            return new FontInfo(uri, i2, i3, z2, i4);
-        }
-
-        public Uri getUri() {
-            return this.mUri;
-        }
-
-        public int getTtcIndex() {
-            return this.mTtcIndex;
-        }
-
-        public int getWeight() {
-            return this.mWeight;
-        }
-
-        public boolean isItalic() {
-            return this.mItalic;
-        }
-
-        public int getResultCode() {
-            return this.mResultCode;
+        public static Object obtainBlendModeFromCompat(BlendModeCompat blendModeCompat) {
+            switch (AnonymousClass1.$SwitchMap$androidx$core$graphics$BlendModeCompat[blendModeCompat.ordinal()]) {
+                case 1:
+                    return BlendMode.CLEAR;
+                case 2:
+                    return BlendMode.SRC;
+                case 3:
+                    return BlendMode.DST;
+                case 4:
+                    return BlendMode.SRC_OVER;
+                case 5:
+                    return BlendMode.DST_OVER;
+                case 6:
+                    return BlendMode.SRC_IN;
+                case 7:
+                    return BlendMode.DST_IN;
+                case 8:
+                    return BlendMode.SRC_OUT;
+                case 9:
+                    return BlendMode.DST_OUT;
+                case 10:
+                    return BlendMode.SRC_ATOP;
+                case 11:
+                    return BlendMode.DST_ATOP;
+                case 12:
+                    return BlendMode.XOR;
+                case 13:
+                    return BlendMode.PLUS;
+                case 14:
+                    return BlendMode.MODULATE;
+                case 15:
+                    return BlendMode.SCREEN;
+                case 16:
+                    return BlendMode.OVERLAY;
+                case 17:
+                    return BlendMode.DARKEN;
+                case 18:
+                    return BlendMode.LIGHTEN;
+                case 19:
+                    return BlendMode.COLOR_DODGE;
+                case 20:
+                    return BlendMode.COLOR_BURN;
+                case 21:
+                    return BlendMode.HARD_LIGHT;
+                case 22:
+                    return BlendMode.SOFT_LIGHT;
+                case 23:
+                    return BlendMode.DIFFERENCE;
+                case 24:
+                    return BlendMode.EXCLUSION;
+                case 25:
+                    return BlendMode.MULTIPLY;
+                case 26:
+                    return BlendMode.HUE;
+                case 27:
+                    return BlendMode.SATURATION;
+                case 28:
+                    return BlendMode.COLOR;
+                case 29:
+                    return BlendMode.LUMINOSITY;
+                default:
+                    return null;
+            }
         }
     }
 
+    /* renamed from: androidx.core.graphics.BlendModeUtils$1  reason: invalid class name */
     /* loaded from: classes.dex */
-    public static class FontFamilyResult {
-        public static final int STATUS_OK = 0;
-        public static final int STATUS_UNEXPECTED_DATA_PROVIDED = 2;
-        public static final int STATUS_WRONG_CERTIFICATES = 1;
-        private final FontInfo[] mFonts;
-        private final int mStatusCode;
+    static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$androidx$core$graphics$BlendModeCompat;
 
-        @Deprecated
-        public FontFamilyResult(int i2, FontInfo[] fontInfoArr) {
-            this.mStatusCode = i2;
-            this.mFonts = fontInfoArr;
-        }
-
-        public int getStatusCode() {
-            return this.mStatusCode;
-        }
-
-        public FontInfo[] getFonts() {
-            return this.mFonts;
-        }
-
-        /* JADX INFO: Access modifiers changed from: package-private */
-        public static FontFamilyResult create(int i2, FontInfo[] fontInfoArr) {
-            return new FontFamilyResult(i2, fontInfoArr);
+        static {
+            int[] iArr = new int[BlendModeCompat.values().length];
+            $SwitchMap$androidx$core$graphics$BlendModeCompat = iArr;
+            try {
+                iArr[BlendModeCompat.CLEAR.ordinal()] = 1;
+            } catch (NoSuchFieldError unused) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.SRC.ordinal()] = 2;
+            } catch (NoSuchFieldError unused2) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.DST.ordinal()] = 3;
+            } catch (NoSuchFieldError unused3) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.SRC_OVER.ordinal()] = 4;
+            } catch (NoSuchFieldError unused4) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.DST_OVER.ordinal()] = 5;
+            } catch (NoSuchFieldError unused5) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.SRC_IN.ordinal()] = 6;
+            } catch (NoSuchFieldError unused6) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.DST_IN.ordinal()] = 7;
+            } catch (NoSuchFieldError unused7) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.SRC_OUT.ordinal()] = 8;
+            } catch (NoSuchFieldError unused8) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.DST_OUT.ordinal()] = 9;
+            } catch (NoSuchFieldError unused9) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.SRC_ATOP.ordinal()] = 10;
+            } catch (NoSuchFieldError unused10) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.DST_ATOP.ordinal()] = 11;
+            } catch (NoSuchFieldError unused11) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.XOR.ordinal()] = 12;
+            } catch (NoSuchFieldError unused12) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.PLUS.ordinal()] = 13;
+            } catch (NoSuchFieldError unused13) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.MODULATE.ordinal()] = 14;
+            } catch (NoSuchFieldError unused14) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.SCREEN.ordinal()] = 15;
+            } catch (NoSuchFieldError unused15) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.OVERLAY.ordinal()] = 16;
+            } catch (NoSuchFieldError unused16) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.DARKEN.ordinal()] = 17;
+            } catch (NoSuchFieldError unused17) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.LIGHTEN.ordinal()] = 18;
+            } catch (NoSuchFieldError unused18) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.COLOR_DODGE.ordinal()] = 19;
+            } catch (NoSuchFieldError unused19) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.COLOR_BURN.ordinal()] = 20;
+            } catch (NoSuchFieldError unused20) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.HARD_LIGHT.ordinal()] = 21;
+            } catch (NoSuchFieldError unused21) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.SOFT_LIGHT.ordinal()] = 22;
+            } catch (NoSuchFieldError unused22) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.DIFFERENCE.ordinal()] = 23;
+            } catch (NoSuchFieldError unused23) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.EXCLUSION.ordinal()] = 24;
+            } catch (NoSuchFieldError unused24) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.MULTIPLY.ordinal()] = 25;
+            } catch (NoSuchFieldError unused25) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.HUE.ordinal()] = 26;
+            } catch (NoSuchFieldError unused26) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.SATURATION.ordinal()] = 27;
+            } catch (NoSuchFieldError unused27) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.COLOR.ordinal()] = 28;
+            } catch (NoSuchFieldError unused28) {
+            }
+            try {
+                $SwitchMap$androidx$core$graphics$BlendModeCompat[BlendModeCompat.LUMINOSITY.ordinal()] = 29;
+            } catch (NoSuchFieldError unused29) {
+            }
         }
     }
 
-    @Deprecated
-    public static Typeface getFontSync(Context context, FontRequest fontRequest, ResourcesCompat.FontCallback fontCallback, Handler handler, boolean z2, int i2, int i3) {
-        return requestFont(context, fontRequest, i3, z2, i2, ResourcesCompat.FontCallback.getHandler(handler), new TypefaceCompat.ResourcesCallbackAdapter(fontCallback));
-    }
-
-    @Deprecated
-    public static void resetCache() {
-        FontRequestWorker.resetTypefaceCache();
-    }
-
-    @Deprecated
-    public static Map<Uri, ByteBuffer> prepareFontData(Context context, FontInfo[] fontInfoArr, CancellationSignal cancellationSignal) {
-        return TypefaceCompatUtil.readFontInfoIntoByteBuffer(context, fontInfoArr, cancellationSignal);
-    }
-
-    @Deprecated
-    public static ProviderInfo getProvider(PackageManager packageManager, FontRequest fontRequest, Resources resources) throws PackageManager.NameNotFoundException {
-        return FontProvider.getProvider(packageManager, fontRequest, resources);
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static PorterDuff.Mode obtainPorterDuffFromCompat(BlendModeCompat blendModeCompat) {
+        if (blendModeCompat == null) {
+            return null;
+        }
+        switch (AnonymousClass1.$SwitchMap$androidx$core$graphics$BlendModeCompat[blendModeCompat.ordinal()]) {
+            case 1:
+                return PorterDuff.Mode.CLEAR;
+            case 2:
+                return PorterDuff.Mode.SRC;
+            case 3:
+                return PorterDuff.Mode.DST;
+            case 4:
+                return PorterDuff.Mode.SRC_OVER;
+            case 5:
+                return PorterDuff.Mode.DST_OVER;
+            case 6:
+                return PorterDuff.Mode.SRC_IN;
+            case 7:
+                return PorterDuff.Mode.DST_IN;
+            case 8:
+                return PorterDuff.Mode.SRC_OUT;
+            case 9:
+                return PorterDuff.Mode.DST_OUT;
+            case 10:
+                return PorterDuff.Mode.SRC_ATOP;
+            case 11:
+                return PorterDuff.Mode.DST_ATOP;
+            case 12:
+                return PorterDuff.Mode.XOR;
+            case 13:
+                return PorterDuff.Mode.ADD;
+            case 14:
+                return PorterDuff.Mode.MULTIPLY;
+            case 15:
+                return PorterDuff.Mode.SCREEN;
+            case 16:
+                return PorterDuff.Mode.OVERLAY;
+            case 17:
+                return PorterDuff.Mode.DARKEN;
+            case 18:
+                return PorterDuff.Mode.LIGHTEN;
+            default:
+                return null;
+        }
     }
 }

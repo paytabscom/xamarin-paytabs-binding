@@ -1,30 +1,44 @@
-package kotlinx.coroutines.channels;
+package com.google.gson.internal.reflect;
 
-import kotlin.Metadata;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.jvm.internal.ContinuationImpl;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
+import com.google.gson.JsonIOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 
-/* compiled from: Channels.common.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u001c\n\u0000\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u000b\n\u0000\n\u0002\u0018\u0002\u0010\u0000\u001a\u0004\u0018\u00010\u0001\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u00032\u0012\u0010\u0004\u001a\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u00020\u00060\u00052\u000e\u0010\u0007\u001a\n\u0012\u0006\u0012\u0004\u0018\u0001H\u00020\bH\u0087H"}, d2 = {"find", "", "E", "Lkotlinx/coroutines/channels/ReceiveChannel;", "predicate", "Lkotlin/Function1;", "", "continuation", "Lkotlin/coroutines/Continuation;"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.channels.ChannelsKt__Channels_commonKt", f = "Channels.common.kt", i = {0}, l = {2292}, m = "find", n = {"predicate"}, s = {"L$0"})
 /* loaded from: classes.dex */
-public final class ChannelsKt__Channels_commonKt$find$1 extends ContinuationImpl {
-    Object L$0;
-    Object L$1;
-    Object L$2;
-    Object L$3;
-    int label;
-    /* synthetic */ Object result;
-
-    public ChannelsKt__Channels_commonKt$find$1(Continuation continuation) {
-        super(continuation);
+public class ReflectionHelper {
+    private ReflectionHelper() {
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        this.result = obj;
-        this.label |= Integer.MIN_VALUE;
-        return ChannelsKt.find(null, null, this);
+    public static void makeAccessible(Field field) throws JsonIOException {
+        try {
+            field.setAccessible(true);
+        } catch (Exception e2) {
+            throw new JsonIOException("Failed making field '" + field.getDeclaringClass().getName() + "#" + field.getName() + "' accessible; either change its visibility or write a custom TypeAdapter for its declaring type", e2);
+        }
+    }
+
+    private static String constructorToString(Constructor<?> constructor) {
+        StringBuilder sb = new StringBuilder(constructor.getDeclaringClass().getName());
+        sb.append('#');
+        sb.append(constructor.getDeclaringClass().getSimpleName());
+        sb.append('(');
+        Class<?>[] parameterTypes = constructor.getParameterTypes();
+        for (int i2 = 0; i2 < parameterTypes.length; i2++) {
+            if (i2 > 0) {
+                sb.append(", ");
+            }
+            sb.append(parameterTypes[i2].getSimpleName());
+        }
+        sb.append(')');
+        return sb.toString();
+    }
+
+    public static String tryMakeAccessible(Constructor<?> constructor) {
+        try {
+            constructor.setAccessible(true);
+            return null;
+        } catch (Exception e2) {
+            return "Failed making constructor '" + constructorToString(constructor) + "' accessible; either change its visibility or write a custom InstanceCreator or TypeAdapter for its declaring type: " + e2.getMessage();
+        }
     }
 }

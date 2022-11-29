@@ -1,25 +1,43 @@
-package kotlin.collections;
+package com.google.crypto.tink.hybrid.subtle;
 
-import java.util.Iterator;
-import kotlin.Metadata;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.internal.Lambda;
+import com.google.crypto.tink.Aead;
+import com.google.crypto.tink.HybridDecrypt;
+import com.google.crypto.tink.aead.subtle.AeadFactory;
+import com.google.crypto.tink.subtle.Hkdf;
+import java.nio.ByteBuffer;
+import java.security.GeneralSecurityException;
+import java.security.interfaces.RSAPrivateKey;
+import javax.crypto.Cipher;
 
-/* compiled from: _Collections.kt */
-@Metadata(d1 = {"\u0000\n\n\u0000\n\u0002\u0010(\n\u0002\b\u0002\u0010\u0000\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0001\"\u0004\b\u0000\u0010\u0002H\n¢\u0006\u0002\b\u0003"}, d2 = {"<anonymous>", "", "T", "invoke"}, k = 3, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-final class CollectionsKt___CollectionsKt$withIndex$1 extends Lambda implements Function0<Iterator<? extends T>> {
-    final /* synthetic */ Iterable $this_withIndex;
+public final class RsaKemHybridDecrypt implements HybridDecrypt {
+    private final AeadFactory aeadFactory;
+    private final String hkdfHmacAlgo;
+    private final byte[] hkdfSalt;
+    private final RSAPrivateKey recipientPrivateKey;
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public CollectionsKt___CollectionsKt$withIndex$1(Iterable iterable) {
-        super(0);
-        this.$this_withIndex = iterable;
+    public RsaKemHybridDecrypt(final RSAPrivateKey recipientPrivateKey, String hkdfHmacAlgo, final byte[] hkdfSalt, AeadFactory aeadFactory) throws GeneralSecurityException {
+        RsaKem.validateRsaModulus(recipientPrivateKey.getModulus());
+        this.recipientPrivateKey = recipientPrivateKey;
+        this.hkdfSalt = hkdfSalt;
+        this.hkdfHmacAlgo = hkdfHmacAlgo;
+        this.aeadFactory = aeadFactory;
     }
 
-    @Override // kotlin.jvm.functions.Function0
-    public final Iterator<T> invoke() {
-        return this.$this_withIndex.iterator();
+    @Override // com.google.crypto.tink.HybridDecrypt
+    public byte[] decrypt(final byte[] ciphertext, final byte[] contextInfo) throws GeneralSecurityException {
+        int bigIntSizeInBytes = RsaKem.bigIntSizeInBytes(this.recipientPrivateKey.getModulus());
+        if (ciphertext.length < bigIntSizeInBytes) {
+            throw new GeneralSecurityException(String.format("Ciphertext must be of at least size %d bytes, but got %d", Integer.valueOf(bigIntSizeInBytes), Integer.valueOf(ciphertext.length)));
+        }
+        ByteBuffer wrap = ByteBuffer.wrap(ciphertext);
+        byte[] bArr = new byte[bigIntSizeInBytes];
+        wrap.get(bArr);
+        Cipher cipher = Cipher.getInstance("RSA/ECB/NoPadding");
+        cipher.init(2, this.recipientPrivateKey);
+        Aead createAead = this.aeadFactory.createAead(Hkdf.computeHkdf(this.hkdfHmacAlgo, cipher.doFinal(bArr), this.hkdfSalt, contextInfo, this.aeadFactory.getKeySizeInBytes()));
+        byte[] bArr2 = new byte[wrap.remaining()];
+        wrap.get(bArr2);
+        return createAead.decrypt(bArr2, RsaKem.EMPTY_AAD);
     }
 }

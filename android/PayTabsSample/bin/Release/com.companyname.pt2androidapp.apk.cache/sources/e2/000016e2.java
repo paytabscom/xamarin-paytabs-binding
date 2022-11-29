@@ -1,46 +1,38 @@
-package mono.android.widget;
+package kotlin.random;
 
-import android.widget.ExpandableListView;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.io.Serializable;
+import kotlin.Metadata;
+import kotlin.jvm.internal.DefaultConstructorMarker;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: PlatformRandom.kt */
+@Metadata(d1 = {"\u0000\u001a\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0005\b\u0002\u0018\u0000 \t2\u00020\u00012\u00060\u0002j\u0002`\u0003:\u0001\tB\r\u0012\u0006\u0010\u0004\u001a\u00020\u0005¢\u0006\u0002\u0010\u0006R\u0014\u0010\u0004\u001a\u00020\u0005X\u0096\u0004¢\u0006\b\n\u0000\u001a\u0004\b\u0007\u0010\b¨\u0006\n"}, d2 = {"Lkotlin/random/PlatformRandom;", "Lkotlin/random/AbstractPlatformRandom;", "Ljava/io/Serializable;", "Lkotlin/io/Serializable;", "impl", "Ljava/util/Random;", "(Ljava/util/Random;)V", "getImpl", "()Ljava/util/Random;", "Companion", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class ExpandableListView_OnGroupCollapseListenerImplementor implements IGCUserPeer, ExpandableListView.OnGroupCollapseListener {
-    public static final String __md_methods = "n_onGroupCollapse:(I)V:GetOnGroupCollapse_IHandler:Android.Widget.ExpandableListView/IOnGroupCollapseListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+final class PlatformRandom extends AbstractPlatformRandom implements Serializable {
+    private static final Companion Companion = new Companion(null);
+    @Deprecated
+    private static final long serialVersionUID = 0;
+    private final java.util.Random impl;
 
-    private native void n_onGroupCollapse(int i2);
+    /* compiled from: PlatformRandom.kt */
+    @Metadata(d1 = {"\u0000\u0012\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\t\n\u0000\b\u0082\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002R\u000e\u0010\u0003\u001a\u00020\u0004X\u0082T¢\u0006\u0002\n\u0000¨\u0006\u0005"}, d2 = {"Lkotlin/random/PlatformRandom$Companion;", "", "()V", "serialVersionUID", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+    /* loaded from: classes.dex */
+    private static final class Companion {
+        private Companion() {
+        }
 
-    static {
-        Runtime.register("Android.Widget.ExpandableListView+IOnGroupCollapseListenerImplementor, Mono.Android", ExpandableListView_OnGroupCollapseListenerImplementor.class, __md_methods);
-    }
-
-    public ExpandableListView_OnGroupCollapseListenerImplementor() {
-        if (getClass() == ExpandableListView_OnGroupCollapseListenerImplementor.class) {
-            TypeManager.Activate("Android.Widget.ExpandableListView+IOnGroupCollapseListenerImplementor, Mono.Android", "", this, new Object[0]);
+        public /* synthetic */ Companion(DefaultConstructorMarker defaultConstructorMarker) {
+            this();
         }
     }
 
-    @Override // android.widget.ExpandableListView.OnGroupCollapseListener
-    public void onGroupCollapse(int i2) {
-        n_onGroupCollapse(i2);
+    public PlatformRandom(java.util.Random impl) {
+        Intrinsics.checkNotNullParameter(impl, "impl");
+        this.impl = impl;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    @Override // kotlin.random.AbstractPlatformRandom
+    public java.util.Random getImpl() {
+        return this.impl;
     }
 }

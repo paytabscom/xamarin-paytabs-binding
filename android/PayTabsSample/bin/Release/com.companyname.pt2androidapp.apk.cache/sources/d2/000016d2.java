@@ -1,47 +1,9 @@
-package mono.android.webkit;
+package kotlin.math;
 
-import android.graphics.Bitmap;
-import android.webkit.WebIconDatabase;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: MathH.kt */
+@Metadata(d1 = {"\u0000\n\n\u0000\n\u0002\u0010\u0006\n\u0002\b\u0005\"\u0016\u0010\u0000\u001a\u00020\u00018\u0006X\u0087T¢\u0006\b\n\u0000\u0012\u0004\b\u0002\u0010\u0003\"\u0016\u0010\u0004\u001a\u00020\u00018\u0006X\u0087T¢\u0006\b\n\u0000\u0012\u0004\b\u0005\u0010\u0003¨\u0006\u0006"}, d2 = {"E", "", "getE$annotations", "()V", "PI", "getPI$annotations", "kotlin-stdlib"}, k = 5, mv = {1, 5, 1}, xi = 1, xs = "kotlin/math/MathKt")
 /* loaded from: classes.dex */
-public class WebIconDatabase_IconListenerImplementor implements IGCUserPeer, WebIconDatabase.IconListener {
-    public static final String __md_methods = "n_onReceivedIcon:(Ljava/lang/String;Landroid/graphics/Bitmap;)V:GetOnReceivedIcon_Ljava_lang_String_Landroid_graphics_Bitmap_Handler:Android.Webkit.WebIconDatabase/IIconListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onReceivedIcon(String str, Bitmap bitmap);
-
-    static {
-        Runtime.register("Android.Webkit.WebIconDatabase+IIconListenerImplementor, Mono.Android", WebIconDatabase_IconListenerImplementor.class, __md_methods);
-    }
-
-    public WebIconDatabase_IconListenerImplementor() {
-        if (getClass() == WebIconDatabase_IconListenerImplementor.class) {
-            TypeManager.Activate("Android.Webkit.WebIconDatabase+IIconListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.webkit.WebIconDatabase.IconListener
-    public void onReceivedIcon(String str, Bitmap bitmap) {
-        n_onReceivedIcon(str, bitmap);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+class MathKt__MathHKt {
 }

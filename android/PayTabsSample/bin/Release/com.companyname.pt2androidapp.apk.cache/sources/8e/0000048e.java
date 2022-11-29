@@ -1,56 +1,243 @@
-package androidx.core.content;
+package androidx.core.app;
 
-import android.content.Context;
-import android.os.Binder;
-import android.os.Process;
-import androidx.core.app.AppOpsManagerCompat;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.media.AudioAttributes;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.Settings;
+import androidx.core.util.Preconditions;
 
 /* loaded from: classes.dex */
-public final class PermissionChecker {
-    public static final int PERMISSION_DENIED = -1;
-    public static final int PERMISSION_DENIED_APP_OP = -2;
-    public static final int PERMISSION_GRANTED = 0;
+public class NotificationChannelCompat {
+    public static final String DEFAULT_CHANNEL_ID = "miscellaneous";
+    private static final int DEFAULT_LIGHT_COLOR = 0;
+    private static final boolean DEFAULT_SHOW_BADGE = true;
+    AudioAttributes mAudioAttributes;
+    private boolean mBypassDnd;
+    private boolean mCanBubble;
+    String mConversationId;
+    String mDescription;
+    String mGroupId;
+    final String mId;
+    int mImportance;
+    private boolean mImportantConversation;
+    int mLightColor;
+    boolean mLights;
+    private int mLockscreenVisibility;
+    CharSequence mName;
+    String mParentId;
+    boolean mShowBadge;
+    Uri mSound;
+    boolean mVibrationEnabled;
+    long[] mVibrationPattern;
 
-    @Retention(RetentionPolicy.SOURCE)
     /* loaded from: classes.dex */
-    public @interface PermissionResult {
-    }
+    public static class Builder {
+        private final NotificationChannelCompat mChannel;
 
-    private PermissionChecker() {
-    }
+        public Builder(String str, int i2) {
+            this.mChannel = new NotificationChannelCompat(str, i2);
+        }
 
-    public static int checkPermission(Context context, String str, int i2, int i3, String str2) {
-        if (context.checkPermission(str, i2, i3) == -1) {
-            return -1;
+        public Builder setName(CharSequence charSequence) {
+            this.mChannel.mName = charSequence;
+            return this;
         }
-        String permissionToOp = AppOpsManagerCompat.permissionToOp(str);
-        if (permissionToOp == null) {
-            return 0;
+
+        public Builder setImportance(int i2) {
+            this.mChannel.mImportance = i2;
+            return this;
         }
-        if (str2 == null) {
-            String[] packagesForUid = context.getPackageManager().getPackagesForUid(i3);
-            if (packagesForUid == null || packagesForUid.length <= 0) {
-                return -1;
+
+        public Builder setDescription(String str) {
+            this.mChannel.mDescription = str;
+            return this;
+        }
+
+        public Builder setGroup(String str) {
+            this.mChannel.mGroupId = str;
+            return this;
+        }
+
+        public Builder setShowBadge(boolean z2) {
+            this.mChannel.mShowBadge = z2;
+            return this;
+        }
+
+        public Builder setSound(Uri uri, AudioAttributes audioAttributes) {
+            this.mChannel.mSound = uri;
+            this.mChannel.mAudioAttributes = audioAttributes;
+            return this;
+        }
+
+        public Builder setLightsEnabled(boolean z2) {
+            this.mChannel.mLights = z2;
+            return this;
+        }
+
+        public Builder setLightColor(int i2) {
+            this.mChannel.mLightColor = i2;
+            return this;
+        }
+
+        public Builder setVibrationEnabled(boolean z2) {
+            this.mChannel.mVibrationEnabled = z2;
+            return this;
+        }
+
+        public Builder setVibrationPattern(long[] jArr) {
+            this.mChannel.mVibrationEnabled = jArr != null && jArr.length > 0;
+            this.mChannel.mVibrationPattern = jArr;
+            return this;
+        }
+
+        public Builder setConversationId(String str, String str2) {
+            if (Build.VERSION.SDK_INT >= 30) {
+                this.mChannel.mParentId = str;
+                this.mChannel.mConversationId = str2;
             }
-            str2 = packagesForUid[0];
+            return this;
         }
-        return AppOpsManagerCompat.noteProxyOpNoThrow(context, permissionToOp, str2) != 0 ? -2 : 0;
-    }
 
-    public static int checkSelfPermission(Context context, String str) {
-        return checkPermission(context, str, Process.myPid(), Process.myUid(), context.getPackageName());
-    }
-
-    public static int checkCallingPermission(Context context, String str, String str2) {
-        if (Binder.getCallingPid() == Process.myPid()) {
-            return -1;
+        public NotificationChannelCompat build() {
+            return this.mChannel;
         }
-        return checkPermission(context, str, Binder.getCallingPid(), Binder.getCallingUid(), str2);
     }
 
-    public static int checkCallingOrSelfPermission(Context context, String str) {
-        return checkPermission(context, str, Binder.getCallingPid(), Binder.getCallingUid(), Binder.getCallingPid() == Process.myPid() ? context.getPackageName() : null);
+    NotificationChannelCompat(String str, int i2) {
+        this.mShowBadge = true;
+        this.mSound = Settings.System.DEFAULT_NOTIFICATION_URI;
+        this.mLightColor = 0;
+        this.mId = (String) Preconditions.checkNotNull(str);
+        this.mImportance = i2;
+        if (Build.VERSION.SDK_INT >= 21) {
+            this.mAudioAttributes = Notification.AUDIO_ATTRIBUTES_DEFAULT;
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public NotificationChannelCompat(NotificationChannel notificationChannel) {
+        this(notificationChannel.getId(), notificationChannel.getImportance());
+        this.mName = notificationChannel.getName();
+        this.mDescription = notificationChannel.getDescription();
+        this.mGroupId = notificationChannel.getGroup();
+        this.mShowBadge = notificationChannel.canShowBadge();
+        this.mSound = notificationChannel.getSound();
+        this.mAudioAttributes = notificationChannel.getAudioAttributes();
+        this.mLights = notificationChannel.shouldShowLights();
+        this.mLightColor = notificationChannel.getLightColor();
+        this.mVibrationEnabled = notificationChannel.shouldVibrate();
+        this.mVibrationPattern = notificationChannel.getVibrationPattern();
+        if (Build.VERSION.SDK_INT >= 30) {
+            this.mParentId = notificationChannel.getParentChannelId();
+            this.mConversationId = notificationChannel.getConversationId();
+        }
+        this.mBypassDnd = notificationChannel.canBypassDnd();
+        this.mLockscreenVisibility = notificationChannel.getLockscreenVisibility();
+        if (Build.VERSION.SDK_INT >= 29) {
+            this.mCanBubble = notificationChannel.canBubble();
+        }
+        if (Build.VERSION.SDK_INT >= 30) {
+            this.mImportantConversation = notificationChannel.isImportantConversation();
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public NotificationChannel getNotificationChannel() {
+        String str;
+        String str2;
+        if (Build.VERSION.SDK_INT < 26) {
+            return null;
+        }
+        NotificationChannel notificationChannel = new NotificationChannel(this.mId, this.mName, this.mImportance);
+        notificationChannel.setDescription(this.mDescription);
+        notificationChannel.setGroup(this.mGroupId);
+        notificationChannel.setShowBadge(this.mShowBadge);
+        notificationChannel.setSound(this.mSound, this.mAudioAttributes);
+        notificationChannel.enableLights(this.mLights);
+        notificationChannel.setLightColor(this.mLightColor);
+        notificationChannel.setVibrationPattern(this.mVibrationPattern);
+        notificationChannel.enableVibration(this.mVibrationEnabled);
+        if (Build.VERSION.SDK_INT >= 30 && (str = this.mParentId) != null && (str2 = this.mConversationId) != null) {
+            notificationChannel.setConversationId(str, str2);
+        }
+        return notificationChannel;
+    }
+
+    public Builder toBuilder() {
+        return new Builder(this.mId, this.mImportance).setName(this.mName).setDescription(this.mDescription).setGroup(this.mGroupId).setShowBadge(this.mShowBadge).setSound(this.mSound, this.mAudioAttributes).setLightsEnabled(this.mLights).setLightColor(this.mLightColor).setVibrationEnabled(this.mVibrationEnabled).setVibrationPattern(this.mVibrationPattern).setConversationId(this.mParentId, this.mConversationId);
+    }
+
+    public String getId() {
+        return this.mId;
+    }
+
+    public CharSequence getName() {
+        return this.mName;
+    }
+
+    public String getDescription() {
+        return this.mDescription;
+    }
+
+    public int getImportance() {
+        return this.mImportance;
+    }
+
+    public Uri getSound() {
+        return this.mSound;
+    }
+
+    public AudioAttributes getAudioAttributes() {
+        return this.mAudioAttributes;
+    }
+
+    public boolean shouldShowLights() {
+        return this.mLights;
+    }
+
+    public int getLightColor() {
+        return this.mLightColor;
+    }
+
+    public boolean shouldVibrate() {
+        return this.mVibrationEnabled;
+    }
+
+    public long[] getVibrationPattern() {
+        return this.mVibrationPattern;
+    }
+
+    public boolean canShowBadge() {
+        return this.mShowBadge;
+    }
+
+    public String getGroup() {
+        return this.mGroupId;
+    }
+
+    public String getParentChannelId() {
+        return this.mParentId;
+    }
+
+    public String getConversationId() {
+        return this.mConversationId;
+    }
+
+    public boolean canBypassDnd() {
+        return this.mBypassDnd;
+    }
+
+    public int getLockscreenVisibility() {
+        return this.mLockscreenVisibility;
+    }
+
+    public boolean canBubble() {
+        return this.mCanBubble;
+    }
+
+    public boolean isImportantConversation() {
+        return this.mImportantConversation;
     }
 }

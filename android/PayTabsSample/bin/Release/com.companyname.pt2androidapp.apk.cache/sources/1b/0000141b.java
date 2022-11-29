@@ -1,69 +1,55 @@
-package kotlinx.coroutines.flow;
+package com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ui.views;
 
-import kotlin.Metadata;
-import kotlin.ResultKt;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-import kotlin.coroutines.jvm.internal.SuspendLambda;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.functions.Function3;
+import android.animation.Animator;
+import android.content.Context;
+import android.util.AttributeSet;
+import android.widget.ProgressBar;
 
-/* JADX INFO: Access modifiers changed from: package-private */
-/* compiled from: Errors.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0016\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0003\n\u0002\b\u0002\u0010\u0000\u001a\u00020\u0001\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u00032\u0006\u0010\u0004\u001a\u00020\u0005H\u008a@¢\u0006\u0004\b\u0006\u0010\u0007"}, d2 = {"<anonymous>", "", "T", "Lkotlinx/coroutines/flow/FlowCollector;", "e", "", "invoke", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__ErrorsKt$onErrorCollect$2", f = "Errors.kt", i = {}, l = {227}, m = "invokeSuspend", n = {}, s = {})
 /* loaded from: classes.dex */
-public final class FlowKt__ErrorsKt$onErrorCollect$2 extends SuspendLambda implements Function3<FlowCollector<? super T>, Throwable, Continuation<? super Unit>, Object> {
-    final /* synthetic */ Flow $fallback;
-    final /* synthetic */ Function1 $predicate;
-    private /* synthetic */ Object L$0;
-    private /* synthetic */ Object L$1;
-    int label;
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public FlowKt__ErrorsKt$onErrorCollect$2(Function1 function1, Flow flow, Continuation continuation) {
-        super(3, continuation);
-        this.$predicate = function1;
-        this.$fallback = flow;
+public class ProgressBarIndeterminate extends ProgressBar {
+    public ProgressBarIndeterminate(Context context) {
+        super(context);
     }
 
-    public final Continuation<Unit> create(FlowCollector<? super T> flowCollector, Throwable th, Continuation<? super Unit> continuation) {
-        FlowKt__ErrorsKt$onErrorCollect$2 flowKt__ErrorsKt$onErrorCollect$2 = new FlowKt__ErrorsKt$onErrorCollect$2(this.$predicate, this.$fallback, continuation);
-        flowKt__ErrorsKt$onErrorCollect$2.L$0 = flowCollector;
-        flowKt__ErrorsKt$onErrorCollect$2.L$1 = th;
-        return flowKt__ErrorsKt$onErrorCollect$2;
+    public ProgressBarIndeterminate(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
     }
 
-    @Override // kotlin.jvm.functions.Function3
-    public final Object invoke(Object obj, Throwable th, Continuation<? super Unit> continuation) {
-        return ((FlowKt__ErrorsKt$onErrorCollect$2) create((FlowCollector) obj, th, continuation)).invokeSuspend(Unit.INSTANCE);
+    public ProgressBarIndeterminate(Context context, AttributeSet attributeSet, int i2) {
+        super(context, attributeSet, i2);
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
-        int i2 = this.label;
+    @Override // android.view.View
+    public void setVisibility(int i2) {
+        super.setVisibility(i2);
+        clearAnimation();
         if (i2 == 0) {
-            ResultKt.throwOnFailure(obj);
-            FlowCollector flowCollector = (FlowCollector) this.L$0;
-            Throwable th = (Throwable) this.L$1;
-            if (!((Boolean) this.$predicate.invoke(th)).booleanValue()) {
-                throw th;
-            }
-            Flow flow = this.$fallback;
-            this.L$0 = null;
-            this.label = 1;
-            if (flow.collect(flowCollector, this) == coroutine_suspended) {
-                return coroutine_suspended;
-            }
-        } else if (i2 != 1) {
-            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
-        } else {
-            ResultKt.throwOnFailure(obj);
+            setAlpha(1.0f);
         }
-        return Unit.INSTANCE;
+    }
+
+    public void hideSlow() {
+        if (getVisibility() != 0) {
+            return;
+        }
+        animate().alpha(0.0f).setDuration(getResources().getInteger(17694720)).setListener(new Animator.AnimatorListener() { // from class: com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ui.views.ProgressBarIndeterminate.1
+            @Override // android.animation.Animator.AnimatorListener
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override // android.animation.Animator.AnimatorListener
+            public void onAnimationRepeat(Animator animator) {
+            }
+
+            @Override // android.animation.Animator.AnimatorListener
+            public void onAnimationStart(Animator animator) {
+            }
+
+            @Override // android.animation.Animator.AnimatorListener
+            public void onAnimationEnd(Animator animator) {
+                ProgressBarIndeterminate.this.setVisibility(8);
+                ProgressBarIndeterminate.this.setAlpha(1.0f);
+            }
+        });
     }
 }

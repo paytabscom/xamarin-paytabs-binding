@@ -1,9 +1,15 @@
-package kotlin.reflect;
+package com.google.crypto.tink.shaded.protobuf;
 
-import kotlin.Metadata;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-/* compiled from: KClassifier.kt */
-@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\bg\u0018\u00002\u00020\u0001¨\u0006\u0002"}, d2 = {"Lkotlin/reflect/KClassifier;", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+@Target({ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.METHOD, ElementType.PACKAGE, ElementType.TYPE})
+@Documented
+@Retention(RetentionPolicy.SOURCE)
 /* loaded from: classes.dex */
-public interface KClassifier {
+public @interface ExperimentalApi {
+    String value() default "";
 }

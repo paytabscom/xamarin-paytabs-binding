@@ -1,34 +1,21 @@
-package com.xamarin.java_interop.internal;
+package com.google.android.material.timepicker;
 
-import com.xamarin.java_interop.GCUserPeerable;
-import com.xamarin.java_interop.ManagedPeer;
-import java.util.ArrayList;
+import android.content.Context;
+import android.view.View;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 
 /* loaded from: classes.dex */
-final class JavaProxyThrowable extends Error implements GCUserPeerable {
-    static final String assemblyQualifiedName = "Java.Interop.JavaProxyThrowable, Java.Interop";
-    ArrayList<Object> managedReferences;
+class ClickActionDelegate extends AccessibilityDelegateCompat {
+    private final AccessibilityNodeInfoCompat.AccessibilityActionCompat clickAction;
 
-    static {
-        ManagedPeer.registerNativeMembers(JavaProxyThrowable.class, assemblyQualifiedName, "");
+    public ClickActionDelegate(Context context, int i2) {
+        this.clickAction = new AccessibilityNodeInfoCompat.AccessibilityActionCompat(16, context.getString(i2));
     }
 
-    public JavaProxyThrowable() {
-        this.managedReferences = new ArrayList<>();
-    }
-
-    public JavaProxyThrowable(String str) {
-        super(str);
-        this.managedReferences = new ArrayList<>();
-    }
-
-    @Override // com.xamarin.java_interop.GCUserPeerable
-    public void jiAddManagedReference(Object obj) {
-        this.managedReferences.add(obj);
-    }
-
-    @Override // com.xamarin.java_interop.GCUserPeerable
-    public void jiClearManagedReferences() {
-        this.managedReferences.clear();
+    @Override // androidx.core.view.AccessibilityDelegateCompat
+    public void onInitializeAccessibilityNodeInfo(View view, AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
+        super.onInitializeAccessibilityNodeInfo(view, accessibilityNodeInfoCompat);
+        accessibilityNodeInfoCompat.addAction(this.clickAction);
     }
 }

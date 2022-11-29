@@ -1,126 +1,167 @@
-package androidx.appcompat.view.menu;
+package androidx.appcompat.view;
 
 import android.content.Context;
-import android.graphics.Rect;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.HeaderViewListAdapter;
-import android.widget.ListAdapter;
-import android.widget.PopupWindow;
+import androidx.appcompat.view.ActionMode;
+import androidx.appcompat.view.menu.MenuItemWrapperICS;
+import androidx.appcompat.view.menu.MenuWrapperICS;
+import androidx.collection.SimpleArrayMap;
+import androidx.core.internal.view.SupportMenu;
+import androidx.core.internal.view.SupportMenuItem;
+import java.util.ArrayList;
 
-/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-public abstract class MenuPopup implements ShowableListMenu, MenuPresenter, AdapterView.OnItemClickListener {
-    private Rect mEpicenterBounds;
+public class SupportActionModeWrapper extends android.view.ActionMode {
+    final Context mContext;
+    final ActionMode mWrappedObject;
 
-    public abstract void addMenu(MenuBuilder menuBuilder);
-
-    protected boolean closeMenuOnSubMenuOpened() {
-        return true;
+    public SupportActionModeWrapper(Context context, ActionMode actionMode) {
+        this.mContext = context;
+        this.mWrappedObject = actionMode;
     }
 
-    @Override // androidx.appcompat.view.menu.MenuPresenter
-    public boolean collapseItemActionView(MenuBuilder menuBuilder, MenuItemImpl menuItemImpl) {
-        return false;
+    @Override // android.view.ActionMode
+    public Object getTag() {
+        return this.mWrappedObject.getTag();
     }
 
-    @Override // androidx.appcompat.view.menu.MenuPresenter
-    public boolean expandItemActionView(MenuBuilder menuBuilder, MenuItemImpl menuItemImpl) {
-        return false;
+    @Override // android.view.ActionMode
+    public void setTag(Object obj) {
+        this.mWrappedObject.setTag(obj);
     }
 
-    @Override // androidx.appcompat.view.menu.MenuPresenter
-    public int getId() {
-        return 0;
+    @Override // android.view.ActionMode
+    public void setTitle(CharSequence charSequence) {
+        this.mWrappedObject.setTitle(charSequence);
     }
 
-    @Override // androidx.appcompat.view.menu.MenuPresenter
-    public void initForMenu(Context context, MenuBuilder menuBuilder) {
+    @Override // android.view.ActionMode
+    public void setSubtitle(CharSequence charSequence) {
+        this.mWrappedObject.setSubtitle(charSequence);
     }
 
-    public abstract void setAnchorView(View view);
-
-    public abstract void setForceShowIcon(boolean z2);
-
-    public abstract void setGravity(int i2);
-
-    public abstract void setHorizontalOffset(int i2);
-
-    public abstract void setOnDismissListener(PopupWindow.OnDismissListener onDismissListener);
-
-    public abstract void setShowTitle(boolean z2);
-
-    public abstract void setVerticalOffset(int i2);
-
-    public void setEpicenterBounds(Rect rect) {
-        this.mEpicenterBounds = rect;
+    @Override // android.view.ActionMode
+    public void invalidate() {
+        this.mWrappedObject.invalidate();
     }
 
-    public Rect getEpicenterBounds() {
-        return this.mEpicenterBounds;
+    @Override // android.view.ActionMode
+    public void finish() {
+        this.mWrappedObject.finish();
     }
 
-    @Override // androidx.appcompat.view.menu.MenuPresenter
-    public MenuView getMenuView(ViewGroup viewGroup) {
-        throw new UnsupportedOperationException("MenuPopups manage their own views");
+    @Override // android.view.ActionMode
+    public Menu getMenu() {
+        return new MenuWrapperICS(this.mContext, (SupportMenu) this.mWrappedObject.getMenu());
     }
 
-    @Override // android.widget.AdapterView.OnItemClickListener
-    public void onItemClick(AdapterView<?> adapterView, View view, int i2, long j2) {
-        ListAdapter listAdapter = (ListAdapter) adapterView.getAdapter();
-        toMenuAdapter(listAdapter).mAdapterMenu.performItemAction((MenuItem) listAdapter.getItem(i2), this, closeMenuOnSubMenuOpened() ? 0 : 4);
+    @Override // android.view.ActionMode
+    public CharSequence getTitle() {
+        return this.mWrappedObject.getTitle();
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    public static int measureIndividualMenuWidth(ListAdapter listAdapter, ViewGroup viewGroup, Context context, int i2) {
-        int makeMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, 0);
-        int makeMeasureSpec2 = View.MeasureSpec.makeMeasureSpec(0, 0);
-        int count = listAdapter.getCount();
-        View view = null;
-        int i3 = 0;
-        int i4 = 0;
-        for (int i5 = 0; i5 < count; i5++) {
-            int itemViewType = listAdapter.getItemViewType(i5);
-            if (itemViewType != i4) {
-                view = null;
-                i4 = itemViewType;
-            }
-            if (viewGroup == null) {
-                viewGroup = new FrameLayout(context);
-            }
-            view = listAdapter.getView(i5, view, viewGroup);
-            view.measure(makeMeasureSpec, makeMeasureSpec2);
-            int measuredWidth = view.getMeasuredWidth();
-            if (measuredWidth >= i2) {
-                return i2;
-            }
-            if (measuredWidth > i3) {
-                i3 = measuredWidth;
-            }
+    @Override // android.view.ActionMode
+    public void setTitle(int i2) {
+        this.mWrappedObject.setTitle(i2);
+    }
+
+    @Override // android.view.ActionMode
+    public CharSequence getSubtitle() {
+        return this.mWrappedObject.getSubtitle();
+    }
+
+    @Override // android.view.ActionMode
+    public void setSubtitle(int i2) {
+        this.mWrappedObject.setSubtitle(i2);
+    }
+
+    @Override // android.view.ActionMode
+    public View getCustomView() {
+        return this.mWrappedObject.getCustomView();
+    }
+
+    @Override // android.view.ActionMode
+    public void setCustomView(View view) {
+        this.mWrappedObject.setCustomView(view);
+    }
+
+    @Override // android.view.ActionMode
+    public MenuInflater getMenuInflater() {
+        return this.mWrappedObject.getMenuInflater();
+    }
+
+    @Override // android.view.ActionMode
+    public boolean getTitleOptionalHint() {
+        return this.mWrappedObject.getTitleOptionalHint();
+    }
+
+    @Override // android.view.ActionMode
+    public void setTitleOptionalHint(boolean z2) {
+        this.mWrappedObject.setTitleOptionalHint(z2);
+    }
+
+    @Override // android.view.ActionMode
+    public boolean isTitleOptional() {
+        return this.mWrappedObject.isTitleOptional();
+    }
+
+    /* loaded from: classes.dex */
+    public static class CallbackWrapper implements ActionMode.Callback {
+        final Context mContext;
+        final ActionMode.Callback mWrappedCallback;
+        final ArrayList<SupportActionModeWrapper> mActionModes = new ArrayList<>();
+        final SimpleArrayMap<Menu, Menu> mMenus = new SimpleArrayMap<>();
+
+        public CallbackWrapper(Context context, ActionMode.Callback callback) {
+            this.mContext = context;
+            this.mWrappedCallback = callback;
         }
-        return i3;
-    }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    public static MenuAdapter toMenuAdapter(ListAdapter listAdapter) {
-        if (listAdapter instanceof HeaderViewListAdapter) {
-            return (MenuAdapter) ((HeaderViewListAdapter) listAdapter).getWrappedAdapter();
+        @Override // androidx.appcompat.view.ActionMode.Callback
+        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+            return this.mWrappedCallback.onCreateActionMode(getActionModeWrapper(actionMode), getMenuWrapper(menu));
         }
-        return (MenuAdapter) listAdapter;
-    }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    public static boolean shouldPreserveIconSpacing(MenuBuilder menuBuilder) {
-        int size = menuBuilder.size();
-        for (int i2 = 0; i2 < size; i2++) {
-            MenuItem item = menuBuilder.getItem(i2);
-            if (item.isVisible() && item.getIcon() != null) {
-                return true;
+        @Override // androidx.appcompat.view.ActionMode.Callback
+        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+            return this.mWrappedCallback.onPrepareActionMode(getActionModeWrapper(actionMode), getMenuWrapper(menu));
+        }
+
+        @Override // androidx.appcompat.view.ActionMode.Callback
+        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+            return this.mWrappedCallback.onActionItemClicked(getActionModeWrapper(actionMode), new MenuItemWrapperICS(this.mContext, (SupportMenuItem) menuItem));
+        }
+
+        @Override // androidx.appcompat.view.ActionMode.Callback
+        public void onDestroyActionMode(ActionMode actionMode) {
+            this.mWrappedCallback.onDestroyActionMode(getActionModeWrapper(actionMode));
+        }
+
+        private Menu getMenuWrapper(Menu menu) {
+            Menu menu2 = this.mMenus.get(menu);
+            if (menu2 == null) {
+                MenuWrapperICS menuWrapperICS = new MenuWrapperICS(this.mContext, (SupportMenu) menu);
+                this.mMenus.put(menu, menuWrapperICS);
+                return menuWrapperICS;
             }
+            return menu2;
         }
-        return false;
+
+        public android.view.ActionMode getActionModeWrapper(ActionMode actionMode) {
+            int size = this.mActionModes.size();
+            for (int i2 = 0; i2 < size; i2++) {
+                SupportActionModeWrapper supportActionModeWrapper = this.mActionModes.get(i2);
+                if (supportActionModeWrapper != null && supportActionModeWrapper.mWrappedObject == actionMode) {
+                    return supportActionModeWrapper;
+                }
+            }
+            SupportActionModeWrapper supportActionModeWrapper2 = new SupportActionModeWrapper(this.mContext, actionMode);
+            this.mActionModes.add(supportActionModeWrapper2);
+            return supportActionModeWrapper2;
+        }
     }
 }

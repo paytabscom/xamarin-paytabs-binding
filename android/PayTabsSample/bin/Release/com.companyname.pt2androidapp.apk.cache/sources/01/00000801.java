@@ -1,155 +1,163 @@
-package androidx.lifecycle;
+package androidx.documentfile.provider;
 
-import android.app.Application;
-import java.lang.reflect.InvocationTargetException;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.DocumentsContract;
+import android.util.Log;
+import java.util.ArrayList;
 
 /* loaded from: classes.dex */
-public class ViewModelProvider {
-    private static final String DEFAULT_KEY = "androidx.lifecycle.ViewModelProvider.DefaultKey";
-    private final Factory mFactory;
-    private final ViewModelStore mViewModelStore;
-
-    /* loaded from: classes.dex */
-    public interface Factory {
-        <T extends ViewModel> T create(Class<T> cls);
-    }
+class TreeDocumentFile extends DocumentFile {
+    private Context mContext;
+    private Uri mUri;
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    /* loaded from: classes.dex */
-    public static class OnRequeryFactory {
-        void onRequery(ViewModel viewModel) {
-        }
+    public TreeDocumentFile(DocumentFile documentFile, Context context, Uri uri) {
+        super(documentFile);
+        this.mContext = context;
+        this.mUri = uri;
+    }
 
-        OnRequeryFactory() {
+    @Override // androidx.documentfile.provider.DocumentFile
+    public DocumentFile createFile(String str, String str2) {
+        Uri createFile = createFile(this.mContext, this.mUri, str, str2);
+        if (createFile != null) {
+            return new TreeDocumentFile(this, this.mContext, createFile);
+        }
+        return null;
+    }
+
+    private static Uri createFile(Context context, Uri uri, String str, String str2) {
+        try {
+            return DocumentsContract.createDocument(context.getContentResolver(), uri, str, str2);
+        } catch (Exception unused) {
+            return null;
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* loaded from: classes.dex */
-    public static abstract class KeyedFactory extends OnRequeryFactory implements Factory {
-        public abstract <T extends ViewModel> T create(String str, Class<T> cls);
+    @Override // androidx.documentfile.provider.DocumentFile
+    public DocumentFile createDirectory(String str) {
+        Uri createFile = createFile(this.mContext, this.mUri, "vnd.android.document/directory", str);
+        if (createFile != null) {
+            return new TreeDocumentFile(this, this.mContext, createFile);
+        }
+        return null;
+    }
 
-        public <T extends ViewModel> T create(Class<T> cls) {
-            throw new UnsupportedOperationException("create(String, Class<?>) must be called on implementaions of KeyedFactory");
+    @Override // androidx.documentfile.provider.DocumentFile
+    public Uri getUri() {
+        return this.mUri;
+    }
+
+    @Override // androidx.documentfile.provider.DocumentFile
+    public String getName() {
+        return DocumentsContractApi19.getName(this.mContext, this.mUri);
+    }
+
+    @Override // androidx.documentfile.provider.DocumentFile
+    public String getType() {
+        return DocumentsContractApi19.getType(this.mContext, this.mUri);
+    }
+
+    @Override // androidx.documentfile.provider.DocumentFile
+    public boolean isDirectory() {
+        return DocumentsContractApi19.isDirectory(this.mContext, this.mUri);
+    }
+
+    @Override // androidx.documentfile.provider.DocumentFile
+    public boolean isFile() {
+        return DocumentsContractApi19.isFile(this.mContext, this.mUri);
+    }
+
+    @Override // androidx.documentfile.provider.DocumentFile
+    public boolean isVirtual() {
+        return DocumentsContractApi19.isVirtual(this.mContext, this.mUri);
+    }
+
+    @Override // androidx.documentfile.provider.DocumentFile
+    public long lastModified() {
+        return DocumentsContractApi19.lastModified(this.mContext, this.mUri);
+    }
+
+    @Override // androidx.documentfile.provider.DocumentFile
+    public long length() {
+        return DocumentsContractApi19.length(this.mContext, this.mUri);
+    }
+
+    @Override // androidx.documentfile.provider.DocumentFile
+    public boolean canRead() {
+        return DocumentsContractApi19.canRead(this.mContext, this.mUri);
+    }
+
+    @Override // androidx.documentfile.provider.DocumentFile
+    public boolean canWrite() {
+        return DocumentsContractApi19.canWrite(this.mContext, this.mUri);
+    }
+
+    @Override // androidx.documentfile.provider.DocumentFile
+    public boolean delete() {
+        try {
+            return DocumentsContract.deleteDocument(this.mContext.getContentResolver(), this.mUri);
+        } catch (Exception unused) {
+            return false;
         }
     }
 
-    /* JADX WARN: Illegal instructions before constructor call */
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct code enable 'Show inconsistent code' option in preferences
-    */
-    public ViewModelProvider(androidx.lifecycle.ViewModelStoreOwner r3) {
-        /*
-            r2 = this;
-            androidx.lifecycle.ViewModelStore r0 = r3.getViewModelStore()
-            boolean r1 = r3 instanceof androidx.lifecycle.HasDefaultViewModelProviderFactory
-            if (r1 == 0) goto Lf
-            androidx.lifecycle.HasDefaultViewModelProviderFactory r3 = (androidx.lifecycle.HasDefaultViewModelProviderFactory) r3
-            androidx.lifecycle.ViewModelProvider$Factory r3 = r3.getDefaultViewModelProviderFactory()
-            goto L13
-        Lf:
-            androidx.lifecycle.ViewModelProvider$NewInstanceFactory r3 = androidx.lifecycle.ViewModelProvider.NewInstanceFactory.getInstance()
-        L13:
-            r2.<init>(r0, r3)
-            return
-        */
-        throw new UnsupportedOperationException("Method not decompiled: androidx.lifecycle.ViewModelProvider.<init>(androidx.lifecycle.ViewModelStoreOwner):void");
+    @Override // androidx.documentfile.provider.DocumentFile
+    public boolean exists() {
+        return DocumentsContractApi19.exists(this.mContext, this.mUri);
     }
 
-    public ViewModelProvider(ViewModelStoreOwner viewModelStoreOwner, Factory factory) {
-        this(viewModelStoreOwner.getViewModelStore(), factory);
-    }
-
-    public ViewModelProvider(ViewModelStore viewModelStore, Factory factory) {
-        this.mFactory = factory;
-        this.mViewModelStore = viewModelStore;
-    }
-
-    public <T extends ViewModel> T get(Class<T> cls) {
-        String canonicalName = cls.getCanonicalName();
-        if (canonicalName == null) {
-            throw new IllegalArgumentException("Local and anonymous classes can not be ViewModels");
-        }
-        return (T) get("androidx.lifecycle.ViewModelProvider.DefaultKey:" + canonicalName, cls);
-    }
-
-    public <T extends ViewModel> T get(String str, Class<T> cls) {
-        T t2;
-        T t3 = (T) this.mViewModelStore.get(str);
-        if (cls.isInstance(t3)) {
-            Factory factory = this.mFactory;
-            if (factory instanceof OnRequeryFactory) {
-                ((OnRequeryFactory) factory).onRequery(t3);
-            }
-            return t3;
-        }
-        Factory factory2 = this.mFactory;
-        if (factory2 instanceof KeyedFactory) {
-            t2 = (T) ((KeyedFactory) factory2).create(str, cls);
-        } else {
-            t2 = (T) factory2.create(cls);
-        }
-        this.mViewModelStore.put(str, t2);
-        return t2;
-    }
-
-    /* loaded from: classes.dex */
-    public static class NewInstanceFactory implements Factory {
-        private static NewInstanceFactory sInstance;
-
-        /* JADX INFO: Access modifiers changed from: package-private */
-        public static NewInstanceFactory getInstance() {
-            if (sInstance == null) {
-                sInstance = new NewInstanceFactory();
-            }
-            return sInstance;
-        }
-
-        @Override // androidx.lifecycle.ViewModelProvider.Factory
-        public <T extends ViewModel> T create(Class<T> cls) {
+    @Override // androidx.documentfile.provider.DocumentFile
+    public DocumentFile[] listFiles() {
+        ContentResolver contentResolver = this.mContext.getContentResolver();
+        Uri uri = this.mUri;
+        Uri buildChildDocumentsUriUsingTree = DocumentsContract.buildChildDocumentsUriUsingTree(uri, DocumentsContract.getDocumentId(uri));
+        ArrayList arrayList = new ArrayList();
+        Cursor cursor = null;
+        try {
             try {
-                return cls.newInstance();
-            } catch (IllegalAccessException e2) {
-                throw new RuntimeException("Cannot create an instance of " + cls, e2);
-            } catch (InstantiationException e3) {
-                throw new RuntimeException("Cannot create an instance of " + cls, e3);
+                cursor = contentResolver.query(buildChildDocumentsUriUsingTree, new String[]{"document_id"}, null, null, null);
+                while (cursor.moveToNext()) {
+                    arrayList.add(DocumentsContract.buildDocumentUriUsingTree(this.mUri, cursor.getString(0)));
+                }
+            } catch (Exception e2) {
+                Log.w("DocumentFile", "Failed query: " + e2);
+            }
+            Uri[] uriArr = (Uri[]) arrayList.toArray(new Uri[arrayList.size()]);
+            DocumentFile[] documentFileArr = new DocumentFile[uriArr.length];
+            for (int i2 = 0; i2 < uriArr.length; i2++) {
+                documentFileArr[i2] = new TreeDocumentFile(this, this.mContext, uriArr[i2]);
+            }
+            return documentFileArr;
+        } finally {
+            closeQuietly(cursor);
+        }
+    }
+
+    private static void closeQuietly(AutoCloseable autoCloseable) {
+        if (autoCloseable != null) {
+            try {
+                autoCloseable.close();
+            } catch (RuntimeException e2) {
+                throw e2;
+            } catch (Exception unused) {
             }
         }
     }
 
-    /* loaded from: classes.dex */
-    public static class AndroidViewModelFactory extends NewInstanceFactory {
-        private static AndroidViewModelFactory sInstance;
-        private Application mApplication;
-
-        public static AndroidViewModelFactory getInstance(Application application) {
-            if (sInstance == null) {
-                sInstance = new AndroidViewModelFactory(application);
+    @Override // androidx.documentfile.provider.DocumentFile
+    public boolean renameTo(String str) {
+        try {
+            Uri renameDocument = DocumentsContract.renameDocument(this.mContext.getContentResolver(), this.mUri, str);
+            if (renameDocument != null) {
+                this.mUri = renameDocument;
+                return true;
             }
-            return sInstance;
+        } catch (Exception unused) {
         }
-
-        public AndroidViewModelFactory(Application application) {
-            this.mApplication = application;
-        }
-
-        @Override // androidx.lifecycle.ViewModelProvider.NewInstanceFactory, androidx.lifecycle.ViewModelProvider.Factory
-        public <T extends ViewModel> T create(Class<T> cls) {
-            if (AndroidViewModel.class.isAssignableFrom(cls)) {
-                try {
-                    return cls.getConstructor(Application.class).newInstance(this.mApplication);
-                } catch (IllegalAccessException e2) {
-                    throw new RuntimeException("Cannot create an instance of " + cls, e2);
-                } catch (InstantiationException e3) {
-                    throw new RuntimeException("Cannot create an instance of " + cls, e3);
-                } catch (NoSuchMethodException e4) {
-                    throw new RuntimeException("Cannot create an instance of " + cls, e4);
-                } catch (InvocationTargetException e5) {
-                    throw new RuntimeException("Cannot create an instance of " + cls, e5);
-                }
-            }
-            return (T) super.create(cls);
-        }
+        return false;
     }
 }

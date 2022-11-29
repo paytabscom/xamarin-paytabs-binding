@@ -1,27 +1,12 @@
-package org.intellij.lang.annotations;
+package kotlin.reflect;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.Annotation;
+import java.util.List;
+import kotlin.Metadata;
 
-@Target({ElementType.PARAMETER, ElementType.METHOD})
-@Documented
-@Retention(RetentionPolicy.CLASS)
+/* compiled from: KAnnotatedElement.kt */
+@Metadata(d1 = {"\u0000\u0016\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010 \n\u0002\u0010\u001b\n\u0002\b\u0003\bf\u0018\u00002\u00020\u0001R\u0018\u0010\u0002\u001a\b\u0012\u0004\u0012\u00020\u00040\u0003X¦\u0004¢\u0006\u0006\u001a\u0004\b\u0005\u0010\u0006¨\u0006\u0007"}, d2 = {"Lkotlin/reflect/KAnnotatedElement;", "", "annotations", "", "", "getAnnotations", "()Ljava/util/List;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public @interface Flow {
-    public static final String DEFAULT_SOURCE = "The method argument (if parameter was annotated) or this container (if instance method was annotated)";
-    public static final String DEFAULT_TARGET = "This container (if the parameter was annotated) or the return value (if instance method was annotated)";
-    public static final String RETURN_METHOD_TARGET = "The return value of this method";
-    public static final String THIS_SOURCE = "this";
-    public static final String THIS_TARGET = "this";
-
-    String source() default "The method argument (if parameter was annotated) or this container (if instance method was annotated)";
-
-    boolean sourceIsContainer() default false;
-
-    String target() default "This container (if the parameter was annotated) or the return value (if instance method was annotated)";
-
-    boolean targetIsContainer() default false;
+public interface KAnnotatedElement {
+    List<Annotation> getAnnotations();
 }

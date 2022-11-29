@@ -1,53 +1,43 @@
-package mono.android.widget;
+package kotlin.properties;
 
-import android.widget.AbsListView;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function3;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.reflect.KProperty;
 
+/* compiled from: Delegates.kt */
+@Metadata(d1 = {"\u00002\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0010\u000b\n\u0000\bÆ\u0002\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J\u001e\u0010\u0003\u001a\u0010\u0012\u0006\u0012\u0004\u0018\u00010\u0001\u0012\u0004\u0012\u0002H\u00050\u0004\"\b\b\u0000\u0010\u0005*\u00020\u0001J\u0080\u0001\u0010\u0006\u001a\u0010\u0012\u0006\u0012\u0004\u0018\u00010\u0001\u0012\u0004\u0012\u0002H\u00050\u0004\"\u0004\b\u0000\u0010\u00052\u0006\u0010\u0007\u001a\u0002H\u00052Q\b\u0004\u0010\b\u001aK\u0012\u0017\u0012\u0015\u0012\u0002\b\u00030\n¢\u0006\f\b\u000b\u0012\b\b\f\u0012\u0004\b\b(\r\u0012\u0013\u0012\u0011H\u0005¢\u0006\f\b\u000b\u0012\b\b\f\u0012\u0004\b\b(\u000e\u0012\u0013\u0012\u0011H\u0005¢\u0006\f\b\u000b\u0012\b\b\f\u0012\u0004\b\b(\u000f\u0012\u0004\u0012\u00020\u00100\tH\u0086\bø\u0001\u0000¢\u0006\u0002\u0010\u0011J\u0080\u0001\u0010\u0012\u001a\u0010\u0012\u0006\u0012\u0004\u0018\u00010\u0001\u0012\u0004\u0012\u0002H\u00050\u0004\"\u0004\b\u0000\u0010\u00052\u0006\u0010\u0007\u001a\u0002H\u00052Q\b\u0004\u0010\b\u001aK\u0012\u0017\u0012\u0015\u0012\u0002\b\u00030\n¢\u0006\f\b\u000b\u0012\b\b\f\u0012\u0004\b\b(\r\u0012\u0013\u0012\u0011H\u0005¢\u0006\f\b\u000b\u0012\b\b\f\u0012\u0004\b\b(\u000e\u0012\u0013\u0012\u0011H\u0005¢\u0006\f\b\u000b\u0012\b\b\f\u0012\u0004\b\b(\u000f\u0012\u0004\u0012\u00020\u00130\tH\u0086\bø\u0001\u0000¢\u0006\u0002\u0010\u0011\u0082\u0002\u0007\n\u0005\b\u009920\u0001¨\u0006\u0014"}, d2 = {"Lkotlin/properties/Delegates;", "", "()V", "notNull", "Lkotlin/properties/ReadWriteProperty;", "T", "observable", "initialValue", "onChange", "Lkotlin/Function3;", "Lkotlin/reflect/KProperty;", "Lkotlin/ParameterName;", "name", "property", "oldValue", "newValue", "", "(Ljava/lang/Object;Lkotlin/jvm/functions/Function3;)Lkotlin/properties/ReadWriteProperty;", "vetoable", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class AbsListView_OnScrollListenerImplementor implements IGCUserPeer, AbsListView.OnScrollListener {
-    public static final String __md_methods = "n_onScroll:(Landroid/widget/AbsListView;III)V:GetOnScroll_Landroid_widget_AbsListView_IIIHandler:Android.Widget.AbsListView/IOnScrollListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onScrollStateChanged:(Landroid/widget/AbsListView;I)V:GetOnScrollStateChanged_Landroid_widget_AbsListView_IHandler:Android.Widget.AbsListView/IOnScrollListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public final class Delegates {
+    public static final Delegates INSTANCE = new Delegates();
 
-    private native void n_onScroll(AbsListView absListView, int i2, int i3, int i4);
-
-    private native void n_onScrollStateChanged(AbsListView absListView, int i2);
-
-    static {
-        Runtime.register("Android.Widget.AbsListView+IOnScrollListenerImplementor, Mono.Android", AbsListView_OnScrollListenerImplementor.class, __md_methods);
+    private Delegates() {
     }
 
-    public AbsListView_OnScrollListenerImplementor() {
-        if (getClass() == AbsListView_OnScrollListenerImplementor.class) {
-            TypeManager.Activate("Android.Widget.AbsListView+IOnScrollListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    public final <T> ReadWriteProperty<Object, T> notNull() {
+        return new NotNullVar();
     }
 
-    @Override // android.widget.AbsListView.OnScrollListener
-    public void onScroll(AbsListView absListView, int i2, int i3, int i4) {
-        n_onScroll(absListView, i2, i3, i4);
+    public final <T> ReadWriteProperty<Object, T> observable(final T t2, final Function3<? super KProperty<?>, ? super T, ? super T, Unit> onChange) {
+        Intrinsics.checkNotNullParameter(onChange, "onChange");
+        return new ObservableProperty<T>(t2) { // from class: kotlin.properties.Delegates$observable$1
+            @Override // kotlin.properties.ObservableProperty
+            protected void afterChange(KProperty<?> property, T t3, T t4) {
+                Intrinsics.checkNotNullParameter(property, "property");
+                Function3.this.invoke(property, t3, t4);
+            }
+        };
     }
 
-    @Override // android.widget.AbsListView.OnScrollListener
-    public void onScrollStateChanged(AbsListView absListView, int i2) {
-        n_onScrollStateChanged(absListView, i2);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public final <T> ReadWriteProperty<Object, T> vetoable(final T t2, final Function3<? super KProperty<?>, ? super T, ? super T, Boolean> onChange) {
+        Intrinsics.checkNotNullParameter(onChange, "onChange");
+        return new ObservableProperty<T>(t2) { // from class: kotlin.properties.Delegates$vetoable$1
+            @Override // kotlin.properties.ObservableProperty
+            protected boolean beforeChange(KProperty<?> property, T t3, T t4) {
+                Intrinsics.checkNotNullParameter(property, "property");
+                return ((Boolean) Function3.this.invoke(property, t3, t4)).booleanValue();
+            }
+        };
     }
 }

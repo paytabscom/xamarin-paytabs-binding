@@ -1,60 +1,47 @@
-package mono.android.hardware.input;
+package kotlin.io.path;
 
-import android.hardware.input.InputManager;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: PathTreeWalk.kt */
+@Metadata(d1 = {"\u0000$\n\u0000\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0011\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u000b\n\u0002\u0018\u0002\n\u0000\u001a%\u0010\u0000\u001a\u0004\u0018\u00010\u00012\u0006\u0010\u0002\u001a\u00020\u00032\f\u0010\u0004\u001a\b\u0012\u0004\u0012\u00020\u00060\u0005H\u0002¢\u0006\u0002\u0010\u0007\u001a\f\u0010\b\u001a\u00020\t*\u00020\nH\u0002¨\u0006\u000b"}, d2 = {"keyOf", "", "path", "Ljava/nio/file/Path;", "linkOptions", "", "Ljava/nio/file/LinkOption;", "(Ljava/nio/file/Path;[Ljava/nio/file/LinkOption;)Ljava/lang/Object;", "createsCycle", "", "Lkotlin/io/path/PathNode;", "kotlin-stdlib-jdk7"}, k = 2, mv = {1, 7, 1}, xi = 48)
 /* loaded from: classes.dex */
-public class InputManager_InputDeviceListenerImplementor implements IGCUserPeer, InputManager.InputDeviceListener {
-    public static final String __md_methods = "n_onInputDeviceAdded:(I)V:GetOnInputDeviceAdded_IHandler:Android.Hardware.Input.InputManager/IInputDeviceListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onInputDeviceChanged:(I)V:GetOnInputDeviceChanged_IHandler:Android.Hardware.Input.InputManager/IInputDeviceListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onInputDeviceRemoved:(I)V:GetOnInputDeviceRemoved_IHandler:Android.Hardware.Input.InputManager/IInputDeviceListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onInputDeviceAdded(int i2);
-
-    private native void n_onInputDeviceChanged(int i2);
-
-    private native void n_onInputDeviceRemoved(int i2);
-
-    static {
-        Runtime.register("Android.Hardware.Input.InputManager+IInputDeviceListenerImplementor, Mono.Android", InputManager_InputDeviceListenerImplementor.class, __md_methods);
-    }
-
-    public InputManager_InputDeviceListenerImplementor() {
-        if (getClass() == InputManager_InputDeviceListenerImplementor.class) {
-            TypeManager.Activate("Android.Hardware.Input.InputManager+IInputDeviceListenerImplementor, Mono.Android", "", this, new Object[0]);
+public final class PathTreeWalkKt {
+    /* JADX INFO: Access modifiers changed from: private */
+    public static final Object keyOf(Path path, LinkOption[] linkOptionArr) {
+        try {
+            LinkOption[] linkOptionArr2 = (LinkOption[]) Arrays.copyOf(linkOptionArr, linkOptionArr.length);
+            BasicFileAttributes readAttributes = Files.readAttributes(path, BasicFileAttributes.class, (LinkOption[]) Arrays.copyOf(linkOptionArr2, linkOptionArr2.length));
+            Intrinsics.checkNotNullExpressionValue(readAttributes, "readAttributes(this, A::class.java, *options)");
+            return readAttributes.fileKey();
+        } catch (Throwable unused) {
+            return null;
         }
     }
 
-    @Override // android.hardware.input.InputManager.InputDeviceListener
-    public void onInputDeviceAdded(int i2) {
-        n_onInputDeviceAdded(i2);
-    }
-
-    @Override // android.hardware.input.InputManager.InputDeviceListener
-    public void onInputDeviceChanged(int i2) {
-        n_onInputDeviceChanged(i2);
-    }
-
-    @Override // android.hardware.input.InputManager.InputDeviceListener
-    public void onInputDeviceRemoved(int i2) {
-        n_onInputDeviceRemoved(i2);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
+    /* JADX INFO: Access modifiers changed from: private */
+    public static final boolean createsCycle(PathNode pathNode) {
+        for (PathNode parent = pathNode.getParent(); parent != null; parent = parent.getParent()) {
+            if (parent.getKey() != null && pathNode.getKey() != null) {
+                if (Intrinsics.areEqual(parent.getKey(), pathNode.getKey())) {
+                    return true;
+                }
+            } else {
+                try {
+                    if (Files.isSameFile(parent.getPath(), pathNode.getPath())) {
+                        return true;
+                    }
+                } catch (IOException | SecurityException unused) {
+                    continue;
+                }
+            }
         }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+        return false;
     }
 }

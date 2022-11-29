@@ -1,46 +1,24 @@
-package kotlinx.coroutines.test;
+package kotlin.coroutines.cancellation;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import java.util.concurrent.CancellationException;
-import kotlin.Deprecated;
-import kotlin.DeprecationLevel;
 import kotlin.Metadata;
-import kotlin.ReplaceWith;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 
-/* compiled from: TestCoroutineContext.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0018\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\u001a+\u0010\u0000\u001a\u00020\u00012\b\b\u0002\u0010\u0002\u001a\u00020\u00032\u0017\u0010\u0004\u001a\u0013\u0012\u0004\u0012\u00020\u0003\u0012\u0004\u0012\u00020\u00010\u0005¢\u0006\u0002\b\u0006H\u0007¨\u0006\u0007"}, d2 = {"withTestContext", "", "testContext", "Lkotlinx/coroutines/test/TestCoroutineContext;", "testBody", "Lkotlin/Function1;", "Lkotlin/ExtensionFunctionType;", "kotlinx-coroutines-core"}, k = 2, mv = {1, 4, 2})
+/* compiled from: CancellationException.kt */
+@Metadata(d1 = {"\u0000\u001e\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\n\u0002\u0010\u0003\n\u0002\u0018\u0002\n\u0002\b\u0003\u001a!\u0010\u0000\u001a\u00060\u0001j\u0002`\u00022\b\u0010\u0003\u001a\u0004\u0018\u00010\u00042\b\u0010\u0005\u001a\u0004\u0018\u00010\u0006H\u0087\b\u001a\u0017\u0010\u0000\u001a\u00060\u0001j\u0002`\u00022\b\u0010\u0005\u001a\u0004\u0018\u00010\u0006H\u0087\b*\u001a\b\u0007\u0010\u0000\"\u00020\u00012\u00020\u0001B\f\b\u0007\u0012\b\b\b\u0012\u0004\b\b(\t¨\u0006\n"}, d2 = {"CancellationException", "Ljava/util/concurrent/CancellationException;", "Lkotlin/coroutines/cancellation/CancellationException;", "message", "", "cause", "", "Lkotlin/SinceKotlin;", "version", "1.4", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class TestCoroutineContextKt {
-    public static /* synthetic */ void withTestContext$default(TestCoroutineContext testCoroutineContext, Function1 function1, int i2, Object obj) {
-        if ((i2 & 1) != 0) {
-            testCoroutineContext = new TestCoroutineContext(null, 1, null);
-        }
-        withTestContext(testCoroutineContext, function1);
+public final class CancellationExceptionKt {
+    public static /* synthetic */ void CancellationException$annotations() {
     }
 
-    @Deprecated(level = DeprecationLevel.WARNING, message = "This API has been deprecated to integrate with Structured Concurrency.", replaceWith = @ReplaceWith(expression = "testContext.runBlockingTest(testBody)", imports = {"kotlin.coroutines.test"}))
-    public static final void withTestContext(TestCoroutineContext testCoroutineContext, Function1<? super TestCoroutineContext, Unit> function1) {
-        function1.invoke(testCoroutineContext);
-        List<Throwable> exceptions = testCoroutineContext.getExceptions();
-        boolean z2 = true;
-        if (!(exceptions instanceof Collection) || !exceptions.isEmpty()) {
-            Iterator<T> it = exceptions.iterator();
-            while (true) {
-                if (!it.hasNext()) {
-                    break;
-                } else if (!(((Throwable) it.next()) instanceof CancellationException)) {
-                    z2 = false;
-                    break;
-                }
-            }
-        }
-        if (z2) {
-            return;
-        }
-        throw new AssertionError("Coroutine encountered unhandled exceptions:\n" + testCoroutineContext.getExceptions());
+    private static final CancellationException CancellationException(String str, Throwable th) {
+        CancellationException cancellationException = new CancellationException(str);
+        cancellationException.initCause(th);
+        return cancellationException;
+    }
+
+    private static final CancellationException CancellationException(Throwable th) {
+        CancellationException cancellationException = new CancellationException(th != null ? th.toString() : null);
+        cancellationException.initCause(th);
+        return cancellationException;
     }
 }

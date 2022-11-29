@@ -1,18 +1,32 @@
-package androidx.core.os;
+package androidx.core.database;
 
-import android.content.Context;
-import android.os.Build;
-import android.os.UserManager;
+import android.text.TextUtils;
 
+@Deprecated
 /* loaded from: classes.dex */
-public class UserManagerCompat {
-    private UserManagerCompat() {
+public final class DatabaseUtilsCompat {
+    private DatabaseUtilsCompat() {
     }
 
-    public static boolean isUserUnlocked(Context context) {
-        if (Build.VERSION.SDK_INT >= 24) {
-            return ((UserManager) context.getSystemService(UserManager.class)).isUserUnlocked();
+    @Deprecated
+    public static String concatenateWhere(String str, String str2) {
+        if (TextUtils.isEmpty(str)) {
+            return str2;
         }
-        return true;
+        if (TextUtils.isEmpty(str2)) {
+            return str;
+        }
+        return "(" + str + ") AND (" + str2 + ")";
+    }
+
+    @Deprecated
+    public static String[] appendSelectionArgs(String[] strArr, String[] strArr2) {
+        if (strArr == null || strArr.length == 0) {
+            return strArr2;
+        }
+        String[] strArr3 = new String[strArr.length + strArr2.length];
+        System.arraycopy(strArr, 0, strArr3, 0, strArr.length);
+        System.arraycopy(strArr2, 0, strArr3, strArr.length, strArr2.length);
+        return strArr3;
     }
 }

@@ -1,40 +1,79 @@
-package kotlin.experimental;
+package com.google.crypto.tink.proto;
 
-import kotlin.Metadata;
+import com.google.crypto.tink.shaded.protobuf.Internal;
 
-/* compiled from: bitwiseOperations.kt */
-@Metadata(d1 = {"\u0000\u0010\n\u0000\n\u0002\u0010\u0005\n\u0000\n\u0002\u0010\n\n\u0002\b\u0004\u001a\u0015\u0010\u0000\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0001H\u0087\f\u001a\u0015\u0010\u0000\u001a\u00020\u0003*\u00020\u00032\u0006\u0010\u0002\u001a\u00020\u0003H\u0087\f\u001a\r\u0010\u0004\u001a\u00020\u0001*\u00020\u0001H\u0087\b\u001a\r\u0010\u0004\u001a\u00020\u0003*\u00020\u0003H\u0087\b\u001a\u0015\u0010\u0005\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0001H\u0087\f\u001a\u0015\u0010\u0005\u001a\u00020\u0003*\u00020\u00032\u0006\u0010\u0002\u001a\u00020\u0003H\u0087\f\u001a\u0015\u0010\u0006\u001a\u00020\u0001*\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0001H\u0087\f\u001a\u0015\u0010\u0006\u001a\u00020\u0003*\u00020\u00032\u0006\u0010\u0002\u001a\u00020\u0003H\u0087\f¨\u0006\u0007"}, d2 = {"and", "", "other", "", "inv", "or", "xor", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class BitwiseOperationsKt {
-    private static final byte and(byte b2, byte b3) {
-        return (byte) (b2 & b3);
+public enum EcPointFormat implements Internal.EnumLite {
+    UNKNOWN_FORMAT(0),
+    UNCOMPRESSED(1),
+    COMPRESSED(2),
+    DO_NOT_USE_CRUNCHY_UNCOMPRESSED(3),
+    UNRECOGNIZED(-1);
+    
+    public static final int COMPRESSED_VALUE = 2;
+    public static final int DO_NOT_USE_CRUNCHY_UNCOMPRESSED_VALUE = 3;
+    public static final int UNCOMPRESSED_VALUE = 1;
+    public static final int UNKNOWN_FORMAT_VALUE = 0;
+    private static final Internal.EnumLiteMap<EcPointFormat> internalValueMap = new Internal.EnumLiteMap<EcPointFormat>() { // from class: com.google.crypto.tink.proto.EcPointFormat.1
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumLiteMap
+        public EcPointFormat findValueByNumber(int number) {
+            return EcPointFormat.forNumber(number);
+        }
+    };
+    private final int value;
+
+    @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumLite
+    public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+            throw new IllegalArgumentException("Can't get the number of an unknown enum value.");
+        }
+        return this.value;
     }
 
-    private static final short and(short s2, short s3) {
-        return (short) (s2 & s3);
+    @Deprecated
+    public static EcPointFormat valueOf(int value) {
+        return forNumber(value);
     }
 
-    private static final byte inv(byte b2) {
-        return (byte) (~b2);
+    public static EcPointFormat forNumber(int value) {
+        if (value != 0) {
+            if (value != 1) {
+                if (value != 2) {
+                    if (value != 3) {
+                        return null;
+                    }
+                    return DO_NOT_USE_CRUNCHY_UNCOMPRESSED;
+                }
+                return COMPRESSED;
+            }
+            return UNCOMPRESSED;
+        }
+        return UNKNOWN_FORMAT;
     }
 
-    private static final short inv(short s2) {
-        return (short) (~s2);
+    public static Internal.EnumLiteMap<EcPointFormat> internalGetValueMap() {
+        return internalValueMap;
     }
 
-    private static final byte or(byte b2, byte b3) {
-        return (byte) (b2 | b3);
+    public static Internal.EnumVerifier internalGetVerifier() {
+        return EcPointFormatVerifier.INSTANCE;
     }
 
-    private static final short or(short s2, short s3) {
-        return (short) (s2 | s3);
+    /* loaded from: classes.dex */
+    private static final class EcPointFormatVerifier implements Internal.EnumVerifier {
+        static final Internal.EnumVerifier INSTANCE = new EcPointFormatVerifier();
+
+        private EcPointFormatVerifier() {
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumVerifier
+        public boolean isInRange(int number) {
+            return EcPointFormat.forNumber(number) != null;
+        }
     }
 
-    private static final byte xor(byte b2, byte b3) {
-        return (byte) (b2 ^ b3);
-    }
-
-    private static final short xor(short s2, short s3) {
-        return (short) (s2 ^ s3);
+    EcPointFormat(int value) {
+        this.value = value;
     }
 }

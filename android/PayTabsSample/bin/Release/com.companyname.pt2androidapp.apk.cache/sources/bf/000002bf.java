@@ -1,100 +1,151 @@
-package androidx.cardview.widget;
+package androidx.browser.trusted;
 
-import android.content.Context;
-import android.content.res.ColorStateList;
-import android.view.View;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
-/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-public class CardViewApi21Impl implements CardViewImpl {
-    @Override // androidx.cardview.widget.CardViewImpl
-    public void initStatic() {
+final class TokenContents {
+    private final byte[] mContents;
+    private List<byte[]> mFingerprints;
+    private String mPackageName;
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static TokenContents deserialize(byte[] serialized) {
+        return new TokenContents(serialized);
     }
 
-    @Override // androidx.cardview.widget.CardViewImpl
-    public void initialize(CardViewDelegate cardViewDelegate, Context context, ColorStateList colorStateList, float f2, float f3, float f4) {
-        cardViewDelegate.setCardBackground(new RoundRectDrawable(colorStateList, f2));
-        View cardView = cardViewDelegate.getCardView();
-        cardView.setClipToOutline(true);
-        cardView.setElevation(f3);
-        setMaxElevation(cardViewDelegate, f4);
+    private TokenContents(byte[] contents) {
+        this.mContents = contents;
     }
 
-    @Override // androidx.cardview.widget.CardViewImpl
-    public void setRadius(CardViewDelegate cardViewDelegate, float f2) {
-        getCardBackground(cardViewDelegate).setRadius(f2);
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static TokenContents create(String packageName, List<byte[]> fingerprints) throws IOException {
+        return new TokenContents(createToken(packageName, fingerprints), packageName, fingerprints);
     }
 
-    @Override // androidx.cardview.widget.CardViewImpl
-    public void setMaxElevation(CardViewDelegate cardViewDelegate, float f2) {
-        getCardBackground(cardViewDelegate).setPadding(f2, cardViewDelegate.getUseCompatPadding(), cardViewDelegate.getPreventCornerOverlap());
-        updatePadding(cardViewDelegate);
+    private TokenContents(byte[] contents, String packageName, List<byte[]> fingerprints) {
+        this.mContents = contents;
+        this.mPackageName = packageName;
+        this.mFingerprints = new ArrayList(fingerprints.size());
+        for (byte[] bArr : fingerprints) {
+            this.mFingerprints.add(Arrays.copyOf(bArr, bArr.length));
+        }
     }
 
-    @Override // androidx.cardview.widget.CardViewImpl
-    public float getMaxElevation(CardViewDelegate cardViewDelegate) {
-        return getCardBackground(cardViewDelegate).getPadding();
+    public String getPackageName() throws IOException {
+        parseIfNeeded();
+        String str = this.mPackageName;
+        if (str != null) {
+            return str;
+        }
+        throw new IllegalStateException();
     }
 
-    @Override // androidx.cardview.widget.CardViewImpl
-    public float getMinWidth(CardViewDelegate cardViewDelegate) {
-        return getRadius(cardViewDelegate) * 2.0f;
+    public int getFingerprintCount() throws IOException {
+        parseIfNeeded();
+        List<byte[]> list = this.mFingerprints;
+        if (list == null) {
+            throw new IllegalStateException();
+        }
+        return list.size();
     }
 
-    @Override // androidx.cardview.widget.CardViewImpl
-    public float getMinHeight(CardViewDelegate cardViewDelegate) {
-        return getRadius(cardViewDelegate) * 2.0f;
+    public byte[] getFingerprint(int i2) throws IOException {
+        parseIfNeeded();
+        List<byte[]> list = this.mFingerprints;
+        if (list == null) {
+            throw new IllegalStateException();
+        }
+        return Arrays.copyOf(list.get(i2), this.mFingerprints.get(i2).length);
     }
 
-    @Override // androidx.cardview.widget.CardViewImpl
-    public float getRadius(CardViewDelegate cardViewDelegate) {
-        return getCardBackground(cardViewDelegate).getRadius();
+    public byte[] serialize() {
+        byte[] bArr = this.mContents;
+        return Arrays.copyOf(bArr, bArr.length);
     }
 
-    @Override // androidx.cardview.widget.CardViewImpl
-    public void setElevation(CardViewDelegate cardViewDelegate, float f2) {
-        cardViewDelegate.getCardView().setElevation(f2);
+    public boolean equals(Object o2) {
+        if (this == o2) {
+            return true;
+        }
+        if (o2 == null || getClass() != o2.getClass()) {
+            return false;
+        }
+        return Arrays.equals(this.mContents, ((TokenContents) o2).mContents);
     }
 
-    @Override // androidx.cardview.widget.CardViewImpl
-    public float getElevation(CardViewDelegate cardViewDelegate) {
-        return cardViewDelegate.getCardView().getElevation();
+    public int hashCode() {
+        return Arrays.hashCode(this.mContents);
     }
 
-    @Override // androidx.cardview.widget.CardViewImpl
-    public void updatePadding(CardViewDelegate cardViewDelegate) {
-        if (!cardViewDelegate.getUseCompatPadding()) {
-            cardViewDelegate.setShadowPadding(0, 0, 0, 0);
+    private static byte[] createToken(String packageName, List<byte[]> fingerprints) throws IOException {
+        Collections.sort(fingerprints, $$Lambda$TokenContents$Q7kOl2yBde7CmQs5Ktpiz56Nr70.INSTANCE);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
+        dataOutputStream.writeUTF(packageName);
+        dataOutputStream.writeInt(fingerprints.size());
+        for (byte[] bArr : fingerprints) {
+            dataOutputStream.writeInt(bArr.length);
+            dataOutputStream.write(bArr);
+        }
+        dataOutputStream.flush();
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public static int compareByteArrays(byte[] a2, byte[] b2) {
+        int length;
+        int length2;
+        if (a2 == b2) {
+            return 0;
+        }
+        if (a2 == null) {
+            return -1;
+        }
+        if (b2 == null) {
+            return 1;
+        }
+        int i2 = 0;
+        while (true) {
+            if (i2 < Math.min(a2.length, b2.length)) {
+                if (a2[i2] != b2[i2]) {
+                    length = a2[i2];
+                    length2 = b2[i2];
+                    break;
+                }
+                i2++;
+            } else if (a2.length == b2.length) {
+                return 0;
+            } else {
+                length = a2.length;
+                length2 = b2.length;
+            }
+        }
+        return length - length2;
+    }
+
+    private void parseIfNeeded() throws IOException {
+        if (this.mPackageName != null) {
             return;
         }
-        float maxElevation = getMaxElevation(cardViewDelegate);
-        float radius = getRadius(cardViewDelegate);
-        int ceil = (int) Math.ceil(RoundRectDrawableWithShadow.calculateHorizontalPadding(maxElevation, radius, cardViewDelegate.getPreventCornerOverlap()));
-        int ceil2 = (int) Math.ceil(RoundRectDrawableWithShadow.calculateVerticalPadding(maxElevation, radius, cardViewDelegate.getPreventCornerOverlap()));
-        cardViewDelegate.setShadowPadding(ceil, ceil2, ceil, ceil2);
-    }
-
-    @Override // androidx.cardview.widget.CardViewImpl
-    public void onCompatPaddingChanged(CardViewDelegate cardViewDelegate) {
-        setMaxElevation(cardViewDelegate, getMaxElevation(cardViewDelegate));
-    }
-
-    @Override // androidx.cardview.widget.CardViewImpl
-    public void onPreventCornerOverlapChanged(CardViewDelegate cardViewDelegate) {
-        setMaxElevation(cardViewDelegate, getMaxElevation(cardViewDelegate));
-    }
-
-    @Override // androidx.cardview.widget.CardViewImpl
-    public void setBackgroundColor(CardViewDelegate cardViewDelegate, ColorStateList colorStateList) {
-        getCardBackground(cardViewDelegate).setColor(colorStateList);
-    }
-
-    @Override // androidx.cardview.widget.CardViewImpl
-    public ColorStateList getBackgroundColor(CardViewDelegate cardViewDelegate) {
-        return getCardBackground(cardViewDelegate).getColor();
-    }
-
-    private RoundRectDrawable getCardBackground(CardViewDelegate cardViewDelegate) {
-        return (RoundRectDrawable) cardViewDelegate.getCardBackground();
+        DataInputStream dataInputStream = new DataInputStream(new ByteArrayInputStream(this.mContents));
+        this.mPackageName = dataInputStream.readUTF();
+        int readInt = dataInputStream.readInt();
+        this.mFingerprints = new ArrayList(readInt);
+        for (int i2 = 0; i2 < readInt; i2++) {
+            int readInt2 = dataInputStream.readInt();
+            byte[] bArr = new byte[readInt2];
+            if (dataInputStream.read(bArr) != readInt2) {
+                throw new IllegalStateException("Could not read fingerprint");
+            }
+            this.mFingerprints.add(bArr);
+        }
     }
 }

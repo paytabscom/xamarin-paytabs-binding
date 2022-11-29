@@ -1,7 +1,19 @@
-package mono;
+package kotlin.internal;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import kotlin.Metadata;
+import kotlin.annotation.AnnotationRetention;
+import kotlin.annotation.AnnotationTarget;
+
+/* compiled from: Annotations.kt */
+@Target({ElementType.METHOD})
+@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\b\u0081\u0002\u0018\u00002\u00020\u0001B\u0000¨\u0006\u0002"}, d2 = {"Lkotlin/internal/HidesMembers;", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+@kotlin.annotation.Target(allowedTargets = {AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY})
+@Retention(RetentionPolicy.CLASS)
+@kotlin.annotation.Retention(AnnotationRetention.BINARY)
 /* loaded from: classes.dex */
-public class MonoPackageManager_Resources {
-    public static String[] Assemblies = {"Pt2AndroidApp.dll", "CardScanBindingLib.dll", "PaymentSDK.Binding.dll", "Plugin.Toast.Abstractions.dll", "Plugin.Toast.dll", "Xamarin.Android.Device.YearClass.dll", "Xamarin.AndroidX.Activity.dll", "Xamarin.AndroidX.AppCompat.dll", "Xamarin.AndroidX.ConstraintLayout.dll", "Xamarin.AndroidX.ConstraintLayout.Solver.dll", "Xamarin.AndroidX.Core.dll", "Xamarin.AndroidX.CustomView.dll", "Xamarin.AndroidX.DrawerLayout.dll", "Xamarin.AndroidX.Fragment.dll", "Xamarin.AndroidX.Lifecycle.Common.dll", "Xamarin.AndroidX.Lifecycle.LiveData.Core.dll", "Xamarin.AndroidX.Lifecycle.ViewModel.dll", "Xamarin.AndroidX.Loader.dll", "Xamarin.AndroidX.RecyclerView.dll", "Xamarin.AndroidX.SavedState.dll", "Xamarin.Essentials.dll", "Xamarin.Google.Guava.ListenableFuture.dll", "Xamarin.Jetbrains.Annotations.dll", "Xamarin.Kotlin.StdLib.Common.dll", "Xamarin.Kotlin.StdLib.dll", "Xamarin.KotlinX.Coroutines.Android.dll", "Xamarin.KotlinX.Coroutines.Core.Jvm.dll"};
-    public static String[] Dependencies = new String[0];
+public @interface HidesMembers {
 }

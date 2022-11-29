@@ -1,46 +1,16 @@
-package mono.android.view.accessibility;
+package kotlin.jvm.internal.unsafe;
 
-import android.view.accessibility.AccessibilityManager;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: monitor.kt */
+@Metadata(d1 = {"\u0000\u0010\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0002\u001a\u0010\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0003H\u0002\u001a\u0010\u0010\u0004\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0003H\u0002¨\u0006\u0005"}, d2 = {"monitorEnter", "", "monitor", "", "monitorExit", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class AccessibilityManager_AccessibilityStateChangeListenerImplementor implements IGCUserPeer, AccessibilityManager.AccessibilityStateChangeListener {
-    public static final String __md_methods = "n_onAccessibilityStateChanged:(Z)V:GetOnAccessibilityStateChanged_ZHandler:Android.Views.Accessibility.AccessibilityManager/IAccessibilityStateChangeListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onAccessibilityStateChanged(boolean z2);
-
-    static {
-        Runtime.register("Android.Views.Accessibility.AccessibilityManager+IAccessibilityStateChangeListenerImplementor, Mono.Android", AccessibilityManager_AccessibilityStateChangeListenerImplementor.class, __md_methods);
+public final class MonitorKt {
+    private static final void monitorEnter(Object obj) {
+        throw new UnsupportedOperationException("This function can only be used privately");
     }
 
-    public AccessibilityManager_AccessibilityStateChangeListenerImplementor() {
-        if (getClass() == AccessibilityManager_AccessibilityStateChangeListenerImplementor.class) {
-            TypeManager.Activate("Android.Views.Accessibility.AccessibilityManager+IAccessibilityStateChangeListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.view.accessibility.AccessibilityManager.AccessibilityStateChangeListener
-    public void onAccessibilityStateChanged(boolean z2) {
-        n_onAccessibilityStateChanged(z2);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    private static final void monitorExit(Object obj) {
+        throw new UnsupportedOperationException("This function can only be used privately");
     }
 }

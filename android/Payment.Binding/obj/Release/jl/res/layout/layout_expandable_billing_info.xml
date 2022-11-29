@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:elevation="1dp"
+    android:id="@+id/cl_main_billing"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:id="@+id/payment_sdk_cl_billing_expandable"
+        app:layout_constraintCircleRadius="@dimen/payment_sdk_button_corner_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/payment_sdk_tv_expandable_billing_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/payment_sdk_primary_font"
+            android:text="@string/payment_sdk_billing_details"
+            android:textColor="@color/payment_sdk_button_text_color"
+            android:textSize="@dimen/payment_sdk_primary_font_size"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/payment_sdk_iv_expandable_billing_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_payment_sdk_icon_arrow_expanded"
+            app:layout_constraintBottom_toBottomOf="@id/payment_sdk_tv_expandable_billing_info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/payment_sdk_tv_expandable_billing_info" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_billing"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/payment_sdk_cl_billing_expandable"
+        app:layout_constraintStart_toStartOf="@+id/payment_sdk_cl_billing_expandable"
+        app:layout_constraintTop_toBottomOf="@+id/payment_sdk_cl_billing_expandable">
+
+        <com.payment.paymentsdk.creditcard.view.customs.PaytabsEditText
+            android:id="@+id/pet_billing_name"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:pet_hint="@string/payment_sdk_billing_address_full_name"
+            app:pet_inputType="text"
+            app:pet_label="@string/payment_sdk_billing_address_full_name"
+            app:pet_maxLength="40" />
+
+        <com.payment.paymentsdk.creditcard.view.customs.PaytabsEditText
+            android:id="@+id/pet_billing_email"
+            
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:pet_hint="@string/payment_sdk_billing_address_email"
+
+            app:pet_inputType="text"
+            app:pet_label="@string/payment_sdk_billing_address_email"
+            app:pet_maxLength="40" />
+
+        <com.payment.paymentsdk.creditcard.view.customs.PaytabsEditText
+            android:id="@+id/pet_billing_address"
+            
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:pet_hint="@string/payment_sdk_billing_address_stree"
+
+            app:pet_inputType="text"
+            app:pet_label="@string/payment_sdk_billing_address_stree"
+            app:pet_maxLength="20" />
+
+
+        <com.payment.paymentsdk.creditcard.view.customs.PaytabsEditText
+            android:id="@+id/pet_billing_state"
+            
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:pet_hint="@string/payment_sdk_billing_address_state"
+
+            app:pet_inputType="text"
+            app:pet_label="@string/payment_sdk_billing_address_state"
+            app:pet_maxLength="20" />
+
+        <com.payment.paymentsdk.creditcard.view.customs.PaytabsEditText
+            android:id="@+id/pet_billing_zip"
+            
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:pet_hint="@string/payment_sdk_billing_address_zip"
+
+            app:pet_inputType="text"
+            app:pet_label="@string/payment_sdk_billing_address_zip"
+            app:pet_maxLength="20" />
+
+        <com.payment.paymentsdk.creditcard.view.customs.PaytabsEditText
+            android:id="@+id/pet_billing_phone"
+            
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:pet_hint="@string/payment_sdk_billing_address_phone"
+
+            app:pet_inputType="number"
+            app:pet_label="@string/payment_sdk_billing_address_phone"
+            app:pet_maxLength="20" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+
+            android:orientation="horizontal">
+
+            <com.payment.paymentsdk.creditcard.view.customs.PaytabsEditText
+                android:id="@+id/pet_billing_country"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                app:pet_hint="@string/payment_sdk_billing_address_country"
+                app:pet_inputType="text"
+                app:pet_isDropDown="true"
+                app:pet_label="@string/payment_sdk_billing_address_country"
+               />
+
+            <com.payment.paymentsdk.creditcard.view.customs.PaytabsEditText
+                android:id="@+id/pet_billing_city"
+                
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                app:pet_hint="@string/payment_sdk_billing_address_city"
+                app:pet_inputType="text"
+                app:pet_label="@string/payment_sdk_billing_address_city"
+                app:pet_maxLength="20" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

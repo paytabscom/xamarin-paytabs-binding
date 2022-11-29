@@ -1,46 +1,11 @@
-package mono.android.media.audiofx;
+package kotlin.jvm.functions;
 
-import android.media.audiofx.AudioEffect;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Function;
+import kotlin.Metadata;
 
+/* compiled from: Functions.kt */
+@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\b\b\n\u0002\u0018\u0002\n\u0002\b\n\bf\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u0000*\u0006\b\u0001\u0010\u0002 \u0000*\u0006\b\u0002\u0010\u0003 \u0000*\u0006\b\u0003\u0010\u0004 \u0000*\u0006\b\u0004\u0010\u0005 \u0000*\u0006\b\u0005\u0010\u0006 \u0000*\u0006\b\u0006\u0010\u0007 \u0000*\u0006\b\u0007\u0010\b \u00012\b\u0012\u0004\u0012\u0002H\b0\tJF\u0010\n\u001a\u00028\u00072\u0006\u0010\u000b\u001a\u00028\u00002\u0006\u0010\f\u001a\u00028\u00012\u0006\u0010\r\u001a\u00028\u00022\u0006\u0010\u000e\u001a\u00028\u00032\u0006\u0010\u000f\u001a\u00028\u00042\u0006\u0010\u0010\u001a\u00028\u00052\u0006\u0010\u0011\u001a\u00028\u0006H¦\u0002¢\u0006\u0002\u0010\u0012¨\u0006\u0013"}, d2 = {"Lkotlin/jvm/functions/Function7;", "P1", "P2", "P3", "P4", "P5", "P6", "P7", "R", "Lkotlin/Function;", "invoke", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class AudioEffect_OnControlStatusChangeListenerImplementor implements IGCUserPeer, AudioEffect.OnControlStatusChangeListener {
-    public static final String __md_methods = "n_onControlStatusChange:(Landroid/media/audiofx/AudioEffect;Z)V:GetOnControlStatusChange_Landroid_media_audiofx_AudioEffect_ZHandler:Android.Media.Audiofx.AudioEffect/IOnControlStatusChangeListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onControlStatusChange(AudioEffect audioEffect, boolean z2);
-
-    static {
-        Runtime.register("Android.Media.Audiofx.AudioEffect+IOnControlStatusChangeListenerImplementor, Mono.Android", AudioEffect_OnControlStatusChangeListenerImplementor.class, __md_methods);
-    }
-
-    public AudioEffect_OnControlStatusChangeListenerImplementor() {
-        if (getClass() == AudioEffect_OnControlStatusChangeListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.Audiofx.AudioEffect+IOnControlStatusChangeListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.media.audiofx.AudioEffect.OnControlStatusChangeListener
-    public void onControlStatusChange(AudioEffect audioEffect, boolean z2) {
-        n_onControlStatusChange(audioEffect, z2);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public interface Function7<P1, P2, P3, P4, P5, P6, P7, R> extends Function<R> {
+    R invoke(P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7);
 }

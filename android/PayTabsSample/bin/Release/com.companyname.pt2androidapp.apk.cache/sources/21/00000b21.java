@@ -1,91 +1,119 @@
-package com.google.android.material.circularreveal;
+package androidx.transition;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
-import android.util.AttributeSet;
-import android.widget.RelativeLayout;
-import com.google.android.material.circularreveal.CircularRevealWidget;
+import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.os.Build;
+import android.util.Property;
+import android.view.View;
+import androidx.core.view.ViewCompat;
 
+/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-public class CircularRevealRelativeLayout extends RelativeLayout implements CircularRevealWidget {
-    private final CircularRevealHelper helper;
+public class ViewUtils {
+    static final Property<View, Rect> CLIP_BOUNDS;
+    private static final ViewUtilsBase IMPL;
+    private static final String TAG = "ViewUtils";
+    static final Property<View, Float> TRANSITION_ALPHA;
 
-    public CircularRevealRelativeLayout(Context context) {
-        this(context, null);
-    }
-
-    public CircularRevealRelativeLayout(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        this.helper = new CircularRevealHelper(this);
-    }
-
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public void buildCircularRevealCache() {
-        this.helper.buildCircularRevealCache();
-    }
-
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public void destroyCircularRevealCache() {
-        this.helper.destroyCircularRevealCache();
-    }
-
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public CircularRevealWidget.RevealInfo getRevealInfo() {
-        return this.helper.getRevealInfo();
-    }
-
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public void setRevealInfo(CircularRevealWidget.RevealInfo revealInfo) {
-        this.helper.setRevealInfo(revealInfo);
-    }
-
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public int getCircularRevealScrimColor() {
-        return this.helper.getCircularRevealScrimColor();
-    }
-
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public void setCircularRevealScrimColor(int i2) {
-        this.helper.setCircularRevealScrimColor(i2);
-    }
-
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public Drawable getCircularRevealOverlayDrawable() {
-        return this.helper.getCircularRevealOverlayDrawable();
-    }
-
-    @Override // com.google.android.material.circularreveal.CircularRevealWidget
-    public void setCircularRevealOverlayDrawable(Drawable drawable) {
-        this.helper.setCircularRevealOverlayDrawable(drawable);
-    }
-
-    @Override // android.view.View, com.google.android.material.circularreveal.CircularRevealWidget
-    public void draw(Canvas canvas) {
-        CircularRevealHelper circularRevealHelper = this.helper;
-        if (circularRevealHelper != null) {
-            circularRevealHelper.draw(canvas);
+    static {
+        if (Build.VERSION.SDK_INT >= 29) {
+            IMPL = new ViewUtilsApi29();
+        } else if (Build.VERSION.SDK_INT >= 23) {
+            IMPL = new ViewUtilsApi23();
+        } else if (Build.VERSION.SDK_INT >= 22) {
+            IMPL = new ViewUtilsApi22();
+        } else if (Build.VERSION.SDK_INT >= 21) {
+            IMPL = new ViewUtilsApi21();
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            IMPL = new ViewUtilsApi19();
         } else {
-            super.draw(canvas);
+            IMPL = new ViewUtilsBase();
         }
+        TRANSITION_ALPHA = new Property<View, Float>(Float.class, "translationAlpha") { // from class: androidx.transition.ViewUtils.1
+            @Override // android.util.Property
+            public Float get(View view) {
+                return Float.valueOf(ViewUtils.getTransitionAlpha(view));
+            }
+
+            @Override // android.util.Property
+            public void set(View view, Float f2) {
+                ViewUtils.setTransitionAlpha(view, f2.floatValue());
+            }
+        };
+        CLIP_BOUNDS = new Property<View, Rect>(Rect.class, "clipBounds") { // from class: androidx.transition.ViewUtils.2
+            @Override // android.util.Property
+            public Rect get(View view) {
+                return ViewCompat.getClipBounds(view);
+            }
+
+            @Override // android.util.Property
+            public void set(View view, Rect rect) {
+                ViewCompat.setClipBounds(view, rect);
+            }
+        };
     }
 
-    @Override // com.google.android.material.circularreveal.CircularRevealHelper.Delegate
-    public void actualDraw(Canvas canvas) {
-        super.draw(canvas);
-    }
-
-    @Override // android.view.View, com.google.android.material.circularreveal.CircularRevealWidget
-    public boolean isOpaque() {
-        CircularRevealHelper circularRevealHelper = this.helper;
-        if (circularRevealHelper != null) {
-            return circularRevealHelper.isOpaque();
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static ViewOverlayImpl getOverlay(View view) {
+        if (Build.VERSION.SDK_INT >= 18) {
+            return new ViewOverlayApi18(view);
         }
-        return super.isOpaque();
+        return ViewOverlayApi14.createFrom(view);
     }
 
-    @Override // com.google.android.material.circularreveal.CircularRevealHelper.Delegate
-    public boolean actualIsOpaque() {
-        return super.isOpaque();
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static WindowIdImpl getWindowId(View view) {
+        if (Build.VERSION.SDK_INT >= 18) {
+            return new WindowIdApi18(view);
+        }
+        return new WindowIdApi14(view.getWindowToken());
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static void setTransitionAlpha(View view, float f2) {
+        IMPL.setTransitionAlpha(view, f2);
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static float getTransitionAlpha(View view) {
+        return IMPL.getTransitionAlpha(view);
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static void saveNonTransitionAlpha(View view) {
+        IMPL.saveNonTransitionAlpha(view);
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static void clearNonTransitionAlpha(View view) {
+        IMPL.clearNonTransitionAlpha(view);
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static void setTransitionVisibility(View view, int i2) {
+        IMPL.setTransitionVisibility(view, i2);
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static void transformMatrixToGlobal(View view, Matrix matrix) {
+        IMPL.transformMatrixToGlobal(view, matrix);
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static void transformMatrixToLocal(View view, Matrix matrix) {
+        IMPL.transformMatrixToLocal(view, matrix);
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static void setAnimationMatrix(View view, Matrix matrix) {
+        IMPL.setAnimationMatrix(view, matrix);
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static void setLeftTopRightBottom(View view, int i2, int i3, int i4, int i5) {
+        IMPL.setLeftTopRightBottom(view, i2, i3, i4, i5);
+    }
+
+    private ViewUtils() {
     }
 }

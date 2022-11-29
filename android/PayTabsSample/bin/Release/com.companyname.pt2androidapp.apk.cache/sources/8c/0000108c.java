@@ -1,11 +1,310 @@
-package kotlin.jvm.functions;
+package com.google.crypto.tink.proto;
 
-import kotlin.Function;
-import kotlin.Metadata;
+import com.google.crypto.tink.proto.HmacParams;
+import com.google.crypto.tink.shaded.protobuf.ByteString;
+import com.google.crypto.tink.shaded.protobuf.CodedInputStream;
+import com.google.crypto.tink.shaded.protobuf.ExtensionRegistryLite;
+import com.google.crypto.tink.shaded.protobuf.GeneratedMessageLite;
+import com.google.crypto.tink.shaded.protobuf.InvalidProtocolBufferException;
+import com.google.crypto.tink.shaded.protobuf.Parser;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 
-/* compiled from: Functions.kt */
-@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\b\u0011\n\u0002\u0018\u0002\n\u0002\b\u0013\bf\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u0000*\u0006\b\u0001\u0010\u0002 \u0000*\u0006\b\u0002\u0010\u0003 \u0000*\u0006\b\u0003\u0010\u0004 \u0000*\u0006\b\u0004\u0010\u0005 \u0000*\u0006\b\u0005\u0010\u0006 \u0000*\u0006\b\u0006\u0010\u0007 \u0000*\u0006\b\u0007\u0010\b \u0000*\u0006\b\b\u0010\t \u0000*\u0006\b\t\u0010\n \u0000*\u0006\b\n\u0010\u000b \u0000*\u0006\b\u000b\u0010\f \u0000*\u0006\b\f\u0010\r \u0000*\u0006\b\r\u0010\u000e \u0000*\u0006\b\u000e\u0010\u000f \u0000*\u0006\b\u000f\u0010\u0010 \u0000*\u0006\b\u0010\u0010\u0011 \u00012\b\u0012\u0004\u0012\u0002H\u00110\u0012J\u008e\u0001\u0010\u0013\u001a\u00028\u00102\u0006\u0010\u0014\u001a\u00028\u00002\u0006\u0010\u0015\u001a\u00028\u00012\u0006\u0010\u0016\u001a\u00028\u00022\u0006\u0010\u0017\u001a\u00028\u00032\u0006\u0010\u0018\u001a\u00028\u00042\u0006\u0010\u0019\u001a\u00028\u00052\u0006\u0010\u001a\u001a\u00028\u00062\u0006\u0010\u001b\u001a\u00028\u00072\u0006\u0010\u001c\u001a\u00028\b2\u0006\u0010\u001d\u001a\u00028\t2\u0006\u0010\u001e\u001a\u00028\n2\u0006\u0010\u001f\u001a\u00028\u000b2\u0006\u0010 \u001a\u00028\f2\u0006\u0010!\u001a\u00028\r2\u0006\u0010\"\u001a\u00028\u000e2\u0006\u0010#\u001a\u00028\u000fH¦\u0002¢\u0006\u0002\u0010$¨\u0006%"}, d2 = {"Lkotlin/jvm/functions/Function16;", "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "P11", "P12", "P13", "P14", "P15", "P16", "R", "Lkotlin/Function;", "invoke", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11", "p12", "p13", "p14", "p15", "p16", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public interface Function16<P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15, P16, R> extends Function<R> {
-    R invoke(P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7, P8 p8, P9 p9, P10 p10, P11 p11, P12 p12, P13 p13, P14 p14, P15 p15, P16 p16);
+public final class HmacKeyFormat extends GeneratedMessageLite<HmacKeyFormat, Builder> implements HmacKeyFormatOrBuilder {
+    private static final HmacKeyFormat DEFAULT_INSTANCE;
+    public static final int KEY_SIZE_FIELD_NUMBER = 2;
+    public static final int PARAMS_FIELD_NUMBER = 1;
+    private static volatile Parser<HmacKeyFormat> PARSER = null;
+    public static final int VERSION_FIELD_NUMBER = 3;
+    private int keySize_;
+    private HmacParams params_;
+    private int version_;
+
+    private HmacKeyFormat() {
+    }
+
+    @Override // com.google.crypto.tink.proto.HmacKeyFormatOrBuilder
+    public boolean hasParams() {
+        return this.params_ != null;
+    }
+
+    @Override // com.google.crypto.tink.proto.HmacKeyFormatOrBuilder
+    public HmacParams getParams() {
+        HmacParams hmacParams = this.params_;
+        return hmacParams == null ? HmacParams.getDefaultInstance() : hmacParams;
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void setParams(HmacParams value) {
+        value.getClass();
+        this.params_ = value;
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void mergeParams(HmacParams value) {
+        value.getClass();
+        HmacParams hmacParams = this.params_;
+        if (hmacParams != null && hmacParams != HmacParams.getDefaultInstance()) {
+            this.params_ = HmacParams.newBuilder(this.params_).mergeFrom((HmacParams.Builder) value).buildPartial();
+        } else {
+            this.params_ = value;
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void clearParams() {
+        this.params_ = null;
+    }
+
+    @Override // com.google.crypto.tink.proto.HmacKeyFormatOrBuilder
+    public int getKeySize() {
+        return this.keySize_;
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void setKeySize(int value) {
+        this.keySize_ = value;
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void clearKeySize() {
+        this.keySize_ = 0;
+    }
+
+    @Override // com.google.crypto.tink.proto.HmacKeyFormatOrBuilder
+    public int getVersion() {
+        return this.version_;
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void setVersion(int value) {
+        this.version_ = value;
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void clearVersion() {
+        this.version_ = 0;
+    }
+
+    public static HmacKeyFormat parseFrom(ByteBuffer data) throws InvalidProtocolBufferException {
+        return (HmacKeyFormat) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data);
+    }
+
+    public static HmacKeyFormat parseFrom(ByteBuffer data, ExtensionRegistryLite extensionRegistry) throws InvalidProtocolBufferException {
+        return (HmacKeyFormat) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+
+    public static HmacKeyFormat parseFrom(ByteString data) throws InvalidProtocolBufferException {
+        return (HmacKeyFormat) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data);
+    }
+
+    public static HmacKeyFormat parseFrom(ByteString data, ExtensionRegistryLite extensionRegistry) throws InvalidProtocolBufferException {
+        return (HmacKeyFormat) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+
+    public static HmacKeyFormat parseFrom(byte[] data) throws InvalidProtocolBufferException {
+        return (HmacKeyFormat) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data);
+    }
+
+    public static HmacKeyFormat parseFrom(byte[] data, ExtensionRegistryLite extensionRegistry) throws InvalidProtocolBufferException {
+        return (HmacKeyFormat) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+
+    public static HmacKeyFormat parseFrom(InputStream input) throws IOException {
+        return (HmacKeyFormat) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static HmacKeyFormat parseFrom(InputStream input, ExtensionRegistryLite extensionRegistry) throws IOException {
+        return (HmacKeyFormat) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static HmacKeyFormat parseDelimitedFrom(InputStream input) throws IOException {
+        return (HmacKeyFormat) parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static HmacKeyFormat parseDelimitedFrom(InputStream input, ExtensionRegistryLite extensionRegistry) throws IOException {
+        return (HmacKeyFormat) parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static HmacKeyFormat parseFrom(CodedInputStream input) throws IOException {
+        return (HmacKeyFormat) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static HmacKeyFormat parseFrom(CodedInputStream input, ExtensionRegistryLite extensionRegistry) throws IOException {
+        return (HmacKeyFormat) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.createBuilder();
+    }
+
+    public static Builder newBuilder(HmacKeyFormat prototype) {
+        return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /* loaded from: classes.dex */
+    public static final class Builder extends GeneratedMessageLite.Builder<HmacKeyFormat, Builder> implements HmacKeyFormatOrBuilder {
+        /* synthetic */ Builder(AnonymousClass1 anonymousClass1) {
+            this();
+        }
+
+        private Builder() {
+            super(HmacKeyFormat.DEFAULT_INSTANCE);
+        }
+
+        @Override // com.google.crypto.tink.proto.HmacKeyFormatOrBuilder
+        public boolean hasParams() {
+            return ((HmacKeyFormat) this.instance).hasParams();
+        }
+
+        @Override // com.google.crypto.tink.proto.HmacKeyFormatOrBuilder
+        public HmacParams getParams() {
+            return ((HmacKeyFormat) this.instance).getParams();
+        }
+
+        public Builder setParams(HmacParams value) {
+            copyOnWrite();
+            ((HmacKeyFormat) this.instance).setParams(value);
+            return this;
+        }
+
+        public Builder setParams(HmacParams.Builder builderForValue) {
+            copyOnWrite();
+            ((HmacKeyFormat) this.instance).setParams(builderForValue.build());
+            return this;
+        }
+
+        public Builder mergeParams(HmacParams value) {
+            copyOnWrite();
+            ((HmacKeyFormat) this.instance).mergeParams(value);
+            return this;
+        }
+
+        public Builder clearParams() {
+            copyOnWrite();
+            ((HmacKeyFormat) this.instance).clearParams();
+            return this;
+        }
+
+        @Override // com.google.crypto.tink.proto.HmacKeyFormatOrBuilder
+        public int getKeySize() {
+            return ((HmacKeyFormat) this.instance).getKeySize();
+        }
+
+        public Builder setKeySize(int value) {
+            copyOnWrite();
+            ((HmacKeyFormat) this.instance).setKeySize(value);
+            return this;
+        }
+
+        public Builder clearKeySize() {
+            copyOnWrite();
+            ((HmacKeyFormat) this.instance).clearKeySize();
+            return this;
+        }
+
+        @Override // com.google.crypto.tink.proto.HmacKeyFormatOrBuilder
+        public int getVersion() {
+            return ((HmacKeyFormat) this.instance).getVersion();
+        }
+
+        public Builder setVersion(int value) {
+            copyOnWrite();
+            ((HmacKeyFormat) this.instance).setVersion(value);
+            return this;
+        }
+
+        public Builder clearVersion() {
+            copyOnWrite();
+            ((HmacKeyFormat) this.instance).clearVersion();
+            return this;
+        }
+    }
+
+    /* renamed from: com.google.crypto.tink.proto.HmacKeyFormat$1  reason: invalid class name */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke;
+
+        static {
+            int[] iArr = new int[GeneratedMessageLite.MethodToInvoke.values().length];
+            $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke = iArr;
+            try {
+                iArr[GeneratedMessageLite.MethodToInvoke.NEW_MUTABLE_INSTANCE.ordinal()] = 1;
+            } catch (NoSuchFieldError unused) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.NEW_BUILDER.ordinal()] = 2;
+            } catch (NoSuchFieldError unused2) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.BUILD_MESSAGE_INFO.ordinal()] = 3;
+            } catch (NoSuchFieldError unused3) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.GET_DEFAULT_INSTANCE.ordinal()] = 4;
+            } catch (NoSuchFieldError unused4) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.GET_PARSER.ordinal()] = 5;
+            } catch (NoSuchFieldError unused5) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.GET_MEMOIZED_IS_INITIALIZED.ordinal()] = 6;
+            } catch (NoSuchFieldError unused6) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.SET_MEMOIZED_IS_INITIALIZED.ordinal()] = 7;
+            } catch (NoSuchFieldError unused7) {
+            }
+        }
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.GeneratedMessageLite
+    protected final Object dynamicMethod(GeneratedMessageLite.MethodToInvoke method, Object arg0, Object arg1) {
+        switch (AnonymousClass1.$SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[method.ordinal()]) {
+            case 1:
+                return new HmacKeyFormat();
+            case 2:
+                return new Builder(null);
+            case 3:
+                return newMessageInfo(DEFAULT_INSTANCE, "\u0000\u0003\u0000\u0000\u0001\u0003\u0003\u0000\u0000\u0000\u0001\t\u0002\u000b\u0003\u000b", new Object[]{"params_", "keySize_", "version_"});
+            case 4:
+                return DEFAULT_INSTANCE;
+            case 5:
+                Parser<HmacKeyFormat> parser = PARSER;
+                if (parser == null) {
+                    synchronized (HmacKeyFormat.class) {
+                        parser = PARSER;
+                        if (parser == null) {
+                            parser = new GeneratedMessageLite.DefaultInstanceBasedParser<>(DEFAULT_INSTANCE);
+                            PARSER = parser;
+                        }
+                    }
+                }
+                return parser;
+            case 6:
+                return (byte) 1;
+            case 7:
+                return null;
+            default:
+                throw new UnsupportedOperationException();
+        }
+    }
+
+    static {
+        HmacKeyFormat hmacKeyFormat = new HmacKeyFormat();
+        DEFAULT_INSTANCE = hmacKeyFormat;
+        GeneratedMessageLite.registerDefaultInstance(HmacKeyFormat.class, hmacKeyFormat);
+    }
+
+    public static HmacKeyFormat getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static Parser<HmacKeyFormat> parser() {
+        return DEFAULT_INSTANCE.getParserForType();
+    }
 }

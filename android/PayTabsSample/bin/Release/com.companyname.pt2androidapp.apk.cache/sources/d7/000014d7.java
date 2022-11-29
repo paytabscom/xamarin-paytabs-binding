@@ -1,57 +1,30 @@
-package kotlinx.coroutines.flow;
+package kotlin;
 
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.ContinuationImpl;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.internal.InlineMarker;
-import kotlinx.coroutines.flow.internal.CombineKt;
-
-/* compiled from: SafeCollector.common.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0019\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002*\u0001\u0000\b\n\u0018\u00002\b\u0012\u0004\u0012\u00028\u00000\u0001J\u001f\u0010\u0002\u001a\u00020\u00032\f\u0010\u0004\u001a\b\u0012\u0004\u0012\u00028\u00000\u0005H\u0096@ø\u0001\u0000¢\u0006\u0002\u0010\u0006\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\u0007¸\u0006\u0000"}, d2 = {"kotlinx/coroutines/flow/internal/SafeCollector_commonKt$unsafeFlow$1", "Lkotlinx/coroutines/flow/Flow;", "collect", "", "collector", "Lkotlinx/coroutines/flow/FlowCollector;", "(Lkotlinx/coroutines/flow/FlowCollector;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
+/* compiled from: UInt.kt */
+@Metadata(d1 = {"\u0000,\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0005\n\u0000\n\u0002\u0010\u0006\n\u0000\n\u0002\u0010\u0007\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0010\t\n\u0000\n\u0002\u0010\n\n\u0002\b\u0002\u001a\u0015\u0010\u0000\u001a\u00020\u0001*\u00020\u0002H\u0087\bø\u0001\u0000¢\u0006\u0002\u0010\u0003\u001a\u0015\u0010\u0000\u001a\u00020\u0001*\u00020\u0004H\u0087\bø\u0001\u0000¢\u0006\u0002\u0010\u0005\u001a\u0015\u0010\u0000\u001a\u00020\u0001*\u00020\u0006H\u0087\bø\u0001\u0000¢\u0006\u0002\u0010\u0007\u001a\u0015\u0010\u0000\u001a\u00020\u0001*\u00020\bH\u0087\bø\u0001\u0000¢\u0006\u0002\u0010\t\u001a\u0015\u0010\u0000\u001a\u00020\u0001*\u00020\nH\u0087\bø\u0001\u0000¢\u0006\u0002\u0010\u000b\u001a\u0015\u0010\u0000\u001a\u00020\u0001*\u00020\fH\u0087\bø\u0001\u0000¢\u0006\u0002\u0010\r\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\u000e"}, d2 = {"toUInt", "Lkotlin/UInt;", "", "(B)I", "", "(D)I", "", "(F)I", "", "(I)I", "", "(J)I", "", "(S)I", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$4 implements Flow<R> {
-    final /* synthetic */ Flow[] $flows$inlined;
-    final /* synthetic */ Function2 $transform$inlined;
-
-    public FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$4(Flow[] flowArr, Function2 function2) {
-        this.$flows$inlined = flowArr;
-        this.$transform$inlined = function2;
+public final class UIntKt {
+    private static final int toUInt(byte b2) {
+        return UInt.m136constructorimpl(b2);
     }
 
-    @Override // kotlinx.coroutines.flow.Flow
-    public Object collect(FlowCollector flowCollector, Continuation continuation) {
-        Function0 nullArrayFactory$FlowKt__ZipKt;
-        Flow[] flowArr = this.$flows$inlined;
-        nullArrayFactory$FlowKt__ZipKt = FlowKt__ZipKt.nullArrayFactory$FlowKt__ZipKt();
-        Object combineInternal = CombineKt.combineInternal(flowCollector, flowArr, nullArrayFactory$FlowKt__ZipKt, new FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$4$lambda$1(null, this), continuation);
-        return combineInternal == IntrinsicsKt.getCOROUTINE_SUSPENDED() ? combineInternal : Unit.INSTANCE;
+    private static final int toUInt(short s2) {
+        return UInt.m136constructorimpl(s2);
     }
 
-    public Object collect$$forInline(FlowCollector flowCollector, Continuation continuation) {
-        Function0 nullArrayFactory$FlowKt__ZipKt;
-        InlineMarker.mark(4);
-        new ContinuationImpl(continuation) { // from class: kotlinx.coroutines.flow.FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$4.1
-            int label;
-            /* synthetic */ Object result;
+    private static final int toUInt(int i2) {
+        return UInt.m136constructorimpl(i2);
+    }
 
-            @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-            public final Object invokeSuspend(Object obj) {
-                this.result = obj;
-                this.label |= Integer.MIN_VALUE;
-                return FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$4.this.collect(null, this);
-            }
-        };
-        InlineMarker.mark(5);
-        Flow[] flowArr = this.$flows$inlined;
-        nullArrayFactory$FlowKt__ZipKt = FlowKt__ZipKt.nullArrayFactory$FlowKt__ZipKt();
-        InlineMarker.mark(0);
-        CombineKt.combineInternal(flowCollector, flowArr, nullArrayFactory$FlowKt__ZipKt, new FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$4$lambda$1(null, this), continuation);
-        InlineMarker.mark(2);
-        InlineMarker.mark(1);
-        return Unit.INSTANCE;
+    private static final int toUInt(long j2) {
+        return UInt.m136constructorimpl((int) j2);
+    }
+
+    private static final int toUInt(float f2) {
+        return UnsignedKt.doubleToUInt(f2);
+    }
+
+    private static final int toUInt(double d2) {
+        return UnsignedKt.doubleToUInt(d2);
     }
 }

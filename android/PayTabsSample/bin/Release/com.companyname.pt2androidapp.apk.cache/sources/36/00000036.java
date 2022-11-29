@@ -1,85 +1,20 @@
 package androidx.activity;
 
-import android.app.Activity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleEventObserver;
-import androidx.lifecycle.LifecycleOwner;
-import java.lang.reflect.Field;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: PipHintTracker.kt */
+@Metadata(d1 = {"\u0000\u0018\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u000b\n\u0000\n\u0002\u0018\u0002\n\u0000\bÁ\u0002\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J\u000e\u0010\u0003\u001a\u00020\u00042\u0006\u0010\u0005\u001a\u00020\u0006¨\u0006\u0007"}, d2 = {"Landroidx/activity/Api19Impl;", "", "()V", "isAttachedToWindow", "", "view", "Landroid/view/View;", "activity-ktx_release"}, k = 1, mv = {1, 6, 0}, xi = 48)
 /* loaded from: classes.dex */
-final class ImmLeaksCleaner implements LifecycleEventObserver {
-    private static final int INIT_FAILED = 2;
-    private static final int INIT_SUCCESS = 1;
-    private static final int NOT_INITIALIAZED = 0;
-    private static Field sHField;
-    private static Field sNextServedViewField;
-    private static int sReflectedFieldsInitialized;
-    private static Field sServedViewField;
-    private Activity mActivity;
+public final class Api19Impl {
+    public static final Api19Impl INSTANCE = new Api19Impl();
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public ImmLeaksCleaner(Activity activity) {
-        this.mActivity = activity;
+    private Api19Impl() {
     }
 
-    @Override // androidx.lifecycle.LifecycleEventObserver
-    public void onStateChanged(LifecycleOwner lifecycleOwner, Lifecycle.Event event) {
-        if (event != Lifecycle.Event.ON_DESTROY) {
-            return;
-        }
-        if (sReflectedFieldsInitialized == 0) {
-            initializeReflectiveFields();
-        }
-        if (sReflectedFieldsInitialized == 1) {
-            InputMethodManager inputMethodManager = (InputMethodManager) this.mActivity.getSystemService("input_method");
-            try {
-                Object obj = sHField.get(inputMethodManager);
-                if (obj == null) {
-                    return;
-                }
-                synchronized (obj) {
-                    try {
-                        try {
-                            View view = (View) sServedViewField.get(inputMethodManager);
-                            if (view == null) {
-                                return;
-                            }
-                            if (view.isAttachedToWindow()) {
-                                return;
-                            }
-                            try {
-                                sNextServedViewField.set(inputMethodManager, null);
-                                inputMethodManager.isActive();
-                            } catch (IllegalAccessException unused) {
-                            }
-                        } catch (ClassCastException unused2) {
-                        } catch (IllegalAccessException unused3) {
-                        }
-                    } catch (Throwable th) {
-                        throw th;
-                    }
-                }
-            } catch (IllegalAccessException unused4) {
-            }
-        }
-    }
-
-    private static void initializeReflectiveFields() {
-        try {
-            sReflectedFieldsInitialized = 2;
-            Field declaredField = InputMethodManager.class.getDeclaredField("mServedView");
-            sServedViewField = declaredField;
-            declaredField.setAccessible(true);
-            Field declaredField2 = InputMethodManager.class.getDeclaredField("mNextServedView");
-            sNextServedViewField = declaredField2;
-            declaredField2.setAccessible(true);
-            Field declaredField3 = InputMethodManager.class.getDeclaredField("mH");
-            sHField = declaredField3;
-            declaredField3.setAccessible(true);
-            sReflectedFieldsInitialized = 1;
-        } catch (NoSuchFieldException unused) {
-        }
+    public final boolean isAttachedToWindow(View view) {
+        Intrinsics.checkNotNullParameter(view, "view");
+        return view.isAttachedToWindow();
     }
 }

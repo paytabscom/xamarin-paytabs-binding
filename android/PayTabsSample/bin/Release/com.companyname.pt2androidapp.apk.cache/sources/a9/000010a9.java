@@ -1,33 +1,79 @@
-package kotlin.jvm.internal;
+package com.google.crypto.tink.proto;
 
-import kotlin.Metadata;
+import com.google.crypto.tink.shaded.protobuf.Internal;
 
-/* compiled from: PrimitiveSpreadBuilders.kt */
-@Metadata(d1 = {"\u0000$\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0018\n\u0000\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0003\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\r\u0012\u0006\u0010\u0003\u001a\u00020\u0004¢\u0006\u0002\u0010\u0005J\u000e\u0010\u0007\u001a\u00020\b2\u0006\u0010\t\u001a\u00020\nJ\u0006\u0010\u000b\u001a\u00020\u0002J\f\u0010\f\u001a\u00020\u0004*\u00020\u0002H\u0014R\u000e\u0010\u0006\u001a\u00020\u0002X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\r"}, d2 = {"Lkotlin/jvm/internal/BooleanSpreadBuilder;", "Lkotlin/jvm/internal/PrimitiveSpreadBuilder;", "", "size", "", "(I)V", "values", "add", "", "value", "", "toArray", "getSize", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class BooleanSpreadBuilder extends PrimitiveSpreadBuilder<boolean[]> {
-    private final boolean[] values;
+public enum KeyStatusType implements Internal.EnumLite {
+    UNKNOWN_STATUS(0),
+    ENABLED(1),
+    DISABLED(2),
+    DESTROYED(3),
+    UNRECOGNIZED(-1);
+    
+    public static final int DESTROYED_VALUE = 3;
+    public static final int DISABLED_VALUE = 2;
+    public static final int ENABLED_VALUE = 1;
+    public static final int UNKNOWN_STATUS_VALUE = 0;
+    private static final Internal.EnumLiteMap<KeyStatusType> internalValueMap = new Internal.EnumLiteMap<KeyStatusType>() { // from class: com.google.crypto.tink.proto.KeyStatusType.1
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumLiteMap
+        public KeyStatusType findValueByNumber(int number) {
+            return KeyStatusType.forNumber(number);
+        }
+    };
+    private final int value;
 
-    public BooleanSpreadBuilder(int i2) {
-        super(i2);
-        this.values = new boolean[i2];
+    @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumLite
+    public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+            throw new IllegalArgumentException("Can't get the number of an unknown enum value.");
+        }
+        return this.value;
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    @Override // kotlin.jvm.internal.PrimitiveSpreadBuilder
-    public int getSize(boolean[] getSize) {
-        Intrinsics.checkNotNullParameter(getSize, "$this$getSize");
-        return getSize.length;
+    @Deprecated
+    public static KeyStatusType valueOf(int value) {
+        return forNumber(value);
     }
 
-    public final void add(boolean z2) {
-        boolean[] zArr = this.values;
-        int position = getPosition();
-        setPosition(position + 1);
-        zArr[position] = z2;
+    public static KeyStatusType forNumber(int value) {
+        if (value != 0) {
+            if (value != 1) {
+                if (value != 2) {
+                    if (value != 3) {
+                        return null;
+                    }
+                    return DESTROYED;
+                }
+                return DISABLED;
+            }
+            return ENABLED;
+        }
+        return UNKNOWN_STATUS;
     }
 
-    public final boolean[] toArray() {
-        return toArray(this.values, new boolean[size()]);
+    public static Internal.EnumLiteMap<KeyStatusType> internalGetValueMap() {
+        return internalValueMap;
+    }
+
+    public static Internal.EnumVerifier internalGetVerifier() {
+        return KeyStatusTypeVerifier.INSTANCE;
+    }
+
+    /* loaded from: classes.dex */
+    private static final class KeyStatusTypeVerifier implements Internal.EnumVerifier {
+        static final Internal.EnumVerifier INSTANCE = new KeyStatusTypeVerifier();
+
+        private KeyStatusTypeVerifier() {
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumVerifier
+        public boolean isInRange(int number) {
+            return KeyStatusType.forNumber(number) != null;
+        }
+    }
+
+    KeyStatusType(int value) {
+        this.value = value;
     }
 }

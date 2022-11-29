@@ -1,95 +1,158 @@
-package kotlinx.coroutines;
+package com.google.crypto.tink.subtle;
 
-import java.util.concurrent.CancellationException;
-import kotlin.Metadata;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.CoroutineContext;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.DebugProbesKt;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.internal.InlineMarker;
-import kotlinx.coroutines.internal.ContextScope;
-import kotlinx.coroutines.internal.ScopeCoroutine;
-import kotlinx.coroutines.intrinsics.UndispatchedKt;
+import com.google.crypto.tink.KeyWrap;
+import java.security.GeneralSecurityException;
+import java.util.Arrays;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import kotlin.UByte;
 
-/* compiled from: CoroutineScope.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000F\n\u0000\n\u0002\u0010\u000b\n\u0002\u0018\u0002\n\u0002\b\u0005\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\n\u0002\u0010\u0003\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\u001a\u000e\u0010\u0006\u001a\u00020\u00022\u0006\u0010\u0007\u001a\u00020\b\u001a\u0006\u0010\t\u001a\u00020\u0002\u001aM\u0010\n\u001a\u0002H\u000b\"\u0004\b\u0000\u0010\u000b2'\u0010\f\u001a#\b\u0001\u0012\u0004\u0012\u00020\u0002\u0012\n\u0012\b\u0012\u0004\u0012\u0002H\u000b0\u000e\u0012\u0006\u0012\u0004\u0018\u00010\u000f0\r¢\u0006\u0002\b\u0010H\u0086@ø\u0001\u0000\u0082\u0002\n\n\b\b\u0001\u0012\u0002\u0010\u0001 \u0001¢\u0006\u0002\u0010\u0011\u001a\u0011\u0010\u0012\u001a\u00020\bH\u0086Hø\u0001\u0000¢\u0006\u0002\u0010\u0013\u001a\u001e\u0010\u0014\u001a\u00020\u0015*\u00020\u00022\u0006\u0010\u0016\u001a\u00020\u00172\n\b\u0002\u0010\u0018\u001a\u0004\u0018\u00010\u0019\u001a\u001c\u0010\u0014\u001a\u00020\u0015*\u00020\u00022\u0010\b\u0002\u0010\u0018\u001a\n\u0018\u00010\u001aj\u0004\u0018\u0001`\u001b\u001a\n\u0010\u001c\u001a\u00020\u0015*\u00020\u0002\u001a\u0015\u0010\u001d\u001a\u00020\u0002*\u00020\u00022\u0006\u0010\u0007\u001a\u00020\bH\u0086\u0002\"\u001b\u0010\u0000\u001a\u00020\u0001*\u00020\u00028F¢\u0006\f\u0012\u0004\b\u0003\u0010\u0004\u001a\u0004\b\u0000\u0010\u0005\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\u001e"}, d2 = {"isActive", "", "Lkotlinx/coroutines/CoroutineScope;", "isActive$annotations", "(Lkotlinx/coroutines/CoroutineScope;)V", "(Lkotlinx/coroutines/CoroutineScope;)Z", "CoroutineScope", "context", "Lkotlin/coroutines/CoroutineContext;", "MainScope", "coroutineScope", "R", "block", "Lkotlin/Function2;", "Lkotlin/coroutines/Continuation;", "", "Lkotlin/ExtensionFunctionType;", "(Lkotlin/jvm/functions/Function2;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "currentCoroutineContext", "(Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "cancel", "", "message", "", "cause", "", "Ljava/util/concurrent/CancellationException;", "Lkotlinx/coroutines/CancellationException;", "ensureActive", "plus", "kotlinx-coroutines-core"}, k = 2, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class CoroutineScopeKt {
-    public static /* synthetic */ void isActive$annotations(CoroutineScope coroutineScope) {
-    }
+public class Kwp implements KeyWrap {
+    static final /* synthetic */ boolean $assertionsDisabled = false;
+    static final int MAX_WRAP_KEY_SIZE = 4096;
+    static final int MIN_WRAP_KEY_SIZE = 16;
+    static final byte[] PREFIX = {-90, 89, 89, -90};
+    static final int ROUNDS = 6;
+    private final SecretKey aesKey;
 
-    public static final CoroutineScope plus(CoroutineScope coroutineScope, CoroutineContext coroutineContext) {
-        return new ContextScope(coroutineScope.getCoroutineContext().plus(coroutineContext));
-    }
-
-    public static final CoroutineScope MainScope() {
-        return new ContextScope(SupervisorKt.SupervisorJob$default((Job) null, 1, (Object) null).plus(Dispatchers.getMain()));
-    }
-
-    public static final boolean isActive(CoroutineScope coroutineScope) {
-        Job job = (Job) coroutineScope.getCoroutineContext().get(Job.Key);
-        if (job != null) {
-            return job.isActive();
+    public Kwp(final byte[] key) throws GeneralSecurityException {
+        if (key.length != 16 && key.length != 32) {
+            throw new GeneralSecurityException("Unsupported key length");
         }
-        return true;
+        this.aesKey = new SecretKeySpec(key, "AES");
     }
 
-    public static final <R> Object coroutineScope(Function2<? super CoroutineScope, ? super Continuation<? super R>, ? extends Object> function2, Continuation<? super R> continuation) {
-        ScopeCoroutine scopeCoroutine = new ScopeCoroutine(continuation.getContext(), continuation);
-        Object startUndispatchedOrReturn = UndispatchedKt.startUndispatchedOrReturn(scopeCoroutine, scopeCoroutine, function2);
-        if (startUndispatchedOrReturn == IntrinsicsKt.getCOROUTINE_SUSPENDED()) {
-            DebugProbesKt.probeCoroutineSuspended(continuation);
+    private int wrappingSize(int inputSize) {
+        return inputSize + (7 - ((inputSize + 7) % 8)) + 8;
+    }
+
+    private byte[] computeW(final byte[] iv, final byte[] key) throws GeneralSecurityException {
+        if (key.length <= 8 || key.length > 2147483631 || iv.length != 8) {
+            throw new GeneralSecurityException("computeW called with invalid parameters");
         }
-        return startUndispatchedOrReturn;
-    }
-
-    public static final CoroutineScope CoroutineScope(CoroutineContext coroutineContext) {
-        CompletableJob Job$default;
-        if (coroutineContext.get(Job.Key) == null) {
-            Job$default = JobKt__JobKt.Job$default((Job) null, 1, (Object) null);
-            coroutineContext = coroutineContext.plus(Job$default);
+        int wrappingSize = wrappingSize(key.length);
+        byte[] bArr = new byte[wrappingSize];
+        System.arraycopy(iv, 0, bArr, 0, iv.length);
+        System.arraycopy(key, 0, bArr, 8, key.length);
+        int i2 = 1;
+        int i3 = (wrappingSize / 8) - 1;
+        Cipher engineFactory = EngineFactory.CIPHER.getInstance("AES/ECB/NoPadding");
+        engineFactory.init(1, this.aesKey);
+        byte[] bArr2 = new byte[16];
+        System.arraycopy(bArr, 0, bArr2, 0, 8);
+        int i4 = 0;
+        while (i4 < 6) {
+            int i5 = 0;
+            while (i5 < i3) {
+                int i6 = i5 + 1;
+                int i7 = i6 * 8;
+                System.arraycopy(bArr, i7, bArr2, 8, 8);
+                engineFactory.doFinal(bArr2, 0, 16, bArr2);
+                int i8 = (i4 * i3) + i5 + i2;
+                for (int i9 = 0; i9 < 4; i9++) {
+                    int i10 = 7 - i9;
+                    bArr2[i10] = (byte) (((byte) (i8 & 255)) ^ bArr2[i10]);
+                    i8 >>>= 8;
+                }
+                System.arraycopy(bArr2, 8, bArr, i7, 8);
+                i5 = i6;
+                i2 = 1;
+            }
+            i4++;
+            i2 = 1;
         }
-        return new ContextScope(coroutineContext);
+        System.arraycopy(bArr2, 0, bArr, 0, 8);
+        return bArr;
     }
 
-    public static /* synthetic */ void cancel$default(CoroutineScope coroutineScope, CancellationException cancellationException, int i2, Object obj) {
-        if ((i2 & 1) != 0) {
-            cancellationException = null;
+    private byte[] invertW(final byte[] wrapped) throws GeneralSecurityException {
+        if (wrapped.length < 24 || wrapped.length % 8 != 0) {
+            throw new GeneralSecurityException("Incorrect data size");
         }
-        cancel(coroutineScope, cancellationException);
-    }
-
-    public static final void cancel(CoroutineScope coroutineScope, CancellationException cancellationException) {
-        Job job = (Job) coroutineScope.getCoroutineContext().get(Job.Key);
-        if (job == null) {
-            throw new IllegalStateException(("Scope cannot be cancelled because it does not have a job: " + coroutineScope).toString());
+        byte[] copyOf = Arrays.copyOf(wrapped, wrapped.length);
+        int length = (copyOf.length / 8) - 1;
+        Cipher engineFactory = EngineFactory.CIPHER.getInstance("AES/ECB/NoPadding");
+        engineFactory.init(2, this.aesKey);
+        byte[] bArr = new byte[16];
+        System.arraycopy(copyOf, 0, bArr, 0, 8);
+        for (int i2 = 5; i2 >= 0; i2--) {
+            for (int i3 = length - 1; i3 >= 0; i3--) {
+                int i4 = (i3 + 1) * 8;
+                System.arraycopy(copyOf, i4, bArr, 8, 8);
+                int i5 = (i2 * length) + i3 + 1;
+                for (int i6 = 0; i6 < 4; i6++) {
+                    int i7 = 7 - i6;
+                    bArr[i7] = (byte) (bArr[i7] ^ ((byte) (i5 & 255)));
+                    i5 >>>= 8;
+                }
+                engineFactory.doFinal(bArr, 0, 16, bArr);
+                System.arraycopy(bArr, 8, copyOf, i4, 8);
+            }
         }
-        job.cancel(cancellationException);
+        System.arraycopy(bArr, 0, copyOf, 0, 8);
+        return copyOf;
     }
 
-    public static final void cancel(CoroutineScope coroutineScope, String str, Throwable th) {
-        cancel(coroutineScope, ExceptionsKt.CancellationException(str, th));
-    }
-
-    public static /* synthetic */ void cancel$default(CoroutineScope coroutineScope, String str, Throwable th, int i2, Object obj) {
-        if ((i2 & 2) != 0) {
-            th = null;
+    @Override // com.google.crypto.tink.KeyWrap
+    public byte[] wrap(final byte[] data) throws GeneralSecurityException {
+        if (data.length < 16) {
+            throw new GeneralSecurityException("Key size of key to wrap too small");
         }
-        cancel(coroutineScope, str, th);
+        if (data.length > 4096) {
+            throw new GeneralSecurityException("Key size of key to wrap too large");
+        }
+        byte[] bArr = new byte[8];
+        byte[] bArr2 = PREFIX;
+        System.arraycopy(bArr2, 0, bArr, 0, bArr2.length);
+        for (int i2 = 0; i2 < 4; i2++) {
+            bArr[i2 + 4] = (byte) ((data.length >> ((3 - i2) * 8)) & 255);
+        }
+        return computeW(bArr, data);
     }
 
-    public static final void ensureActive(CoroutineScope coroutineScope) {
-        JobKt.ensureActive(coroutineScope.getCoroutineContext());
-    }
-
-    public static final Object currentCoroutineContext(Continuation<? super CoroutineContext> continuation) {
-        return continuation.getContext();
-    }
-
-    private static final Object currentCoroutineContext$$forInline(Continuation continuation) {
-        InlineMarker.mark(3);
-        Continuation continuation2 = null;
-        return continuation2.getContext();
+    @Override // com.google.crypto.tink.KeyWrap
+    public byte[] unwrap(final byte[] data) throws GeneralSecurityException {
+        int i2;
+        if (data.length < wrappingSize(16)) {
+            throw new GeneralSecurityException("Wrapped key size is too small");
+        }
+        if (data.length > wrappingSize(4096)) {
+            throw new GeneralSecurityException("Wrapped key size is too large");
+        }
+        if (data.length % 8 != 0) {
+            throw new GeneralSecurityException("Wrapped key size must be a multiple of 8 bytes");
+        }
+        byte[] invertW = invertW(data);
+        boolean z2 = true;
+        boolean z3 = false;
+        int i3 = 0;
+        while (true) {
+            if (i3 >= 4) {
+                break;
+            }
+            if (PREFIX[i3] != invertW[i3]) {
+                z2 = false;
+            }
+            i3++;
+        }
+        int i4 = 0;
+        for (i2 = 4; i2 < 8; i2++) {
+            i4 = (i4 << 8) + (invertW[i2] & UByte.MAX_VALUE);
+        }
+        if (wrappingSize(i4) == invertW.length) {
+            for (int i5 = i4 + 8; i5 < invertW.length; i5++) {
+                if (invertW[i5] != 0) {
+                    z2 = false;
+                }
+            }
+            z3 = z2;
+        }
+        if (z3) {
+            return Arrays.copyOfRange(invertW, 8, i4 + 8);
+        }
+        throw new BadPaddingException("Invalid padding");
     }
 }

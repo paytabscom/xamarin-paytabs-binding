@@ -1,11 +1,11 @@
-package androidx.constraintlayout.solver;
+package androidx.constraintlayout.motion.widget;
 
-import androidx.constraintlayout.solver.Pools;
+import android.view.animation.Interpolator;
 
 /* loaded from: classes.dex */
-public class Cache {
-    Pools.Pool<ArrayRow> optimizedArrayRowPool = new Pools.SimplePool(256);
-    Pools.Pool<ArrayRow> arrayRowPool = new Pools.SimplePool(256);
-    Pools.Pool<SolverVariable> solverVariablePool = new Pools.SimplePool(256);
-    SolverVariable[] mIndexedVariables = new SolverVariable[32];
+public abstract class MotionInterpolator implements Interpolator {
+    @Override // android.animation.TimeInterpolator
+    public abstract float getInterpolation(float f2);
+
+    public abstract float getVelocity();
 }

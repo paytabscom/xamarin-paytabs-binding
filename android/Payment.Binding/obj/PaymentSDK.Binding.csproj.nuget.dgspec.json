@@ -1,0 +1,119 @@
+{
+  "format": 1,
+  "restore": {
+    "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/Payment.Binding/PaymentSDK.Binding.csproj": {}
+  },
+  "projects": {
+    "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/Payment.Binding/PaymentSDK.Binding.csproj": {
+      "version": "1.0.9",
+      "restore": {
+        "projectUniqueName": "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/Payment.Binding/PaymentSDK.Binding.csproj",
+        "projectName": "Paytabs.Xamarin.Android",
+        "projectPath": "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/Payment.Binding/PaymentSDK.Binding.csproj",
+        "packagesPath": "/Users/mohamedadly/.nuget/packages/",
+        "outputPath": "/Volumes/Work/PayTabs/xamarin-paytabs-binding/android/Payment.Binding/obj/",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "configFilePaths": [
+          "/Users/mohamedadly/.config/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "monoandroid12.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "monoandroid12.0": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "monoandroid12.0": {
+          "dependencies": {
+            "GoogleGson": {
+              "target": "Package",
+              "version": "[2.9.0, )"
+            },
+            "NuGet.Build.Packaging": {
+              "target": "Package",
+              "version": "[0.2.5-dev.8, )"
+            },
+            "Square.OkHttp3.LoggingInterceptor": {
+              "target": "Package",
+              "version": "[4.4.1, )"
+            },
+            "Square.Retrofit2": {
+              "target": "Package",
+              "version": "[2.9.0, )"
+            },
+            "Square.Retrofit2.ConverterGson": {
+              "target": "Package",
+              "version": "[2.9.0, )"
+            },
+            "Square.Retrofit2.ConverterScalars": {
+              "target": "Package",
+              "version": "[2.7.2, )"
+            },
+            "Xamarin.AndroidX.Core.Core.Ktx": {
+              "target": "Package",
+              "version": "[1.8.0, )"
+            },
+            "Xamarin.AndroidX.Fragment.Ktx": {
+              "target": "Package",
+              "version": "[1.5.1, )"
+            },
+            "Xamarin.AndroidX.Lifecycle.Extensions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Xamarin.AndroidX.Lifecycle.LiveData.Core.Ktx": {
+              "target": "Package",
+              "version": "[2.5.1, )"
+            },
+            "Xamarin.AndroidX.Lifecycle.Runtime.Ktx": {
+              "target": "Package",
+              "version": "[2.5.1, )"
+            },
+            "Xamarin.AndroidX.Lifecycle.ViewModel.Ktx": {
+              "target": "Package",
+              "version": "[2.5.1, )"
+            },
+            "Xamarin.AndroidX.Security.SecurityCrypto": {
+              "target": "Package",
+              "version": "[1.0.0, )"
+            },
+            "Xamarin.Google.Android.Material": {
+              "target": "Package",
+              "version": "[1.6.1, )"
+            },
+            "Xamarin.Google.Crypto.Tink.Android": {
+              "target": "Package",
+              "version": "[1.6.1, )"
+            },
+            "Xamarin.Kotlin.StdLib": {
+              "target": "Package",
+              "version": "[1.5.10, )"
+            },
+            "Xamarin.KotlinX.Coroutines.Android": {
+              "target": "Package",
+              "version": "[1.6.4.1, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

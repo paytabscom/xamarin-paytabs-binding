@@ -1,22 +1,88 @@
-package kotlin;
+package com.google.android.material.transition;
 
-import kotlin.coroutines.Continuation;
-import kotlin.jvm.functions.Function3;
-import kotlin.jvm.internal.Intrinsics;
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.view.View;
+import android.view.ViewGroup;
+import androidx.transition.TransitionValues;
+import androidx.transition.Visibility;
+import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.animation.AnimatorSetCompat;
+import com.google.android.material.transition.VisibilityAnimatorProvider;
+import java.util.ArrayList;
+import java.util.List;
 
-/* compiled from: DeepRecursive.kt */
-@Metadata(d1 = {"\u0000\"\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0005\b\u0007\u0018\u0000*\u0004\b\u0000\u0010\u0001*\u0004\b\u0001\u0010\u00022\u00020\u0003BC\u00129\u0010\u0004\u001a5\b\u0001\u0012\u0010\u0012\u000e\u0012\u0004\u0012\u00028\u0000\u0012\u0004\u0012\u00028\u00010\u0006\u0012\u0004\u0012\u00028\u0000\u0012\n\u0012\b\u0012\u0004\u0012\u00028\u00010\u0007\u0012\u0006\u0012\u0004\u0018\u00010\u00030\u0005¢\u0006\u0002\b\bø\u0001\u0000¢\u0006\u0002\u0010\tRL\u0010\u0004\u001a5\b\u0001\u0012\u0010\u0012\u000e\u0012\u0004\u0012\u00028\u0000\u0012\u0004\u0012\u00028\u00010\u0006\u0012\u0004\u0012\u00028\u0000\u0012\n\u0012\b\u0012\u0004\u0012\u00028\u00010\u0007\u0012\u0006\u0012\u0004\u0018\u00010\u00030\u0005¢\u0006\u0002\b\bX\u0080\u0004ø\u0001\u0000¢\u0006\n\n\u0002\u0010\f\u001a\u0004\b\n\u0010\u000b\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\r"}, d2 = {"Lkotlin/DeepRecursiveFunction;", "T", "R", "", "block", "Lkotlin/Function3;", "Lkotlin/DeepRecursiveScope;", "Lkotlin/coroutines/Continuation;", "Lkotlin/ExtensionFunctionType;", "(Lkotlin/jvm/functions/Function3;)V", "getBlock$kotlin_stdlib", "()Lkotlin/jvm/functions/Function3;", "Lkotlin/jvm/functions/Function3;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class DeepRecursiveFunction<T, R> {
-    private final Function3<DeepRecursiveScope<T, R>, T, Continuation<? super R>, Object> block;
+abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends Visibility {
+    private final List<VisibilityAnimatorProvider> additionalAnimatorProviders = new ArrayList();
+    private final P primaryAnimatorProvider;
+    private VisibilityAnimatorProvider secondaryAnimatorProvider;
 
-    /* JADX WARN: Multi-variable type inference failed */
-    public DeepRecursiveFunction(Function3<? super DeepRecursiveScope<T, R>, ? super T, ? super Continuation<? super R>, ? extends Object> block) {
-        Intrinsics.checkNotNullParameter(block, "block");
-        this.block = block;
+    /* JADX INFO: Access modifiers changed from: protected */
+    public MaterialVisibility(P p2, VisibilityAnimatorProvider visibilityAnimatorProvider) {
+        this.primaryAnimatorProvider = p2;
+        this.secondaryAnimatorProvider = visibilityAnimatorProvider;
+        setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
     }
 
-    public final Function3<DeepRecursiveScope<T, R>, T, Continuation<? super R>, Object> getBlock$kotlin_stdlib() {
-        return this.block;
+    public P getPrimaryAnimatorProvider() {
+        return this.primaryAnimatorProvider;
+    }
+
+    public VisibilityAnimatorProvider getSecondaryAnimatorProvider() {
+        return this.secondaryAnimatorProvider;
+    }
+
+    public void setSecondaryAnimatorProvider(VisibilityAnimatorProvider visibilityAnimatorProvider) {
+        this.secondaryAnimatorProvider = visibilityAnimatorProvider;
+    }
+
+    public void addAdditionalAnimatorProvider(VisibilityAnimatorProvider visibilityAnimatorProvider) {
+        this.additionalAnimatorProviders.add(visibilityAnimatorProvider);
+    }
+
+    public boolean removeAdditionalAnimatorProvider(VisibilityAnimatorProvider visibilityAnimatorProvider) {
+        return this.additionalAnimatorProviders.remove(visibilityAnimatorProvider);
+    }
+
+    public void clearAdditionalAnimatorProvider() {
+        this.additionalAnimatorProviders.clear();
+    }
+
+    @Override // androidx.transition.Visibility
+    public Animator onAppear(ViewGroup viewGroup, View view, TransitionValues transitionValues, TransitionValues transitionValues2) {
+        return createAnimator(viewGroup, view, true);
+    }
+
+    @Override // androidx.transition.Visibility
+    public Animator onDisappear(ViewGroup viewGroup, View view, TransitionValues transitionValues, TransitionValues transitionValues2) {
+        return createAnimator(viewGroup, view, false);
+    }
+
+    private Animator createAnimator(ViewGroup viewGroup, View view, boolean z2) {
+        AnimatorSet animatorSet = new AnimatorSet();
+        ArrayList arrayList = new ArrayList();
+        addAnimatorIfNeeded(arrayList, this.primaryAnimatorProvider, viewGroup, view, z2);
+        addAnimatorIfNeeded(arrayList, this.secondaryAnimatorProvider, viewGroup, view, z2);
+        for (VisibilityAnimatorProvider visibilityAnimatorProvider : this.additionalAnimatorProviders) {
+            addAnimatorIfNeeded(arrayList, visibilityAnimatorProvider, viewGroup, view, z2);
+        }
+        AnimatorSetCompat.playTogether(animatorSet, arrayList);
+        return animatorSet;
+    }
+
+    private static void addAnimatorIfNeeded(List<Animator> list, VisibilityAnimatorProvider visibilityAnimatorProvider, ViewGroup viewGroup, View view, boolean z2) {
+        Animator createDisappear;
+        if (visibilityAnimatorProvider == null) {
+            return;
+        }
+        if (z2) {
+            createDisappear = visibilityAnimatorProvider.createAppear(viewGroup, view);
+        } else {
+            createDisappear = visibilityAnimatorProvider.createDisappear(viewGroup, view);
+        }
+        if (createDisappear != null) {
+            list.add(createDisappear);
+        }
     }
 }

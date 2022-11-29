@@ -1,46 +1,15 @@
-package mono.android.media.audiofx;
+package kotlin.jvm.functions;
 
-import android.media.audiofx.EnvironmentalReverb;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Function;
+import kotlin.Metadata;
+import kotlin.jvm.internal.FunctionBase;
 
+/* compiled from: FunctionN.kt */
+@Metadata(d1 = {"\u0000$\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0004\n\u0002\u0010\u0011\n\u0002\u0010\u0000\n\u0002\b\u0002\bg\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u00012\b\u0012\u0004\u0012\u0002H\u00010\u00022\b\u0012\u0004\u0012\u0002H\u00010\u0003J&\u0010\b\u001a\u00028\u00002\u0016\u0010\t\u001a\f\u0012\b\b\u0001\u0012\u0004\u0018\u00010\u000b0\n\"\u0004\u0018\u00010\u000bH¦\u0002¢\u0006\u0002\u0010\fR\u0012\u0010\u0004\u001a\u00020\u0005X¦\u0004¢\u0006\u0006\u001a\u0004\b\u0006\u0010\u0007¨\u0006\r"}, d2 = {"Lkotlin/jvm/functions/FunctionN;", "R", "Lkotlin/Function;", "Lkotlin/jvm/internal/FunctionBase;", "arity", "", "getArity", "()I", "invoke", "args", "", "", "([Ljava/lang/Object;)Ljava/lang/Object;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class EnvironmentalReverb_OnParameterChangeListenerImplementor implements IGCUserPeer, EnvironmentalReverb.OnParameterChangeListener {
-    public static final String __md_methods = "n_onParameterChange:(Landroid/media/audiofx/EnvironmentalReverb;III)V:GetOnParameterChange_Landroid_media_audiofx_EnvironmentalReverb_IIIHandler:Android.Media.Audiofx.EnvironmentalReverb/IOnParameterChangeListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public interface FunctionN<R> extends Function<R>, FunctionBase<R> {
+    @Override // kotlin.jvm.internal.FunctionBase
+    int getArity();
 
-    private native void n_onParameterChange(EnvironmentalReverb environmentalReverb, int i2, int i3, int i4);
-
-    static {
-        Runtime.register("Android.Media.Audiofx.EnvironmentalReverb+IOnParameterChangeListenerImplementor, Mono.Android", EnvironmentalReverb_OnParameterChangeListenerImplementor.class, __md_methods);
-    }
-
-    public EnvironmentalReverb_OnParameterChangeListenerImplementor() {
-        if (getClass() == EnvironmentalReverb_OnParameterChangeListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.Audiofx.EnvironmentalReverb+IOnParameterChangeListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.media.audiofx.EnvironmentalReverb.OnParameterChangeListener
-    public void onParameterChange(EnvironmentalReverb environmentalReverb, int i2, int i3, int i4) {
-        n_onParameterChange(environmentalReverb, i2, i3, i4);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+    R invoke(Object... objArr);
 }

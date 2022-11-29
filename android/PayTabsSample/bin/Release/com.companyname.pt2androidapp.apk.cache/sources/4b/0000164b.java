@@ -1,67 +1,24 @@
-package mono.android.media;
+package kotlin.jvm;
 
-import android.media.JetPlayer;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import kotlin.Metadata;
+import kotlin.annotation.AnnotationRetention;
+import kotlin.annotation.AnnotationTarget;
+import kotlin.annotation.MustBeDocumented;
 
+/* compiled from: JvmPlatformAnnotations.kt */
+@Target({ElementType.TYPE, ElementType.METHOD})
+@kotlin.annotation.Target(allowedTargets = {AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY, AnnotationTarget.TYPE})
+@Retention(RetentionPolicy.CLASS)
+@kotlin.annotation.Retention(AnnotationRetention.BINARY)
+@MustBeDocumented
+@Metadata(d1 = {"\u0000\u0012\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0002\b\u0087\u0002\u0018\u00002\u00020\u0001B\n\u0012\b\b\u0002\u0010\u0002\u001a\u00020\u0003R\u000f\u0010\u0002\u001a\u00020\u0003¢\u0006\u0006\u001a\u0004\b\u0002\u0010\u0004¨\u0006\u0005"}, d2 = {"Lkotlin/jvm/JvmSuppressWildcards;", "", "suppress", "", "()Z", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+@Documented
 /* loaded from: classes.dex */
-public class JetPlayer_OnJetEventListenerImplementor implements IGCUserPeer, JetPlayer.OnJetEventListener {
-    public static final String __md_methods = "n_onJetEvent:(Landroid/media/JetPlayer;SBBBB)V:GetOnJetEvent_Landroid_media_JetPlayer_SBBBBHandler:Android.Media.JetPlayer/IOnJetEventListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onJetNumQueuedSegmentUpdate:(Landroid/media/JetPlayer;I)V:GetOnJetNumQueuedSegmentUpdate_Landroid_media_JetPlayer_IHandler:Android.Media.JetPlayer/IOnJetEventListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onJetPauseUpdate:(Landroid/media/JetPlayer;I)V:GetOnJetPauseUpdate_Landroid_media_JetPlayer_IHandler:Android.Media.JetPlayer/IOnJetEventListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onJetUserIdUpdate:(Landroid/media/JetPlayer;II)V:GetOnJetUserIdUpdate_Landroid_media_JetPlayer_IIHandler:Android.Media.JetPlayer/IOnJetEventListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onJetEvent(JetPlayer jetPlayer, short s2, byte b2, byte b3, byte b4, byte b5);
-
-    private native void n_onJetNumQueuedSegmentUpdate(JetPlayer jetPlayer, int i2);
-
-    private native void n_onJetPauseUpdate(JetPlayer jetPlayer, int i2);
-
-    private native void n_onJetUserIdUpdate(JetPlayer jetPlayer, int i2, int i3);
-
-    static {
-        Runtime.register("Android.Media.JetPlayer+IOnJetEventListenerImplementor, Mono.Android", JetPlayer_OnJetEventListenerImplementor.class, __md_methods);
-    }
-
-    public JetPlayer_OnJetEventListenerImplementor() {
-        if (getClass() == JetPlayer_OnJetEventListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.JetPlayer+IOnJetEventListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.media.JetPlayer.OnJetEventListener
-    public void onJetEvent(JetPlayer jetPlayer, short s2, byte b2, byte b3, byte b4, byte b5) {
-        n_onJetEvent(jetPlayer, s2, b2, b3, b4, b5);
-    }
-
-    @Override // android.media.JetPlayer.OnJetEventListener
-    public void onJetNumQueuedSegmentUpdate(JetPlayer jetPlayer, int i2) {
-        n_onJetNumQueuedSegmentUpdate(jetPlayer, i2);
-    }
-
-    @Override // android.media.JetPlayer.OnJetEventListener
-    public void onJetPauseUpdate(JetPlayer jetPlayer, int i2) {
-        n_onJetPauseUpdate(jetPlayer, i2);
-    }
-
-    @Override // android.media.JetPlayer.OnJetEventListener
-    public void onJetUserIdUpdate(JetPlayer jetPlayer, int i2, int i3) {
-        n_onJetUserIdUpdate(jetPlayer, i2, i3);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public @interface JvmSuppressWildcards {
+    boolean suppress() default true;
 }

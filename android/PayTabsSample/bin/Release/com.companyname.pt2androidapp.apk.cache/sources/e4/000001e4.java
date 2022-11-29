@@ -1,11 +1,33 @@
 package androidx.appcompat.widget;
 
-import android.view.MenuItem;
-import androidx.appcompat.view.menu.MenuBuilder;
+import android.view.textclassifier.TextClassificationManager;
+import android.view.textclassifier.TextClassifier;
+import android.widget.TextView;
+import androidx.core.util.Preconditions;
 
 /* loaded from: classes.dex */
-public interface MenuItemHoverListener {
-    void onItemHoverEnter(MenuBuilder menuBuilder, MenuItem menuItem);
+final class AppCompatTextClassifierHelper {
+    private TextClassifier mTextClassifier;
+    private TextView mTextView;
 
-    void onItemHoverExit(MenuBuilder menuBuilder, MenuItem menuItem);
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public AppCompatTextClassifierHelper(TextView textView) {
+        this.mTextView = (TextView) Preconditions.checkNotNull(textView);
+    }
+
+    public void setTextClassifier(TextClassifier textClassifier) {
+        this.mTextClassifier = textClassifier;
+    }
+
+    public TextClassifier getTextClassifier() {
+        TextClassifier textClassifier = this.mTextClassifier;
+        if (textClassifier == null) {
+            TextClassificationManager textClassificationManager = (TextClassificationManager) this.mTextView.getContext().getSystemService(TextClassificationManager.class);
+            if (textClassificationManager != null) {
+                return textClassificationManager.getTextClassifier();
+            }
+            return TextClassifier.NO_OP;
+        }
+        return textClassifier;
+    }
 }

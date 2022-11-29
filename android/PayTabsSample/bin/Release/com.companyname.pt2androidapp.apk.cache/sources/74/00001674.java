@@ -1,47 +1,46 @@
-package mono.android.media.session;
+package kotlin.jvm.internal;
 
-import android.media.session.MediaSessionManager;
-import java.util.ArrayList;
-import java.util.List;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import kotlin.Metadata;
+import kotlin.jvm.internal.markers.KMappedMarker;
 
+/* compiled from: ArrayIterator.kt */
+@Metadata(d1 = {"\u0000\"\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010(\n\u0000\n\u0002\u0010\u0011\n\u0002\b\u0005\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0003\b\u0002\u0018\u0000*\u0004\b\u0000\u0010\u00012\b\u0012\u0004\u0012\u0002H\u00010\u0002B\u0013\u0012\f\u0010\u0003\u001a\b\u0012\u0004\u0012\u00028\u00000\u0004¢\u0006\u0002\u0010\u0005J\t\u0010\u000b\u001a\u00020\fH\u0096\u0002J\u000e\u0010\r\u001a\u00028\u0000H\u0096\u0002¢\u0006\u0002\u0010\u000eR\u0019\u0010\u0003\u001a\b\u0012\u0004\u0012\u00028\u00000\u0004¢\u0006\n\n\u0002\u0010\b\u001a\u0004\b\u0006\u0010\u0007R\u000e\u0010\t\u001a\u00020\nX\u0082\u000e¢\u0006\u0002\n\u0000¨\u0006\u000f"}, d2 = {"Lkotlin/jvm/internal/ArrayIterator;", "T", "", "array", "", "([Ljava/lang/Object;)V", "getArray", "()[Ljava/lang/Object;", "[Ljava/lang/Object;", "index", "", "hasNext", "", "next", "()Ljava/lang/Object;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class MediaSessionManager_OnSession2TokensChangedListenerImplementor implements IGCUserPeer, MediaSessionManager.OnSession2TokensChangedListener {
-    public static final String __md_methods = "n_onSession2TokensChanged:(Ljava/util/List;)V:GetOnSession2TokensChanged_Ljava_util_List_Handler:Android.Media.Session.MediaSessionManager/IOnSession2TokensChangedListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+final class ArrayIterator<T> implements Iterator<T>, KMappedMarker {
+    private final T[] array;
+    private int index;
 
-    private native void n_onSession2TokensChanged(List list);
-
-    static {
-        Runtime.register("Android.Media.Session.MediaSessionManager+IOnSession2TokensChangedListenerImplementor, Mono.Android", MediaSessionManager_OnSession2TokensChangedListenerImplementor.class, __md_methods);
+    @Override // java.util.Iterator
+    public void remove() {
+        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
     }
 
-    public MediaSessionManager_OnSession2TokensChangedListenerImplementor() {
-        if (getClass() == MediaSessionManager_OnSession2TokensChangedListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.Session.MediaSessionManager+IOnSession2TokensChangedListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    public ArrayIterator(T[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        this.array = array;
     }
 
-    @Override // android.media.session.MediaSessionManager.OnSession2TokensChangedListener
-    public void onSession2TokensChanged(List list) {
-        n_onSession2TokensChanged(list);
+    public final T[] getArray() {
+        return this.array;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
+    @Override // java.util.Iterator
+    public boolean hasNext() {
+        return this.index < this.array.length;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
+    @Override // java.util.Iterator
+    public T next() {
+        try {
+            T[] tArr = this.array;
+            int i2 = this.index;
+            this.index = i2 + 1;
+            return tArr[i2];
+        } catch (ArrayIndexOutOfBoundsException e2) {
+            this.index--;
+            throw new NoSuchElementException(e2.getMessage());
         }
     }
 }

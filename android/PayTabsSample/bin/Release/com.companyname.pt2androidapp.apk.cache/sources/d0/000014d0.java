@@ -1,83 +1,21 @@
-package kotlinx.coroutines.flow;
+package kotlin;
 
-import kotlin.Metadata;
-import kotlin.ResultKt;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-import kotlin.coroutines.jvm.internal.SuspendLambda;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.functions.Function3;
-import kotlin.jvm.internal.InlineMarker;
+import kotlin.jvm.functions.Function1;
 
-/* compiled from: Zip.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0018\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0011\n\u0002\b\u0003\u0010\u0000\u001a\u00020\u0001\"\u0006\b\u0000\u0010\u0002\u0018\u0001\"\u0004\b\u0001\u0010\u0003*\b\u0012\u0004\u0012\u0002H\u00030\u00042\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0006H\u008a@¢\u0006\u0004\b\u0007\u0010\b¨\u0006\t"}, d2 = {"<anonymous>", "", "T", "R", "Lkotlinx/coroutines/flow/FlowCollector;", "it", "", "invoke", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", "kotlinx/coroutines/flow/FlowKt__ZipKt$combineUnsafe$1$1"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1$lambda$1", f = "Zip.kt", i = {}, l = {262, 262}, m = "invokeSuspend", n = {}, s = {})
+/* compiled from: UByteArray.kt */
+@Metadata(d1 = {"\u0000\u001a\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0006\u001a0\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u00032\u0012\u0010\u0004\u001a\u000e\u0012\u0004\u0012\u00020\u0003\u0012\u0004\u0012\u00020\u00060\u0005H\u0087\bø\u0001\u0000ø\u0001\u0001¢\u0006\u0002\u0010\u0007\u001a\u001f\u0010\b\u001a\u00020\u00012\n\u0010\t\u001a\u00020\u0001\"\u00020\u0006H\u0087\bø\u0001\u0000¢\u0006\u0004\b\n\u0010\u000b\u0082\u0002\u000b\n\u0002\b\u0019\n\u0005\b\u009920\u0001¨\u0006\f"}, d2 = {"UByteArray", "Lkotlin/UByteArray;", "size", "", "init", "Lkotlin/Function1;", "Lkotlin/UByte;", "(ILkotlin/jvm/functions/Function1;)[B", "ubyteArrayOf", "elements", "ubyteArrayOf-GBYM_sE", "([B)[B", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1$lambda$1 extends SuspendLambda implements Function3<FlowCollector<? super R>, T[], Continuation<? super Unit>, Object> {
-    private /* synthetic */ Object L$0;
-    private /* synthetic */ Object L$1;
-    int label;
-    final /* synthetic */ FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1 this$0;
-
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1$lambda$1(Continuation continuation, FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1 flowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1) {
-        super(3, continuation);
-        this.this$0 = flowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1;
+public final class UByteArrayKt {
+    /* renamed from: ubyteArrayOf-GBYM_sE  reason: not valid java name */
+    private static final byte[] m128ubyteArrayOfGBYM_sE(byte... bArr) {
+        return bArr;
     }
 
-    public final Continuation<Unit> create(FlowCollector<? super R> flowCollector, T[] tArr, Continuation<? super Unit> continuation) {
-        FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1$lambda$1 flowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1$lambda$1 = new FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1$lambda$1(continuation, this.this$0);
-        flowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1$lambda$1.L$0 = flowCollector;
-        flowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1$lambda$1.L$1 = tArr;
-        return flowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1$lambda$1;
-    }
-
-    @Override // kotlin.jvm.functions.Function3
-    public final Object invoke(Object obj, Object obj2, Continuation<? super Unit> continuation) {
-        return ((FlowKt__ZipKt$combineUnsafe$$inlined$unsafeFlow$1$lambda$1) create((FlowCollector) obj, (Object[]) obj2, continuation)).invokeSuspend(Unit.INSTANCE);
-    }
-
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        FlowCollector flowCollector;
-        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
-        int i2 = this.label;
-        if (i2 == 0) {
-            ResultKt.throwOnFailure(obj);
-            flowCollector = (FlowCollector) this.L$0;
-            Function2 function2 = this.this$0.$transform$inlined;
-            this.L$0 = flowCollector;
-            this.label = 1;
-            obj = function2.invoke((Object[]) this.L$1, this);
-            if (obj == coroutine_suspended) {
-                return coroutine_suspended;
-            }
-        } else if (i2 != 1) {
-            if (i2 == 2) {
-                ResultKt.throwOnFailure(obj);
-                return Unit.INSTANCE;
-            }
-            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
-        } else {
-            flowCollector = (FlowCollector) this.L$0;
-            ResultKt.throwOnFailure(obj);
+    private static final byte[] UByteArray(int i2, Function1<? super Integer, UByte> function1) {
+        byte[] bArr = new byte[i2];
+        for (int i3 = 0; i3 < i2; i3++) {
+            bArr[i3] = function1.invoke(Integer.valueOf(i3)).m109unboximpl();
         }
-        this.L$0 = null;
-        this.label = 2;
-        if (flowCollector.emit(obj, this) == coroutine_suspended) {
-            return coroutine_suspended;
-        }
-        return Unit.INSTANCE;
-    }
-
-    public final Object invokeSuspend$$forInline(Object obj) {
-        Object invoke = this.this$0.$transform$inlined.invoke((Object[]) this.L$1, this);
-        InlineMarker.mark(0);
-        ((FlowCollector) this.L$0).emit(invoke, this);
-        InlineMarker.mark(2);
-        InlineMarker.mark(1);
-        return Unit.INSTANCE;
+        return UByteArray.m112constructorimpl(bArr);
     }
 }

@@ -1,12 +1,86 @@
-package kotlinx.coroutines;
+package com.google.crypto.tink.subtle;
 
-import java.lang.Throwable;
-import kotlin.Metadata;
-import kotlinx.coroutines.CopyableThrowable;
+import com.google.crypto.tink.config.TinkFips;
+import com.google.crypto.tink.subtle.EngineWrapper;
+import java.security.GeneralSecurityException;
+import java.security.KeyFactory;
+import java.security.KeyPairGenerator;
+import java.security.MessageDigest;
+import java.security.Provider;
+import java.security.Security;
+import java.security.Signature;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+import javax.crypto.Cipher;
+import javax.crypto.KeyAgreement;
+import javax.crypto.Mac;
 
-/* compiled from: Debug.common.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0012\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0003\n\u0002\u0010\u0000\n\u0002\b\u0003\bg\u0018\u0000*\u0012\b\u0000\u0010\u0001*\u00020\u0002*\b\u0012\u0004\u0012\u0002H\u00010\u00002\u00020\u0003J\u000f\u0010\u0004\u001a\u0004\u0018\u00018\u0000H&¢\u0006\u0002\u0010\u0005¨\u0006\u0006"}, d2 = {"Lkotlinx/coroutines/CopyableThrowable;", "T", "", "", "createCopy", "()Ljava/lang/Throwable;", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public interface CopyableThrowable<T extends Throwable & CopyableThrowable<T>> {
-    T createCopy();
+public final class EngineFactory<T_WRAPPER extends EngineWrapper<T_ENGINE>, T_ENGINE> {
+    public static final EngineFactory<EngineWrapper.TCipher, Cipher> CIPHER;
+    public static final EngineFactory<EngineWrapper.TKeyAgreement, KeyAgreement> KEY_AGREEMENT;
+    public static final EngineFactory<EngineWrapper.TKeyFactory, KeyFactory> KEY_FACTORY;
+    public static final EngineFactory<EngineWrapper.TKeyPairGenerator, KeyPairGenerator> KEY_PAIR_GENERATOR;
+    private static final boolean LET_FALLBACK;
+    public static final EngineFactory<EngineWrapper.TMac, Mac> MAC;
+    public static final EngineFactory<EngineWrapper.TMessageDigest, MessageDigest> MESSAGE_DIGEST;
+    public static final EngineFactory<EngineWrapper.TSignature, Signature> SIGNATURE;
+    private static final Logger logger = Logger.getLogger(EngineFactory.class.getName());
+    private static final List<Provider> policy;
+    private final T_WRAPPER instanceBuilder;
+
+    static {
+        if (TinkFips.useOnlyFips()) {
+            policy = toProviderList("GmsCore_OpenSSL", "AndroidOpenSSL", "Conscrypt");
+            LET_FALLBACK = false;
+        } else if (SubtleUtil.isAndroid()) {
+            policy = toProviderList("GmsCore_OpenSSL", "AndroidOpenSSL");
+            LET_FALLBACK = true;
+        } else {
+            policy = new ArrayList();
+            LET_FALLBACK = true;
+        }
+        CIPHER = new EngineFactory<>(new EngineWrapper.TCipher());
+        MAC = new EngineFactory<>(new EngineWrapper.TMac());
+        SIGNATURE = new EngineFactory<>(new EngineWrapper.TSignature());
+        MESSAGE_DIGEST = new EngineFactory<>(new EngineWrapper.TMessageDigest());
+        KEY_AGREEMENT = new EngineFactory<>(new EngineWrapper.TKeyAgreement());
+        KEY_PAIR_GENERATOR = new EngineFactory<>(new EngineWrapper.TKeyPairGenerator());
+        KEY_FACTORY = new EngineFactory<>(new EngineWrapper.TKeyFactory());
+    }
+
+    public static List<Provider> toProviderList(String... providerNames) {
+        ArrayList arrayList = new ArrayList();
+        for (String str : providerNames) {
+            Provider provider = Security.getProvider(str);
+            if (provider != null) {
+                arrayList.add(provider);
+            } else {
+                logger.info(String.format("Provider %s not available", str));
+            }
+        }
+        return arrayList;
+    }
+
+    public EngineFactory(T_WRAPPER instanceBuilder) {
+        this.instanceBuilder = instanceBuilder;
+    }
+
+    public T_ENGINE getInstance(String algorithm) throws GeneralSecurityException {
+        Exception exc = null;
+        for (Provider provider : policy) {
+            try {
+                return (T_ENGINE) this.instanceBuilder.getInstance(algorithm, provider);
+            } catch (Exception e2) {
+                if (exc == null) {
+                    exc = e2;
+                }
+            }
+        }
+        if (LET_FALLBACK) {
+            return (T_ENGINE) this.instanceBuilder.getInstance(algorithm, null);
+        }
+        throw new GeneralSecurityException("No good Provider found.", exc);
+    }
 }

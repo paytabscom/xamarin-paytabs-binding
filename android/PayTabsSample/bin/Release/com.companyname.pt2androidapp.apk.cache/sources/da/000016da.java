@@ -1,54 +1,11 @@
-package mono.android.widget;
+package kotlin.properties;
 
-import android.view.View;
-import android.widget.AdapterView;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
+import kotlin.reflect.KProperty;
 
+/* compiled from: Interfaces.kt */
+@Metadata(d1 = {"\u0000\u0018\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0000\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0002\bç\u0080\u0001\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u0000*\u0006\b\u0001\u0010\u0002 \u00012\u00020\u0003J\"\u0010\u0004\u001a\u00028\u00012\u0006\u0010\u0005\u001a\u00028\u00002\n\u0010\u0006\u001a\u0006\u0012\u0002\b\u00030\u0007H¦\u0002¢\u0006\u0002\u0010\b¨\u0006\t"}, d2 = {"Lkotlin/properties/PropertyDelegateProvider;", "T", "D", "", "provideDelegate", "thisRef", "property", "Lkotlin/reflect/KProperty;", "(Ljava/lang/Object;Lkotlin/reflect/KProperty;)Ljava/lang/Object;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class AdapterView_OnItemSelectedListenerImplementor implements IGCUserPeer, AdapterView.OnItemSelectedListener {
-    public static final String __md_methods = "n_onItemSelected:(Landroid/widget/AdapterView;Landroid/view/View;IJ)V:GetOnItemSelected_Landroid_widget_AdapterView_Landroid_view_View_IJHandler:Android.Widget.AdapterView/IOnItemSelectedListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onNothingSelected:(Landroid/widget/AdapterView;)V:GetOnNothingSelected_Landroid_widget_AdapterView_Handler:Android.Widget.AdapterView/IOnItemSelectedListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onItemSelected(AdapterView adapterView, View view, int i2, long j2);
-
-    private native void n_onNothingSelected(AdapterView adapterView);
-
-    static {
-        Runtime.register("Android.Widget.AdapterView+IOnItemSelectedListenerImplementor, Mono.Android", AdapterView_OnItemSelectedListenerImplementor.class, __md_methods);
-    }
-
-    public AdapterView_OnItemSelectedListenerImplementor() {
-        if (getClass() == AdapterView_OnItemSelectedListenerImplementor.class) {
-            TypeManager.Activate("Android.Widget.AdapterView+IOnItemSelectedListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.widget.AdapterView.OnItemSelectedListener
-    public void onItemSelected(AdapterView adapterView, View view, int i2, long j2) {
-        n_onItemSelected(adapterView, view, i2, j2);
-    }
-
-    @Override // android.widget.AdapterView.OnItemSelectedListener
-    public void onNothingSelected(AdapterView adapterView) {
-        n_onNothingSelected(adapterView);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public interface PropertyDelegateProvider<T, D> {
+    D provideDelegate(T t2, KProperty<?> kProperty);
 }

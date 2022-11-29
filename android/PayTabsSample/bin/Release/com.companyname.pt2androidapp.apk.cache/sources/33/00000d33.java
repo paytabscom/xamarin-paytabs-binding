@@ -1,50 +1,54 @@
-package com.google.android.material.transition;
+package com.google.android.material.internal;
 
-import android.graphics.Canvas;
-import android.graphics.Path;
+import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Region;
-import android.os.Build;
-import com.google.android.material.shape.ShapeAppearanceModel;
-import com.google.android.material.shape.ShapeAppearancePathProvider;
-import com.google.android.material.transition.MaterialContainerTransform;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 
 /* loaded from: classes.dex */
-class MaskEvaluator {
-    private ShapeAppearanceModel currentShapeAppearanceModel;
-    private final Path path = new Path();
-    private final Path startPath = new Path();
-    private final Path endPath = new Path();
-    private final ShapeAppearancePathProvider pathProvider = ShapeAppearancePathProvider.getInstance();
+public class DescendantOffsetUtils {
+    private static final ThreadLocal<Matrix> matrix = new ThreadLocal<>();
+    private static final ThreadLocal<RectF> rectF = new ThreadLocal<>();
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void evaluate(float f2, ShapeAppearanceModel shapeAppearanceModel, ShapeAppearanceModel shapeAppearanceModel2, RectF rectF, RectF rectF2, RectF rectF3, MaterialContainerTransform.ProgressThresholds progressThresholds) {
-        ShapeAppearanceModel lerp = TransitionUtils.lerp(shapeAppearanceModel, shapeAppearanceModel2, rectF, rectF3, progressThresholds.getStart(), progressThresholds.getEnd(), f2);
-        this.currentShapeAppearanceModel = lerp;
-        this.pathProvider.calculatePath(lerp, 1.0f, rectF2, this.startPath);
-        this.pathProvider.calculatePath(this.currentShapeAppearanceModel, 1.0f, rectF3, this.endPath);
-        if (Build.VERSION.SDK_INT >= 23) {
-            this.path.op(this.startPath, this.endPath, Path.Op.UNION);
+    public static void offsetDescendantRect(ViewGroup viewGroup, View view, Rect rect) {
+        ThreadLocal<Matrix> threadLocal = matrix;
+        Matrix matrix2 = threadLocal.get();
+        if (matrix2 == null) {
+            matrix2 = new Matrix();
+            threadLocal.set(matrix2);
+        } else {
+            matrix2.reset();
         }
+        offsetDescendantMatrix(viewGroup, view, matrix2);
+        ThreadLocal<RectF> threadLocal2 = rectF;
+        RectF rectF2 = threadLocal2.get();
+        if (rectF2 == null) {
+            rectF2 = new RectF();
+            threadLocal2.set(rectF2);
+        }
+        rectF2.set(rect);
+        matrix2.mapRect(rectF2);
+        rect.set((int) (rectF2.left + 0.5f), (int) (rectF2.top + 0.5f), (int) (rectF2.right + 0.5f), (int) (rectF2.bottom + 0.5f));
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void clip(Canvas canvas) {
-        if (Build.VERSION.SDK_INT >= 23) {
-            canvas.clipPath(this.path);
+    public static void getDescendantRect(ViewGroup viewGroup, View view, Rect rect) {
+        rect.set(0, 0, view.getWidth(), view.getHeight());
+        offsetDescendantRect(viewGroup, view, rect);
+    }
+
+    private static void offsetDescendantMatrix(ViewParent viewParent, View view, Matrix matrix2) {
+        ViewParent parent = view.getParent();
+        if ((parent instanceof View) && parent != viewParent) {
+            View view2 = (View) parent;
+            offsetDescendantMatrix(viewParent, view2, matrix2);
+            matrix2.preTranslate(-view2.getScrollX(), -view2.getScrollY());
+        }
+        matrix2.preTranslate(view.getLeft(), view.getTop());
+        if (view.getMatrix().isIdentity()) {
             return;
         }
-        canvas.clipPath(this.startPath);
-        canvas.clipPath(this.endPath, Region.Op.UNION);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public Path getPath() {
-        return this.path;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public ShapeAppearanceModel getCurrentShapeAppearanceModel() {
-        return this.currentShapeAppearanceModel;
+        matrix2.preConcat(view.getMatrix());
     }
 }

@@ -1,68 +1,35 @@
-package androidx.core.widget;
+package androidx.core.util;
 
-import android.content.Context;
-import android.graphics.Canvas;
-import android.os.Build;
-import android.widget.EdgeEffect;
+import android.util.Half;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: Half.kt */
+@Metadata(d1 = {"\u0000\u0018\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0006\n\u0002\u0010\u0007\n\u0002\u0010\n\n\u0002\u0010\u000e\n\u0000\u001a\r\u0010\u0000\u001a\u00020\u0001*\u00020\u0002H\u0087\b\u001a\r\u0010\u0000\u001a\u00020\u0001*\u00020\u0003H\u0087\b\u001a\r\u0010\u0000\u001a\u00020\u0001*\u00020\u0004H\u0087\b\u001a\r\u0010\u0000\u001a\u00020\u0001*\u00020\u0005H\u0087\b¨\u0006\u0006"}, d2 = {"toHalf", "Landroid/util/Half;", "", "", "", "", "core-ktx_release"}, k = 2, mv = {1, 6, 0}, xi = 48)
 /* loaded from: classes.dex */
-public final class EdgeEffectCompat {
-    private EdgeEffect mEdgeEffect;
-
-    @Deprecated
-    public EdgeEffectCompat(Context context) {
-        this.mEdgeEffect = new EdgeEffect(context);
+public final class HalfKt {
+    public static final Half toHalf(short s2) {
+        Half valueOf = Half.valueOf(s2);
+        Intrinsics.checkNotNullExpressionValue(valueOf, "valueOf(this)");
+        return valueOf;
     }
 
-    @Deprecated
-    public void setSize(int i2, int i3) {
-        this.mEdgeEffect.setSize(i2, i3);
+    public static final Half toHalf(float f2) {
+        Half valueOf = Half.valueOf(f2);
+        Intrinsics.checkNotNullExpressionValue(valueOf, "valueOf(this)");
+        return valueOf;
     }
 
-    @Deprecated
-    public boolean isFinished() {
-        return this.mEdgeEffect.isFinished();
+    public static final Half toHalf(String str) {
+        Intrinsics.checkNotNullParameter(str, "<this>");
+        Half valueOf = Half.valueOf(str);
+        Intrinsics.checkNotNullExpressionValue(valueOf, "valueOf(this)");
+        return valueOf;
     }
 
-    @Deprecated
-    public void finish() {
-        this.mEdgeEffect.finish();
-    }
-
-    @Deprecated
-    public boolean onPull(float f2) {
-        this.mEdgeEffect.onPull(f2);
-        return true;
-    }
-
-    @Deprecated
-    public boolean onPull(float f2, float f3) {
-        onPull(this.mEdgeEffect, f2, f3);
-        return true;
-    }
-
-    public static void onPull(EdgeEffect edgeEffect, float f2, float f3) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            edgeEffect.onPull(f2, f3);
-        } else {
-            edgeEffect.onPull(f2);
-        }
-    }
-
-    @Deprecated
-    public boolean onRelease() {
-        this.mEdgeEffect.onRelease();
-        return this.mEdgeEffect.isFinished();
-    }
-
-    @Deprecated
-    public boolean onAbsorb(int i2) {
-        this.mEdgeEffect.onAbsorb(i2);
-        return true;
-    }
-
-    @Deprecated
-    public boolean draw(Canvas canvas) {
-        return this.mEdgeEffect.draw(canvas);
+    public static final Half toHalf(double d2) {
+        Half valueOf = Half.valueOf((float) d2);
+        Intrinsics.checkNotNullExpressionValue(valueOf, "valueOf(this)");
+        return valueOf;
     }
 }

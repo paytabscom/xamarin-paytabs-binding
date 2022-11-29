@@ -1,474 +1,186 @@
-package androidx.constraintlayout.motion.widget;
-
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.os.Build;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.util.SparseIntArray;
-import androidx.constraintlayout.widget.R;
-import androidx.core.app.NotificationCompat;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+package androidx.collection;
 
 /* loaded from: classes.dex */
-public class KeyAttributes extends Key {
-    public static final int KEY_TYPE = 1;
-    static final String NAME = "KeyAttribute";
-    private static final String TAG = "KeyAttribute";
-    private String mTransitionEasing;
-    private int mCurveFit = -1;
-    private boolean mVisibility = false;
-    private float mAlpha = Float.NaN;
-    private float mElevation = Float.NaN;
-    private float mRotation = Float.NaN;
-    private float mRotationX = Float.NaN;
-    private float mRotationY = Float.NaN;
-    private float mPivotX = Float.NaN;
-    private float mPivotY = Float.NaN;
-    private float mTransitionPathRotate = Float.NaN;
-    private float mScaleX = Float.NaN;
-    private float mScaleY = Float.NaN;
-    private float mTranslationX = Float.NaN;
-    private float mTranslationY = Float.NaN;
-    private float mTranslationZ = Float.NaN;
-    private float mProgress = Float.NaN;
+public final class CircularArray<E> {
+    private int mCapacityBitmask;
+    private E[] mElements;
+    private int mHead;
+    private int mTail;
 
-    public KeyAttributes() {
-        this.mType = 1;
-        this.mCustomConstraints = new HashMap<>();
+    private void doubleCapacity() {
+        E[] eArr = this.mElements;
+        int length = eArr.length;
+        int i2 = this.mHead;
+        int i3 = length - i2;
+        int i4 = length << 1;
+        if (i4 < 0) {
+            throw new RuntimeException("Max array capacity exceeded");
+        }
+        E[] eArr2 = (E[]) new Object[i4];
+        System.arraycopy(eArr, i2, eArr2, 0, i3);
+        System.arraycopy(this.mElements, 0, eArr2, i3, this.mHead);
+        this.mElements = eArr2;
+        this.mHead = 0;
+        this.mTail = length;
+        this.mCapacityBitmask = i4 - 1;
     }
 
-    @Override // androidx.constraintlayout.motion.widget.Key
-    public void load(Context context, AttributeSet attributeSet) {
-        Loader.read(this, context.obtainStyledAttributes(attributeSet, R.styleable.KeyAttribute));
+    public CircularArray() {
+        this(8);
     }
 
-    int getCurveFit() {
-        return this.mCurveFit;
+    public CircularArray(int i2) {
+        if (i2 < 1) {
+            throw new IllegalArgumentException("capacity must be >= 1");
+        }
+        if (i2 > 1073741824) {
+            throw new IllegalArgumentException("capacity must be <= 2^30");
+        }
+        i2 = Integer.bitCount(i2) != 1 ? Integer.highestOneBit(i2 - 1) << 1 : i2;
+        this.mCapacityBitmask = i2 - 1;
+        this.mElements = (E[]) new Object[i2];
     }
 
-    @Override // androidx.constraintlayout.motion.widget.Key
-    public void getAttributeNames(HashSet<String> hashSet) {
-        if (!Float.isNaN(this.mAlpha)) {
-            hashSet.add("alpha");
-        }
-        if (!Float.isNaN(this.mElevation)) {
-            hashSet.add("elevation");
-        }
-        if (!Float.isNaN(this.mRotation)) {
-            hashSet.add("rotation");
-        }
-        if (!Float.isNaN(this.mRotationX)) {
-            hashSet.add("rotationX");
-        }
-        if (!Float.isNaN(this.mRotationY)) {
-            hashSet.add("rotationY");
-        }
-        if (!Float.isNaN(this.mPivotX)) {
-            hashSet.add("transformPivotX");
-        }
-        if (!Float.isNaN(this.mPivotY)) {
-            hashSet.add("transformPivotY");
-        }
-        if (!Float.isNaN(this.mTranslationX)) {
-            hashSet.add("translationX");
-        }
-        if (!Float.isNaN(this.mTranslationY)) {
-            hashSet.add("translationY");
-        }
-        if (!Float.isNaN(this.mTranslationZ)) {
-            hashSet.add("translationZ");
-        }
-        if (!Float.isNaN(this.mTransitionPathRotate)) {
-            hashSet.add("transitionPathRotate");
-        }
-        if (!Float.isNaN(this.mScaleX)) {
-            hashSet.add("scaleX");
-        }
-        if (!Float.isNaN(this.mScaleY)) {
-            hashSet.add("scaleY");
-        }
-        if (!Float.isNaN(this.mProgress)) {
-            hashSet.add(NotificationCompat.CATEGORY_PROGRESS);
-        }
-        if (this.mCustomConstraints.size() > 0) {
-            Iterator<String> it = this.mCustomConstraints.keySet().iterator();
-            while (it.hasNext()) {
-                hashSet.add("CUSTOM," + it.next());
-            }
+    public void addFirst(E e2) {
+        int i2 = (this.mHead - 1) & this.mCapacityBitmask;
+        this.mHead = i2;
+        this.mElements[i2] = e2;
+        if (i2 == this.mTail) {
+            doubleCapacity();
         }
     }
 
-    @Override // androidx.constraintlayout.motion.widget.Key
-    public void setInterpolation(HashMap<String, Integer> hashMap) {
-        if (this.mCurveFit == -1) {
+    public void addLast(E e2) {
+        E[] eArr = this.mElements;
+        int i2 = this.mTail;
+        eArr[i2] = e2;
+        int i3 = this.mCapacityBitmask & (i2 + 1);
+        this.mTail = i3;
+        if (i3 == this.mHead) {
+            doubleCapacity();
+        }
+    }
+
+    public E popFirst() {
+        int i2 = this.mHead;
+        if (i2 == this.mTail) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        E[] eArr = this.mElements;
+        E e2 = eArr[i2];
+        eArr[i2] = null;
+        this.mHead = (i2 + 1) & this.mCapacityBitmask;
+        return e2;
+    }
+
+    public E popLast() {
+        int i2 = this.mHead;
+        int i3 = this.mTail;
+        if (i2 == i3) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        int i4 = this.mCapacityBitmask & (i3 - 1);
+        E[] eArr = this.mElements;
+        E e2 = eArr[i4];
+        eArr[i4] = null;
+        this.mTail = i4;
+        return e2;
+    }
+
+    public void clear() {
+        removeFromStart(size());
+    }
+
+    public void removeFromStart(int i2) {
+        if (i2 <= 0) {
             return;
         }
-        if (!Float.isNaN(this.mAlpha)) {
-            hashMap.put("alpha", Integer.valueOf(this.mCurveFit));
+        if (i2 > size()) {
+            throw new ArrayIndexOutOfBoundsException();
         }
-        if (!Float.isNaN(this.mElevation)) {
-            hashMap.put("elevation", Integer.valueOf(this.mCurveFit));
+        int length = this.mElements.length;
+        int i3 = this.mHead;
+        if (i2 < length - i3) {
+            length = i3 + i2;
         }
-        if (!Float.isNaN(this.mRotation)) {
-            hashMap.put("rotation", Integer.valueOf(this.mCurveFit));
+        while (i3 < length) {
+            this.mElements[i3] = null;
+            i3++;
         }
-        if (!Float.isNaN(this.mRotationX)) {
-            hashMap.put("rotationX", Integer.valueOf(this.mCurveFit));
-        }
-        if (!Float.isNaN(this.mRotationY)) {
-            hashMap.put("rotationY", Integer.valueOf(this.mCurveFit));
-        }
-        if (!Float.isNaN(this.mPivotX)) {
-            hashMap.put("transformPivotX", Integer.valueOf(this.mCurveFit));
-        }
-        if (!Float.isNaN(this.mPivotY)) {
-            hashMap.put("transformPivotY", Integer.valueOf(this.mCurveFit));
-        }
-        if (!Float.isNaN(this.mTranslationX)) {
-            hashMap.put("translationX", Integer.valueOf(this.mCurveFit));
-        }
-        if (!Float.isNaN(this.mTranslationY)) {
-            hashMap.put("translationY", Integer.valueOf(this.mCurveFit));
-        }
-        if (!Float.isNaN(this.mTranslationZ)) {
-            hashMap.put("translationZ", Integer.valueOf(this.mCurveFit));
-        }
-        if (!Float.isNaN(this.mTransitionPathRotate)) {
-            hashMap.put("transitionPathRotate", Integer.valueOf(this.mCurveFit));
-        }
-        if (!Float.isNaN(this.mScaleX)) {
-            hashMap.put("scaleX", Integer.valueOf(this.mCurveFit));
-        }
-        if (!Float.isNaN(this.mScaleY)) {
-            hashMap.put("scaleY", Integer.valueOf(this.mCurveFit));
-        }
-        if (!Float.isNaN(this.mProgress)) {
-            hashMap.put(NotificationCompat.CATEGORY_PROGRESS, Integer.valueOf(this.mCurveFit));
-        }
-        if (this.mCustomConstraints.size() > 0) {
-            Iterator<String> it = this.mCustomConstraints.keySet().iterator();
-            while (it.hasNext()) {
-                hashMap.put("CUSTOM," + it.next(), Integer.valueOf(this.mCurveFit));
+        int i4 = this.mHead;
+        int i5 = length - i4;
+        int i6 = i2 - i5;
+        this.mHead = this.mCapacityBitmask & (i4 + i5);
+        if (i6 > 0) {
+            for (int i7 = 0; i7 < i6; i7++) {
+                this.mElements[i7] = null;
             }
+            this.mHead = i6;
         }
     }
 
-    /* JADX WARN: Can't fix incorrect switch cases order, some code will duplicate */
-    /* JADX WARN: Code restructure failed: missing block: B:38:0x009a, code lost:
-        if (r1.equals("scaleY") == false) goto L9;
-     */
-    @Override // androidx.constraintlayout.motion.widget.Key
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct code enable 'Show inconsistent code' option in preferences
-    */
-    public void addValues(java.util.HashMap<java.lang.String, androidx.constraintlayout.motion.widget.SplineSet> r7) {
-        /*
-            Method dump skipped, instructions count: 598
-            To view this dump change 'Code comments level' option to 'DEBUG'
-        */
-        throw new UnsupportedOperationException("Method not decompiled: androidx.constraintlayout.motion.widget.KeyAttributes.addValues(java.util.HashMap):void");
-    }
-
-    @Override // androidx.constraintlayout.motion.widget.Key
-    public void setValue(String str, Object obj) {
-        str.hashCode();
-        char c2 = 65535;
-        switch (str.hashCode()) {
-            case -1913008125:
-                if (str.equals("motionProgress")) {
-                    c2 = 0;
-                    break;
-                }
-                break;
-            case -1812823328:
-                if (str.equals("transitionEasing")) {
-                    c2 = 1;
-                    break;
-                }
-                break;
-            case -1249320806:
-                if (str.equals("rotationX")) {
-                    c2 = 2;
-                    break;
-                }
-                break;
-            case -1249320805:
-                if (str.equals("rotationY")) {
-                    c2 = 3;
-                    break;
-                }
-                break;
-            case -1225497657:
-                if (str.equals("translationX")) {
-                    c2 = 4;
-                    break;
-                }
-                break;
-            case -1225497656:
-                if (str.equals("translationY")) {
-                    c2 = 5;
-                    break;
-                }
-                break;
-            case -987906986:
-                if (str.equals("pivotX")) {
-                    c2 = 6;
-                    break;
-                }
-                break;
-            case -987906985:
-                if (str.equals("pivotY")) {
-                    c2 = 7;
-                    break;
-                }
-                break;
-            case -908189618:
-                if (str.equals("scaleX")) {
-                    c2 = '\b';
-                    break;
-                }
-                break;
-            case -908189617:
-                if (str.equals("scaleY")) {
-                    c2 = '\t';
-                    break;
-                }
-                break;
-            case -40300674:
-                if (str.equals("rotation")) {
-                    c2 = '\n';
-                    break;
-                }
-                break;
-            case -4379043:
-                if (str.equals("elevation")) {
-                    c2 = 11;
-                    break;
-                }
-                break;
-            case 37232917:
-                if (str.equals("transitionPathRotate")) {
-                    c2 = '\f';
-                    break;
-                }
-                break;
-            case 92909918:
-                if (str.equals("alpha")) {
-                    c2 = '\r';
-                    break;
-                }
-                break;
-            case 579057826:
-                if (str.equals("curveFit")) {
-                    c2 = 14;
-                    break;
-                }
-                break;
-            case 1317633238:
-                if (str.equals("mTranslationZ")) {
-                    c2 = 15;
-                    break;
-                }
-                break;
-            case 1941332754:
-                if (str.equals("visibility")) {
-                    c2 = 16;
-                    break;
-                }
-                break;
+    public void removeFromEnd(int i2) {
+        int i3;
+        if (i2 <= 0) {
+            return;
         }
-        switch (c2) {
-            case 0:
-                this.mProgress = toFloat(obj);
-                return;
-            case 1:
-                this.mTransitionEasing = obj.toString();
-                return;
-            case 2:
-                this.mRotationX = toFloat(obj);
-                return;
-            case 3:
-                this.mRotationY = toFloat(obj);
-                return;
-            case 4:
-                this.mTranslationX = toFloat(obj);
-                return;
-            case 5:
-                this.mTranslationY = toFloat(obj);
-                return;
-            case 6:
-                this.mPivotX = toFloat(obj);
-                return;
-            case 7:
-                this.mPivotY = toFloat(obj);
-                return;
-            case '\b':
-                this.mScaleX = toFloat(obj);
-                return;
-            case '\t':
-                this.mScaleY = toFloat(obj);
-                return;
-            case '\n':
-                this.mRotation = toFloat(obj);
-                return;
-            case 11:
-                this.mElevation = toFloat(obj);
-                return;
-            case '\f':
-                this.mTransitionPathRotate = toFloat(obj);
-                return;
-            case '\r':
-                this.mAlpha = toFloat(obj);
-                return;
-            case 14:
-                this.mCurveFit = toInt(obj);
-                return;
-            case 15:
-                this.mTranslationZ = toFloat(obj);
-                return;
-            case 16:
-                this.mVisibility = toBoolean(obj);
-                return;
-            default:
-                return;
+        if (i2 > size()) {
+            throw new ArrayIndexOutOfBoundsException();
         }
-    }
-
-    /* loaded from: classes.dex */
-    private static class Loader {
-        private static final int ANDROID_ALPHA = 1;
-        private static final int ANDROID_ELEVATION = 2;
-        private static final int ANDROID_PIVOT_X = 19;
-        private static final int ANDROID_PIVOT_Y = 20;
-        private static final int ANDROID_ROTATION = 4;
-        private static final int ANDROID_ROTATION_X = 5;
-        private static final int ANDROID_ROTATION_Y = 6;
-        private static final int ANDROID_SCALE_X = 7;
-        private static final int ANDROID_SCALE_Y = 14;
-        private static final int ANDROID_TRANSLATION_X = 15;
-        private static final int ANDROID_TRANSLATION_Y = 16;
-        private static final int ANDROID_TRANSLATION_Z = 17;
-        private static final int CURVE_FIT = 13;
-        private static final int FRAME_POSITION = 12;
-        private static final int PROGRESS = 18;
-        private static final int TARGET_ID = 10;
-        private static final int TRANSITION_EASING = 9;
-        private static final int TRANSITION_PATH_ROTATE = 8;
-        private static SparseIntArray mAttrMap;
-
-        private Loader() {
-        }
-
-        static {
-            SparseIntArray sparseIntArray = new SparseIntArray();
-            mAttrMap = sparseIntArray;
-            sparseIntArray.append(R.styleable.KeyAttribute_android_alpha, 1);
-            mAttrMap.append(R.styleable.KeyAttribute_android_elevation, 2);
-            mAttrMap.append(R.styleable.KeyAttribute_android_rotation, 4);
-            mAttrMap.append(R.styleable.KeyAttribute_android_rotationX, 5);
-            mAttrMap.append(R.styleable.KeyAttribute_android_rotationY, 6);
-            mAttrMap.append(R.styleable.KeyAttribute_android_transformPivotX, 19);
-            mAttrMap.append(R.styleable.KeyAttribute_android_transformPivotY, 20);
-            mAttrMap.append(R.styleable.KeyAttribute_android_scaleX, 7);
-            mAttrMap.append(R.styleable.KeyAttribute_transitionPathRotate, 8);
-            mAttrMap.append(R.styleable.KeyAttribute_transitionEasing, 9);
-            mAttrMap.append(R.styleable.KeyAttribute_motionTarget, 10);
-            mAttrMap.append(R.styleable.KeyAttribute_framePosition, 12);
-            mAttrMap.append(R.styleable.KeyAttribute_curveFit, 13);
-            mAttrMap.append(R.styleable.KeyAttribute_android_scaleY, 14);
-            mAttrMap.append(R.styleable.KeyAttribute_android_translationX, 15);
-            mAttrMap.append(R.styleable.KeyAttribute_android_translationY, 16);
-            mAttrMap.append(R.styleable.KeyAttribute_android_translationZ, 17);
-            mAttrMap.append(R.styleable.KeyAttribute_motionProgress, 18);
-        }
-
-        public static void read(KeyAttributes keyAttributes, TypedArray typedArray) {
-            int indexCount = typedArray.getIndexCount();
-            for (int i2 = 0; i2 < indexCount; i2++) {
-                int index = typedArray.getIndex(i2);
-                switch (mAttrMap.get(index)) {
-                    case 1:
-                        keyAttributes.mAlpha = typedArray.getFloat(index, keyAttributes.mAlpha);
-                        break;
-                    case 2:
-                        keyAttributes.mElevation = typedArray.getDimension(index, keyAttributes.mElevation);
-                        break;
-                    case 3:
-                    case 11:
-                    default:
-                        Log.e("KeyAttribute", "unused attribute 0x" + Integer.toHexString(index) + "   " + mAttrMap.get(index));
-                        break;
-                    case 4:
-                        keyAttributes.mRotation = typedArray.getFloat(index, keyAttributes.mRotation);
-                        break;
-                    case 5:
-                        keyAttributes.mRotationX = typedArray.getFloat(index, keyAttributes.mRotationX);
-                        break;
-                    case 6:
-                        keyAttributes.mRotationY = typedArray.getFloat(index, keyAttributes.mRotationY);
-                        break;
-                    case 7:
-                        keyAttributes.mScaleX = typedArray.getFloat(index, keyAttributes.mScaleX);
-                        break;
-                    case 8:
-                        keyAttributes.mTransitionPathRotate = typedArray.getFloat(index, keyAttributes.mTransitionPathRotate);
-                        break;
-                    case 9:
-                        keyAttributes.mTransitionEasing = typedArray.getString(index);
-                        break;
-                    case 10:
-                        if (MotionLayout.IS_IN_EDIT_MODE) {
-                            keyAttributes.mTargetId = typedArray.getResourceId(index, keyAttributes.mTargetId);
-                            if (keyAttributes.mTargetId == -1) {
-                                keyAttributes.mTargetString = typedArray.getString(index);
-                                break;
-                            } else {
-                                break;
-                            }
-                        } else if (typedArray.peekValue(index).type == 3) {
-                            keyAttributes.mTargetString = typedArray.getString(index);
-                            break;
-                        } else {
-                            keyAttributes.mTargetId = typedArray.getResourceId(index, keyAttributes.mTargetId);
-                            break;
-                        }
-                    case 12:
-                        keyAttributes.mFramePosition = typedArray.getInt(index, keyAttributes.mFramePosition);
-                        break;
-                    case 13:
-                        keyAttributes.mCurveFit = typedArray.getInteger(index, keyAttributes.mCurveFit);
-                        break;
-                    case 14:
-                        keyAttributes.mScaleY = typedArray.getFloat(index, keyAttributes.mScaleY);
-                        break;
-                    case 15:
-                        keyAttributes.mTranslationX = typedArray.getDimension(index, keyAttributes.mTranslationX);
-                        break;
-                    case 16:
-                        keyAttributes.mTranslationY = typedArray.getDimension(index, keyAttributes.mTranslationY);
-                        break;
-                    case 17:
-                        if (Build.VERSION.SDK_INT >= 21) {
-                            keyAttributes.mTranslationZ = typedArray.getDimension(index, keyAttributes.mTranslationZ);
-                            break;
-                        } else {
-                            break;
-                        }
-                    case 18:
-                        keyAttributes.mProgress = typedArray.getFloat(index, keyAttributes.mProgress);
-                        break;
-                    case 19:
-                        keyAttributes.mPivotX = typedArray.getDimension(index, keyAttributes.mPivotX);
-                        break;
-                    case 20:
-                        keyAttributes.mPivotY = typedArray.getDimension(index, keyAttributes.mPivotY);
-                        break;
-                }
+        int i4 = this.mTail;
+        int i5 = i2 < i4 ? i4 - i2 : 0;
+        int i6 = i5;
+        while (true) {
+            i3 = this.mTail;
+            if (i6 >= i3) {
+                break;
             }
+            this.mElements[i6] = null;
+            i6++;
         }
+        int i7 = i3 - i5;
+        int i8 = i2 - i7;
+        this.mTail = i3 - i7;
+        if (i8 > 0) {
+            int length = this.mElements.length;
+            this.mTail = length;
+            int i9 = length - i8;
+            for (int i10 = i9; i10 < this.mTail; i10++) {
+                this.mElements[i10] = null;
+            }
+            this.mTail = i9;
+        }
+    }
+
+    public E getFirst() {
+        int i2 = this.mHead;
+        if (i2 == this.mTail) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        return this.mElements[i2];
+    }
+
+    public E getLast() {
+        int i2 = this.mHead;
+        int i3 = this.mTail;
+        if (i2 == i3) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        return this.mElements[(i3 - 1) & this.mCapacityBitmask];
+    }
+
+    public E get(int i2) {
+        if (i2 < 0 || i2 >= size()) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        return this.mElements[this.mCapacityBitmask & (this.mHead + i2)];
+    }
+
+    public int size() {
+        return (this.mTail - this.mHead) & this.mCapacityBitmask;
+    }
+
+    public boolean isEmpty() {
+        return this.mHead == this.mTail;
     }
 }

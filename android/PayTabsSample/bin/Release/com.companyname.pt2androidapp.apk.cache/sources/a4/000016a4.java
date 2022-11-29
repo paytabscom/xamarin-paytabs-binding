@@ -1,74 +1,43 @@
-package mono.android.transition;
+package kotlin.jvm.internal;
 
-import android.transition.Transition;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.Collection;
+import kotlin.Metadata;
+import kotlin.jvm.KotlinReflectionNotSupportedError;
+import kotlin.reflect.KCallable;
 
+/* compiled from: PackageReference.kt */
+@Metadata(d1 = {"\u00008\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0004\n\u0002\u0010\u001e\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\b\n\u0002\b\u0002\b\u0007\u0018\u00002\u00020\u0001B\u0019\u0012\n\u0010\u0002\u001a\u0006\u0012\u0002\b\u00030\u0003\u0012\u0006\u0010\u0004\u001a\u00020\u0005¢\u0006\u0002\u0010\u0006J\u0013\u0010\u000e\u001a\u00020\u000f2\b\u0010\u0010\u001a\u0004\u0018\u00010\u0011H\u0096\u0002J\b\u0010\u0012\u001a\u00020\u0013H\u0016J\b\u0010\u0014\u001a\u00020\u0005H\u0016R\u0018\u0010\u0002\u001a\u0006\u0012\u0002\b\u00030\u0003X\u0096\u0004¢\u0006\b\n\u0000\u001a\u0004\b\u0007\u0010\bR\u001e\u0010\t\u001a\f\u0012\b\u0012\u0006\u0012\u0002\b\u00030\u000b0\n8VX\u0096\u0004¢\u0006\u0006\u001a\u0004\b\f\u0010\rR\u000e\u0010\u0004\u001a\u00020\u0005X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\u0015"}, d2 = {"Lkotlin/jvm/internal/PackageReference;", "Lkotlin/jvm/internal/ClassBasedDeclarationContainer;", "jClass", "Ljava/lang/Class;", "moduleName", "", "(Ljava/lang/Class;Ljava/lang/String;)V", "getJClass", "()Ljava/lang/Class;", "members", "", "Lkotlin/reflect/KCallable;", "getMembers", "()Ljava/util/Collection;", "equals", "", "other", "", "hashCode", "", "toString", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class Transition_TransitionListenerImplementor implements IGCUserPeer, Transition.TransitionListener {
-    public static final String __md_methods = "n_onTransitionCancel:(Landroid/transition/Transition;)V:GetOnTransitionCancel_Landroid_transition_Transition_Handler:Android.Transitions.Transition/ITransitionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onTransitionEnd:(Landroid/transition/Transition;)V:GetOnTransitionEnd_Landroid_transition_Transition_Handler:Android.Transitions.Transition/ITransitionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onTransitionPause:(Landroid/transition/Transition;)V:GetOnTransitionPause_Landroid_transition_Transition_Handler:Android.Transitions.Transition/ITransitionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onTransitionResume:(Landroid/transition/Transition;)V:GetOnTransitionResume_Landroid_transition_Transition_Handler:Android.Transitions.Transition/ITransitionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onTransitionStart:(Landroid/transition/Transition;)V:GetOnTransitionStart_Landroid_transition_Transition_Handler:Android.Transitions.Transition/ITransitionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public final class PackageReference implements ClassBasedDeclarationContainer {
+    private final Class<?> jClass;
+    private final String moduleName;
 
-    private native void n_onTransitionCancel(Transition transition);
-
-    private native void n_onTransitionEnd(Transition transition);
-
-    private native void n_onTransitionPause(Transition transition);
-
-    private native void n_onTransitionResume(Transition transition);
-
-    private native void n_onTransitionStart(Transition transition);
-
-    static {
-        Runtime.register("Android.Transitions.Transition+ITransitionListenerImplementor, Mono.Android", Transition_TransitionListenerImplementor.class, __md_methods);
+    public PackageReference(Class<?> jClass, String moduleName) {
+        Intrinsics.checkNotNullParameter(jClass, "jClass");
+        Intrinsics.checkNotNullParameter(moduleName, "moduleName");
+        this.jClass = jClass;
+        this.moduleName = moduleName;
     }
 
-    public Transition_TransitionListenerImplementor() {
-        if (getClass() == Transition_TransitionListenerImplementor.class) {
-            TypeManager.Activate("Android.Transitions.Transition+ITransitionListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    @Override // kotlin.jvm.internal.ClassBasedDeclarationContainer
+    public Class<?> getJClass() {
+        return this.jClass;
     }
 
-    @Override // android.transition.Transition.TransitionListener
-    public void onTransitionCancel(Transition transition) {
-        n_onTransitionCancel(transition);
+    @Override // kotlin.reflect.KDeclarationContainer
+    public Collection<KCallable<?>> getMembers() {
+        throw new KotlinReflectionNotSupportedError();
     }
 
-    @Override // android.transition.Transition.TransitionListener
-    public void onTransitionEnd(Transition transition) {
-        n_onTransitionEnd(transition);
+    public boolean equals(Object obj) {
+        return (obj instanceof PackageReference) && Intrinsics.areEqual(getJClass(), ((PackageReference) obj).getJClass());
     }
 
-    @Override // android.transition.Transition.TransitionListener
-    public void onTransitionPause(Transition transition) {
-        n_onTransitionPause(transition);
+    public int hashCode() {
+        return getJClass().hashCode();
     }
 
-    @Override // android.transition.Transition.TransitionListener
-    public void onTransitionResume(Transition transition) {
-        n_onTransitionResume(transition);
-    }
-
-    @Override // android.transition.Transition.TransitionListener
-    public void onTransitionStart(Transition transition) {
-        n_onTransitionStart(transition);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public String toString() {
+        return getJClass().toString() + " (Kotlin reflection is not available)";
     }
 }

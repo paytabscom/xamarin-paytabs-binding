@@ -1,39 +1,45 @@
-package com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.utils;
+package com.google.android.material.theme.overlay;
+
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.AttributeSet;
+import androidx.appcompat.view.ContextThemeWrapper;
+import com.google.android.material.R;
 
 /* loaded from: classes.dex */
-public class Size implements Comparable<Size> {
-    public final int height;
-    public final int width;
+public class MaterialThemeOverlay {
+    private static final int[] ANDROID_THEME_OVERLAY_ATTRS = {16842752, R.attr.theme};
+    private static final int[] MATERIAL_THEME_OVERLAY_ATTR = {R.attr.materialThemeOverlay};
 
-    public Size(int i2, int i3) {
-        this.width = i2;
-        this.height = i3;
+    private MaterialThemeOverlay() {
     }
 
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
+    public static Context wrap(Context context, AttributeSet attributeSet, int i2, int i3) {
+        int obtainMaterialThemeOverlayId = obtainMaterialThemeOverlayId(context, attributeSet, i2, i3);
+        boolean z2 = (context instanceof ContextThemeWrapper) && ((ContextThemeWrapper) context).getThemeResId() == obtainMaterialThemeOverlayId;
+        if (obtainMaterialThemeOverlayId == 0 || z2) {
+            return context;
         }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, obtainMaterialThemeOverlayId);
+        int obtainAndroidThemeOverlayId = obtainAndroidThemeOverlayId(context, attributeSet);
+        if (obtainAndroidThemeOverlayId != 0) {
+            contextThemeWrapper.getTheme().applyStyle(obtainAndroidThemeOverlayId, true);
         }
-        Size size = (Size) obj;
-        return this.width == size.width && this.height == size.height;
+        return contextThemeWrapper;
     }
 
-    public int hashCode() {
-        return (this.width * 31) + this.height;
+    private static int obtainAndroidThemeOverlayId(Context context, AttributeSet attributeSet) {
+        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, ANDROID_THEME_OVERLAY_ATTRS);
+        int resourceId = obtainStyledAttributes.getResourceId(0, 0);
+        int resourceId2 = obtainStyledAttributes.getResourceId(1, 0);
+        obtainStyledAttributes.recycle();
+        return resourceId != 0 ? resourceId : resourceId2;
     }
 
-    @Override // java.lang.Comparable
-    public int compareTo(Size size) {
-        if (Math.max(this.width, this.height) <= Math.max(size.width, size.height) || Math.min(this.width, this.height) <= Math.min(size.width, size.height)) {
-            return (Math.max(this.width, this.height) >= Math.max(size.width, size.height) || Math.min(this.width, this.height) >= Math.min(size.width, size.height)) ? 0 : 1;
-        }
-        return -1;
-    }
-
-    public String toString() {
-        return this.width + "x" + this.height;
+    private static int obtainMaterialThemeOverlayId(Context context, AttributeSet attributeSet, int i2, int i3) {
+        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, MATERIAL_THEME_OVERLAY_ATTR, i2, i3);
+        int resourceId = obtainStyledAttributes.getResourceId(0, 0);
+        obtainStyledAttributes.recycle();
+        return resourceId;
     }
 }

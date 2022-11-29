@@ -1,71 +1,134 @@
-package androidx.lifecycle;
+package androidx.documentfile.provider;
 
-import java.io.Closeable;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.DocumentsContract;
+import android.text.TextUtils;
+import android.util.Log;
 
 /* loaded from: classes.dex */
-public abstract class ViewModel {
-    private final Map<String, Object> mBagOfTags = new HashMap();
-    private volatile boolean mCleared = false;
+class DocumentsContractApi19 {
+    private static final int FLAG_VIRTUAL_DOCUMENT = 512;
+    private static final String TAG = "DocumentFile";
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    public void onCleared() {
+    public static boolean isVirtual(Context context, Uri uri) {
+        return DocumentsContract.isDocumentUri(context, uri) && (getFlags(context, uri) & 512) != 0;
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final void clear() {
-        this.mCleared = true;
-        Map<String, Object> map = this.mBagOfTags;
-        if (map != null) {
-            synchronized (map) {
-                for (Object obj : this.mBagOfTags.values()) {
-                    closeWithRuntimeException(obj);
-                }
-            }
-        }
-        onCleared();
+    public static String getName(Context context, Uri uri) {
+        return queryForString(context, uri, "_display_name", null);
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public <T> T setTagIfAbsent(String str, T t2) {
-        Object obj;
-        synchronized (this.mBagOfTags) {
-            obj = this.mBagOfTags.get(str);
-            if (obj == null) {
-                this.mBagOfTags.put(str, t2);
-            }
-        }
-        if (obj != null) {
-            t2 = obj;
-        }
-        if (this.mCleared) {
-            closeWithRuntimeException(t2);
-        }
-        return t2;
+    private static String getRawType(Context context, Uri uri) {
+        return queryForString(context, uri, "mime_type", null);
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public <T> T getTag(String str) {
-        T t2;
-        Map<String, Object> map = this.mBagOfTags;
-        if (map == null) {
+    public static String getType(Context context, Uri uri) {
+        String rawType = getRawType(context, uri);
+        if ("vnd.android.document/directory".equals(rawType)) {
             return null;
         }
-        synchronized (map) {
-            t2 = (T) this.mBagOfTags.get(str);
-        }
-        return t2;
+        return rawType;
     }
 
-    private static void closeWithRuntimeException(Object obj) {
-        if (obj instanceof Closeable) {
+    public static long getFlags(Context context, Uri uri) {
+        return queryForLong(context, uri, "flags", 0L);
+    }
+
+    public static boolean isDirectory(Context context, Uri uri) {
+        return "vnd.android.document/directory".equals(getRawType(context, uri));
+    }
+
+    public static boolean isFile(Context context, Uri uri) {
+        String rawType = getRawType(context, uri);
+        return ("vnd.android.document/directory".equals(rawType) || TextUtils.isEmpty(rawType)) ? false : true;
+    }
+
+    public static long lastModified(Context context, Uri uri) {
+        return queryForLong(context, uri, "last_modified", 0L);
+    }
+
+    public static long length(Context context, Uri uri) {
+        return queryForLong(context, uri, "_size", 0L);
+    }
+
+    public static boolean canRead(Context context, Uri uri) {
+        return context.checkCallingOrSelfUriPermission(uri, 1) == 0 && !TextUtils.isEmpty(getRawType(context, uri));
+    }
+
+    public static boolean canWrite(Context context, Uri uri) {
+        if (context.checkCallingOrSelfUriPermission(uri, 2) != 0) {
+            return false;
+        }
+        String rawType = getRawType(context, uri);
+        int queryForInt = queryForInt(context, uri, "flags", 0);
+        if (TextUtils.isEmpty(rawType)) {
+            return false;
+        }
+        if ((queryForInt & 4) != 0) {
+            return true;
+        }
+        if (!"vnd.android.document/directory".equals(rawType) || (queryForInt & 8) == 0) {
+            return (TextUtils.isEmpty(rawType) || (queryForInt & 2) == 0) ? false : true;
+        }
+        return true;
+    }
+
+    public static boolean exists(Context context, Uri uri) {
+        Cursor cursor = null;
+        try {
+            cursor = context.getContentResolver().query(uri, new String[]{"document_id"}, null, null, null);
+            return cursor.getCount() > 0;
+        } catch (Exception e2) {
+            Log.w(TAG, "Failed query: " + e2);
+            return false;
+        } finally {
+            closeQuietly(cursor);
+        }
+    }
+
+    private static String queryForString(Context context, Uri uri, String str, String str2) {
+        Cursor cursor = null;
+        try {
+            cursor = context.getContentResolver().query(uri, new String[]{str}, null, null, null);
+            return (!cursor.moveToFirst() || cursor.isNull(0)) ? str2 : cursor.getString(0);
+        } catch (Exception e2) {
+            Log.w(TAG, "Failed query: " + e2);
+            return str2;
+        } finally {
+            closeQuietly(cursor);
+        }
+    }
+
+    private static int queryForInt(Context context, Uri uri, String str, int i2) {
+        return (int) queryForLong(context, uri, str, i2);
+    }
+
+    private static long queryForLong(Context context, Uri uri, String str, long j2) {
+        Cursor cursor = null;
+        try {
+            cursor = context.getContentResolver().query(uri, new String[]{str}, null, null, null);
+            return (!cursor.moveToFirst() || cursor.isNull(0)) ? j2 : cursor.getLong(0);
+        } catch (Exception e2) {
+            Log.w(TAG, "Failed query: " + e2);
+            return j2;
+        } finally {
+            closeQuietly(cursor);
+        }
+    }
+
+    private static void closeQuietly(AutoCloseable autoCloseable) {
+        if (autoCloseable != null) {
             try {
-                ((Closeable) obj).close();
-            } catch (IOException e2) {
-                throw new RuntimeException(e2);
+                autoCloseable.close();
+            } catch (RuntimeException e2) {
+                throw e2;
+            } catch (Exception unused) {
             }
         }
+    }
+
+    private DocumentsContractApi19() {
     }
 }

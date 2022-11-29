@@ -1,79 +1,26 @@
-package androidx.constraintlayout.motion.widget;
+package androidx.collection;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import androidx.constraintlayout.widget.ConstraintAttribute;
-import java.util.HashMap;
-import java.util.HashSet;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: ArraySet.kt */
+@Metadata(d1 = {"\u0000\u0012\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0011\n\u0002\b\u0002\u001a\u0015\u0010\u0000\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0001\"\u0004\b\u0000\u0010\u0002H\u0086\b\u001a+\u0010\u0000\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0001\"\u0004\b\u0000\u0010\u00022\u0012\u0010\u0003\u001a\n\u0012\u0006\b\u0001\u0012\u0002H\u00020\u0004\"\u0002H\u0002¢\u0006\u0002\u0010\u0005¨\u0006\u0006"}, d2 = {"arraySetOf", "Landroidx/collection/ArraySet;", "T", "values", "", "([Ljava/lang/Object;)Landroidx/collection/ArraySet;", "collection-ktx"}, k = 2, mv = {1, 5, 1}, xi = 48)
 /* loaded from: classes.dex */
-public abstract class Key {
-    static final String ALPHA = "alpha";
-    static final String CUSTOM = "CUSTOM";
-    static final String ELEVATION = "elevation";
-    static final String PIVOT_X = "transformPivotX";
-    static final String PIVOT_Y = "transformPivotY";
-    static final String PROGRESS = "progress";
-    static final String ROTATION = "rotation";
-    static final String ROTATION_X = "rotationX";
-    static final String ROTATION_Y = "rotationY";
-    static final String SCALE_X = "scaleX";
-    static final String SCALE_Y = "scaleY";
-    static final String TRANSITION_PATH_ROTATE = "transitionPathRotate";
-    static final String TRANSLATION_X = "translationX";
-    static final String TRANSLATION_Y = "translationY";
-    static final String TRANSLATION_Z = "translationZ";
-    public static int UNSET = -1;
-    static final String WAVE_OFFSET = "waveOffset";
-    static final String WAVE_PERIOD = "wavePeriod";
-    static final String WAVE_VARIES_BY = "waveVariesBy";
-    HashMap<String, ConstraintAttribute> mCustomConstraints;
-    int mFramePosition;
-    int mTargetId;
-    String mTargetString;
-    protected int mType;
-
-    public abstract void addValues(HashMap<String, SplineSet> hashMap);
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public abstract void getAttributeNames(HashSet<String> hashSet);
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public abstract void load(Context context, AttributeSet attributeSet);
-
-    public void setInterpolation(HashMap<String, Integer> hashMap) {
+public final class ArraySetKt {
+    public static final <T> ArraySet<T> arraySetOf() {
+        return new ArraySet<>();
     }
 
-    public abstract void setValue(String str, Object obj);
-
-    public Key() {
-        int i2 = UNSET;
-        this.mFramePosition = i2;
-        this.mTargetId = i2;
-        this.mTargetString = null;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public boolean matches(String str) {
-        String str2 = this.mTargetString;
-        if (str2 == null || str == null) {
-            return false;
+    public static final <T> ArraySet<T> arraySetOf(T... values) {
+        Intrinsics.checkNotNullParameter(values, "values");
+        ArraySet<T> arraySet = new ArraySet<>(values.length);
+        int length = values.length;
+        int i2 = 0;
+        while (i2 < length) {
+            T t2 = values[i2];
+            i2++;
+            arraySet.add(t2);
         }
-        return str.matches(str2);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public float toFloat(Object obj) {
-        return obj instanceof Float ? ((Float) obj).floatValue() : Float.parseFloat(obj.toString());
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public int toInt(Object obj) {
-        return obj instanceof Integer ? ((Integer) obj).intValue() : Integer.parseInt(obj.toString());
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public boolean toBoolean(Object obj) {
-        return obj instanceof Boolean ? ((Boolean) obj).booleanValue() : Boolean.parseBoolean(obj.toString());
+        return arraySet;
     }
 }

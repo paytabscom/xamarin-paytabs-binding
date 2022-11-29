@@ -1,98 +1,84 @@
-package kotlin.jvm.internal;
+package com.google.crypto.tink.proto;
 
-import kotlin.Metadata;
+import com.google.crypto.tink.shaded.protobuf.Internal;
 
-/* compiled from: PrimitiveSpreadBuilders.kt */
-@Metadata(d1 = {"\u0000$\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\b\n\u0002\b\u0006\n\u0002\u0010\u0011\n\u0002\b\u0004\n\u0002\u0010\u0002\n\u0002\b\t\b&\u0018\u0000*\b\b\u0000\u0010\u0001*\u00020\u00022\u00020\u0002B\r\u0012\u0006\u0010\u0003\u001a\u00020\u0004¢\u0006\u0002\u0010\u0005J\u0013\u0010\u000f\u001a\u00020\u00102\u0006\u0010\u0011\u001a\u00028\u0000¢\u0006\u0002\u0010\u0012J\b\u0010\u0003\u001a\u00020\u0004H\u0004J\u001d\u0010\u0013\u001a\u00028\u00002\u0006\u0010\u0014\u001a\u00028\u00002\u0006\u0010\u0015\u001a\u00028\u0000H\u0004¢\u0006\u0002\u0010\u0016J\u0011\u0010\u0017\u001a\u00020\u0004*\u00028\u0000H$¢\u0006\u0002\u0010\u0018R\u001a\u0010\u0006\u001a\u00020\u0004X\u0084\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\u0007\u0010\b\"\u0004\b\t\u0010\u0005R\u000e\u0010\u0003\u001a\u00020\u0004X\u0082\u0004¢\u0006\u0002\n\u0000R\u001e\u0010\n\u001a\n\u0012\u0006\u0012\u0004\u0018\u00018\u00000\u000bX\u0082\u0004¢\u0006\n\n\u0002\u0010\u000e\u0012\u0004\b\f\u0010\r¨\u0006\u0019"}, d2 = {"Lkotlin/jvm/internal/PrimitiveSpreadBuilder;", "T", "", "size", "", "(I)V", "position", "getPosition", "()I", "setPosition", "spreads", "", "getSpreads$annotations", "()V", "[Ljava/lang/Object;", "addSpread", "", "spreadArgument", "(Ljava/lang/Object;)V", "toArray", "values", "result", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", "getSize", "(Ljava/lang/Object;)I", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public abstract class PrimitiveSpreadBuilder<T> {
-    private int position;
-    private final int size;
-    private final T[] spreads;
-
-    private static /* synthetic */ void getSpreads$annotations() {
-    }
-
-    protected abstract int getSize(T t2);
-
-    public PrimitiveSpreadBuilder(int i2) {
-        this.size = i2;
-        this.spreads = (T[]) new Object[i2];
-    }
-
-    /* JADX INFO: Access modifiers changed from: protected */
-    public final int getPosition() {
-        return this.position;
-    }
-
-    /* JADX INFO: Access modifiers changed from: protected */
-    public final void setPosition(int i2) {
-        this.position = i2;
-    }
-
-    public final void addSpread(T spreadArgument) {
-        Intrinsics.checkNotNullParameter(spreadArgument, "spreadArgument");
-        T[] tArr = this.spreads;
-        int i2 = this.position;
-        this.position = i2 + 1;
-        tArr[i2] = spreadArgument;
-    }
-
-    /* JADX INFO: Access modifiers changed from: protected */
-    public final int size() {
-        int i2 = this.size - 1;
-        int i3 = 0;
-        if (i2 >= 0) {
-            int i4 = 0;
-            while (true) {
-                T t2 = this.spreads[i4];
-                i3 += t2 != null ? getSize(t2) : 1;
-                if (i4 == i2) {
-                    break;
-                }
-                i4++;
-            }
+public enum OutputPrefixType implements Internal.EnumLite {
+    UNKNOWN_PREFIX(0),
+    TINK(1),
+    LEGACY(2),
+    RAW(3),
+    CRUNCHY(4),
+    UNRECOGNIZED(-1);
+    
+    public static final int CRUNCHY_VALUE = 4;
+    public static final int LEGACY_VALUE = 2;
+    public static final int RAW_VALUE = 3;
+    public static final int TINK_VALUE = 1;
+    public static final int UNKNOWN_PREFIX_VALUE = 0;
+    private static final Internal.EnumLiteMap<OutputPrefixType> internalValueMap = new Internal.EnumLiteMap<OutputPrefixType>() { // from class: com.google.crypto.tink.proto.OutputPrefixType.1
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumLiteMap
+        public OutputPrefixType findValueByNumber(int number) {
+            return OutputPrefixType.forNumber(number);
         }
-        return i3;
+    };
+    private final int value;
+
+    @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumLite
+    public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+            throw new IllegalArgumentException("Can't get the number of an unknown enum value.");
+        }
+        return this.value;
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    public final T toArray(T values, T result) {
-        int i2;
-        Intrinsics.checkNotNullParameter(values, "values");
-        Intrinsics.checkNotNullParameter(result, "result");
-        int i3 = this.size - 1;
-        int i4 = 0;
-        if (i3 >= 0) {
-            int i5 = 0;
-            int i6 = 0;
-            i2 = 0;
-            while (true) {
-                T t2 = this.spreads[i5];
-                if (t2 != null) {
-                    if (i6 < i5) {
-                        int i7 = i5 - i6;
-                        System.arraycopy(values, i6, result, i2, i7);
-                        i2 += i7;
+    @Deprecated
+    public static OutputPrefixType valueOf(int value) {
+        return forNumber(value);
+    }
+
+    public static OutputPrefixType forNumber(int value) {
+        if (value != 0) {
+            if (value != 1) {
+                if (value != 2) {
+                    if (value != 3) {
+                        if (value != 4) {
+                            return null;
+                        }
+                        return CRUNCHY;
                     }
-                    int size = getSize(t2);
-                    System.arraycopy(t2, 0, result, i2, size);
-                    i2 += size;
-                    i6 = i5 + 1;
+                    return RAW;
                 }
-                if (i5 == i3) {
-                    break;
-                }
-                i5++;
+                return LEGACY;
             }
-            i4 = i6;
-        } else {
-            i2 = 0;
+            return TINK;
         }
-        int i8 = this.size;
-        if (i4 < i8) {
-            System.arraycopy(values, i4, result, i2, i8 - i4);
+        return UNKNOWN_PREFIX;
+    }
+
+    public static Internal.EnumLiteMap<OutputPrefixType> internalGetValueMap() {
+        return internalValueMap;
+    }
+
+    public static Internal.EnumVerifier internalGetVerifier() {
+        return OutputPrefixTypeVerifier.INSTANCE;
+    }
+
+    /* loaded from: classes.dex */
+    private static final class OutputPrefixTypeVerifier implements Internal.EnumVerifier {
+        static final Internal.EnumVerifier INSTANCE = new OutputPrefixTypeVerifier();
+
+        private OutputPrefixTypeVerifier() {
         }
-        return result;
+
+        @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumVerifier
+        public boolean isInRange(int number) {
+            return OutputPrefixType.forNumber(number) != null;
+        }
+    }
+
+    OutputPrefixType(int value) {
+        this.value = value;
     }
 }

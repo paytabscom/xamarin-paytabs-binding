@@ -1,26 +1,53 @@
-package kotlinx.coroutines;
+package com.google.gson;
 
-import kotlin.Metadata;
+import com.google.gson.internal.LazilyParsedNumber;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.MalformedJsonException;
+import java.io.IOException;
+import java.math.BigDecimal;
 
-/* compiled from: Job.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000(\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u0003\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\bÇ\u0002\u0018\u00002\u00020\u00012\u00020\u0002B\u0007\b\u0002¢\u0006\u0002\u0010\u0003J\u0010\u0010\u0004\u001a\u00020\u00052\u0006\u0010\u0006\u001a\u00020\u0007H\u0016J\b\u0010\b\u001a\u00020\tH\u0016J\b\u0010\n\u001a\u00020\u000bH\u0016¨\u0006\f"}, d2 = {"Lkotlinx/coroutines/NonDisposableHandle;", "Lkotlinx/coroutines/DisposableHandle;", "Lkotlinx/coroutines/ChildHandle;", "()V", "childCancelled", "", "cause", "", "dispose", "", "toString", "", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class NonDisposableHandle implements DisposableHandle, ChildHandle {
-    public static final NonDisposableHandle INSTANCE = new NonDisposableHandle();
-
-    @Override // kotlinx.coroutines.ChildHandle
-    public boolean childCancelled(Throwable th) {
-        return false;
-    }
-
-    @Override // kotlinx.coroutines.DisposableHandle
-    public void dispose() {
-    }
-
-    public String toString() {
-        return "NonDisposableHandle";
-    }
-
-    private NonDisposableHandle() {
+public enum ToNumberPolicy implements ToNumberStrategy {
+    DOUBLE { // from class: com.google.gson.ToNumberPolicy.1
+        @Override // com.google.gson.ToNumberStrategy
+        public Double readNumber(JsonReader jsonReader) throws IOException {
+            return Double.valueOf(jsonReader.nextDouble());
+        }
+    },
+    LAZILY_PARSED_NUMBER { // from class: com.google.gson.ToNumberPolicy.2
+        @Override // com.google.gson.ToNumberStrategy
+        public Number readNumber(JsonReader jsonReader) throws IOException {
+            return new LazilyParsedNumber(jsonReader.nextString());
+        }
+    },
+    LONG_OR_DOUBLE { // from class: com.google.gson.ToNumberPolicy.3
+        @Override // com.google.gson.ToNumberStrategy
+        public Number readNumber(JsonReader jsonReader) throws IOException, JsonParseException {
+            String nextString = jsonReader.nextString();
+            try {
+                try {
+                    return Long.valueOf(Long.parseLong(nextString));
+                } catch (NumberFormatException unused) {
+                    Double valueOf = Double.valueOf(nextString);
+                    if ((valueOf.isInfinite() || valueOf.isNaN()) && !jsonReader.isLenient()) {
+                        throw new MalformedJsonException("JSON forbids NaN and infinities: " + valueOf + "; at path " + jsonReader.getPreviousPath());
+                    }
+                    return valueOf;
+                }
+            } catch (NumberFormatException e2) {
+                throw new JsonParseException("Cannot parse " + nextString + "; at path " + jsonReader.getPreviousPath(), e2);
+            }
+        }
+    },
+    BIG_DECIMAL { // from class: com.google.gson.ToNumberPolicy.4
+        @Override // com.google.gson.ToNumberStrategy
+        public BigDecimal readNumber(JsonReader jsonReader) throws IOException {
+            String nextString = jsonReader.nextString();
+            try {
+                return new BigDecimal(nextString);
+            } catch (NumberFormatException e2) {
+                throw new JsonParseException("Cannot parse " + nextString + "; at path " + jsonReader.getPreviousPath(), e2);
+            }
+        }
     }
 }

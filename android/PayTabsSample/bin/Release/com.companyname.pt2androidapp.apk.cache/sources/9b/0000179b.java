@@ -1,97 +1,120 @@
-package xamarin.android.net;
+package kotlin.streams.jdk8;
 
-import java.net.InetAddress;
-import java.net.Socket;
-import java.util.ArrayList;
-import javax.net.ssl.SSLSocketFactory;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.Iterator;
+import java.util.List;
+import java.util.PrimitiveIterator;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+import kotlin.Metadata;
+import kotlin.collections.ArraysKt;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.sequences.Sequence;
 
+/* compiled from: Streams.kt */
+@Metadata(d1 = {"\u0000.\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0006\n\u0002\u0018\u0002\n\u0002\u0010\b\n\u0002\u0018\u0002\n\u0002\u0010\t\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010 \n\u0000\u001a\u0012\u0010\u0000\u001a\b\u0012\u0004\u0012\u00020\u00020\u0001*\u00020\u0003H\u0007\u001a\u0012\u0010\u0000\u001a\b\u0012\u0004\u0012\u00020\u00040\u0001*\u00020\u0005H\u0007\u001a\u0012\u0010\u0000\u001a\b\u0012\u0004\u0012\u00020\u00060\u0001*\u00020\u0007H\u0007\u001a\u001e\u0010\u0000\u001a\b\u0012\u0004\u0012\u0002H\b0\u0001\"\u0004\b\u0000\u0010\b*\b\u0012\u0004\u0012\u0002H\b0\tH\u0007\u001a\u001e\u0010\n\u001a\b\u0012\u0004\u0012\u0002H\b0\t\"\u0004\b\u0000\u0010\b*\b\u0012\u0004\u0012\u0002H\b0\u0001H\u0007\u001a\u0012\u0010\u000b\u001a\b\u0012\u0004\u0012\u00020\u00020\f*\u00020\u0003H\u0007\u001a\u0012\u0010\u000b\u001a\b\u0012\u0004\u0012\u00020\u00040\f*\u00020\u0005H\u0007\u001a\u0012\u0010\u000b\u001a\b\u0012\u0004\u0012\u00020\u00060\f*\u00020\u0007H\u0007\u001a\u001e\u0010\u000b\u001a\b\u0012\u0004\u0012\u0002H\b0\f\"\u0004\b\u0000\u0010\b*\b\u0012\u0004\u0012\u0002H\b0\tH\u0007¨\u0006\r"}, d2 = {"asSequence", "Lkotlin/sequences/Sequence;", "", "Ljava/util/stream/DoubleStream;", "", "Ljava/util/stream/IntStream;", "", "Ljava/util/stream/LongStream;", "T", "Ljava/util/stream/Stream;", "asStream", "toList", "", "kotlin-stdlib-jdk8"}, k = 2, mv = {1, 7, 1}, pn = "kotlin.streams", xi = 48)
 /* loaded from: classes.dex */
-public class OldAndroidSSLSocketFactory extends SSLSocketFactory implements IGCUserPeer {
-    public static final String __md_methods = "n_getDefaultCipherSuites:()[Ljava/lang/String;:GetGetDefaultCipherSuitesHandler\nn_getSupportedCipherSuites:()[Ljava/lang/String;:GetGetSupportedCipherSuitesHandler\nn_createSocket:(Ljava/net/InetAddress;ILjava/net/InetAddress;I)Ljava/net/Socket;:GetCreateSocket_Ljava_net_InetAddress_ILjava_net_InetAddress_IHandler\nn_createSocket:(Ljava/net/InetAddress;I)Ljava/net/Socket;:GetCreateSocket_Ljava_net_InetAddress_IHandler\nn_createSocket:(Ljava/lang/String;ILjava/net/InetAddress;I)Ljava/net/Socket;:GetCreateSocket_Ljava_lang_String_ILjava_net_InetAddress_IHandler\nn_createSocket:(Ljava/lang/String;I)Ljava/net/Socket;:GetCreateSocket_Ljava_lang_String_IHandler\nn_createSocket:(Ljava/net/Socket;Ljava/lang/String;IZ)Ljava/net/Socket;:GetCreateSocket_Ljava_net_Socket_Ljava_lang_String_IZHandler\nn_createSocket:()Ljava/net/Socket;:GetCreateSocketHandler\n";
-    private ArrayList refList;
-
-    private native Socket n_createSocket();
-
-    private native Socket n_createSocket(String str, int i2);
-
-    private native Socket n_createSocket(String str, int i2, InetAddress inetAddress, int i3);
-
-    private native Socket n_createSocket(InetAddress inetAddress, int i2);
-
-    private native Socket n_createSocket(InetAddress inetAddress, int i2, InetAddress inetAddress2, int i3);
-
-    private native Socket n_createSocket(Socket socket, String str, int i2, boolean z2);
-
-    private native String[] n_getDefaultCipherSuites();
-
-    private native String[] n_getSupportedCipherSuites();
-
-    static {
-        Runtime.register("Xamarin.Android.Net.OldAndroidSSLSocketFactory, Mono.Android", OldAndroidSSLSocketFactory.class, __md_methods);
+public final class StreamsKt {
+    public static /* synthetic */ Spliterator lambda$D6rJ2g9z2pCQAEMFkqgtKPOz0JA(Sequence sequence) {
+        return asStream$lambda$4(sequence);
     }
 
-    public OldAndroidSSLSocketFactory() {
-        if (getClass() == OldAndroidSSLSocketFactory.class) {
-            TypeManager.Activate("Xamarin.Android.Net.OldAndroidSSLSocketFactory, Mono.Android", "", this, new Object[0]);
-        }
+    public static final <T> Sequence<T> asSequence(final Stream<T> stream) {
+        Intrinsics.checkNotNullParameter(stream, "<this>");
+        return new Sequence<T>() { // from class: kotlin.streams.jdk8.StreamsKt$asSequence$$inlined$Sequence$1
+            @Override // kotlin.sequences.Sequence
+            public Iterator<T> iterator() {
+                Iterator<T> it = stream.iterator();
+                Intrinsics.checkNotNullExpressionValue(it, "iterator()");
+                return it;
+            }
+        };
     }
 
-    @Override // javax.net.ssl.SSLSocketFactory
-    public String[] getDefaultCipherSuites() {
-        return n_getDefaultCipherSuites();
+    public static final Sequence<Integer> asSequence(final IntStream intStream) {
+        Intrinsics.checkNotNullParameter(intStream, "<this>");
+        return new Sequence<Integer>() { // from class: kotlin.streams.jdk8.StreamsKt$asSequence$$inlined$Sequence$2
+            @Override // kotlin.sequences.Sequence
+            public Iterator<Integer> iterator() {
+                PrimitiveIterator.OfInt it = intStream.iterator();
+                Intrinsics.checkNotNullExpressionValue(it, "iterator()");
+                return it;
+            }
+        };
     }
 
-    @Override // javax.net.ssl.SSLSocketFactory
-    public String[] getSupportedCipherSuites() {
-        return n_getSupportedCipherSuites();
+    public static final Sequence<Long> asSequence(final LongStream longStream) {
+        Intrinsics.checkNotNullParameter(longStream, "<this>");
+        return new Sequence<Long>() { // from class: kotlin.streams.jdk8.StreamsKt$asSequence$$inlined$Sequence$3
+            @Override // kotlin.sequences.Sequence
+            public Iterator<Long> iterator() {
+                PrimitiveIterator.OfLong it = longStream.iterator();
+                Intrinsics.checkNotNullExpressionValue(it, "iterator()");
+                return it;
+            }
+        };
     }
 
-    @Override // javax.net.SocketFactory
-    public Socket createSocket(InetAddress inetAddress, int i2, InetAddress inetAddress2, int i3) {
-        return n_createSocket(inetAddress, i2, inetAddress2, i3);
+    public static final Sequence<Double> asSequence(final DoubleStream doubleStream) {
+        Intrinsics.checkNotNullParameter(doubleStream, "<this>");
+        return new Sequence<Double>() { // from class: kotlin.streams.jdk8.StreamsKt$asSequence$$inlined$Sequence$4
+            @Override // kotlin.sequences.Sequence
+            public Iterator<Double> iterator() {
+                PrimitiveIterator.OfDouble it = doubleStream.iterator();
+                Intrinsics.checkNotNullExpressionValue(it, "iterator()");
+                return it;
+            }
+        };
     }
 
-    @Override // javax.net.SocketFactory
-    public Socket createSocket(InetAddress inetAddress, int i2) {
-        return n_createSocket(inetAddress, i2);
+    public static final <T> Stream<T> asStream(final Sequence<? extends T> sequence) {
+        Intrinsics.checkNotNullParameter(sequence, "<this>");
+        Stream<T> stream = StreamSupport.stream(new Supplier() { // from class: kotlin.streams.jdk8.-$$Lambda$StreamsKt$D6rJ2g9z2pCQAEMFkqgtKPOz0JA
+            @Override // java.util.function.Supplier
+            public final Object get() {
+                return StreamsKt.lambda$D6rJ2g9z2pCQAEMFkqgtKPOz0JA(Sequence.this);
+            }
+        }, 16, false);
+        Intrinsics.checkNotNullExpressionValue(stream, "stream({ Spliterators.sp…literator.ORDERED, false)");
+        return stream;
     }
 
-    @Override // javax.net.SocketFactory
-    public Socket createSocket(String str, int i2, InetAddress inetAddress, int i3) {
-        return n_createSocket(str, i2, inetAddress, i3);
+    public static final Spliterator asStream$lambda$4(Sequence this_asStream) {
+        Intrinsics.checkNotNullParameter(this_asStream, "$this_asStream");
+        return Spliterators.spliteratorUnknownSize(this_asStream.iterator(), 16);
     }
 
-    @Override // javax.net.SocketFactory
-    public Socket createSocket(String str, int i2) {
-        return n_createSocket(str, i2);
+    public static final <T> List<T> toList(Stream<T> stream) {
+        Intrinsics.checkNotNullParameter(stream, "<this>");
+        Object collect = stream.collect(Collectors.toList());
+        Intrinsics.checkNotNullExpressionValue(collect, "collect(Collectors.toList<T>())");
+        return (List) collect;
     }
 
-    @Override // javax.net.ssl.SSLSocketFactory
-    public Socket createSocket(Socket socket, String str, int i2, boolean z2) {
-        return n_createSocket(socket, str, i2, z2);
+    public static final List<Integer> toList(IntStream intStream) {
+        Intrinsics.checkNotNullParameter(intStream, "<this>");
+        int[] array = intStream.toArray();
+        Intrinsics.checkNotNullExpressionValue(array, "toArray()");
+        return ArraysKt.asList(array);
     }
 
-    @Override // javax.net.SocketFactory
-    public Socket createSocket() {
-        return n_createSocket();
+    public static final List<Long> toList(LongStream longStream) {
+        Intrinsics.checkNotNullParameter(longStream, "<this>");
+        long[] array = longStream.toArray();
+        Intrinsics.checkNotNullExpressionValue(array, "toArray()");
+        return ArraysKt.asList(array);
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public static final List<Double> toList(DoubleStream doubleStream) {
+        Intrinsics.checkNotNullParameter(doubleStream, "<this>");
+        double[] array = doubleStream.toArray();
+        Intrinsics.checkNotNullExpressionValue(array, "toArray()");
+        return ArraysKt.asList(array);
     }
 }

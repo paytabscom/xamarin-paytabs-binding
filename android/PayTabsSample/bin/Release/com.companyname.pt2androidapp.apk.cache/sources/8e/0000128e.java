@@ -1,26 +1,54 @@
-package kotlinx.coroutines;
+package com.google.gson;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import kotlin.Metadata;
+import com.google.gson.internal.C$Gson$Preconditions;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.Collection;
 
-/* compiled from: Executors.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0018\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\u001a\u0011\u0010\u0000\u001a\u00020\u0001*\u00020\u0002H\u0007¢\u0006\u0002\b\u0003\u001a\u0011\u0010\u0000\u001a\u00020\u0004*\u00020\u0005H\u0007¢\u0006\u0002\b\u0003\u001a\n\u0010\u0006\u001a\u00020\u0002*\u00020\u0001¨\u0006\u0007"}, d2 = {"asCoroutineDispatcher", "Lkotlinx/coroutines/CoroutineDispatcher;", "Ljava/util/concurrent/Executor;", "from", "Lkotlinx/coroutines/ExecutorCoroutineDispatcher;", "Ljava/util/concurrent/ExecutorService;", "asExecutor", "kotlinx-coroutines-core"}, k = 2, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class ExecutorsKt {
-    public static final ExecutorCoroutineDispatcher from(ExecutorService executorService) {
-        return new ExecutorCoroutineDispatcherImpl(executorService);
+public final class FieldAttributes {
+    private final Field field;
+
+    public FieldAttributes(Field field) {
+        C$Gson$Preconditions.checkNotNull(field);
+        this.field = field;
     }
 
-    public static final CoroutineDispatcher from(Executor executor) {
-        CoroutineDispatcher coroutineDispatcher;
-        DispatcherExecutor dispatcherExecutor = (DispatcherExecutor) (!(executor instanceof DispatcherExecutor) ? null : executor);
-        return (dispatcherExecutor == null || (coroutineDispatcher = dispatcherExecutor.dispatcher) == null) ? new ExecutorCoroutineDispatcherImpl(executor) : coroutineDispatcher;
+    public Class<?> getDeclaringClass() {
+        return this.field.getDeclaringClass();
     }
 
-    public static final Executor asExecutor(CoroutineDispatcher coroutineDispatcher) {
-        Executor executor;
-        ExecutorCoroutineDispatcher executorCoroutineDispatcher = (ExecutorCoroutineDispatcher) (!(coroutineDispatcher instanceof ExecutorCoroutineDispatcher) ? null : coroutineDispatcher);
-        return (executorCoroutineDispatcher == null || (executor = executorCoroutineDispatcher.getExecutor()) == null) ? new DispatcherExecutor(coroutineDispatcher) : executor;
+    public String getName() {
+        return this.field.getName();
+    }
+
+    public Type getDeclaredType() {
+        return this.field.getGenericType();
+    }
+
+    public Class<?> getDeclaredClass() {
+        return this.field.getType();
+    }
+
+    public <T extends Annotation> T getAnnotation(Class<T> cls) {
+        return (T) this.field.getAnnotation(cls);
+    }
+
+    public Collection<Annotation> getAnnotations() {
+        return Arrays.asList(this.field.getAnnotations());
+    }
+
+    public boolean hasModifier(int i2) {
+        return (i2 & this.field.getModifiers()) != 0;
+    }
+
+    Object get(Object obj) throws IllegalAccessException {
+        return this.field.get(obj);
+    }
+
+    boolean isSynthetic() {
+        return this.field.isSynthetic();
     }
 }

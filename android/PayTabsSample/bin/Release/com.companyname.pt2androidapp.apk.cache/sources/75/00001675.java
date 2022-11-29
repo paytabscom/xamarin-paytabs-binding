@@ -1,47 +1,14 @@
-package mono.android.media.tv;
+package kotlin.jvm.internal;
 
-import android.media.tv.TvView;
-import android.view.InputEvent;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.Iterator;
+import kotlin.Metadata;
 
+/* compiled from: ArrayIterator.kt */
+@Metadata(d1 = {"\u0000\u0012\n\u0000\n\u0002\u0010(\n\u0002\b\u0002\n\u0002\u0010\u0011\n\u0002\b\u0002\u001a%\u0010\u0000\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0001\"\u0004\b\u0000\u0010\u00022\f\u0010\u0003\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0004¢\u0006\u0002\u0010\u0005¨\u0006\u0006"}, d2 = {"iterator", "", "T", "array", "", "([Ljava/lang/Object;)Ljava/util/Iterator;", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class TvView_OnUnhandledInputEventListenerImplementor implements IGCUserPeer, TvView.OnUnhandledInputEventListener {
-    public static final String __md_methods = "n_onUnhandledInputEvent:(Landroid/view/InputEvent;)Z:GetOnUnhandledInputEvent_Landroid_view_InputEvent_Handler:Android.Media.TV.TvView/IOnUnhandledInputEventListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native boolean n_onUnhandledInputEvent(InputEvent inputEvent);
-
-    static {
-        Runtime.register("Android.Media.TV.TvView+IOnUnhandledInputEventListenerImplementor, Mono.Android", TvView_OnUnhandledInputEventListenerImplementor.class, __md_methods);
-    }
-
-    public TvView_OnUnhandledInputEventListenerImplementor() {
-        if (getClass() == TvView_OnUnhandledInputEventListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.TV.TvView+IOnUnhandledInputEventListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.media.tv.TvView.OnUnhandledInputEventListener
-    public boolean onUnhandledInputEvent(InputEvent inputEvent) {
-        return n_onUnhandledInputEvent(inputEvent);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+public final class ArrayIteratorKt {
+    public static final <T> Iterator<T> iterator(T[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        return new ArrayIterator(array);
     }
 }

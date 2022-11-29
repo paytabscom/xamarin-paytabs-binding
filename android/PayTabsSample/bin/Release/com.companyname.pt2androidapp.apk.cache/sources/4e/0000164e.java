@@ -1,46 +1,24 @@
-package mono.android.media;
+package kotlin.jvm;
 
-import android.media.MediaDrm;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: KotlinReflectionNotSupportedError.kt */
+@Metadata(d1 = {"\u0000\u001c\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0002\b\u0002\n\u0002\u0010\u0003\n\u0002\b\u0003\b\u0016\u0018\u00002\u00020\u0001B\u0007\b\u0016¢\u0006\u0002\u0010\u0002B\u0011\b\u0016\u0012\b\u0010\u0003\u001a\u0004\u0018\u00010\u0004¢\u0006\u0002\u0010\u0005B\u001b\b\u0016\u0012\b\u0010\u0003\u001a\u0004\u0018\u00010\u0004\u0012\b\u0010\u0006\u001a\u0004\u0018\u00010\u0007¢\u0006\u0002\u0010\bB\u0011\b\u0016\u0012\b\u0010\u0006\u001a\u0004\u0018\u00010\u0007¢\u0006\u0002\u0010\t¨\u0006\n"}, d2 = {"Lkotlin/jvm/KotlinReflectionNotSupportedError;", "Ljava/lang/Error;", "()V", "message", "", "(Ljava/lang/String;)V", "cause", "", "(Ljava/lang/String;Ljava/lang/Throwable;)V", "(Ljava/lang/Throwable;)V", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class MediaDrm_OnEventListenerImplementor implements IGCUserPeer, MediaDrm.OnEventListener {
-    public static final String __md_methods = "n_onEvent:(Landroid/media/MediaDrm;[BII[B)V:GetOnEvent_Landroid_media_MediaDrm_arrayBIIarrayBHandler:Android.Media.MediaDrm/IOnEventListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onEvent(MediaDrm mediaDrm, byte[] bArr, int i2, int i3, byte[] bArr2);
-
-    static {
-        Runtime.register("Android.Media.MediaDrm+IOnEventListenerImplementor, Mono.Android", MediaDrm_OnEventListenerImplementor.class, __md_methods);
+public class KotlinReflectionNotSupportedError extends Error {
+    public KotlinReflectionNotSupportedError() {
+        super("Kotlin reflection implementation is not found at runtime. Make sure you have kotlin-reflect.jar in the classpath");
     }
 
-    public MediaDrm_OnEventListenerImplementor() {
-        if (getClass() == MediaDrm_OnEventListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.MediaDrm+IOnEventListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    public KotlinReflectionNotSupportedError(String str) {
+        super(str);
     }
 
-    @Override // android.media.MediaDrm.OnEventListener
-    public void onEvent(MediaDrm mediaDrm, byte[] bArr, int i2, int i3, byte[] bArr2) {
-        n_onEvent(mediaDrm, bArr, i2, i3, bArr2);
+    public KotlinReflectionNotSupportedError(String str, Throwable th) {
+        super(str, th);
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public KotlinReflectionNotSupportedError(Throwable th) {
+        super(th);
     }
 }

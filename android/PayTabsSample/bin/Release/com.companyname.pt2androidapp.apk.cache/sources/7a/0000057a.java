@@ -1,173 +1,131 @@
-package androidx.core.text;
+package androidx.core.graphics;
 
-import java.nio.CharBuffer;
-import java.util.Locale;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Typeface;
+import android.graphics.fonts.Font;
+import android.graphics.fonts.FontFamily;
+import android.graphics.fonts.FontStyle;
+import android.os.CancellationSignal;
+import android.os.ParcelFileDescriptor;
+import androidx.core.content.res.FontResourcesParserCompat;
+import androidx.core.provider.FontsContractCompat;
+import java.io.IOException;
+import java.io.InputStream;
 
 /* loaded from: classes.dex */
-public final class TextDirectionHeuristicsCompat {
-    private static final int STATE_FALSE = 1;
-    private static final int STATE_TRUE = 0;
-    private static final int STATE_UNKNOWN = 2;
-    public static final TextDirectionHeuristicCompat LTR = new TextDirectionHeuristicInternal(null, false);
-    public static final TextDirectionHeuristicCompat RTL = new TextDirectionHeuristicInternal(null, true);
-    public static final TextDirectionHeuristicCompat FIRSTSTRONG_LTR = new TextDirectionHeuristicInternal(FirstStrong.INSTANCE, false);
-    public static final TextDirectionHeuristicCompat FIRSTSTRONG_RTL = new TextDirectionHeuristicInternal(FirstStrong.INSTANCE, true);
-    public static final TextDirectionHeuristicCompat ANYRTL_LTR = new TextDirectionHeuristicInternal(AnyStrong.INSTANCE_RTL, false);
-    public static final TextDirectionHeuristicCompat LOCALE = TextDirectionHeuristicLocale.INSTANCE;
-
-    /* JADX INFO: Access modifiers changed from: private */
-    /* loaded from: classes.dex */
-    public interface TextDirectionAlgorithm {
-        int checkRtl(CharSequence charSequence, int i2, int i3);
+public class TypefaceCompatApi29Impl extends TypefaceCompatBaseImpl {
+    private static int getMatchScore(FontStyle fontStyle, FontStyle fontStyle2) {
+        return (Math.abs(fontStyle.getWeight() - fontStyle2.getWeight()) / 100) + (fontStyle.getSlant() == fontStyle2.getSlant() ? 0 : 2);
     }
 
-    static int isRtlText(int i2) {
-        if (i2 != 0) {
-            return (i2 == 1 || i2 == 2) ? 0 : 2;
+    private Font findBaseFont(FontFamily fontFamily, int i2) {
+        FontStyle fontStyle = new FontStyle((i2 & 1) != 0 ? 700 : 400, (i2 & 2) != 0 ? 1 : 0);
+        Font font = fontFamily.getFont(0);
+        int matchScore = getMatchScore(fontStyle, font.getStyle());
+        for (int i3 = 1; i3 < fontFamily.getSize(); i3++) {
+            Font font2 = fontFamily.getFont(i3);
+            int matchScore2 = getMatchScore(fontStyle, font2.getStyle());
+            if (matchScore2 < matchScore) {
+                font = font2;
+                matchScore = matchScore2;
+            }
         }
-        return 1;
+        return font;
     }
 
-    static int isRtlTextOrFormat(int i2) {
-        if (i2 != 0) {
-            if (i2 == 1 || i2 == 2) {
-                return 0;
-            }
-            switch (i2) {
-                case 14:
-                case 15:
-                    break;
-                case 16:
-                case 17:
-                    return 0;
-                default:
-                    return 2;
-            }
-        }
-        return 1;
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // androidx.core.graphics.TypefaceCompatBaseImpl
+    public FontsContractCompat.FontInfo findBestInfo(FontsContractCompat.FontInfo[] fontInfoArr, int i2) {
+        throw new RuntimeException("Do not use this function in API 29 or later.");
     }
 
-    /* loaded from: classes.dex */
-    private static abstract class TextDirectionHeuristicImpl implements TextDirectionHeuristicCompat {
-        private final TextDirectionAlgorithm mAlgorithm;
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // androidx.core.graphics.TypefaceCompatBaseImpl
+    public Typeface createFromInputStream(Context context, InputStream inputStream) {
+        throw new RuntimeException("Do not use this function in API 29 or later.");
+    }
 
-        protected abstract boolean defaultIsRtl();
-
-        TextDirectionHeuristicImpl(TextDirectionAlgorithm textDirectionAlgorithm) {
-            this.mAlgorithm = textDirectionAlgorithm;
-        }
-
-        @Override // androidx.core.text.TextDirectionHeuristicCompat
-        public boolean isRtl(char[] cArr, int i2, int i3) {
-            return isRtl(CharBuffer.wrap(cArr), i2, i3);
-        }
-
-        @Override // androidx.core.text.TextDirectionHeuristicCompat
-        public boolean isRtl(CharSequence charSequence, int i2, int i3) {
-            if (charSequence == null || i2 < 0 || i3 < 0 || charSequence.length() - i3 < i2) {
-                throw new IllegalArgumentException();
-            }
-            if (this.mAlgorithm == null) {
-                return defaultIsRtl();
-            }
-            return doCheck(charSequence, i2, i3);
-        }
-
-        private boolean doCheck(CharSequence charSequence, int i2, int i3) {
-            int checkRtl = this.mAlgorithm.checkRtl(charSequence, i2, i3);
-            if (checkRtl != 0) {
-                if (checkRtl != 1) {
-                    return defaultIsRtl();
+    @Override // androidx.core.graphics.TypefaceCompatBaseImpl
+    public Typeface createFromFontInfo(Context context, CancellationSignal cancellationSignal, FontsContractCompat.FontInfo[] fontInfoArr, int i2) {
+        int i3;
+        ParcelFileDescriptor openFileDescriptor;
+        ContentResolver contentResolver = context.getContentResolver();
+        try {
+            FontFamily.Builder builder = null;
+            for (FontsContractCompat.FontInfo fontInfo : fontInfoArr) {
+                try {
+                    openFileDescriptor = contentResolver.openFileDescriptor(fontInfo.getUri(), "r", cancellationSignal);
+                } catch (IOException unused) {
                 }
-                return false;
-            }
-            return true;
-        }
-    }
-
-    /* loaded from: classes.dex */
-    private static class TextDirectionHeuristicInternal extends TextDirectionHeuristicImpl {
-        private final boolean mDefaultIsRtl;
-
-        TextDirectionHeuristicInternal(TextDirectionAlgorithm textDirectionAlgorithm, boolean z2) {
-            super(textDirectionAlgorithm);
-            this.mDefaultIsRtl = z2;
-        }
-
-        @Override // androidx.core.text.TextDirectionHeuristicsCompat.TextDirectionHeuristicImpl
-        protected boolean defaultIsRtl() {
-            return this.mDefaultIsRtl;
-        }
-    }
-
-    /* loaded from: classes.dex */
-    private static class FirstStrong implements TextDirectionAlgorithm {
-        static final FirstStrong INSTANCE = new FirstStrong();
-
-        @Override // androidx.core.text.TextDirectionHeuristicsCompat.TextDirectionAlgorithm
-        public int checkRtl(CharSequence charSequence, int i2, int i3) {
-            int i4 = i3 + i2;
-            int i5 = 2;
-            while (i2 < i4 && i5 == 2) {
-                i5 = TextDirectionHeuristicsCompat.isRtlTextOrFormat(Character.getDirectionality(charSequence.charAt(i2)));
-                i2++;
-            }
-            return i5;
-        }
-
-        private FirstStrong() {
-        }
-    }
-
-    /* loaded from: classes.dex */
-    private static class AnyStrong implements TextDirectionAlgorithm {
-        static final AnyStrong INSTANCE_RTL = new AnyStrong(true);
-        private final boolean mLookForRtl;
-
-        @Override // androidx.core.text.TextDirectionHeuristicsCompat.TextDirectionAlgorithm
-        public int checkRtl(CharSequence charSequence, int i2, int i3) {
-            int i4 = i3 + i2;
-            boolean z2 = false;
-            while (i2 < i4) {
-                int isRtlText = TextDirectionHeuristicsCompat.isRtlText(Character.getDirectionality(charSequence.charAt(i2)));
-                if (isRtlText != 0) {
-                    if (isRtlText != 1) {
-                        continue;
-                        i2++;
-                    } else if (!this.mLookForRtl) {
-                        return 1;
+                if (openFileDescriptor != null) {
+                    try {
+                        Font build = new Font.Builder(openFileDescriptor).setWeight(fontInfo.getWeight()).setSlant(fontInfo.isItalic() ? 1 : 0).setTtcIndex(fontInfo.getTtcIndex()).build();
+                        if (builder == null) {
+                            builder = new FontFamily.Builder(build);
+                        } else {
+                            builder.addFont(build);
+                        }
+                        i3 = openFileDescriptor == null ? i3 + 1 : 0;
+                    } catch (Throwable th) {
+                        if (openFileDescriptor != null) {
+                            try {
+                                openFileDescriptor.close();
+                            } catch (Throwable th2) {
+                                th.addSuppressed(th2);
+                            }
+                        }
+                        throw th;
+                        break;
                     }
-                } else if (this.mLookForRtl) {
-                    return 0;
+                } else if (openFileDescriptor == null) {
                 }
-                z2 = true;
-                i2++;
+                openFileDescriptor.close();
             }
-            if (z2) {
-                return this.mLookForRtl ? 1 : 0;
+            if (builder == null) {
+                return null;
             }
-            return 2;
-        }
-
-        private AnyStrong(boolean z2) {
-            this.mLookForRtl = z2;
+            FontFamily build2 = builder.build();
+            return new Typeface.CustomFallbackBuilder(build2).setStyle(findBaseFont(build2, i2).getStyle()).build();
+        } catch (Exception unused2) {
+            return null;
         }
     }
 
-    /* loaded from: classes.dex */
-    private static class TextDirectionHeuristicLocale extends TextDirectionHeuristicImpl {
-        static final TextDirectionHeuristicLocale INSTANCE = new TextDirectionHeuristicLocale();
-
-        TextDirectionHeuristicLocale() {
-            super(null);
-        }
-
-        @Override // androidx.core.text.TextDirectionHeuristicsCompat.TextDirectionHeuristicImpl
-        protected boolean defaultIsRtl() {
-            return TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == 1;
+    @Override // androidx.core.graphics.TypefaceCompatBaseImpl
+    public Typeface createFromFontFamilyFilesResourceEntry(Context context, FontResourcesParserCompat.FontFamilyFilesResourceEntry fontFamilyFilesResourceEntry, Resources resources, int i2) {
+        FontResourcesParserCompat.FontFileResourceEntry[] entries;
+        try {
+            FontFamily.Builder builder = null;
+            for (FontResourcesParserCompat.FontFileResourceEntry fontFileResourceEntry : fontFamilyFilesResourceEntry.getEntries()) {
+                try {
+                    Font build = new Font.Builder(resources, fontFileResourceEntry.getResourceId()).setWeight(fontFileResourceEntry.getWeight()).setSlant(fontFileResourceEntry.isItalic() ? 1 : 0).setTtcIndex(fontFileResourceEntry.getTtcIndex()).setFontVariationSettings(fontFileResourceEntry.getVariationSettings()).build();
+                    if (builder == null) {
+                        builder = new FontFamily.Builder(build);
+                    } else {
+                        builder.addFont(build);
+                    }
+                } catch (IOException unused) {
+                }
+            }
+            if (builder == null) {
+                return null;
+            }
+            FontFamily build2 = builder.build();
+            return new Typeface.CustomFallbackBuilder(build2).setStyle(findBaseFont(build2, i2).getStyle()).build();
+        } catch (Exception unused2) {
+            return null;
         }
     }
 
-    private TextDirectionHeuristicsCompat() {
+    @Override // androidx.core.graphics.TypefaceCompatBaseImpl
+    public Typeface createFromResourcesFontFile(Context context, Resources resources, int i2, String str, int i3) {
+        try {
+            Font build = new Font.Builder(resources, i2).build();
+            return new Typeface.CustomFallbackBuilder(new FontFamily.Builder(build).build()).setStyle(build.getStyle()).build();
+        } catch (Exception unused) {
+            return null;
+        }
     }
 }

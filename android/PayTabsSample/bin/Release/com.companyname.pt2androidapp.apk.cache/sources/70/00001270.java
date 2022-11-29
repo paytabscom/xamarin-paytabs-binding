@@ -1,31 +1,47 @@
-package kotlinx.coroutines;
+package com.google.crypto.tink.subtle;
 
-import kotlin.Metadata;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.jvm.internal.ContinuationImpl;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
+import com.google.crypto.tink.PublicKeySign;
+import com.google.crypto.tink.config.TinkFips;
+import com.google.crypto.tink.subtle.Enums;
+import com.google.errorprone.annotations.Immutable;
+import java.security.GeneralSecurityException;
+import java.security.Signature;
+import java.security.interfaces.RSAPrivateCrtKey;
+import java.security.interfaces.RSAPublicKey;
+import java.security.spec.RSAPublicKeySpec;
 
-/* JADX INFO: Access modifiers changed from: package-private */
-/* compiled from: Builders.common.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u000e\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\u0010\u0000\u001a\u0004\u0018\u00010\u0001\"\u0004\b\u0000\u0010\u00022\f\u0010\u0003\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0004H\u0096@"}, d2 = {"await", "", "T", "continuation", "Lkotlin/coroutines/Continuation;"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.DeferredCoroutine", f = "Builders.common.kt", i = {}, l = {101}, m = "await$suspendImpl", n = {}, s = {})
+@Immutable
 /* loaded from: classes.dex */
-public final class DeferredCoroutine$await$1 extends ContinuationImpl {
-    int label;
-    /* synthetic */ Object result;
-    final /* synthetic */ DeferredCoroutine this$0;
+public final class RsaSsaPkcs1SignJce implements PublicKeySign {
+    public static final TinkFips.AlgorithmFipsCompatibility FIPS = TinkFips.AlgorithmFipsCompatibility.ALGORITHM_REQUIRES_BORINGCRYPTO;
+    private final RSAPrivateCrtKey privateKey;
+    private final RSAPublicKey publicKey;
+    private final String signatureAlgorithm;
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public DeferredCoroutine$await$1(DeferredCoroutine deferredCoroutine, Continuation continuation) {
-        super(continuation);
-        this.this$0 = deferredCoroutine;
+    public RsaSsaPkcs1SignJce(final RSAPrivateCrtKey priv, Enums.HashType hash) throws GeneralSecurityException {
+        if (!FIPS.isCompatible()) {
+            throw new GeneralSecurityException("Can not use RSA PKCS1.5 in FIPS-mode, as BoringCrypto module is not available.");
+        }
+        Validators.validateSignatureHash(hash);
+        Validators.validateRsaModulusSize(priv.getModulus().bitLength());
+        Validators.validateRsaPublicExponent(priv.getPublicExponent());
+        this.privateKey = priv;
+        this.signatureAlgorithm = SubtleUtil.toRsaSsaPkcs1Algo(hash);
+        this.publicKey = (RSAPublicKey) EngineFactory.KEY_FACTORY.getInstance("RSA").generatePublic(new RSAPublicKeySpec(priv.getModulus(), priv.getPublicExponent()));
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        this.result = obj;
-        this.label |= Integer.MIN_VALUE;
-        return DeferredCoroutine.await$suspendImpl(this.this$0, this);
+    @Override // com.google.crypto.tink.PublicKeySign
+    public byte[] sign(final byte[] data) throws GeneralSecurityException {
+        Signature engineFactory = EngineFactory.SIGNATURE.getInstance(this.signatureAlgorithm);
+        engineFactory.initSign(this.privateKey);
+        engineFactory.update(data);
+        byte[] sign = engineFactory.sign();
+        Signature engineFactory2 = EngineFactory.SIGNATURE.getInstance(this.signatureAlgorithm);
+        engineFactory2.initVerify(this.publicKey);
+        engineFactory2.update(data);
+        if (engineFactory2.verify(sign)) {
+            return sign;
+        }
+        throw new RuntimeException("Security bug: RSA signature computation error");
     }
 }

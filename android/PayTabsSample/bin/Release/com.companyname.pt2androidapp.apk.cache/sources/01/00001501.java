@@ -1,48 +1,29 @@
-package kotlinx.coroutines.flow;
+package kotlin.collections;
 
+import java.util.Map;
 import kotlin.Metadata;
-import kotlin.coroutines.CoroutineContext;
-import kotlinx.coroutines.DebugKt;
-import kotlinx.coroutines.channels.BufferOverflow;
-import kotlinx.coroutines.flow.internal.NullSurrogateKt;
-import kotlinx.coroutines.internal.Symbol;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.internal.Lambda;
 
-/* compiled from: StateFlow.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u00006\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0005\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0002\u001a\u001f\u0010\u0006\u001a\b\u0012\u0004\u0012\u0002H\b0\u0007\"\u0004\b\u0000\u0010\b2\u0006\u0010\t\u001a\u0002H\b¢\u0006\u0002\u0010\n\u001a6\u0010\u000b\u001a\b\u0012\u0004\u0012\u0002H\b0\f\"\u0004\b\u0000\u0010\b*\b\u0012\u0004\u0012\u0002H\b0\r2\u0006\u0010\u000e\u001a\u00020\u000f2\u0006\u0010\u0010\u001a\u00020\u00112\u0006\u0010\u0012\u001a\u00020\u0013H\u0000\u001a\u001a\u0010\u0014\u001a\u00020\u0015*\b\u0012\u0004\u0012\u00020\u00110\u00072\u0006\u0010\u0016\u001a\u00020\u0011H\u0000\"\u0016\u0010\u0000\u001a\u00020\u00018\u0002X\u0083\u0004¢\u0006\b\n\u0000\u0012\u0004\b\u0002\u0010\u0003\"\u0016\u0010\u0004\u001a\u00020\u00018\u0002X\u0083\u0004¢\u0006\b\n\u0000\u0012\u0004\b\u0005\u0010\u0003¨\u0006\u0017"}, d2 = {"NONE", "Lkotlinx/coroutines/internal/Symbol;", "getNONE$annotations", "()V", "PENDING", "getPENDING$annotations", "MutableStateFlow", "Lkotlinx/coroutines/flow/MutableStateFlow;", "T", "value", "(Ljava/lang/Object;)Lkotlinx/coroutines/flow/MutableStateFlow;", "fuseStateFlow", "Lkotlinx/coroutines/flow/Flow;", "Lkotlinx/coroutines/flow/StateFlow;", "context", "Lkotlin/coroutines/CoroutineContext;", "capacity", "", "onBufferOverflow", "Lkotlinx/coroutines/channels/BufferOverflow;", "increment", "", "delta", "kotlinx-coroutines-core"}, k = 2, mv = {1, 4, 2})
+/* compiled from: AbstractMap.kt */
+@Metadata(d1 = {"\u0000\u0010\n\u0000\n\u0002\u0010\r\n\u0002\b\u0003\n\u0002\u0010&\n\u0000\u0010\u0000\u001a\u00020\u0001\"\u0004\b\u0000\u0010\u0002\"\u0006\b\u0001\u0010\u0003 \u00012\u0012\u0010\u0004\u001a\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00030\u0005H\n¢\u0006\u0002\b\u0006"}, d2 = {"<anonymous>", "", "K", "V", "it", "", "invoke"}, k = 3, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class StateFlowKt {
-    private static final Symbol NONE = new Symbol("NONE");
-    private static final Symbol PENDING = new Symbol("PENDING");
+final class AbstractMap$toString$1 extends Lambda implements Function1<Map.Entry<? extends K, ? extends V>, CharSequence> {
+    final /* synthetic */ AbstractMap this$0;
 
-    private static /* synthetic */ void getNONE$annotations() {
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public AbstractMap$toString$1(AbstractMap abstractMap) {
+        super(1);
+        this.this$0 = abstractMap;
     }
 
-    private static /* synthetic */ void getPENDING$annotations() {
-    }
-
-    public static final <T> MutableStateFlow<T> MutableStateFlow(T t2) {
-        if (t2 == null) {
-            t2 = (T) NullSurrogateKt.NULL;
-        }
-        return new StateFlowImpl(t2);
-    }
-
-    public static final void increment(MutableStateFlow<Integer> mutableStateFlow, int i2) {
-        int intValue;
-        do {
-            intValue = mutableStateFlow.getValue().intValue();
-        } while (!mutableStateFlow.compareAndSet(Integer.valueOf(intValue), Integer.valueOf(intValue + i2)));
-    }
-
-    public static final <T> Flow<T> fuseStateFlow(StateFlow<? extends T> stateFlow, CoroutineContext coroutineContext, int i2, BufferOverflow bufferOverflow) {
-        if (DebugKt.getASSERTIONS_ENABLED()) {
-            if (!(i2 != -1)) {
-                throw new AssertionError();
-            }
-        }
-        if (((i2 >= 0 && 1 >= i2) || i2 == -2) && bufferOverflow == BufferOverflow.DROP_OLDEST) {
-            return stateFlow;
-        }
-        return SharedFlowKt.fuseSharedFlow(stateFlow, coroutineContext, i2, bufferOverflow);
+    @Override // kotlin.jvm.functions.Function1
+    public final CharSequence invoke(Map.Entry<? extends K, ? extends V> it) {
+        String abstractMap;
+        Intrinsics.checkNotNullParameter(it, "it");
+        abstractMap = this.this$0.toString((Map.Entry) it);
+        return abstractMap;
     }
 }

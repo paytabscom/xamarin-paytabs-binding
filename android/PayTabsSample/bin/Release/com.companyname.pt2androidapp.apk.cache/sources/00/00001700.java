@@ -1,46 +1,49 @@
-package mono.androidx.fragment.app;
+package kotlin.ranges;
 
-import androidx.fragment.app.FragmentManager;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.NoSuchElementException;
+import kotlin.Metadata;
+import kotlin.collections.LongIterator;
 
+/* compiled from: ProgressionIterators.kt */
+@Metadata(d1 = {"\u0000\u001a\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\t\n\u0002\b\u0005\n\u0002\u0010\u000b\n\u0002\b\u0005\b\u0000\u0018\u00002\u00020\u0001B\u001d\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\u0006\u0010\u0004\u001a\u00020\u0003\u0012\u0006\u0010\u0005\u001a\u00020\u0003¢\u0006\u0002\u0010\u0006J\t\u0010\b\u001a\u00020\tH\u0096\u0002J\b\u0010\r\u001a\u00020\u0003H\u0016R\u000e\u0010\u0007\u001a\u00020\u0003X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\b\u001a\u00020\tX\u0082\u000e¢\u0006\u0002\n\u0000R\u000e\u0010\n\u001a\u00020\u0003X\u0082\u000e¢\u0006\u0002\n\u0000R\u0011\u0010\u0005\u001a\u00020\u0003¢\u0006\b\n\u0000\u001a\u0004\b\u000b\u0010\f¨\u0006\u000e"}, d2 = {"Lkotlin/ranges/LongProgressionIterator;", "Lkotlin/collections/LongIterator;", "first", "", "last", "step", "(JJJ)V", "finalElement", "hasNext", "", "next", "getStep", "()J", "nextLong", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class FragmentManager_OnBackStackChangedListenerImplementor implements IGCUserPeer, FragmentManager.OnBackStackChangedListener {
-    public static final String __md_methods = "n_onBackStackChanged:()V:GetOnBackStackChangedHandler:AndroidX.Fragment.App.FragmentManager/IOnBackStackChangedListenerInvoker, Xamarin.AndroidX.Fragment\n";
-    private ArrayList refList;
+public final class LongProgressionIterator extends LongIterator {
+    private final long finalElement;
+    private boolean hasNext;
+    private long next;
+    private final long step;
 
-    private native void n_onBackStackChanged();
-
-    static {
-        Runtime.register("AndroidX.Fragment.App.FragmentManager+IOnBackStackChangedListenerImplementor, Xamarin.AndroidX.Fragment", FragmentManager_OnBackStackChangedListenerImplementor.class, __md_methods);
-    }
-
-    public FragmentManager_OnBackStackChangedListenerImplementor() {
-        if (getClass() == FragmentManager_OnBackStackChangedListenerImplementor.class) {
-            TypeManager.Activate("AndroidX.Fragment.App.FragmentManager+IOnBackStackChangedListenerImplementor, Xamarin.AndroidX.Fragment", "", this, new Object[0]);
+    public LongProgressionIterator(long j2, long j3, long j4) {
+        this.step = j4;
+        this.finalElement = j3;
+        boolean z2 = true;
+        if (j4 <= 0 ? j2 < j3 : j2 > j3) {
+            z2 = false;
         }
+        this.hasNext = z2;
+        this.next = z2 ? j2 : j3;
     }
 
-    @Override // androidx.fragment.app.FragmentManager.OnBackStackChangedListener
-    public void onBackStackChanged() {
-        n_onBackStackChanged();
+    public final long getStep() {
+        return this.step;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
+    @Override // java.util.Iterator
+    public boolean hasNext() {
+        return this.hasNext;
+    }
+
+    @Override // kotlin.collections.LongIterator
+    public long nextLong() {
+        long j2 = this.next;
+        if (j2 == this.finalElement) {
+            if (!this.hasNext) {
+                throw new NoSuchElementException();
+            }
+            this.hasNext = false;
+        } else {
+            this.next = this.step + j2;
         }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+        return j2;
     }
 }

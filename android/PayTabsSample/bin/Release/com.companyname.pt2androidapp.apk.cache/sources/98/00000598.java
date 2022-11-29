@@ -1,35 +1,53 @@
-package androidx.core.util;
+package androidx.core.graphics.drawable;
 
-import android.util.Half;
-import kotlin.Metadata;
-import kotlin.jvm.internal.Intrinsics;
+import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 
-/* compiled from: Half.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0018\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0006\n\u0002\u0010\u0007\n\u0002\u0010\n\n\u0002\u0010\u000e\n\u0000\u001a\r\u0010\u0000\u001a\u00020\u0001*\u00020\u0002H\u0087\b\u001a\r\u0010\u0000\u001a\u00020\u0001*\u00020\u0003H\u0087\b\u001a\r\u0010\u0000\u001a\u00020\u0001*\u00020\u0004H\u0087\b\u001a\r\u0010\u0000\u001a\u00020\u0001*\u00020\u0005H\u0087\b¨\u0006\u0006"}, d2 = {"toHalf", "Landroid/util/Half;", "", "", "", "", "core-ktx_release"}, k = 2, mv = {1, 4, 2})
+/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-public final class HalfKt {
-    public static final Half toHalf(short s2) {
-        Half valueOf = Half.valueOf(s2);
-        Intrinsics.checkNotNullExpressionValue(valueOf, "Half.valueOf(this)");
-        return valueOf;
+public final class WrappedDrawableState extends Drawable.ConstantState {
+    int mChangingConfigurations;
+    Drawable.ConstantState mDrawableState;
+    ColorStateList mTint;
+    PorterDuff.Mode mTintMode;
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public WrappedDrawableState(WrappedDrawableState wrappedDrawableState) {
+        this.mTint = null;
+        this.mTintMode = WrappedDrawableApi14.DEFAULT_TINT_MODE;
+        if (wrappedDrawableState != null) {
+            this.mChangingConfigurations = wrappedDrawableState.mChangingConfigurations;
+            this.mDrawableState = wrappedDrawableState.mDrawableState;
+            this.mTint = wrappedDrawableState.mTint;
+            this.mTintMode = wrappedDrawableState.mTintMode;
+        }
     }
 
-    public static final Half toHalf(float f2) {
-        Half valueOf = Half.valueOf(f2);
-        Intrinsics.checkNotNullExpressionValue(valueOf, "Half.valueOf(this)");
-        return valueOf;
+    @Override // android.graphics.drawable.Drawable.ConstantState
+    public Drawable newDrawable() {
+        return newDrawable(null);
     }
 
-    public static final Half toHalf(String toHalf) {
-        Intrinsics.checkNotNullParameter(toHalf, "$this$toHalf");
-        Half valueOf = Half.valueOf(toHalf);
-        Intrinsics.checkNotNullExpressionValue(valueOf, "Half.valueOf(this)");
-        return valueOf;
+    @Override // android.graphics.drawable.Drawable.ConstantState
+    public Drawable newDrawable(Resources resources) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            return new WrappedDrawableApi21(this, resources);
+        }
+        return new WrappedDrawableApi14(this, resources);
     }
 
-    public static final Half toHalf(double d2) {
-        Half valueOf = Half.valueOf((float) d2);
-        Intrinsics.checkNotNullExpressionValue(valueOf, "Half.valueOf(this)");
-        return valueOf;
+    @Override // android.graphics.drawable.Drawable.ConstantState
+    public int getChangingConfigurations() {
+        int i2 = this.mChangingConfigurations;
+        Drawable.ConstantState constantState = this.mDrawableState;
+        return i2 | (constantState != null ? constantState.getChangingConfigurations() : 0);
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public boolean canConstantState() {
+        return this.mDrawableState != null;
     }
 }

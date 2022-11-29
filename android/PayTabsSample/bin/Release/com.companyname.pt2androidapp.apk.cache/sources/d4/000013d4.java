@@ -1,125 +1,177 @@
-package kotlinx.coroutines.flow;
+package com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera;
 
-import kotlin.Metadata;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.jvm.internal.ContinuationImpl;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.util.Log;
+import androidx.core.content.ContextCompat;
+import cards.pay.paycardsrecognizer.sdk.BuildConfig;
+import com.facebook.device.yearclass.YearClass;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.RecognitionCore;
+import java.util.Locale;
 
-/* compiled from: SafeCollector.common.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0019\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002*\u0001\u0000\b\n\u0018\u00002\b\u0012\u0004\u0012\u00028\u00000\u0001J\u001f\u0010\u0002\u001a\u00020\u00032\f\u0010\u0004\u001a\b\u0012\u0004\u0012\u00028\u00000\u0005H\u0096@ø\u0001\u0000¢\u0006\u0002\u0010\u0006\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\u0007¸\u0006\u0000"}, d2 = {"kotlinx/coroutines/flow/internal/SafeCollector_commonKt$unsafeFlow$1", "Lkotlinx/coroutines/flow/Flow;", "collect", "", "collector", "Lkotlinx/coroutines/flow/FlowCollector;", "(Lkotlinx/coroutines/flow/FlowCollector;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$8 implements Flow<Long> {
-    final /* synthetic */ long[] $this_asFlow$inlined;
+public final class RecognitionAvailabilityChecker {
+    private static final boolean DBG = BuildConfig.DEBUG;
+    public static final String TAG = "CameraChecker";
 
-    @Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u001a\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0000\u0010\u0000\u001a\u0004\u0018\u00010\u0001\"\u0004\b\u0000\u0010\u00022\f\u0010\u0003\u001a\b\u0012\u0004\u0012\u0002H\u00020\u00042\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u00020\u00070\u0006H\u0096@¨\u0006\b"}, d2 = {"collect", "", "T", "collector", "Lkotlinx/coroutines/flow/FlowCollector;", "continuation", "Lkotlin/coroutines/Continuation;", "", "kotlinx/coroutines/flow/internal/SafeCollector_commonKt$unsafeFlow$1$collect$1"}, k = 3, mv = {1, 4, 2})
-    @DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$8", f = "Builders.kt", i = {0}, l = {115}, m = "collect", n = {"$receiver"}, s = {"L$0"})
-    /* renamed from: kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$8$1  reason: invalid class name */
+    public static Result doCheck(Context context) {
+        return doCheckInternal(context).build();
+    }
+
+    public static Result doCheckBlocking(Context context) {
+        RecognitionCheckResultBuilder doCheckInternal = doCheckInternal(context);
+        Result build = doCheckInternal.build();
+        if (doCheckInternal.build().isAdditionalCheckRequired()) {
+            doCheckInternal.isBlockingCheck(true);
+            doCheckInternal.recognitionCoreSupported(RecognitionCore.getInstance(context).isDeviceSupported());
+            if (doCheckInternal.recognitionCoreSupported == -1) {
+                return doCheckInternal.build();
+            }
+            doCheckInternal.isCameraSupported(CameraUtils.isCameraSupportedBlocking());
+            return doCheckInternal.build();
+        }
+        return build;
+    }
+
+    private static RecognitionCheckResultBuilder doCheckInternal(Context context) {
+        RecognitionCheckResultBuilder hasCameraPermission = new RecognitionCheckResultBuilder().isBlockingCheck(false).isDeviceNewEnough(isDeviceNewEnough(context)).hasCamera(isDeviceHasCamera(context)).hasCameraPermission(ContextCompat.checkSelfPermission(context, "android.permission.CAMERA") == 0);
+        try {
+            hasCameraPermission.isCameraSupported(CameraUtils.isCameraSupported());
+        } catch (BlockingOperationException unused) {
+        }
+        if (RecognitionCore.isInitialized()) {
+            hasCameraPermission.recognitionCoreSupported(RecognitionCore.getInstance(context).isDeviceSupported());
+        }
+        return hasCameraPermission;
+    }
+
+    public static boolean isDeviceNewEnough(Context context) {
+        int i2 = YearClass.get(context);
+        if (DBG) {
+            Log.d(TAG, "Device year is: " + i2);
+        }
+        return i2 >= 2011;
+    }
+
+    public static boolean isDeviceHasCamera(Context context) {
+        PackageManager packageManager = context.getPackageManager();
+        boolean hasSystemFeature = packageManager.hasSystemFeature("android.hardware.camera");
+        packageManager.hasSystemFeature("android.hardware.camera.autofocus");
+        return hasSystemFeature;
+    }
+
     /* loaded from: classes.dex */
-    public static final class AnonymousClass1 extends ContinuationImpl {
-        int I$0;
-        int I$1;
-        Object L$0;
-        Object L$1;
-        int label;
-        /* synthetic */ Object result;
+    public static class Result {
+        public static final int STATUS_FAILED = -1;
+        public static final int STATUS_NOT_CHECKED = 0;
+        public static final int STATUS_PASSED = 1;
+        public final int hasCamera;
+        public final int hasCameraPermission;
+        public final boolean isBlockingCheck;
+        public final int isCameraSupported;
+        public final int isDeviceNewEnough;
+        public final int recognitionCoreSupported;
 
-        public AnonymousClass1(Continuation continuation) {
-            super(continuation);
+        Result(boolean z2, int i2, int i3, int i4, int i5, int i6) {
+            this.isBlockingCheck = z2;
+            this.isDeviceNewEnough = i2;
+            this.recognitionCoreSupported = i3;
+            this.hasCamera = i4;
+            this.hasCameraPermission = i5;
+            this.isCameraSupported = i6;
         }
 
-        @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-        public final Object invokeSuspend(Object obj) {
-            this.result = obj;
-            this.label |= Integer.MIN_VALUE;
-            return FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$8.this.collect(null, this);
+        private boolean isFailedNonBlocking() {
+            return this.isDeviceNewEnough == -1 || this.recognitionCoreSupported == -1 || this.hasCamera == -1 || this.hasCameraPermission == -1 || this.isCameraSupported == -1;
+        }
+
+        public boolean isFailed() {
+            if (this.isBlockingCheck) {
+                return !isPassed();
+            }
+            return isFailedNonBlocking();
+        }
+
+        public boolean isPassed() {
+            return this.isDeviceNewEnough == 1 && this.recognitionCoreSupported == 1 && this.hasCamera == 1 && this.hasCameraPermission == 1 && this.isCameraSupported == 1;
+        }
+
+        public boolean isAdditionalCheckRequired() {
+            return (isFailed() || isPassed()) ? false : true;
+        }
+
+        public boolean isFailedOnCameraPermission() {
+            return (this.hasCameraPermission != -1 || this.isDeviceNewEnough == -1 || this.recognitionCoreSupported == -1 || this.hasCamera == -1 || this.isCameraSupported == -1) ? false : true;
+        }
+
+        private String statusToString(int i2) {
+            if (i2 != -1) {
+                if (i2 != 0) {
+                    if (i2 == 1) {
+                        return "yes";
+                    }
+                    throw new IllegalArgumentException();
+                }
+                return "not checked";
+            }
+            return "no";
+        }
+
+        public String getMessage() {
+            return this.isDeviceNewEnough == -1 ? "Device is considered being too old for smooth camera experience, so camera will not be used." : this.hasCamera == -1 ? "No camera" : this.hasCameraPermission == -1 ? "No camera permission" : this.isCameraSupported == -1 ? "Camera not supported" : this.recognitionCoreSupported == -1 ? "Unsupported architecture" : toString();
+        }
+
+        public String toString() {
+            return String.format(Locale.US, "Is new enough: %s, has camera: %s, has camera persmission: %s, recognition library supported: %s, camera supported: %s", statusToString(this.isDeviceNewEnough), statusToString(this.hasCamera), statusToString(this.hasCameraPermission), statusToString(this.recognitionCoreSupported), statusToString(this.isCameraSupported));
         }
     }
 
-    public FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$8(long[] jArr) {
-        this.$this_asFlow$inlined = jArr;
-    }
+    /* JADX INFO: Access modifiers changed from: private */
+    /* loaded from: classes.dex */
+    public static class RecognitionCheckResultBuilder {
+        private boolean isBlockingCheck = true;
+        private int hasCameraPermission = 0;
+        private int isDeviceNewEnough = 0;
+        private int recognitionCoreSupported = 0;
+        private int hasCamera = 0;
+        private int isCameraSupported = 0;
 
-    /* JADX WARN: Removed duplicated region for block: B:10:0x0024  */
-    /* JADX WARN: Removed duplicated region for block: B:14:0x003f  */
-    /* JADX WARN: Removed duplicated region for block: B:16:0x004e  */
-    /* JADX WARN: Removed duplicated region for block: B:20:0x0071  */
-    /* JADX WARN: Unsupported multi-entry loop pattern (BACK_EDGE: B:17:0x006c -> B:19:0x006f). Please submit an issue!!! */
-    @Override // kotlinx.coroutines.flow.Flow
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct code enable 'Show inconsistent code' option in preferences
-    */
-    public java.lang.Object collect(kotlinx.coroutines.flow.FlowCollector<? super java.lang.Long> r8, kotlin.coroutines.Continuation r9) {
-        /*
-            r7 = this;
-            boolean r0 = r9 instanceof kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$8.AnonymousClass1
-            if (r0 == 0) goto L14
-            r0 = r9
-            kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$8$1 r0 = (kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$8.AnonymousClass1) r0
-            int r1 = r0.label
-            r2 = -2147483648(0xffffffff80000000, float:-0.0)
-            r1 = r1 & r2
-            if (r1 == 0) goto L14
-            int r9 = r0.label
-            int r9 = r9 - r2
-            r0.label = r9
-            goto L19
-        L14:
-            kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$8$1 r0 = new kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$8$1
-            r0.<init>(r9)
-        L19:
-            java.lang.Object r9 = r0.result
-            java.lang.Object r1 = kotlin.coroutines.intrinsics.IntrinsicsKt.getCOROUTINE_SUSPENDED()
-            int r2 = r0.label
-            r3 = 1
-            if (r2 == 0) goto L3f
-            if (r2 != r3) goto L37
-            int r8 = r0.I$1
-            int r2 = r0.I$0
-            java.lang.Object r4 = r0.L$1
-            long[] r4 = (long[]) r4
-            java.lang.Object r5 = r0.L$0
-            kotlinx.coroutines.flow.FlowCollector r5 = (kotlinx.coroutines.flow.FlowCollector) r5
-            kotlin.ResultKt.throwOnFailure(r9)
-            r9 = r5
-            goto L6f
-        L37:
-            java.lang.IllegalStateException r8 = new java.lang.IllegalStateException
-            java.lang.String r9 = "call to 'resume' before 'invoke' with coroutine"
-            r8.<init>(r9)
-            throw r8
-        L3f:
-            kotlin.ResultKt.throwOnFailure(r9)
-            r9 = r0
-            kotlin.coroutines.Continuation r9 = (kotlin.coroutines.Continuation) r9
-            long[] r9 = r7.$this_asFlow$inlined
-            int r2 = r9.length
-            r4 = 0
-            r4 = r9
-            r9 = r8
-            r8 = 0
-        L4c:
-            if (r8 >= r2) goto L71
-            r5 = r4[r8]
-            java.lang.Long r5 = kotlin.coroutines.jvm.internal.Boxing.boxLong(r5)
-            java.lang.Number r5 = (java.lang.Number) r5
-            long r5 = r5.longValue()
-            java.lang.Long r5 = kotlin.coroutines.jvm.internal.Boxing.boxLong(r5)
-            r0.L$0 = r9
-            r0.L$1 = r4
-            r0.I$0 = r2
-            r0.I$1 = r8
-            r0.label = r3
-            java.lang.Object r5 = r9.emit(r5, r0)
-            if (r5 != r1) goto L6f
-            return r1
-        L6f:
-            int r8 = r8 + r3
-            goto L4c
-        L71:
-            kotlin.Unit r8 = kotlin.Unit.INSTANCE
-            return r8
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$8.collect(kotlinx.coroutines.flow.FlowCollector, kotlin.coroutines.Continuation):java.lang.Object");
+        private int toStatus(boolean z2) {
+            return z2 ? 1 : -1;
+        }
+
+        public RecognitionCheckResultBuilder isBlockingCheck(boolean z2) {
+            this.isBlockingCheck = z2;
+            return this;
+        }
+
+        public RecognitionCheckResultBuilder isDeviceNewEnough(boolean z2) {
+            this.isDeviceNewEnough = toStatus(z2);
+            return this;
+        }
+
+        public RecognitionCheckResultBuilder recognitionCoreSupported(boolean z2) {
+            this.recognitionCoreSupported = toStatus(z2);
+            return this;
+        }
+
+        public RecognitionCheckResultBuilder hasCamera(boolean z2) {
+            this.hasCamera = toStatus(z2);
+            return this;
+        }
+
+        public RecognitionCheckResultBuilder hasCameraPermission(boolean z2) {
+            this.hasCameraPermission = toStatus(z2);
+            return this;
+        }
+
+        public RecognitionCheckResultBuilder isCameraSupported(boolean z2) {
+            this.isCameraSupported = toStatus(z2);
+            return this;
+        }
+
+        public Result build() {
+            return new Result(this.isBlockingCheck, this.isDeviceNewEnough, this.recognitionCoreSupported, this.hasCamera, this.hasCameraPermission, this.isCameraSupported);
+        }
     }
 }

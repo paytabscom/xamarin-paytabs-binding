@@ -1,39 +1,46 @@
-package androidx.core.widget;
+package androidx.core.util;
 
-import android.os.Build;
-import android.view.View;
-import android.widget.ListView;
+import android.util.LongSparseArray;
+import java.util.Iterator;
+import kotlin.Metadata;
+import kotlin.jvm.internal.markers.KMappedMarker;
 
+/* compiled from: LongSparseArray.kt */
+@Metadata(d1 = {"\u0000\u001b\n\u0000\n\u0002\u0010(\n\u0000\n\u0002\u0010\b\n\u0002\b\u0005\n\u0002\u0010\u000b\n\u0002\b\u0004*\u0001\u0000\b\n\u0018\u00002\b\u0012\u0004\u0012\u00028\u00000\u0001J\t\u0010\b\u001a\u00020\tH\u0097\u0002J\u0016\u0010\n\u001a\n \u000b*\u0004\u0018\u00018\u00008\u0000H\u0097\u0002¢\u0006\u0002\u0010\fR\u001a\u0010\u0002\u001a\u00020\u0003X\u0086\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\u0004\u0010\u0005\"\u0004\b\u0006\u0010\u0007¨\u0006\r"}, d2 = {"androidx/core/util/LongSparseArrayKt$valueIterator$1", "", "index", "", "getIndex", "()I", "setIndex", "(I)V", "hasNext", "", "next", "kotlin.jvm.PlatformType", "()Ljava/lang/Object;", "core-ktx_release"}, k = 1, mv = {1, 6, 0}, xi = 48)
 /* loaded from: classes.dex */
-public final class ListViewCompat {
-    public static void scrollListBy(ListView listView, int i2) {
-        View childAt;
-        if (Build.VERSION.SDK_INT >= 19) {
-            listView.scrollListBy(i2);
-            return;
-        }
-        int firstVisiblePosition = listView.getFirstVisiblePosition();
-        if (firstVisiblePosition == -1 || (childAt = listView.getChildAt(0)) == null) {
-            return;
-        }
-        listView.setSelectionFromTop(firstVisiblePosition, childAt.getTop() - i2);
+public final class LongSparseArrayKt$valueIterator$1 implements Iterator<T>, KMappedMarker {
+    final /* synthetic */ LongSparseArray<T> $this_valueIterator;
+    private int index;
+
+    @Override // java.util.Iterator
+    public void remove() {
+        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
     }
 
-    public static boolean canScrollList(ListView listView, int i2) {
-        if (Build.VERSION.SDK_INT >= 19) {
-            return listView.canScrollList(i2);
-        }
-        int childCount = listView.getChildCount();
-        if (childCount == 0) {
-            return false;
-        }
-        int firstVisiblePosition = listView.getFirstVisiblePosition();
-        if (i2 > 0) {
-            return firstVisiblePosition + childCount < listView.getCount() || listView.getChildAt(childCount + (-1)).getBottom() > listView.getHeight() - listView.getListPaddingBottom();
-        }
-        return firstVisiblePosition > 0 || listView.getChildAt(0).getTop() < listView.getListPaddingTop();
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public LongSparseArrayKt$valueIterator$1(LongSparseArray<T> longSparseArray) {
+        this.$this_valueIterator = longSparseArray;
     }
 
-    private ListViewCompat() {
+    public final int getIndex() {
+        return this.index;
+    }
+
+    public final void setIndex(int i2) {
+        this.index = i2;
+    }
+
+    @Override // java.util.Iterator
+    public boolean hasNext() {
+        return this.index < this.$this_valueIterator.size();
+    }
+
+    /* JADX WARN: Type inference failed for: r0v1, types: [T, java.lang.Object] */
+    @Override // java.util.Iterator
+    public T next() {
+        LongSparseArray<T> longSparseArray = this.$this_valueIterator;
+        int i2 = this.index;
+        this.index = i2 + 1;
+        return longSparseArray.valueAt(i2);
     }
 }

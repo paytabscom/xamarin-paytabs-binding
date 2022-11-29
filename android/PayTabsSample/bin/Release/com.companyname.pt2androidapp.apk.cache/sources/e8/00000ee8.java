@@ -1,10 +1,21 @@
-package kotlin;
+package com.google.android.material.transition.platform;
 
-/* compiled from: Lazy.kt */
-@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u0010\n\u0002\b\u0005\b\u0086\u0001\u0018\u00002\b\u0012\u0004\u0012\u00020\u00000\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002j\u0002\b\u0003j\u0002\b\u0004j\u0002\b\u0005¨\u0006\u0006"}, d2 = {"Lkotlin/LazyThreadSafetyMode;", "", "(Ljava/lang/String;I)V", "SYNCHRONIZED", "PUBLICATION", "NONE", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public enum LazyThreadSafetyMode {
-    SYNCHRONIZED,
-    PUBLICATION,
-    NONE
+class FitModeResult {
+    final float currentEndHeight;
+    final float currentEndWidth;
+    final float currentStartHeight;
+    final float currentStartWidth;
+    final float endScale;
+    final float startScale;
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public FitModeResult(float f2, float f3, float f4, float f5, float f6, float f7) {
+        this.startScale = f2;
+        this.endScale = f3;
+        this.currentStartWidth = f4;
+        this.currentStartHeight = f5;
+        this.currentEndWidth = f6;
+        this.currentEndHeight = f7;
+    }
 }

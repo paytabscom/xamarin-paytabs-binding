@@ -1,60 +1,11 @@
-package mono.android.database.sqlite;
+package kotlin.io;
 
-import android.database.sqlite.SQLiteTransactionListener;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: Utils.kt */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u0010\n\u0002\b\u0004\b\u0086\u0001\u0018\u00002\b\u0012\u0004\u0012\u00020\u00000\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002j\u0002\b\u0003j\u0002\b\u0004¨\u0006\u0005"}, d2 = {"Lkotlin/io/OnErrorAction;", "", "(Ljava/lang/String;I)V", "SKIP", "TERMINATE", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class SQLiteTransactionListenerImplementor implements IGCUserPeer, SQLiteTransactionListener {
-    public static final String __md_methods = "n_onBegin:()V:GetOnBeginHandler:Android.Database.Sqlite.ISQLiteTransactionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onCommit:()V:GetOnCommitHandler:Android.Database.Sqlite.ISQLiteTransactionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onRollback:()V:GetOnRollbackHandler:Android.Database.Sqlite.ISQLiteTransactionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onBegin();
-
-    private native void n_onCommit();
-
-    private native void n_onRollback();
-
-    static {
-        Runtime.register("Android.Database.Sqlite.ISQLiteTransactionListenerImplementor, Mono.Android", SQLiteTransactionListenerImplementor.class, __md_methods);
-    }
-
-    public SQLiteTransactionListenerImplementor() {
-        if (getClass() == SQLiteTransactionListenerImplementor.class) {
-            TypeManager.Activate("Android.Database.Sqlite.ISQLiteTransactionListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.database.sqlite.SQLiteTransactionListener
-    public void onBegin() {
-        n_onBegin();
-    }
-
-    @Override // android.database.sqlite.SQLiteTransactionListener
-    public void onCommit() {
-        n_onCommit();
-    }
-
-    @Override // android.database.sqlite.SQLiteTransactionListener
-    public void onRollback() {
-        n_onRollback();
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public enum OnErrorAction {
+    SKIP,
+    TERMINATE
 }

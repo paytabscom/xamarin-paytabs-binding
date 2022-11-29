@@ -1,46 +1,11 @@
-package mono.android.media;
+package kotlin.jvm.functions;
 
-import android.media.MediaPlayer;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Function;
+import kotlin.Metadata;
 
+/* compiled from: Functions.kt */
+@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\b\u000b\n\u0002\u0018\u0002\n\u0002\b\r\bf\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u0000*\u0006\b\u0001\u0010\u0002 \u0000*\u0006\b\u0002\u0010\u0003 \u0000*\u0006\b\u0003\u0010\u0004 \u0000*\u0006\b\u0004\u0010\u0005 \u0000*\u0006\b\u0005\u0010\u0006 \u0000*\u0006\b\u0006\u0010\u0007 \u0000*\u0006\b\u0007\u0010\b \u0000*\u0006\b\b\u0010\t \u0000*\u0006\b\t\u0010\n \u0000*\u0006\b\n\u0010\u000b \u00012\b\u0012\u0004\u0012\u0002H\u000b0\fJ^\u0010\r\u001a\u00028\n2\u0006\u0010\u000e\u001a\u00028\u00002\u0006\u0010\u000f\u001a\u00028\u00012\u0006\u0010\u0010\u001a\u00028\u00022\u0006\u0010\u0011\u001a\u00028\u00032\u0006\u0010\u0012\u001a\u00028\u00042\u0006\u0010\u0013\u001a\u00028\u00052\u0006\u0010\u0014\u001a\u00028\u00062\u0006\u0010\u0015\u001a\u00028\u00072\u0006\u0010\u0016\u001a\u00028\b2\u0006\u0010\u0017\u001a\u00028\tH¦\u0002¢\u0006\u0002\u0010\u0018¨\u0006\u0019"}, d2 = {"Lkotlin/jvm/functions/Function10;", "P1", "P2", "P3", "P4", "P5", "P6", "P7", "P8", "P9", "P10", "R", "Lkotlin/Function;", "invoke", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class MediaPlayer_OnInfoListenerImplementor implements IGCUserPeer, MediaPlayer.OnInfoListener {
-    public static final String __md_methods = "n_onInfo:(Landroid/media/MediaPlayer;II)Z:GetOnInfo_Landroid_media_MediaPlayer_IIHandler:Android.Media.MediaPlayer/IOnInfoListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native boolean n_onInfo(MediaPlayer mediaPlayer, int i2, int i3);
-
-    static {
-        Runtime.register("Android.Media.MediaPlayer+IOnInfoListenerImplementor, Mono.Android", MediaPlayer_OnInfoListenerImplementor.class, __md_methods);
-    }
-
-    public MediaPlayer_OnInfoListenerImplementor() {
-        if (getClass() == MediaPlayer_OnInfoListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.MediaPlayer+IOnInfoListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.media.MediaPlayer.OnInfoListener
-    public boolean onInfo(MediaPlayer mediaPlayer, int i2, int i3) {
-        return n_onInfo(mediaPlayer, i2, i3);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public interface Function10<P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, R> extends Function<R> {
+    R invoke(P1 p1, P2 p2, P3 p3, P4 p4, P5 p5, P6 p6, P7 p7, P8 p8, P9 p9, P10 p10);
 }

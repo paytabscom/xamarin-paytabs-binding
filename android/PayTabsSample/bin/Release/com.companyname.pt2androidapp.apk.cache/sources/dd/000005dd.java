@@ -1,25 +1,70 @@
-package androidx.core.view;
+package androidx.core.net;
 
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
-import android.view.Menu;
-import android.view.MenuItem;
-import androidx.core.internal.view.SupportMenu;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /* loaded from: classes.dex */
-public final class MenuCompat {
-    @Deprecated
-    public static void setShowAsAction(MenuItem menuItem, int i2) {
-        menuItem.setShowAsAction(i2);
+public final class ConnectivityManagerCompat {
+    public static final int RESTRICT_BACKGROUND_STATUS_DISABLED = 1;
+    public static final int RESTRICT_BACKGROUND_STATUS_ENABLED = 3;
+    public static final int RESTRICT_BACKGROUND_STATUS_WHITELISTED = 2;
+
+    @Retention(RetentionPolicy.SOURCE)
+    /* loaded from: classes.dex */
+    public @interface RestrictBackgroundStatus {
     }
 
-    public static void setGroupDividerEnabled(Menu menu, boolean z2) {
-        if (menu instanceof SupportMenu) {
-            ((SupportMenu) menu).setGroupDividerEnabled(z2);
-        } else if (Build.VERSION.SDK_INT >= 28) {
-            menu.setGroupDividerEnabled(z2);
+    public static boolean isActiveNetworkMetered(ConnectivityManager connectivityManager) {
+        if (Build.VERSION.SDK_INT >= 16) {
+            return Api16Impl.isActiveNetworkMetered(connectivityManager);
+        }
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetworkInfo == null) {
+            return true;
+        }
+        int type = activeNetworkInfo.getType();
+        return (type == 1 || type == 7 || type == 9) ? false : true;
+    }
+
+    public static NetworkInfo getNetworkInfoFromBroadcast(ConnectivityManager connectivityManager, Intent intent) {
+        NetworkInfo networkInfo = (NetworkInfo) intent.getParcelableExtra("networkInfo");
+        if (networkInfo != null) {
+            return connectivityManager.getNetworkInfo(networkInfo.getType());
+        }
+        return null;
+    }
+
+    public static int getRestrictBackgroundStatus(ConnectivityManager connectivityManager) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            return Api24Impl.getRestrictBackgroundStatus(connectivityManager);
+        }
+        return 3;
+    }
+
+    private ConnectivityManagerCompat() {
+    }
+
+    /* loaded from: classes.dex */
+    static class Api16Impl {
+        private Api16Impl() {
+        }
+
+        static boolean isActiveNetworkMetered(ConnectivityManager connectivityManager) {
+            return connectivityManager.isActiveNetworkMetered();
         }
     }
 
-    private MenuCompat() {
+    /* loaded from: classes.dex */
+    static class Api24Impl {
+        private Api24Impl() {
+        }
+
+        static int getRestrictBackgroundStatus(ConnectivityManager connectivityManager) {
+            return connectivityManager.getRestrictBackgroundStatus();
+        }
     }
 }

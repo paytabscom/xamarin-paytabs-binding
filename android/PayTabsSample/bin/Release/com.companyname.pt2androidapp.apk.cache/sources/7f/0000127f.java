@@ -1,124 +1,122 @@
-package kotlinx.coroutines;
+package com.google.crypto.tink.subtle;
 
-import kotlin.Metadata;
-import kotlin.jvm.internal.LongCompanionObject;
-import kotlinx.coroutines.internal.ArrayQueue;
+import com.google.crypto.tink.config.TinkFips;
+import com.google.crypto.tink.subtle.Enums;
+import java.io.File;
+import java.io.IOException;
+import java.math.BigInteger;
+import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
+import java.util.Locale;
+import java.util.regex.Pattern;
 
-/* compiled from: EventLoop.common.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u00000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u000b\n\u0002\b\u0005\n\u0002\u0010\t\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0002\b\n\b \u0018\u00002\u00020\u0001B\u0005¢\u0006\u0002\u0010\u0002J\u0010\u0010\u0012\u001a\u00020\u00132\b\b\u0002\u0010\u0014\u001a\u00020\u0004J\u0010\u0010\u0015\u001a\u00020\n2\u0006\u0010\u0014\u001a\u00020\u0004H\u0002J\u0012\u0010\u0016\u001a\u00020\u00132\n\u0010\u0017\u001a\u0006\u0012\u0002\b\u00030\u0010J\u0010\u0010\u0018\u001a\u00020\u00132\b\b\u0002\u0010\u0014\u001a\u00020\u0004J\b\u0010\u0019\u001a\u00020\nH\u0016J\u0006\u0010\u001a\u001a\u00020\u0004J\b\u0010\u001b\u001a\u00020\u0004H\u0016J\b\u0010\u001c\u001a\u00020\u0013H\u0014R\u0011\u0010\u0003\u001a\u00020\u00048F¢\u0006\u0006\u001a\u0004\b\u0003\u0010\u0005R\u0014\u0010\u0006\u001a\u00020\u00048TX\u0094\u0004¢\u0006\u0006\u001a\u0004\b\u0006\u0010\u0005R\u0011\u0010\u0007\u001a\u00020\u00048F¢\u0006\u0006\u001a\u0004\b\u0007\u0010\u0005R\u0011\u0010\b\u001a\u00020\u00048F¢\u0006\u0006\u001a\u0004\b\b\u0010\u0005R\u0014\u0010\t\u001a\u00020\n8TX\u0094\u0004¢\u0006\u0006\u001a\u0004\b\u000b\u0010\fR\u000e\u0010\r\u001a\u00020\u0004X\u0082\u000e¢\u0006\u0002\n\u0000R\u001a\u0010\u000e\u001a\u000e\u0012\b\u0012\u0006\u0012\u0002\b\u00030\u0010\u0018\u00010\u000fX\u0082\u000e¢\u0006\u0002\n\u0000R\u000e\u0010\u0011\u001a\u00020\nX\u0082\u000e¢\u0006\u0002\n\u0000¨\u0006\u001d"}, d2 = {"Lkotlinx/coroutines/EventLoop;", "Lkotlinx/coroutines/CoroutineDispatcher;", "()V", "isActive", "", "()Z", "isEmpty", "isUnconfinedLoopActive", "isUnconfinedQueueEmpty", "nextTime", "", "getNextTime", "()J", "shared", "unconfinedQueue", "Lkotlinx/coroutines/internal/ArrayQueue;", "Lkotlinx/coroutines/DispatchedTask;", "useCount", "decrementUseCount", "", "unconfined", "delta", "dispatchUnconfined", "task", "incrementUseCount", "processNextEvent", "processUnconfinedEvent", "shouldBeProcessedFromContext", "shutdown", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public abstract class EventLoop extends CoroutineDispatcher {
-    private boolean shared;
-    private ArrayQueue<DispatchedTask<?>> unconfinedQueue;
-    private long useCount;
+public final class Validators {
+    private static final int MIN_RSA_MODULUS_SIZE = 2048;
+    private static final String TYPE_URL_PREFIX = "type.googleapis.com/";
+    private static final String URI_UNRESERVED_CHARS = "([0-9a-zA-Z\\-\\.\\_~])+";
+    private static final Pattern GCP_KMS_CRYPTO_KEY_PATTERN = Pattern.compile(String.format("^projects/%s/locations/%s/keyRings/%s/cryptoKeys/%s$", URI_UNRESERVED_CHARS, URI_UNRESERVED_CHARS, URI_UNRESERVED_CHARS, URI_UNRESERVED_CHARS), 2);
+    private static final Pattern GCP_KMS_CRYPTO_KEY_VERSION_PATTERN = Pattern.compile(String.format("^projects/%s/locations/%s/keyRings/%s/cryptoKeys/%s/cryptoKeyVersions/%s$", URI_UNRESERVED_CHARS, URI_UNRESERVED_CHARS, URI_UNRESERVED_CHARS, URI_UNRESERVED_CHARS, URI_UNRESERVED_CHARS), 2);
 
-    private final long delta(boolean z2) {
-        return z2 ? 4294967296L : 1L;
+    private Validators() {
     }
 
-    public boolean shouldBeProcessedFromContext() {
-        return false;
-    }
-
-    protected void shutdown() {
-    }
-
-    public long processNextEvent() {
-        if (processUnconfinedEvent()) {
-            return 0L;
+    public static void validateTypeUrl(String typeUrl) throws GeneralSecurityException {
+        if (!typeUrl.startsWith(TYPE_URL_PREFIX)) {
+            throw new GeneralSecurityException(String.format("Error: type URL %s is invalid; it must start with %s.\n", typeUrl, TYPE_URL_PREFIX));
         }
-        return LongCompanionObject.MAX_VALUE;
-    }
-
-    protected boolean isEmpty() {
-        return isUnconfinedQueueEmpty();
-    }
-
-    /* JADX INFO: Access modifiers changed from: protected */
-    public long getNextTime() {
-        ArrayQueue<DispatchedTask<?>> arrayQueue = this.unconfinedQueue;
-        if (arrayQueue == null || arrayQueue.isEmpty()) {
-            return LongCompanionObject.MAX_VALUE;
+        if (typeUrl.length() == 20) {
+            throw new GeneralSecurityException(String.format("Error: type URL %s is invalid; it has no message name.\n", typeUrl));
         }
-        return 0L;
     }
 
-    public final boolean processUnconfinedEvent() {
-        DispatchedTask<?> removeFirstOrNull;
-        ArrayQueue<DispatchedTask<?>> arrayQueue = this.unconfinedQueue;
-        if (arrayQueue == null || (removeFirstOrNull = arrayQueue.removeFirstOrNull()) == null) {
-            return false;
+    public static void validateAesKeySize(int sizeInBytes) throws InvalidAlgorithmParameterException {
+        if (sizeInBytes != 16 && sizeInBytes != 32) {
+            throw new InvalidAlgorithmParameterException(String.format("invalid key size %d; only 128-bit and 256-bit AES keys are supported", Integer.valueOf(sizeInBytes * 8)));
         }
-        removeFirstOrNull.run();
-        return true;
     }
 
-    public final void dispatchUnconfined(DispatchedTask<?> dispatchedTask) {
-        ArrayQueue<DispatchedTask<?>> arrayQueue = this.unconfinedQueue;
-        if (arrayQueue == null) {
-            arrayQueue = new ArrayQueue<>();
-            this.unconfinedQueue = arrayQueue;
+    public static void validateVersion(int candidate, int maxExpected) throws GeneralSecurityException {
+        if (candidate < 0 || candidate > maxExpected) {
+            throw new GeneralSecurityException(String.format("key has version %d; only keys with version in range [0..%d] are supported", Integer.valueOf(candidate), Integer.valueOf(maxExpected)));
         }
-        arrayQueue.addLast(dispatchedTask);
     }
 
-    public final boolean isActive() {
-        return this.useCount > 0;
-    }
+    /* renamed from: com.google.crypto.tink.subtle.Validators$1  reason: invalid class name */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType;
 
-    public final boolean isUnconfinedLoopActive() {
-        return this.useCount >= delta(true);
-    }
-
-    public final boolean isUnconfinedQueueEmpty() {
-        ArrayQueue<DispatchedTask<?>> arrayQueue = this.unconfinedQueue;
-        if (arrayQueue != null) {
-            return arrayQueue.isEmpty();
-        }
-        return true;
-    }
-
-    public static /* synthetic */ void incrementUseCount$default(EventLoop eventLoop, boolean z2, int i2, Object obj) {
-        if (obj != null) {
-            throw new UnsupportedOperationException("Super calls with default arguments not supported in this target, function: incrementUseCount");
-        }
-        if ((i2 & 1) != 0) {
-            z2 = false;
-        }
-        eventLoop.incrementUseCount(z2);
-    }
-
-    public final void incrementUseCount(boolean z2) {
-        this.useCount += delta(z2);
-        if (z2) {
-            return;
-        }
-        this.shared = true;
-    }
-
-    public static /* synthetic */ void decrementUseCount$default(EventLoop eventLoop, boolean z2, int i2, Object obj) {
-        if (obj != null) {
-            throw new UnsupportedOperationException("Super calls with default arguments not supported in this target, function: decrementUseCount");
-        }
-        if ((i2 & 1) != 0) {
-            z2 = false;
-        }
-        eventLoop.decrementUseCount(z2);
-    }
-
-    public final void decrementUseCount(boolean z2) {
-        long delta = this.useCount - delta(z2);
-        this.useCount = delta;
-        if (delta > 0) {
-            return;
-        }
-        if (DebugKt.getASSERTIONS_ENABLED()) {
-            if (!(this.useCount == 0)) {
-                throw new AssertionError();
+        static {
+            int[] iArr = new int[Enums.HashType.values().length];
+            $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType = iArr;
+            try {
+                iArr[Enums.HashType.SHA256.ordinal()] = 1;
+            } catch (NoSuchFieldError unused) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType[Enums.HashType.SHA384.ordinal()] = 2;
+            } catch (NoSuchFieldError unused2) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType[Enums.HashType.SHA512.ordinal()] = 3;
+            } catch (NoSuchFieldError unused3) {
             }
         }
-        if (this.shared) {
-            shutdown();
+    }
+
+    public static void validateSignatureHash(Enums.HashType hash) throws GeneralSecurityException {
+        int i2 = AnonymousClass1.$SwitchMap$com$google$crypto$tink$subtle$Enums$HashType[hash.ordinal()];
+        if (i2 == 1 || i2 == 2 || i2 == 3) {
+            return;
         }
+        throw new GeneralSecurityException("Unsupported hash: " + hash.name());
+    }
+
+    public static void validateRsaModulusSize(int modulusSize) throws GeneralSecurityException {
+        if (modulusSize < 2048) {
+            throw new GeneralSecurityException(String.format("Modulus size is %d; only modulus size >= 2048-bit is supported", Integer.valueOf(modulusSize)));
+        }
+        if (TinkFips.useOnlyFips() && modulusSize != 3072) {
+            throw new GeneralSecurityException(String.format("Modulus size is %d; only modulus size 3072-bit is supported in FIPS mode", Integer.valueOf(modulusSize)));
+        }
+    }
+
+    public static void validateRsaPublicExponent(BigInteger publicExponent) throws GeneralSecurityException {
+        if (!publicExponent.testBit(0)) {
+            throw new GeneralSecurityException("Public exponent must be odd.");
+        }
+        if (publicExponent.compareTo(BigInteger.valueOf(65536L)) <= 0) {
+            throw new GeneralSecurityException("Public exponent must be greater than 65536.");
+        }
+    }
+
+    public static void validateNotExists(File f2) throws IOException {
+        if (f2.exists()) {
+            throw new IOException(String.format("%s exists, please choose another file\n", f2));
+        }
+    }
+
+    public static void validateExists(File f2) throws IOException {
+        if (!f2.exists()) {
+            throw new IOException(String.format("Error: %s doesn't exist, please choose another file\n", f2));
+        }
+    }
+
+    public static String validateKmsKeyUriAndRemovePrefix(String expectedPrefix, String kmsKeyUri) {
+        if (!kmsKeyUri.toLowerCase(Locale.US).startsWith(expectedPrefix)) {
+            throw new IllegalArgumentException(String.format("key URI must start with %s", expectedPrefix));
+        }
+        return kmsKeyUri.substring(expectedPrefix.length());
+    }
+
+    public static void validateCryptoKeyUri(String kmsKeyUri) throws GeneralSecurityException {
+        if (GCP_KMS_CRYPTO_KEY_PATTERN.matcher(kmsKeyUri).matches()) {
+            return;
+        }
+        if (GCP_KMS_CRYPTO_KEY_VERSION_PATTERN.matcher(kmsKeyUri).matches()) {
+            throw new GeneralSecurityException("Invalid Google Cloud KMS Key URI. The URI must point to a CryptoKey, not a CryptoKeyVersion");
+        }
+        throw new GeneralSecurityException("Invalid Google Cloud KMS Key URI. The URI must point to a CryptoKey in the format projects/*/locations/*/keyRings/*/cryptoKeys/*. See https://cloud.google.com/kms/docs/reference/rest/v1/projects.locations.keyRings.cryptoKeys#CryptoKey");
     }
 }

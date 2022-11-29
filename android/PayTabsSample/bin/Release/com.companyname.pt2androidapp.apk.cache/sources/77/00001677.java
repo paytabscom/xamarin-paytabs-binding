@@ -1,82 +1,36 @@
-package mono.android.net.nsd;
+package kotlin.jvm.internal;
 
-import android.net.nsd.NsdManager;
-import android.net.nsd.NsdServiceInfo;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.NoSuchElementException;
+import kotlin.Metadata;
+import kotlin.collections.LongIterator;
 
+/* compiled from: ArrayIterators.kt */
+@Metadata(d1 = {"\u0000$\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0016\n\u0002\b\u0002\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\t\n\u0000\b\u0002\u0018\u00002\u00020\u0001B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0002\u0010\u0004J\t\u0010\u0007\u001a\u00020\bH\u0096\u0002J\b\u0010\t\u001a\u00020\nH\u0016R\u000e\u0010\u0002\u001a\u00020\u0003X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0006X\u0082\u000e¢\u0006\u0002\n\u0000¨\u0006\u000b"}, d2 = {"Lkotlin/jvm/internal/ArrayLongIterator;", "Lkotlin/collections/LongIterator;", "array", "", "([J)V", "index", "", "hasNext", "", "nextLong", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class NsdManager_DiscoveryListenerImplementor implements IGCUserPeer, NsdManager.DiscoveryListener {
-    public static final String __md_methods = "n_onDiscoveryStarted:(Ljava/lang/String;)V:GetOnDiscoveryStarted_Ljava_lang_String_Handler:Android.Net.Nsd.NsdManager/IDiscoveryListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onDiscoveryStopped:(Ljava/lang/String;)V:GetOnDiscoveryStopped_Ljava_lang_String_Handler:Android.Net.Nsd.NsdManager/IDiscoveryListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onServiceFound:(Landroid/net/nsd/NsdServiceInfo;)V:GetOnServiceFound_Landroid_net_nsd_NsdServiceInfo_Handler:Android.Net.Nsd.NsdManager/IDiscoveryListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onServiceLost:(Landroid/net/nsd/NsdServiceInfo;)V:GetOnServiceLost_Landroid_net_nsd_NsdServiceInfo_Handler:Android.Net.Nsd.NsdManager/IDiscoveryListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onStartDiscoveryFailed:(Ljava/lang/String;I)V:GetOnStartDiscoveryFailed_Ljava_lang_String_IHandler:Android.Net.Nsd.NsdManager/IDiscoveryListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onStopDiscoveryFailed:(Ljava/lang/String;I)V:GetOnStopDiscoveryFailed_Ljava_lang_String_IHandler:Android.Net.Nsd.NsdManager/IDiscoveryListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+final class ArrayLongIterator extends LongIterator {
+    private final long[] array;
+    private int index;
 
-    private native void n_onDiscoveryStarted(String str);
-
-    private native void n_onDiscoveryStopped(String str);
-
-    private native void n_onServiceFound(NsdServiceInfo nsdServiceInfo);
-
-    private native void n_onServiceLost(NsdServiceInfo nsdServiceInfo);
-
-    private native void n_onStartDiscoveryFailed(String str, int i2);
-
-    private native void n_onStopDiscoveryFailed(String str, int i2);
-
-    static {
-        Runtime.register("Android.Net.Nsd.NsdManager+IDiscoveryListenerImplementor, Mono.Android", NsdManager_DiscoveryListenerImplementor.class, __md_methods);
+    public ArrayLongIterator(long[] array) {
+        Intrinsics.checkNotNullParameter(array, "array");
+        this.array = array;
     }
 
-    public NsdManager_DiscoveryListenerImplementor() {
-        if (getClass() == NsdManager_DiscoveryListenerImplementor.class) {
-            TypeManager.Activate("Android.Net.Nsd.NsdManager+IDiscoveryListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    @Override // java.util.Iterator
+    public boolean hasNext() {
+        return this.index < this.array.length;
     }
 
-    @Override // android.net.nsd.NsdManager.DiscoveryListener
-    public void onDiscoveryStarted(String str) {
-        n_onDiscoveryStarted(str);
-    }
-
-    @Override // android.net.nsd.NsdManager.DiscoveryListener
-    public void onDiscoveryStopped(String str) {
-        n_onDiscoveryStopped(str);
-    }
-
-    @Override // android.net.nsd.NsdManager.DiscoveryListener
-    public void onServiceFound(NsdServiceInfo nsdServiceInfo) {
-        n_onServiceFound(nsdServiceInfo);
-    }
-
-    @Override // android.net.nsd.NsdManager.DiscoveryListener
-    public void onServiceLost(NsdServiceInfo nsdServiceInfo) {
-        n_onServiceLost(nsdServiceInfo);
-    }
-
-    @Override // android.net.nsd.NsdManager.DiscoveryListener
-    public void onStartDiscoveryFailed(String str, int i2) {
-        n_onStartDiscoveryFailed(str, i2);
-    }
-
-    @Override // android.net.nsd.NsdManager.DiscoveryListener
-    public void onStopDiscoveryFailed(String str, int i2) {
-        n_onStopDiscoveryFailed(str, i2);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
+    @Override // kotlin.collections.LongIterator
+    public long nextLong() {
+        try {
+            long[] jArr = this.array;
+            int i2 = this.index;
+            this.index = i2 + 1;
+            return jArr[i2];
+        } catch (ArrayIndexOutOfBoundsException e2) {
+            this.index--;
+            throw new NoSuchElementException(e2.getMessage());
         }
     }
 }

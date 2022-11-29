@@ -1,288 +1,613 @@
-package kotlin.collections;
+package com.google.crypto.tink;
 
-import java.util.Collection;
-import java.util.Iterator;
+import com.google.crypto.tink.KeyTypeManager;
+import com.google.crypto.tink.proto.KeyData;
+import com.google.crypto.tink.shaded.protobuf.ByteString;
+import com.google.crypto.tink.shaded.protobuf.InvalidProtocolBufferException;
+import com.google.crypto.tink.shaded.protobuf.MessageLite;
+import java.io.InputStream;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.NoSuchElementException;
-import java.util.RandomAccess;
-import kotlin.Metadata;
-import kotlin.jvm.internal.DefaultConstructorMarker;
-import kotlin.jvm.internal.Intrinsics;
-import kotlin.jvm.internal.markers.KMappedMarker;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.logging.Logger;
 
-/* compiled from: AbstractList.kt */
-@Metadata(d1 = {"\u00008\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010 \n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u0000\n\u0002\b\b\n\u0002\u0010(\n\u0002\b\u0002\n\u0002\u0010*\n\u0002\b\b\b'\u0018\u0000 \u001c*\u0006\b\u0000\u0010\u0001 \u00012\b\u0012\u0004\u0012\u0002H\u00010\u00022\b\u0012\u0004\u0012\u0002H\u00010\u0003:\u0004\u001c\u001d\u001e\u001fB\u0007\b\u0004¢\u0006\u0002\u0010\u0004J\u0013\u0010\t\u001a\u00020\n2\b\u0010\u000b\u001a\u0004\u0018\u00010\fH\u0096\u0002J\u0016\u0010\r\u001a\u00028\u00002\u0006\u0010\u000e\u001a\u00020\u0006H¦\u0002¢\u0006\u0002\u0010\u000fJ\b\u0010\u0010\u001a\u00020\u0006H\u0016J\u0015\u0010\u0011\u001a\u00020\u00062\u0006\u0010\u0012\u001a\u00028\u0000H\u0016¢\u0006\u0002\u0010\u0013J\u000f\u0010\u0014\u001a\b\u0012\u0004\u0012\u00028\u00000\u0015H\u0096\u0002J\u0015\u0010\u0016\u001a\u00020\u00062\u0006\u0010\u0012\u001a\u00028\u0000H\u0016¢\u0006\u0002\u0010\u0013J\u000e\u0010\u0017\u001a\b\u0012\u0004\u0012\u00028\u00000\u0018H\u0016J\u0016\u0010\u0017\u001a\b\u0012\u0004\u0012\u00028\u00000\u00182\u0006\u0010\u000e\u001a\u00020\u0006H\u0016J\u001e\u0010\u0019\u001a\b\u0012\u0004\u0012\u00028\u00000\u00032\u0006\u0010\u001a\u001a\u00020\u00062\u0006\u0010\u001b\u001a\u00020\u0006H\u0016R\u0012\u0010\u0005\u001a\u00020\u0006X¦\u0004¢\u0006\u0006\u001a\u0004\b\u0007\u0010\b¨\u0006 "}, d2 = {"Lkotlin/collections/AbstractList;", "E", "Lkotlin/collections/AbstractCollection;", "", "()V", "size", "", "getSize", "()I", "equals", "", "other", "", "get", "index", "(I)Ljava/lang/Object;", "hashCode", "indexOf", "element", "(Ljava/lang/Object;)I", "iterator", "", "lastIndexOf", "listIterator", "", "subList", "fromIndex", "toIndex", "Companion", "IteratorImpl", "ListIteratorImpl", "SubList", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public abstract class AbstractList<E> extends AbstractCollection<E> implements List<E>, KMappedMarker {
-    public static final Companion Companion = new Companion(null);
+public final class Registry {
+    private static final Logger logger = Logger.getLogger(Registry.class.getName());
+    private static final ConcurrentMap<String, KeyManagerContainer> keyManagerMap = new ConcurrentHashMap();
+    private static final ConcurrentMap<String, KeyDeriverContainer> keyDeriverMap = new ConcurrentHashMap();
+    private static final ConcurrentMap<String, Boolean> newKeyAllowedMap = new ConcurrentHashMap();
+    private static final ConcurrentMap<String, Catalogue<?>> catalogueMap = new ConcurrentHashMap();
+    private static final ConcurrentMap<Class<?>, PrimitiveWrapper<?, ?>> primitiveWrapperMap = new ConcurrentHashMap();
+    private static final ConcurrentMap<String, KeyTemplate> keyTemplateMap = new ConcurrentHashMap();
 
-    @Override // java.util.List
-    public void add(int i2, E e2) {
-        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
-    }
-
-    @Override // java.util.List
-    public boolean addAll(int i2, Collection<? extends E> collection) {
-        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
-    }
-
-    @Override // java.util.List
-    public abstract E get(int i2);
-
-    @Override // kotlin.collections.AbstractCollection
-    public abstract int getSize();
-
-    @Override // java.util.List
-    public E remove(int i2) {
-        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
-    }
-
-    @Override // java.util.List
-    public E set(int i2, E e2) {
-        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
-    }
-
-    @Override // kotlin.collections.AbstractCollection, java.util.Collection, java.lang.Iterable
-    public Iterator<E> iterator() {
-        return new IteratorImpl();
-    }
-
-    @Override // java.util.List
-    public ListIterator<E> listIterator() {
-        return new ListIteratorImpl(0);
-    }
-
-    @Override // java.util.List
-    public ListIterator<E> listIterator(int i2) {
-        return new ListIteratorImpl(i2);
-    }
-
-    @Override // java.util.List
-    public List<E> subList(int i2, int i3) {
-        return new SubList(this, i2, i3);
-    }
-
-    /* compiled from: AbstractList.kt */
-    @Metadata(d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\n\b\u0002\u0018\u0000*\u0006\b\u0001\u0010\u0001 \u00012\b\u0012\u0004\u0012\u0002H\u00010\u00022\u00060\u0003j\u0002`\u0004B#\u0012\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u00028\u00010\u0002\u0012\u0006\u0010\u0006\u001a\u00020\u0007\u0012\u0006\u0010\b\u001a\u00020\u0007¢\u0006\u0002\u0010\tJ\u0016\u0010\u000e\u001a\u00028\u00012\u0006\u0010\u000f\u001a\u00020\u0007H\u0096\u0002¢\u0006\u0002\u0010\u0010R\u000e\u0010\n\u001a\u00020\u0007X\u0082\u000e¢\u0006\u0002\n\u0000R\u000e\u0010\u0006\u001a\u00020\u0007X\u0082\u0004¢\u0006\u0002\n\u0000R\u0014\u0010\u0005\u001a\b\u0012\u0004\u0012\u00028\u00010\u0002X\u0082\u0004¢\u0006\u0002\n\u0000R\u0014\u0010\u000b\u001a\u00020\u00078VX\u0096\u0004¢\u0006\u0006\u001a\u0004\b\f\u0010\r¨\u0006\u0011"}, d2 = {"Lkotlin/collections/AbstractList$SubList;", "E", "Lkotlin/collections/AbstractList;", "Ljava/util/RandomAccess;", "Lkotlin/collections/RandomAccess;", "list", "fromIndex", "", "toIndex", "(Lkotlin/collections/AbstractList;II)V", "_size", "size", "getSize", "()I", "get", "index", "(I)Ljava/lang/Object;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+    /* JADX INFO: Access modifiers changed from: private */
     /* loaded from: classes.dex */
-    private static final class SubList<E> extends AbstractList<E> implements RandomAccess {
-        private int _size;
-        private final int fromIndex;
-        private final AbstractList<E> list;
-
-        /* JADX WARN: Multi-variable type inference failed */
-        public SubList(AbstractList<? extends E> list, int i2, int i3) {
-            Intrinsics.checkNotNullParameter(list, "list");
-            this.list = list;
-            this.fromIndex = i2;
-            AbstractList.Companion.checkRangeIndexes$kotlin_stdlib(i2, i3, list.size());
-            this._size = i3 - i2;
-        }
-
-        @Override // kotlin.collections.AbstractList, java.util.List
-        public E get(int i2) {
-            AbstractList.Companion.checkElementIndex$kotlin_stdlib(i2, this._size);
-            return this.list.get(this.fromIndex + i2);
-        }
-
-        @Override // kotlin.collections.AbstractList, kotlin.collections.AbstractCollection
-        public int getSize() {
-            return this._size;
-        }
-    }
-
-    @Override // java.util.Collection, java.util.List
-    public boolean equals(Object obj) {
-        if (obj == this) {
-            return true;
-        }
-        if (obj instanceof List) {
-            return Companion.orderedEquals$kotlin_stdlib(this, (Collection) obj);
-        }
-        return false;
-    }
-
-    @Override // java.util.Collection, java.util.List
-    public int hashCode() {
-        return Companion.orderedHashCode$kotlin_stdlib(this);
+    public interface KeyDeriverContainer {
+        KeyData deriveKey(ByteString serializedKeyFormat, InputStream stream) throws GeneralSecurityException;
     }
 
     /* JADX INFO: Access modifiers changed from: private */
-    /* compiled from: AbstractList.kt */
-    @Metadata(d1 = {"\u0000\u001c\n\u0002\u0018\u0002\n\u0002\u0010(\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0005\n\u0002\u0010\u000b\n\u0002\b\u0003\b\u0092\u0004\u0018\u00002\b\u0012\u0004\u0012\u00028\u00000\u0001B\u0005¢\u0006\u0002\u0010\u0002J\t\u0010\t\u001a\u00020\nH\u0096\u0002J\u000e\u0010\u000b\u001a\u00028\u0000H\u0096\u0002¢\u0006\u0002\u0010\fR\u001a\u0010\u0003\u001a\u00020\u0004X\u0084\u000e¢\u0006\u000e\n\u0000\u001a\u0004\b\u0005\u0010\u0006\"\u0004\b\u0007\u0010\b¨\u0006\r"}, d2 = {"Lkotlin/collections/AbstractList$IteratorImpl;", "", "(Lkotlin/collections/AbstractList;)V", "index", "", "getIndex", "()I", "setIndex", "(I)V", "hasNext", "", "next", "()Ljava/lang/Object;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
     /* loaded from: classes.dex */
-    public class IteratorImpl implements Iterator<E>, KMappedMarker {
-        private int index;
+    public interface KeyManagerContainer {
+        Class<?> getImplementingClass();
 
-        @Override // java.util.Iterator
-        public void remove() {
-            throw new UnsupportedOperationException("Operation is not supported for read-only collection");
-        }
+        <P> KeyManager<P> getKeyManager(Class<P> primitiveClass) throws GeneralSecurityException;
 
-        public IteratorImpl() {
-        }
+        KeyManager<?> getUntypedKeyManager();
 
-        protected final int getIndex() {
-            return this.index;
-        }
+        MessageLite parseKey(ByteString serializedKey) throws GeneralSecurityException, InvalidProtocolBufferException;
 
-        protected final void setIndex(int i2) {
-            this.index = i2;
-        }
+        Class<?> publicKeyManagerClassOrNull();
 
-        @Override // java.util.Iterator
-        public boolean hasNext() {
-            return this.index < AbstractList.this.size();
-        }
-
-        @Override // java.util.Iterator
-        public E next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException();
-            }
-            AbstractList abstractList = AbstractList.this;
-            int i2 = this.index;
-            this.index = i2 + 1;
-            return (E) abstractList.get(i2);
-        }
+        Set<Class<?>> supportedPrimitives();
     }
 
-    /* compiled from: AbstractList.kt */
-    @Metadata(d1 = {"\u0000\"\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010*\n\u0000\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0010\u000b\n\u0002\b\u0005\b\u0092\u0004\u0018\u00002\f0\u0001R\b\u0012\u0004\u0012\u00028\u00000\u00022\b\u0012\u0004\u0012\u00028\u00000\u0003B\r\u0012\u0006\u0010\u0004\u001a\u00020\u0005¢\u0006\u0002\u0010\u0006J\b\u0010\u0007\u001a\u00020\bH\u0016J\b\u0010\t\u001a\u00020\u0005H\u0016J\r\u0010\n\u001a\u00028\u0000H\u0016¢\u0006\u0002\u0010\u000bJ\b\u0010\f\u001a\u00020\u0005H\u0016¨\u0006\r"}, d2 = {"Lkotlin/collections/AbstractList$ListIteratorImpl;", "Lkotlin/collections/AbstractList$IteratorImpl;", "Lkotlin/collections/AbstractList;", "", "index", "", "(Lkotlin/collections/AbstractList;I)V", "hasPrevious", "", "nextIndex", "previous", "()Ljava/lang/Object;", "previousIndex", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
-    /* loaded from: classes.dex */
-    private class ListIteratorImpl extends AbstractList<E>.IteratorImpl implements ListIterator<E>, KMappedMarker {
-        @Override // java.util.ListIterator
-        public void add(E e2) {
-            throw new UnsupportedOperationException("Operation is not supported for read-only collection");
-        }
-
-        @Override // java.util.ListIterator
-        public void set(E e2) {
-            throw new UnsupportedOperationException("Operation is not supported for read-only collection");
-        }
-
-        public ListIteratorImpl(int i2) {
-            super();
-            AbstractList.Companion.checkPositionIndex$kotlin_stdlib(i2, AbstractList.this.size());
-            setIndex(i2);
-        }
-
-        @Override // java.util.ListIterator
-        public boolean hasPrevious() {
-            return getIndex() > 0;
-        }
-
-        @Override // java.util.ListIterator
-        public int nextIndex() {
-            return getIndex();
-        }
-
-        @Override // java.util.ListIterator
-        public E previous() {
-            if (!hasPrevious()) {
-                throw new NoSuchElementException();
+    private static <P> KeyManagerContainer createContainerFor(final KeyManager<P> keyManager) {
+        return new KeyManagerContainer() { // from class: com.google.crypto.tink.Registry.1
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public MessageLite parseKey(ByteString serializedKey) throws GeneralSecurityException, InvalidProtocolBufferException {
+                return null;
             }
-            AbstractList abstractList = AbstractList.this;
-            setIndex(getIndex() - 1);
-            return (E) abstractList.get(getIndex());
-        }
 
-        @Override // java.util.ListIterator
-        public int previousIndex() {
-            return getIndex() - 1;
-        }
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public Class<?> publicKeyManagerClassOrNull() {
+                return null;
+            }
+
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public <Q> KeyManager<Q> getKeyManager(Class<Q> primitiveClass) throws GeneralSecurityException {
+                if (!KeyManager.this.getPrimitiveClass().equals(primitiveClass)) {
+                    throw new InternalError("This should never be called, as we always first check supportedPrimitives.");
+                }
+                return KeyManager.this;
+            }
+
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public KeyManager<?> getUntypedKeyManager() {
+                return KeyManager.this;
+            }
+
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public Class<?> getImplementingClass() {
+                return KeyManager.this.getClass();
+            }
+
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public Set<Class<?>> supportedPrimitives() {
+                return Collections.singleton(KeyManager.this.getPrimitiveClass());
+            }
+        };
     }
 
-    /* compiled from: AbstractList.kt */
-    @Metadata(d1 = {"\u0000(\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\r\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u001e\n\u0002\b\u0005\b\u0080\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J%\u0010\u0003\u001a\u00020\u00042\u0006\u0010\u0005\u001a\u00020\u00062\u0006\u0010\u0007\u001a\u00020\u00062\u0006\u0010\b\u001a\u00020\u0006H\u0000¢\u0006\u0002\b\tJ\u001d\u0010\n\u001a\u00020\u00042\u0006\u0010\u000b\u001a\u00020\u00062\u0006\u0010\b\u001a\u00020\u0006H\u0000¢\u0006\u0002\b\fJ\u001d\u0010\r\u001a\u00020\u00042\u0006\u0010\u000b\u001a\u00020\u00062\u0006\u0010\b\u001a\u00020\u0006H\u0000¢\u0006\u0002\b\u000eJ%\u0010\u000f\u001a\u00020\u00042\u0006\u0010\u0010\u001a\u00020\u00062\u0006\u0010\u0011\u001a\u00020\u00062\u0006\u0010\b\u001a\u00020\u0006H\u0000¢\u0006\u0002\b\u0012J%\u0010\u0013\u001a\u00020\u00142\n\u0010\u0015\u001a\u0006\u0012\u0002\b\u00030\u00162\n\u0010\u0017\u001a\u0006\u0012\u0002\b\u00030\u0016H\u0000¢\u0006\u0002\b\u0018J\u0019\u0010\u0019\u001a\u00020\u00062\n\u0010\u0015\u001a\u0006\u0012\u0002\b\u00030\u0016H\u0000¢\u0006\u0002\b\u001a¨\u0006\u001b"}, d2 = {"Lkotlin/collections/AbstractList$Companion;", "", "()V", "checkBoundsIndexes", "", "startIndex", "", "endIndex", "size", "checkBoundsIndexes$kotlin_stdlib", "checkElementIndex", "index", "checkElementIndex$kotlin_stdlib", "checkPositionIndex", "checkPositionIndex$kotlin_stdlib", "checkRangeIndexes", "fromIndex", "toIndex", "checkRangeIndexes$kotlin_stdlib", "orderedEquals", "", "c", "", "other", "orderedEquals$kotlin_stdlib", "orderedHashCode", "orderedHashCode$kotlin_stdlib", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
-    /* loaded from: classes.dex */
-    public static final class Companion {
-        private Companion() {
-        }
-
-        public /* synthetic */ Companion(DefaultConstructorMarker defaultConstructorMarker) {
-            this();
-        }
-
-        public final void checkElementIndex$kotlin_stdlib(int i2, int i3) {
-            if (i2 < 0 || i2 >= i3) {
-                throw new IndexOutOfBoundsException("index: " + i2 + ", size: " + i3);
+    private static <KeyProtoT extends MessageLite> KeyManagerContainer createContainerFor(final KeyTypeManager<KeyProtoT> keyManager) {
+        return new KeyManagerContainer() { // from class: com.google.crypto.tink.Registry.2
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public Class<?> publicKeyManagerClassOrNull() {
+                return null;
             }
-        }
 
-        public final void checkPositionIndex$kotlin_stdlib(int i2, int i3) {
-            if (i2 < 0 || i2 > i3) {
-                throw new IndexOutOfBoundsException("index: " + i2 + ", size: " + i3);
-            }
-        }
-
-        public final void checkRangeIndexes$kotlin_stdlib(int i2, int i3, int i4) {
-            if (i2 < 0 || i3 > i4) {
-                throw new IndexOutOfBoundsException("fromIndex: " + i2 + ", toIndex: " + i3 + ", size: " + i4);
-            } else if (i2 <= i3) {
-            } else {
-                throw new IllegalArgumentException("fromIndex: " + i2 + " > toIndex: " + i3);
-            }
-        }
-
-        public final void checkBoundsIndexes$kotlin_stdlib(int i2, int i3, int i4) {
-            if (i2 < 0 || i3 > i4) {
-                throw new IndexOutOfBoundsException("startIndex: " + i2 + ", endIndex: " + i3 + ", size: " + i4);
-            } else if (i2 <= i3) {
-            } else {
-                throw new IllegalArgumentException("startIndex: " + i2 + " > endIndex: " + i3);
-            }
-        }
-
-        public final int orderedHashCode$kotlin_stdlib(Collection<?> c2) {
-            Intrinsics.checkNotNullParameter(c2, "c");
-            Iterator<?> it = c2.iterator();
-            int i2 = 1;
-            while (it.hasNext()) {
-                Object next = it.next();
-                i2 = (i2 * 31) + (next != null ? next.hashCode() : 0);
-            }
-            return i2;
-        }
-
-        public final boolean orderedEquals$kotlin_stdlib(Collection<?> c2, Collection<?> other) {
-            Intrinsics.checkNotNullParameter(c2, "c");
-            Intrinsics.checkNotNullParameter(other, "other");
-            if (c2.size() != other.size()) {
-                return false;
-            }
-            Iterator<?> it = other.iterator();
-            Iterator<?> it2 = c2.iterator();
-            while (it2.hasNext()) {
-                if (!Intrinsics.areEqual(it2.next(), it.next())) {
-                    return false;
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public <Q> KeyManager<Q> getKeyManager(Class<Q> primitiveClass) throws GeneralSecurityException {
+                try {
+                    return new KeyManagerImpl(KeyTypeManager.this, primitiveClass);
+                } catch (IllegalArgumentException e2) {
+                    throw new GeneralSecurityException("Primitive type not supported", e2);
                 }
             }
-            return true;
+
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public KeyManager<?> getUntypedKeyManager() {
+                KeyTypeManager keyTypeManager = KeyTypeManager.this;
+                return new KeyManagerImpl(keyTypeManager, keyTypeManager.firstSupportedPrimitiveClass());
+            }
+
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public Class<?> getImplementingClass() {
+                return KeyTypeManager.this.getClass();
+            }
+
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public Set<Class<?>> supportedPrimitives() {
+                return KeyTypeManager.this.supportedPrimitives();
+            }
+
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public MessageLite parseKey(ByteString serializedKey) throws GeneralSecurityException, InvalidProtocolBufferException {
+                MessageLite parseKey = KeyTypeManager.this.parseKey(serializedKey);
+                KeyTypeManager.this.validateKey(parseKey);
+                return parseKey;
+            }
+        };
+    }
+
+    private static <KeyProtoT extends MessageLite, PublicKeyProtoT extends MessageLite> KeyManagerContainer createPrivateKeyContainerFor(final PrivateKeyTypeManager<KeyProtoT, PublicKeyProtoT> privateKeyTypeManager, final KeyTypeManager<PublicKeyProtoT> publicKeyTypeManager) {
+        return new KeyManagerContainer() { // from class: com.google.crypto.tink.Registry.3
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public <Q> KeyManager<Q> getKeyManager(Class<Q> primitiveClass) throws GeneralSecurityException {
+                try {
+                    return new PrivateKeyManagerImpl(PrivateKeyTypeManager.this, publicKeyTypeManager, primitiveClass);
+                } catch (IllegalArgumentException e2) {
+                    throw new GeneralSecurityException("Primitive type not supported", e2);
+                }
+            }
+
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public KeyManager<?> getUntypedKeyManager() {
+                PrivateKeyTypeManager privateKeyTypeManager2 = PrivateKeyTypeManager.this;
+                return new PrivateKeyManagerImpl(privateKeyTypeManager2, publicKeyTypeManager, privateKeyTypeManager2.firstSupportedPrimitiveClass());
+            }
+
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public Class<?> getImplementingClass() {
+                return PrivateKeyTypeManager.this.getClass();
+            }
+
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public Set<Class<?>> supportedPrimitives() {
+                return PrivateKeyTypeManager.this.supportedPrimitives();
+            }
+
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public Class<?> publicKeyManagerClassOrNull() {
+                return publicKeyTypeManager.getClass();
+            }
+
+            /* JADX WARN: Type inference failed for: r2v1, types: [com.google.crypto.tink.shaded.protobuf.MessageLite] */
+            @Override // com.google.crypto.tink.Registry.KeyManagerContainer
+            public MessageLite parseKey(ByteString serializedKey) throws GeneralSecurityException, InvalidProtocolBufferException {
+                ?? parseKey = PrivateKeyTypeManager.this.parseKey(serializedKey);
+                PrivateKeyTypeManager.this.validateKey(parseKey);
+                return parseKey;
+            }
+        };
+    }
+
+    private static <KeyProtoT extends MessageLite> KeyDeriverContainer createDeriverFor(final KeyTypeManager<KeyProtoT> keyManager) {
+        return new KeyDeriverContainer() { // from class: com.google.crypto.tink.Registry.4
+            /* JADX WARN: Unknown type variable: KeyProtoT in type: com.google.crypto.tink.KeyTypeManager$KeyFactory<KeyFormatProtoT extends com.google.crypto.tink.shaded.protobuf.MessageLite, KeyProtoT> */
+            private <KeyFormatProtoT extends MessageLite> MessageLite deriveKeyWithFactory(ByteString serializedKeyFormat, InputStream stream, KeyTypeManager.KeyFactory<KeyFormatProtoT, KeyProtoT> keyFactory) throws GeneralSecurityException {
+                try {
+                    KeyFormatProtoT parseKeyFormat = keyFactory.parseKeyFormat(serializedKeyFormat);
+                    keyFactory.validateKeyFormat(parseKeyFormat);
+                    return (MessageLite) keyFactory.deriveKey(parseKeyFormat, stream);
+                } catch (InvalidProtocolBufferException e2) {
+                    throw new GeneralSecurityException("parsing key format failed in deriveKey", e2);
+                }
+            }
+
+            @Override // com.google.crypto.tink.Registry.KeyDeriverContainer
+            public KeyData deriveKey(ByteString serializedKeyFormat, InputStream stream) throws GeneralSecurityException {
+                return KeyData.newBuilder().setTypeUrl(KeyTypeManager.this.getKeyType()).setValue(deriveKeyWithFactory(serializedKeyFormat, stream, KeyTypeManager.this.keyFactory()).toByteString()).setKeyMaterialType(KeyTypeManager.this.keyMaterialType()).build();
+            }
+        };
+    }
+
+    private static synchronized KeyManagerContainer getKeyManagerContainerOrThrow(String typeUrl) throws GeneralSecurityException {
+        KeyManagerContainer keyManagerContainer;
+        synchronized (Registry.class) {
+            ConcurrentMap<String, KeyManagerContainer> concurrentMap = keyManagerMap;
+            if (!concurrentMap.containsKey(typeUrl)) {
+                throw new GeneralSecurityException("No key manager found for key type " + typeUrl);
+            }
+            keyManagerContainer = concurrentMap.get(typeUrl);
+        }
+        return keyManagerContainer;
+    }
+
+    static synchronized void reset() {
+        synchronized (Registry.class) {
+            keyManagerMap.clear();
+            keyDeriverMap.clear();
+            newKeyAllowedMap.clear();
+            catalogueMap.clear();
+            primitiveWrapperMap.clear();
+            keyTemplateMap.clear();
         }
     }
 
-    @Override // java.util.List
-    public int indexOf(Object obj) {
-        int i2 = 0;
-        for (E e2 : this) {
-            if (Intrinsics.areEqual(e2, obj)) {
-                return i2;
+    @Deprecated
+    public static synchronized void addCatalogue(String catalogueName, Catalogue<?> catalogue) throws GeneralSecurityException {
+        synchronized (Registry.class) {
+            if (catalogueName == null) {
+                throw new IllegalArgumentException("catalogueName must be non-null.");
             }
-            i2++;
+            if (catalogue == null) {
+                throw new IllegalArgumentException("catalogue must be non-null.");
+            }
+            ConcurrentMap<String, Catalogue<?>> concurrentMap = catalogueMap;
+            if (concurrentMap.containsKey(catalogueName.toLowerCase(Locale.US)) && !catalogue.getClass().getName().equals(concurrentMap.get(catalogueName.toLowerCase(Locale.US)).getClass().getName())) {
+                Logger logger2 = logger;
+                logger2.warning("Attempted overwrite of a catalogueName catalogue for name " + catalogueName);
+                throw new GeneralSecurityException("catalogue for name " + catalogueName + " has been already registered");
+            }
+            concurrentMap.put(catalogueName.toLowerCase(Locale.US), catalogue);
         }
-        return -1;
     }
 
-    @Override // java.util.List
-    public int lastIndexOf(Object obj) {
-        ListIterator<E> listIterator = listIterator(size());
-        while (listIterator.hasPrevious()) {
-            if (Intrinsics.areEqual(listIterator.previous(), obj)) {
-                return listIterator.nextIndex();
+    @Deprecated
+    public static Catalogue<?> getCatalogue(String catalogueName) throws GeneralSecurityException {
+        if (catalogueName == null) {
+            throw new IllegalArgumentException("catalogueName must be non-null.");
+        }
+        Catalogue<?> catalogue = catalogueMap.get(catalogueName.toLowerCase(Locale.US));
+        if (catalogue == null) {
+            String format = String.format("no catalogue found for %s. ", catalogueName);
+            if (catalogueName.toLowerCase(Locale.US).startsWith("tinkaead")) {
+                format = format + "Maybe call AeadConfig.register().";
+            }
+            if (catalogueName.toLowerCase(Locale.US).startsWith("tinkdeterministicaead")) {
+                format = format + "Maybe call DeterministicAeadConfig.register().";
+            } else if (catalogueName.toLowerCase(Locale.US).startsWith("tinkstreamingaead")) {
+                format = format + "Maybe call StreamingAeadConfig.register().";
+            } else if (catalogueName.toLowerCase(Locale.US).startsWith("tinkhybriddecrypt") || catalogueName.toLowerCase(Locale.US).startsWith("tinkhybridencrypt")) {
+                format = format + "Maybe call HybridConfig.register().";
+            } else if (catalogueName.toLowerCase(Locale.US).startsWith("tinkmac")) {
+                format = format + "Maybe call MacConfig.register().";
+            } else if (catalogueName.toLowerCase(Locale.US).startsWith("tinkpublickeysign") || catalogueName.toLowerCase(Locale.US).startsWith("tinkpublickeyverify")) {
+                format = format + "Maybe call SignatureConfig.register().";
+            } else if (catalogueName.toLowerCase(Locale.US).startsWith("tink")) {
+                format = format + "Maybe call TinkConfig.register().";
+            }
+            throw new GeneralSecurityException(format);
+        }
+        return catalogue;
+    }
+
+    private static <T> T checkNotNull(T reference) {
+        Objects.requireNonNull(reference);
+        return reference;
+    }
+
+    public static synchronized <P> void registerKeyManager(final KeyManager<P> manager) throws GeneralSecurityException {
+        synchronized (Registry.class) {
+            registerKeyManager((KeyManager) manager, true);
+        }
+    }
+
+    /* JADX WARN: Code restructure failed: missing block: B:12:0x0054, code lost:
+        r5 = com.google.crypto.tink.Registry.newKeyAllowedMap;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:13:0x005a, code lost:
+        if (r5.containsKey(r4) == false) goto L20;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:15:0x0066, code lost:
+        if (r5.get(r4).booleanValue() == false) goto L18;
+     */
+    /* JADX WARN: Code restructure failed: missing block: B:18:0x007f, code lost:
+        throw new java.security.GeneralSecurityException("New keys are already disallowed for key type " + r4);
+     */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+        To view partially-correct code enable 'Show inconsistent code' option in preferences
+    */
+    private static synchronized <KeyProtoT extends com.google.crypto.tink.shaded.protobuf.MessageLite, KeyFormatProtoT extends com.google.crypto.tink.shaded.protobuf.MessageLite> void ensureKeyManagerInsertable(java.lang.String r4, java.lang.Class<?> r5, java.util.Map<java.lang.String, com.google.crypto.tink.KeyTypeManager.KeyFactory.KeyFormat<KeyFormatProtoT>> r6, boolean r7) throws java.security.GeneralSecurityException {
+        /*
+            Method dump skipped, instructions count: 273
+            To view this dump change 'Code comments level' option to 'DEBUG'
+        */
+        throw new UnsupportedOperationException("Method not decompiled: com.google.crypto.tink.Registry.ensureKeyManagerInsertable(java.lang.String, java.lang.Class, java.util.Map, boolean):void");
+    }
+
+    public static synchronized <P> void registerKeyManager(final KeyManager<P> manager, boolean newKeyAllowed) throws GeneralSecurityException {
+        synchronized (Registry.class) {
+            if (manager == null) {
+                throw new IllegalArgumentException("key manager must be non-null.");
+            }
+            String keyType = manager.getKeyType();
+            ensureKeyManagerInsertable(keyType, manager.getClass(), Collections.emptyMap(), newKeyAllowed);
+            keyManagerMap.putIfAbsent(keyType, createContainerFor(manager));
+            newKeyAllowedMap.put(keyType, Boolean.valueOf(newKeyAllowed));
+        }
+    }
+
+    public static synchronized <KeyProtoT extends MessageLite> void registerKeyManager(final KeyTypeManager<KeyProtoT> manager, boolean newKeyAllowed) throws GeneralSecurityException {
+        synchronized (Registry.class) {
+            if (manager == null) {
+                throw new IllegalArgumentException("key manager must be non-null.");
+            }
+            String keyType = manager.getKeyType();
+            ensureKeyManagerInsertable(keyType, manager.getClass(), newKeyAllowed ? manager.keyFactory().keyFormats() : Collections.emptyMap(), newKeyAllowed);
+            ConcurrentMap<String, KeyManagerContainer> concurrentMap = keyManagerMap;
+            if (!concurrentMap.containsKey(keyType)) {
+                concurrentMap.put(keyType, createContainerFor(manager));
+                keyDeriverMap.put(keyType, createDeriverFor(manager));
+                if (newKeyAllowed) {
+                    registerKeyTemplates(keyType, manager.keyFactory().keyFormats());
+                }
+            }
+            newKeyAllowedMap.put(keyType, Boolean.valueOf(newKeyAllowed));
+        }
+    }
+
+    public static synchronized <KeyProtoT extends MessageLite, PublicKeyProtoT extends MessageLite> void registerAsymmetricKeyManagers(final PrivateKeyTypeManager<KeyProtoT, PublicKeyProtoT> privateKeyTypeManager, final KeyTypeManager<PublicKeyProtoT> publicKeyTypeManager, boolean newKeyAllowed) throws GeneralSecurityException {
+        Class<?> publicKeyManagerClassOrNull;
+        synchronized (Registry.class) {
+            if (privateKeyTypeManager == null || publicKeyTypeManager == null) {
+                throw new IllegalArgumentException("given key managers must be non-null.");
+            }
+            String keyType = privateKeyTypeManager.getKeyType();
+            String keyType2 = publicKeyTypeManager.getKeyType();
+            ensureKeyManagerInsertable(keyType, privateKeyTypeManager.getClass(), newKeyAllowed ? privateKeyTypeManager.keyFactory().keyFormats() : Collections.emptyMap(), newKeyAllowed);
+            ensureKeyManagerInsertable(keyType2, publicKeyTypeManager.getClass(), Collections.emptyMap(), false);
+            if (keyType.equals(keyType2)) {
+                throw new GeneralSecurityException("Private and public key type must be different.");
+            }
+            ConcurrentMap<String, KeyManagerContainer> concurrentMap = keyManagerMap;
+            if (concurrentMap.containsKey(keyType) && (publicKeyManagerClassOrNull = concurrentMap.get(keyType).publicKeyManagerClassOrNull()) != null && !publicKeyManagerClassOrNull.getName().equals(publicKeyTypeManager.getClass().getName())) {
+                Logger logger2 = logger;
+                logger2.warning("Attempted overwrite of a registered key manager for key type " + keyType + " with inconsistent public key type " + keyType2);
+                throw new GeneralSecurityException(String.format("public key manager corresponding to %s is already registered with %s, cannot be re-registered with %s", privateKeyTypeManager.getClass().getName(), publicKeyManagerClassOrNull.getName(), publicKeyTypeManager.getClass().getName()));
+            }
+            if (!concurrentMap.containsKey(keyType) || concurrentMap.get(keyType).publicKeyManagerClassOrNull() == null) {
+                concurrentMap.put(keyType, createPrivateKeyContainerFor(privateKeyTypeManager, publicKeyTypeManager));
+                keyDeriverMap.put(keyType, createDeriverFor(privateKeyTypeManager));
+                if (newKeyAllowed) {
+                    registerKeyTemplates(privateKeyTypeManager.getKeyType(), privateKeyTypeManager.keyFactory().keyFormats());
+                }
+            }
+            ConcurrentMap<String, Boolean> concurrentMap2 = newKeyAllowedMap;
+            concurrentMap2.put(keyType, Boolean.valueOf(newKeyAllowed));
+            if (!concurrentMap.containsKey(keyType2)) {
+                concurrentMap.put(keyType2, createContainerFor(publicKeyTypeManager));
+            }
+            concurrentMap2.put(keyType2, false);
+        }
+    }
+
+    private static <KeyFormatProtoT extends MessageLite> void registerKeyTemplates(String typeUrl, Map<String, KeyTypeManager.KeyFactory.KeyFormat<KeyFormatProtoT>> keyFormats) {
+        for (Map.Entry<String, KeyTypeManager.KeyFactory.KeyFormat<KeyFormatProtoT>> entry : keyFormats.entrySet()) {
+            keyTemplateMap.put(entry.getKey(), KeyTemplate.create(typeUrl, entry.getValue().keyFormat.toByteArray(), entry.getValue().outputPrefixType));
+        }
+    }
+
+    @Deprecated
+    public static synchronized <P> void registerKeyManager(String typeUrl, final KeyManager<P> manager) throws GeneralSecurityException {
+        synchronized (Registry.class) {
+            registerKeyManager(typeUrl, manager, true);
+        }
+    }
+
+    @Deprecated
+    public static synchronized <P> void registerKeyManager(String typeUrl, final KeyManager<P> manager, boolean newKeyAllowed) throws GeneralSecurityException {
+        synchronized (Registry.class) {
+            try {
+                if (manager == null) {
+                    throw new IllegalArgumentException("key manager must be non-null.");
+                }
+                if (!typeUrl.equals(manager.getKeyType())) {
+                    throw new GeneralSecurityException("Manager does not support key type " + typeUrl + ".");
+                }
+                registerKeyManager(manager, newKeyAllowed);
+            } catch (Throwable th) {
+                throw th;
             }
         }
-        return -1;
+    }
+
+    public static synchronized <B, P> void registerPrimitiveWrapper(final PrimitiveWrapper<B, P> wrapper) throws GeneralSecurityException {
+        synchronized (Registry.class) {
+            if (wrapper == null) {
+                throw new IllegalArgumentException("wrapper must be non-null");
+            }
+            Class<P> primitiveClass = wrapper.getPrimitiveClass();
+            ConcurrentMap<Class<?>, PrimitiveWrapper<?, ?>> concurrentMap = primitiveWrapperMap;
+            if (concurrentMap.containsKey(primitiveClass)) {
+                PrimitiveWrapper<?, ?> primitiveWrapper = concurrentMap.get(primitiveClass);
+                if (!wrapper.getClass().getName().equals(primitiveWrapper.getClass().getName())) {
+                    Logger logger2 = logger;
+                    logger2.warning("Attempted overwrite of a registered PrimitiveWrapper for type " + primitiveClass);
+                    throw new GeneralSecurityException(String.format("PrimitiveWrapper for primitive (%s) is already registered to be %s, cannot be re-registered with %s", primitiveClass.getName(), primitiveWrapper.getClass().getName(), wrapper.getClass().getName()));
+                }
+            }
+            concurrentMap.put(primitiveClass, wrapper);
+        }
+    }
+
+    @Deprecated
+    public static <P> KeyManager<P> getKeyManager(String typeUrl) throws GeneralSecurityException {
+        return getKeyManagerInternal(typeUrl, null);
+    }
+
+    public static KeyManager<?> getUntypedKeyManager(String typeUrl) throws GeneralSecurityException {
+        return getKeyManagerContainerOrThrow(typeUrl).getUntypedKeyManager();
+    }
+
+    public static <P> KeyManager<P> getKeyManager(String typeUrl, Class<P> primitiveClass) throws GeneralSecurityException {
+        return getKeyManagerInternal(typeUrl, (Class) checkNotNull(primitiveClass));
+    }
+
+    private static String toCommaSeparatedString(Set<Class<?>> setOfClasses) {
+        StringBuilder sb = new StringBuilder();
+        boolean z2 = true;
+        for (Class<?> cls : setOfClasses) {
+            if (!z2) {
+                sb.append(", ");
+            }
+            sb.append(cls.getCanonicalName());
+            z2 = false;
+        }
+        return sb.toString();
+    }
+
+    private static <P> KeyManager<P> getKeyManagerInternal(String typeUrl, Class<P> primitiveClass) throws GeneralSecurityException {
+        KeyManagerContainer keyManagerContainerOrThrow = getKeyManagerContainerOrThrow(typeUrl);
+        if (primitiveClass == null) {
+            return (KeyManager<P>) keyManagerContainerOrThrow.getUntypedKeyManager();
+        }
+        if (keyManagerContainerOrThrow.supportedPrimitives().contains(primitiveClass)) {
+            return keyManagerContainerOrThrow.getKeyManager(primitiveClass);
+        }
+        throw new GeneralSecurityException("Primitive type " + primitiveClass.getName() + " not supported by key manager of type " + keyManagerContainerOrThrow.getImplementingClass() + ", supported primitives: " + toCommaSeparatedString(keyManagerContainerOrThrow.supportedPrimitives()));
+    }
+
+    public static synchronized KeyData newKeyData(com.google.crypto.tink.proto.KeyTemplate keyTemplate) throws GeneralSecurityException {
+        KeyData newKeyData;
+        synchronized (Registry.class) {
+            KeyManager<?> untypedKeyManager = getUntypedKeyManager(keyTemplate.getTypeUrl());
+            if (newKeyAllowedMap.get(keyTemplate.getTypeUrl()).booleanValue()) {
+                newKeyData = untypedKeyManager.newKeyData(keyTemplate.getValue());
+            } else {
+                throw new GeneralSecurityException("newKey-operation not permitted for key type " + keyTemplate.getTypeUrl());
+            }
+        }
+        return newKeyData;
+    }
+
+    public static synchronized KeyData newKeyData(KeyTemplate keyTemplate) throws GeneralSecurityException {
+        KeyData newKeyData;
+        synchronized (Registry.class) {
+            newKeyData = newKeyData(keyTemplate.getProto());
+        }
+        return newKeyData;
+    }
+
+    public static synchronized MessageLite newKey(com.google.crypto.tink.proto.KeyTemplate keyTemplate) throws GeneralSecurityException {
+        MessageLite newKey;
+        synchronized (Registry.class) {
+            KeyManager<?> untypedKeyManager = getUntypedKeyManager(keyTemplate.getTypeUrl());
+            if (newKeyAllowedMap.get(keyTemplate.getTypeUrl()).booleanValue()) {
+                newKey = untypedKeyManager.newKey(keyTemplate.getValue());
+            } else {
+                throw new GeneralSecurityException("newKey-operation not permitted for key type " + keyTemplate.getTypeUrl());
+            }
+        }
+        return newKey;
+    }
+
+    public static synchronized MessageLite newKey(String typeUrl, MessageLite format) throws GeneralSecurityException {
+        MessageLite newKey;
+        synchronized (Registry.class) {
+            KeyManager keyManager = getKeyManager(typeUrl);
+            if (newKeyAllowedMap.get(typeUrl).booleanValue()) {
+                newKey = keyManager.newKey(format);
+            } else {
+                throw new GeneralSecurityException("newKey-operation not permitted for key type " + typeUrl);
+            }
+        }
+        return newKey;
+    }
+
+    static synchronized KeyData deriveKey(com.google.crypto.tink.proto.KeyTemplate keyTemplate, InputStream randomStream) throws GeneralSecurityException {
+        KeyData deriveKey;
+        synchronized (Registry.class) {
+            String typeUrl = keyTemplate.getTypeUrl();
+            ConcurrentMap<String, KeyDeriverContainer> concurrentMap = keyDeriverMap;
+            if (!concurrentMap.containsKey(typeUrl)) {
+                throw new GeneralSecurityException("No keymanager registered or key manager cannot derive keys for " + typeUrl);
+            }
+            deriveKey = concurrentMap.get(typeUrl).deriveKey(keyTemplate.getValue(), randomStream);
+        }
+        return deriveKey;
+    }
+
+    public static KeyData getPublicKeyData(String typeUrl, ByteString serializedPrivateKey) throws GeneralSecurityException {
+        KeyManager keyManager = getKeyManager(typeUrl);
+        if (!(keyManager instanceof PrivateKeyManager)) {
+            throw new GeneralSecurityException("manager for key type " + typeUrl + " is not a PrivateKeyManager");
+        }
+        return ((PrivateKeyManager) keyManager).getPublicKeyData(serializedPrivateKey);
+    }
+
+    @Deprecated
+    public static <P> P getPrimitive(String typeUrl, MessageLite key) throws GeneralSecurityException {
+        return (P) getPrimitiveInternal(typeUrl, key, (Class<Object>) null);
+    }
+
+    public static <P> P getPrimitive(String typeUrl, MessageLite key, Class<P> primitiveClass) throws GeneralSecurityException {
+        return (P) getPrimitiveInternal(typeUrl, key, (Class) checkNotNull(primitiveClass));
+    }
+
+    private static <P> P getPrimitiveInternal(String typeUrl, MessageLite key, Class<P> primitiveClass) throws GeneralSecurityException {
+        return (P) getKeyManagerInternal(typeUrl, primitiveClass).getPrimitive(key);
+    }
+
+    @Deprecated
+    public static <P> P getPrimitive(String typeUrl, ByteString serializedKey) throws GeneralSecurityException {
+        return (P) getPrimitiveInternal(typeUrl, serializedKey, (Class<Object>) null);
+    }
+
+    public static <P> P getPrimitive(String typeUrl, ByteString serializedKey, Class<P> primitiveClass) throws GeneralSecurityException {
+        return (P) getPrimitiveInternal(typeUrl, serializedKey, (Class) checkNotNull(primitiveClass));
+    }
+
+    private static <P> P getPrimitiveInternal(String typeUrl, ByteString serializedKey, Class<P> primitiveClass) throws GeneralSecurityException {
+        return (P) getKeyManagerInternal(typeUrl, primitiveClass).getPrimitive(serializedKey);
+    }
+
+    @Deprecated
+    public static <P> P getPrimitive(String typeUrl, byte[] serializedKey) throws GeneralSecurityException {
+        return (P) getPrimitive(typeUrl, ByteString.copyFrom(serializedKey));
+    }
+
+    public static <P> P getPrimitive(String typeUrl, byte[] serializedKey, Class<P> primitiveClass) throws GeneralSecurityException {
+        return (P) getPrimitive(typeUrl, ByteString.copyFrom(serializedKey), primitiveClass);
+    }
+
+    @Deprecated
+    public static <P> P getPrimitive(KeyData keyData) throws GeneralSecurityException {
+        return (P) getPrimitive(keyData.getTypeUrl(), keyData.getValue());
+    }
+
+    public static <P> P getPrimitive(KeyData keyData, Class<P> primitiveClass) throws GeneralSecurityException {
+        return (P) getPrimitive(keyData.getTypeUrl(), keyData.getValue(), primitiveClass);
+    }
+
+    public static <B, P> P wrap(PrimitiveSet<B> primitiveSet, Class<P> clazz) throws GeneralSecurityException {
+        PrimitiveWrapper<?, ?> primitiveWrapper = primitiveWrapperMap.get(clazz);
+        if (primitiveWrapper == null) {
+            throw new GeneralSecurityException("No wrapper found for " + primitiveSet.getPrimitiveClass().getName());
+        } else if (!primitiveWrapper.getInputPrimitiveClass().equals(primitiveSet.getPrimitiveClass())) {
+            throw new GeneralSecurityException("Wrong input primitive class, expected " + primitiveWrapper.getInputPrimitiveClass() + ", got " + primitiveSet.getPrimitiveClass());
+        } else {
+            return (P) primitiveWrapper.wrap(primitiveSet);
+        }
+    }
+
+    public static <P> P wrap(PrimitiveSet<P> primitiveSet) throws GeneralSecurityException {
+        return (P) wrap(primitiveSet, primitiveSet.getPrimitiveClass());
+    }
+
+    public static synchronized List<String> keyTemplates() {
+        List<String> unmodifiableList;
+        synchronized (Registry.class) {
+            ArrayList arrayList = new ArrayList();
+            for (String str : keyTemplateMap.keySet()) {
+                arrayList.add(str);
+            }
+            unmodifiableList = Collections.unmodifiableList(arrayList);
+        }
+        return unmodifiableList;
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static synchronized Map<String, KeyTemplate> keyTemplateMap() {
+        Map<String, KeyTemplate> unmodifiableMap;
+        synchronized (Registry.class) {
+            unmodifiableMap = Collections.unmodifiableMap(keyTemplateMap);
+        }
+        return unmodifiableMap;
+    }
+
+    public static Class<?> getInputPrimitive(Class<?> wrappedPrimitive) {
+        PrimitiveWrapper<?, ?> primitiveWrapper = primitiveWrapperMap.get(wrappedPrimitive);
+        if (primitiveWrapper == null) {
+            return null;
+        }
+        return primitiveWrapper.getInputPrimitiveClass();
+    }
+
+    static MessageLite parseKeyData(KeyData keyData) throws GeneralSecurityException, InvalidProtocolBufferException {
+        return getKeyManagerContainerOrThrow(keyData.getTypeUrl()).parseKey(keyData.getValue());
+    }
+
+    private Registry() {
     }
 }

@@ -1,0 +1,7 @@
+==== Cycle 1 ====
+
+The class '[Class] com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ui.InitLibraryFragment' was removed because the Java base type 'androidx.fragment.app.Fragment' could not be found.
+The class '[Class] com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ui.ScanCardActivity' was removed because the Java base type 'androidx.appcompat.app.AppCompatActivity' could not be found.
+The class '[Class] com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ui.ScanCardFragment' was removed because the Java base type 'androidx.fragment.app.Fragment' could not be found.
+The class '[Class] com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ui.views.ButtonWithTopBorder' was removed because the Java base type 'androidx.appcompat.widget.AppCompatButton' could not be found.
+

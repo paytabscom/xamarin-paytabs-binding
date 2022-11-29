@@ -1,36 +1,228 @@
-package kotlin.jvm.internal;
+package com.google.crypto.tink.proto;
 
-import java.util.NoSuchElementException;
-import kotlin.Metadata;
-import kotlin.collections.ByteIterator;
+import com.google.crypto.tink.shaded.protobuf.ByteString;
+import com.google.crypto.tink.shaded.protobuf.CodedInputStream;
+import com.google.crypto.tink.shaded.protobuf.ExtensionRegistryLite;
+import com.google.crypto.tink.shaded.protobuf.GeneratedMessageLite;
+import com.google.crypto.tink.shaded.protobuf.InvalidProtocolBufferException;
+import com.google.crypto.tink.shaded.protobuf.Parser;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
 
-/* compiled from: ArrayIterators.kt */
-@Metadata(d1 = {"\u0000$\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0012\n\u0002\b\u0002\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u0005\n\u0000\b\u0002\u0018\u00002\u00020\u0001B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0002\u0010\u0004J\t\u0010\u0007\u001a\u00020\bH\u0096\u0002J\b\u0010\t\u001a\u00020\nH\u0016R\u000e\u0010\u0002\u001a\u00020\u0003X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0006X\u0082\u000e¢\u0006\u0002\n\u0000¨\u0006\u000b"}, d2 = {"Lkotlin/jvm/internal/ArrayByteIterator;", "Lkotlin/collections/ByteIterator;", "array", "", "([B)V", "index", "", "hasNext", "", "nextByte", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-final class ArrayByteIterator extends ByteIterator {
-    private final byte[] array;
-    private int index;
+public final class HmacPrfParams extends GeneratedMessageLite<HmacPrfParams, Builder> implements HmacPrfParamsOrBuilder {
+    private static final HmacPrfParams DEFAULT_INSTANCE;
+    public static final int HASH_FIELD_NUMBER = 1;
+    private static volatile Parser<HmacPrfParams> PARSER;
+    private int hash_;
 
-    public ArrayByteIterator(byte[] array) {
-        Intrinsics.checkNotNullParameter(array, "array");
-        this.array = array;
+    private HmacPrfParams() {
     }
 
-    @Override // java.util.Iterator
-    public boolean hasNext() {
-        return this.index < this.array.length;
+    @Override // com.google.crypto.tink.proto.HmacPrfParamsOrBuilder
+    public int getHashValue() {
+        return this.hash_;
     }
 
-    @Override // kotlin.collections.ByteIterator
-    public byte nextByte() {
-        try {
-            byte[] bArr = this.array;
-            int i2 = this.index;
-            this.index = i2 + 1;
-            return bArr[i2];
-        } catch (ArrayIndexOutOfBoundsException e2) {
-            this.index--;
-            throw new NoSuchElementException(e2.getMessage());
+    @Override // com.google.crypto.tink.proto.HmacPrfParamsOrBuilder
+    public HashType getHash() {
+        HashType forNumber = HashType.forNumber(this.hash_);
+        return forNumber == null ? HashType.UNRECOGNIZED : forNumber;
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void setHashValue(int value) {
+        this.hash_ = value;
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void setHash(HashType value) {
+        this.hash_ = value.getNumber();
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    public void clearHash() {
+        this.hash_ = 0;
+    }
+
+    public static HmacPrfParams parseFrom(ByteBuffer data) throws InvalidProtocolBufferException {
+        return (HmacPrfParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data);
+    }
+
+    public static HmacPrfParams parseFrom(ByteBuffer data, ExtensionRegistryLite extensionRegistry) throws InvalidProtocolBufferException {
+        return (HmacPrfParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+
+    public static HmacPrfParams parseFrom(ByteString data) throws InvalidProtocolBufferException {
+        return (HmacPrfParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data);
+    }
+
+    public static HmacPrfParams parseFrom(ByteString data, ExtensionRegistryLite extensionRegistry) throws InvalidProtocolBufferException {
+        return (HmacPrfParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+
+    public static HmacPrfParams parseFrom(byte[] data) throws InvalidProtocolBufferException {
+        return (HmacPrfParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data);
+    }
+
+    public static HmacPrfParams parseFrom(byte[] data, ExtensionRegistryLite extensionRegistry) throws InvalidProtocolBufferException {
+        return (HmacPrfParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, data, extensionRegistry);
+    }
+
+    public static HmacPrfParams parseFrom(InputStream input) throws IOException {
+        return (HmacPrfParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static HmacPrfParams parseFrom(InputStream input, ExtensionRegistryLite extensionRegistry) throws IOException {
+        return (HmacPrfParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static HmacPrfParams parseDelimitedFrom(InputStream input) throws IOException {
+        return (HmacPrfParams) parseDelimitedFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static HmacPrfParams parseDelimitedFrom(InputStream input, ExtensionRegistryLite extensionRegistry) throws IOException {
+        return (HmacPrfParams) parseDelimitedFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static HmacPrfParams parseFrom(CodedInputStream input) throws IOException {
+        return (HmacPrfParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, input);
+    }
+
+    public static HmacPrfParams parseFrom(CodedInputStream input, ExtensionRegistryLite extensionRegistry) throws IOException {
+        return (HmacPrfParams) GeneratedMessageLite.parseFrom(DEFAULT_INSTANCE, input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.createBuilder();
+    }
+
+    public static Builder newBuilder(HmacPrfParams prototype) {
+        return DEFAULT_INSTANCE.createBuilder(prototype);
+    }
+
+    /* loaded from: classes.dex */
+    public static final class Builder extends GeneratedMessageLite.Builder<HmacPrfParams, Builder> implements HmacPrfParamsOrBuilder {
+        /* synthetic */ Builder(AnonymousClass1 anonymousClass1) {
+            this();
         }
+
+        private Builder() {
+            super(HmacPrfParams.DEFAULT_INSTANCE);
+        }
+
+        @Override // com.google.crypto.tink.proto.HmacPrfParamsOrBuilder
+        public int getHashValue() {
+            return ((HmacPrfParams) this.instance).getHashValue();
+        }
+
+        public Builder setHashValue(int value) {
+            copyOnWrite();
+            ((HmacPrfParams) this.instance).setHashValue(value);
+            return this;
+        }
+
+        @Override // com.google.crypto.tink.proto.HmacPrfParamsOrBuilder
+        public HashType getHash() {
+            return ((HmacPrfParams) this.instance).getHash();
+        }
+
+        public Builder setHash(HashType value) {
+            copyOnWrite();
+            ((HmacPrfParams) this.instance).setHash(value);
+            return this;
+        }
+
+        public Builder clearHash() {
+            copyOnWrite();
+            ((HmacPrfParams) this.instance).clearHash();
+            return this;
+        }
+    }
+
+    /* renamed from: com.google.crypto.tink.proto.HmacPrfParams$1  reason: invalid class name */
+    /* loaded from: classes.dex */
+    static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke;
+
+        static {
+            int[] iArr = new int[GeneratedMessageLite.MethodToInvoke.values().length];
+            $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke = iArr;
+            try {
+                iArr[GeneratedMessageLite.MethodToInvoke.NEW_MUTABLE_INSTANCE.ordinal()] = 1;
+            } catch (NoSuchFieldError unused) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.NEW_BUILDER.ordinal()] = 2;
+            } catch (NoSuchFieldError unused2) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.BUILD_MESSAGE_INFO.ordinal()] = 3;
+            } catch (NoSuchFieldError unused3) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.GET_DEFAULT_INSTANCE.ordinal()] = 4;
+            } catch (NoSuchFieldError unused4) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.GET_PARSER.ordinal()] = 5;
+            } catch (NoSuchFieldError unused5) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.GET_MEMOIZED_IS_INITIALIZED.ordinal()] = 6;
+            } catch (NoSuchFieldError unused6) {
+            }
+            try {
+                $SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[GeneratedMessageLite.MethodToInvoke.SET_MEMOIZED_IS_INITIALIZED.ordinal()] = 7;
+            } catch (NoSuchFieldError unused7) {
+            }
+        }
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.GeneratedMessageLite
+    protected final Object dynamicMethod(GeneratedMessageLite.MethodToInvoke method, Object arg0, Object arg1) {
+        switch (AnonymousClass1.$SwitchMap$com$google$protobuf$GeneratedMessageLite$MethodToInvoke[method.ordinal()]) {
+            case 1:
+                return new HmacPrfParams();
+            case 2:
+                return new Builder(null);
+            case 3:
+                return newMessageInfo(DEFAULT_INSTANCE, "\u0000\u0001\u0000\u0000\u0001\u0001\u0001\u0000\u0000\u0000\u0001\f", new Object[]{"hash_"});
+            case 4:
+                return DEFAULT_INSTANCE;
+            case 5:
+                Parser<HmacPrfParams> parser = PARSER;
+                if (parser == null) {
+                    synchronized (HmacPrfParams.class) {
+                        parser = PARSER;
+                        if (parser == null) {
+                            parser = new GeneratedMessageLite.DefaultInstanceBasedParser<>(DEFAULT_INSTANCE);
+                            PARSER = parser;
+                        }
+                    }
+                }
+                return parser;
+            case 6:
+                return (byte) 1;
+            case 7:
+                return null;
+            default:
+                throw new UnsupportedOperationException();
+        }
+    }
+
+    static {
+        HmacPrfParams hmacPrfParams = new HmacPrfParams();
+        DEFAULT_INSTANCE = hmacPrfParams;
+        GeneratedMessageLite.registerDefaultInstance(HmacPrfParams.class, hmacPrfParams);
+    }
+
+    public static HmacPrfParams getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
+
+    public static Parser<HmacPrfParams> parser() {
+        return DEFAULT_INSTANCE.getParserForType();
     }
 }

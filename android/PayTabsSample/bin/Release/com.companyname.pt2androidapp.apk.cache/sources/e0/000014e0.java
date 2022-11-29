@@ -1,128 +1,341 @@
-package kotlinx.coroutines.flow;
+package kotlin;
 
-import kotlin.Metadata;
-import kotlin.ResultKt;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-import kotlin.coroutines.jvm.internal.SuspendLambda;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.functions.Function3;
-import kotlin.jvm.internal.InlineMarker;
-import kotlinx.coroutines.flow.internal.CombineKt;
+import kotlin.jvm.JvmInline;
+import kotlin.jvm.internal.DefaultConstructorMarker;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.ranges.UIntRange;
+import okhttp3.internal.ws.WebSocketProtocol;
 
-/* compiled from: Zip.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0012\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\u0010\u0000\u001a\u00020\u0001\"\u0006\b\u0000\u0010\u0002\u0018\u0001\"\u0004\b\u0001\u0010\u0003*\b\u0012\u0004\u0012\u0002H\u00030\u0004H\u008a@¢\u0006\u0004\b\u0005\u0010\u0006"}, d2 = {"<anonymous>", "", "T", "R", "Lkotlinx/coroutines/flow/FlowCollector;", "invoke", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransformUnsafe$1", f = "Zip.kt", i = {}, l = {273}, m = "invokeSuspend", n = {}, s = {})
+/* compiled from: UShort.kt */
+@Metadata(d1 = {"\u0000j\n\u0002\u0018\u0002\n\u0002\u0010\u000f\n\u0000\n\u0002\u0010\n\n\u0002\b\t\n\u0002\u0010\b\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\r\n\u0002\u0010\u000b\n\u0002\u0010\u0000\n\u0002\b!\n\u0002\u0018\u0002\n\u0002\b\r\n\u0002\u0010\u0005\n\u0002\b\u0003\n\u0002\u0010\u0006\n\u0002\b\u0003\n\u0002\u0010\u0007\n\u0002\b\u0005\n\u0002\u0010\t\n\u0002\b\u0005\n\u0002\u0010\u000e\n\u0002\b\u000e\b\u0087@\u0018\u0000 t2\b\u0012\u0004\u0012\u00020\u00000\u0001:\u0001tB\u0014\b\u0001\u0012\u0006\u0010\u0002\u001a\u00020\u0003ø\u0001\u0000¢\u0006\u0004\b\u0004\u0010\u0005J\u001b\u0010\b\u001a\u00020\u00002\u0006\u0010\t\u001a\u00020\u0000H\u0087\fø\u0001\u0000¢\u0006\u0004\b\n\u0010\u000bJ\u001b\u0010\f\u001a\u00020\r2\u0006\u0010\t\u001a\u00020\u000eH\u0087\nø\u0001\u0000¢\u0006\u0004\b\u000f\u0010\u0010J\u001b\u0010\f\u001a\u00020\r2\u0006\u0010\t\u001a\u00020\u0011H\u0087\nø\u0001\u0000¢\u0006\u0004\b\u0012\u0010\u0013J\u001b\u0010\f\u001a\u00020\r2\u0006\u0010\t\u001a\u00020\u0014H\u0087\nø\u0001\u0000¢\u0006\u0004\b\u0015\u0010\u0016J\u001b\u0010\f\u001a\u00020\r2\u0006\u0010\t\u001a\u00020\u0000H\u0097\nø\u0001\u0000¢\u0006\u0004\b\u0017\u0010\u0018J\u0016\u0010\u0019\u001a\u00020\u0000H\u0087\nø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\b\u001a\u0010\u0005J\u001b\u0010\u001b\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u000eH\u0087\nø\u0001\u0000¢\u0006\u0004\b\u001c\u0010\u0010J\u001b\u0010\u001b\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u0011H\u0087\nø\u0001\u0000¢\u0006\u0004\b\u001d\u0010\u0013J\u001b\u0010\u001b\u001a\u00020\u00142\u0006\u0010\t\u001a\u00020\u0014H\u0087\nø\u0001\u0000¢\u0006\u0004\b\u001e\u0010\u001fJ\u001b\u0010\u001b\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u0000H\u0087\nø\u0001\u0000¢\u0006\u0004\b \u0010\u0018J\u001a\u0010!\u001a\u00020\"2\b\u0010\t\u001a\u0004\u0018\u00010#HÖ\u0003¢\u0006\u0004\b$\u0010%J\u001b\u0010&\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u000eH\u0087\bø\u0001\u0000¢\u0006\u0004\b'\u0010\u0010J\u001b\u0010&\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u0011H\u0087\bø\u0001\u0000¢\u0006\u0004\b(\u0010\u0013J\u001b\u0010&\u001a\u00020\u00142\u0006\u0010\t\u001a\u00020\u0014H\u0087\bø\u0001\u0000¢\u0006\u0004\b)\u0010\u001fJ\u001b\u0010&\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u0000H\u0087\bø\u0001\u0000¢\u0006\u0004\b*\u0010\u0018J\u0010\u0010+\u001a\u00020\rHÖ\u0001¢\u0006\u0004\b,\u0010-J\u0016\u0010.\u001a\u00020\u0000H\u0087\nø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\b/\u0010\u0005J\u0016\u00100\u001a\u00020\u0000H\u0087\bø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\b1\u0010\u0005J\u001b\u00102\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u000eH\u0087\nø\u0001\u0000¢\u0006\u0004\b3\u0010\u0010J\u001b\u00102\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u0011H\u0087\nø\u0001\u0000¢\u0006\u0004\b4\u0010\u0013J\u001b\u00102\u001a\u00020\u00142\u0006\u0010\t\u001a\u00020\u0014H\u0087\nø\u0001\u0000¢\u0006\u0004\b5\u0010\u001fJ\u001b\u00102\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u0000H\u0087\nø\u0001\u0000¢\u0006\u0004\b6\u0010\u0018J\u001b\u00107\u001a\u00020\u000e2\u0006\u0010\t\u001a\u00020\u000eH\u0087\bø\u0001\u0000¢\u0006\u0004\b8\u00109J\u001b\u00107\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u0011H\u0087\bø\u0001\u0000¢\u0006\u0004\b:\u0010\u0013J\u001b\u00107\u001a\u00020\u00142\u0006\u0010\t\u001a\u00020\u0014H\u0087\bø\u0001\u0000¢\u0006\u0004\b;\u0010\u001fJ\u001b\u00107\u001a\u00020\u00002\u0006\u0010\t\u001a\u00020\u0000H\u0087\bø\u0001\u0000¢\u0006\u0004\b<\u0010\u000bJ\u001b\u0010=\u001a\u00020\u00002\u0006\u0010\t\u001a\u00020\u0000H\u0087\fø\u0001\u0000¢\u0006\u0004\b>\u0010\u000bJ\u001b\u0010?\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u000eH\u0087\nø\u0001\u0000¢\u0006\u0004\b@\u0010\u0010J\u001b\u0010?\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u0011H\u0087\nø\u0001\u0000¢\u0006\u0004\bA\u0010\u0013J\u001b\u0010?\u001a\u00020\u00142\u0006\u0010\t\u001a\u00020\u0014H\u0087\nø\u0001\u0000¢\u0006\u0004\bB\u0010\u001fJ\u001b\u0010?\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u0000H\u0087\nø\u0001\u0000¢\u0006\u0004\bC\u0010\u0018J\u001b\u0010D\u001a\u00020E2\u0006\u0010\t\u001a\u00020\u0000H\u0087\nø\u0001\u0000¢\u0006\u0004\bF\u0010GJ\u001b\u0010H\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u000eH\u0087\nø\u0001\u0000¢\u0006\u0004\bI\u0010\u0010J\u001b\u0010H\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u0011H\u0087\nø\u0001\u0000¢\u0006\u0004\bJ\u0010\u0013J\u001b\u0010H\u001a\u00020\u00142\u0006\u0010\t\u001a\u00020\u0014H\u0087\nø\u0001\u0000¢\u0006\u0004\bK\u0010\u001fJ\u001b\u0010H\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u0000H\u0087\nø\u0001\u0000¢\u0006\u0004\bL\u0010\u0018J\u001b\u0010M\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u000eH\u0087\nø\u0001\u0000¢\u0006\u0004\bN\u0010\u0010J\u001b\u0010M\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u0011H\u0087\nø\u0001\u0000¢\u0006\u0004\bO\u0010\u0013J\u001b\u0010M\u001a\u00020\u00142\u0006\u0010\t\u001a\u00020\u0014H\u0087\nø\u0001\u0000¢\u0006\u0004\bP\u0010\u001fJ\u001b\u0010M\u001a\u00020\u00112\u0006\u0010\t\u001a\u00020\u0000H\u0087\nø\u0001\u0000¢\u0006\u0004\bQ\u0010\u0018J\u0010\u0010R\u001a\u00020SH\u0087\b¢\u0006\u0004\bT\u0010UJ\u0010\u0010V\u001a\u00020WH\u0087\b¢\u0006\u0004\bX\u0010YJ\u0010\u0010Z\u001a\u00020[H\u0087\b¢\u0006\u0004\b\\\u0010]J\u0010\u0010^\u001a\u00020\rH\u0087\b¢\u0006\u0004\b_\u0010-J\u0010\u0010`\u001a\u00020aH\u0087\b¢\u0006\u0004\bb\u0010cJ\u0010\u0010d\u001a\u00020\u0003H\u0087\b¢\u0006\u0004\be\u0010\u0005J\u000f\u0010f\u001a\u00020gH\u0016¢\u0006\u0004\bh\u0010iJ\u0016\u0010j\u001a\u00020\u000eH\u0087\bø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\bk\u0010UJ\u0016\u0010l\u001a\u00020\u0011H\u0087\bø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\bm\u0010-J\u0016\u0010n\u001a\u00020\u0014H\u0087\bø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\bo\u0010cJ\u0016\u0010p\u001a\u00020\u0000H\u0087\bø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\bq\u0010\u0005J\u001b\u0010r\u001a\u00020\u00002\u0006\u0010\t\u001a\u00020\u0000H\u0087\fø\u0001\u0000¢\u0006\u0004\bs\u0010\u000bR\u0016\u0010\u0002\u001a\u00020\u00038\u0000X\u0081\u0004¢\u0006\b\n\u0000\u0012\u0004\b\u0006\u0010\u0007\u0088\u0001\u0002\u0092\u0001\u00020\u0003ø\u0001\u0000\u0082\u0002\b\n\u0002\b\u0019\n\u0002\b!¨\u0006u"}, d2 = {"Lkotlin/UShort;", "", "data", "", "constructor-impl", "(S)S", "getData$annotations", "()V", "and", "other", "and-xj2QHRw", "(SS)S", "compareTo", "", "Lkotlin/UByte;", "compareTo-7apg3OU", "(SB)I", "Lkotlin/UInt;", "compareTo-WZ4Q5Ns", "(SI)I", "Lkotlin/ULong;", "compareTo-VKZWuLQ", "(SJ)I", "compareTo-xj2QHRw", "(SS)I", "dec", "dec-Mh2AYeg", "div", "div-7apg3OU", "div-WZ4Q5Ns", "div-VKZWuLQ", "(SJ)J", "div-xj2QHRw", "equals", "", "", "equals-impl", "(SLjava/lang/Object;)Z", "floorDiv", "floorDiv-7apg3OU", "floorDiv-WZ4Q5Ns", "floorDiv-VKZWuLQ", "floorDiv-xj2QHRw", "hashCode", "hashCode-impl", "(S)I", "inc", "inc-Mh2AYeg", "inv", "inv-Mh2AYeg", "minus", "minus-7apg3OU", "minus-WZ4Q5Ns", "minus-VKZWuLQ", "minus-xj2QHRw", "mod", "mod-7apg3OU", "(SB)B", "mod-WZ4Q5Ns", "mod-VKZWuLQ", "mod-xj2QHRw", "or", "or-xj2QHRw", "plus", "plus-7apg3OU", "plus-WZ4Q5Ns", "plus-VKZWuLQ", "plus-xj2QHRw", "rangeTo", "Lkotlin/ranges/UIntRange;", "rangeTo-xj2QHRw", "(SS)Lkotlin/ranges/UIntRange;", "rem", "rem-7apg3OU", "rem-WZ4Q5Ns", "rem-VKZWuLQ", "rem-xj2QHRw", "times", "times-7apg3OU", "times-WZ4Q5Ns", "times-VKZWuLQ", "times-xj2QHRw", "toByte", "", "toByte-impl", "(S)B", "toDouble", "", "toDouble-impl", "(S)D", "toFloat", "", "toFloat-impl", "(S)F", "toInt", "toInt-impl", "toLong", "", "toLong-impl", "(S)J", "toShort", "toShort-impl", "toString", "", "toString-impl", "(S)Ljava/lang/String;", "toUByte", "toUByte-w2LRezQ", "toUInt", "toUInt-pVg5ArA", "toULong", "toULong-s-VKNKU", "toUShort", "toUShort-Mh2AYeg", "xor", "xor-xj2QHRw", "Companion", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+@JvmInline
 /* loaded from: classes.dex */
-public final class FlowKt__ZipKt$combineTransformUnsafe$1 extends SuspendLambda implements Function2<FlowCollector<? super R>, Continuation<? super Unit>, Object> {
-    final /* synthetic */ Flow[] $flows;
-    final /* synthetic */ Function3 $transform;
-    private /* synthetic */ Object L$0;
-    int label;
+public final class UShort implements Comparable<UShort> {
+    public static final Companion Companion = new Companion(null);
+    public static final short MAX_VALUE = -1;
+    public static final short MIN_VALUE = 0;
+    public static final int SIZE_BITS = 16;
+    public static final int SIZE_BYTES = 2;
+    private final short data;
 
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public FlowKt__ZipKt$combineTransformUnsafe$1(Flow[] flowArr, Function3 function3, Continuation continuation) {
-        super(2, continuation);
-        this.$flows = flowArr;
-        this.$transform = function3;
+    /* renamed from: box-impl  reason: not valid java name */
+    public static final /* synthetic */ UShort m314boximpl(short s2) {
+        return new UShort(s2);
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Continuation<Unit> create(Object obj, Continuation<?> continuation) {
-        FlowKt__ZipKt$combineTransformUnsafe$1 flowKt__ZipKt$combineTransformUnsafe$1 = new FlowKt__ZipKt$combineTransformUnsafe$1(this.$flows, this.$transform, continuation);
-        flowKt__ZipKt$combineTransformUnsafe$1.L$0 = obj;
-        return flowKt__ZipKt$combineTransformUnsafe$1;
+    /* renamed from: compareTo-xj2QHRw  reason: not valid java name */
+    private int m318compareToxj2QHRw(short s2) {
+        return m319compareToxj2QHRw(this.data, s2);
     }
 
-    @Override // kotlin.jvm.functions.Function2
-    public final Object invoke(Object obj, Continuation<? super Unit> continuation) {
-        return ((FlowKt__ZipKt$combineTransformUnsafe$1) create(obj, continuation)).invokeSuspend(Unit.INSTANCE);
+    /* renamed from: constructor-impl  reason: not valid java name */
+    public static short m320constructorimpl(short s2) {
+        return s2;
     }
 
-    /* compiled from: Zip.kt */
-    @Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0018\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0011\n\u0002\b\u0002\u0010\u0000\u001a\u00020\u0001\"\u0006\b\u0000\u0010\u0002\u0018\u0001\"\u0004\b\u0001\u0010\u0003*\b\u0012\u0004\u0012\u0002H\u00030\u00042\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0006H\u008a@¢\u0006\u0004\b\u0007\u0010\b"}, d2 = {"<anonymous>", "", "T", "R", "Lkotlinx/coroutines/flow/FlowCollector;", "it", "", "invoke", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"}, k = 3, mv = {1, 4, 2})
-    @DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransformUnsafe$1$1", f = "Zip.kt", i = {}, l = {273}, m = "invokeSuspend", n = {}, s = {})
-    /* renamed from: kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransformUnsafe$1$1  reason: invalid class name */
+    /* renamed from: equals-impl  reason: not valid java name */
+    public static boolean m326equalsimpl(short s2, Object obj) {
+        return (obj instanceof UShort) && s2 == ((UShort) obj).m369unboximpl();
+    }
+
+    /* renamed from: equals-impl0  reason: not valid java name */
+    public static final boolean m327equalsimpl0(short s2, short s3) {
+        return s2 == s3;
+    }
+
+    public static /* synthetic */ void getData$annotations() {
+    }
+
+    /* renamed from: hashCode-impl  reason: not valid java name */
+    public static int m332hashCodeimpl(short s2) {
+        return s2;
+    }
+
+    /* renamed from: toByte-impl  reason: not valid java name */
+    private static final byte m357toByteimpl(short s2) {
+        return (byte) s2;
+    }
+
+    /* renamed from: toDouble-impl  reason: not valid java name */
+    private static final double m358toDoubleimpl(short s2) {
+        return s2 & MAX_VALUE;
+    }
+
+    /* renamed from: toFloat-impl  reason: not valid java name */
+    private static final float m359toFloatimpl(short s2) {
+        return s2 & MAX_VALUE;
+    }
+
+    /* renamed from: toInt-impl  reason: not valid java name */
+    private static final int m360toIntimpl(short s2) {
+        return s2 & MAX_VALUE;
+    }
+
+    /* renamed from: toLong-impl  reason: not valid java name */
+    private static final long m361toLongimpl(short s2) {
+        return s2 & WebSocketProtocol.PAYLOAD_SHORT_MAX;
+    }
+
+    /* renamed from: toShort-impl  reason: not valid java name */
+    private static final short m362toShortimpl(short s2) {
+        return s2;
+    }
+
+    /* renamed from: toUShort-Mh2AYeg  reason: not valid java name */
+    private static final short m367toUShortMh2AYeg(short s2) {
+        return s2;
+    }
+
+    public boolean equals(Object obj) {
+        return m326equalsimpl(this.data, obj);
+    }
+
+    public int hashCode() {
+        return m332hashCodeimpl(this.data);
+    }
+
+    public String toString() {
+        return m363toStringimpl(this.data);
+    }
+
+    /* renamed from: unbox-impl  reason: not valid java name */
+    public final /* synthetic */ short m369unboximpl() {
+        return this.data;
+    }
+
+    private /* synthetic */ UShort(short s2) {
+        this.data = s2;
+    }
+
+    @Override // java.lang.Comparable
+    public /* bridge */ /* synthetic */ int compareTo(UShort uShort) {
+        return m318compareToxj2QHRw(uShort.m369unboximpl());
+    }
+
+    /* compiled from: UShort.kt */
+    @Metadata(d1 = {"\u0000\u001c\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\b\n\u0002\b\u0002\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002R\u0016\u0010\u0003\u001a\u00020\u0004X\u0086Tø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\n\u0002\u0010\u0005R\u0016\u0010\u0006\u001a\u00020\u0004X\u0086Tø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\n\u0002\u0010\u0005R\u000e\u0010\u0007\u001a\u00020\bX\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\t\u001a\u00020\bX\u0086T¢\u0006\u0002\n\u0000\u0082\u0002\b\n\u0002\b\u0019\n\u0002\b!¨\u0006\n"}, d2 = {"Lkotlin/UShort$Companion;", "", "()V", "MAX_VALUE", "Lkotlin/UShort;", "S", "MIN_VALUE", "SIZE_BITS", "", "SIZE_BYTES", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
     /* loaded from: classes.dex */
-    public static final class AnonymousClass1 extends SuspendLambda implements Function3<FlowCollector<? super R>, T[], Continuation<? super Unit>, Object> {
-        private /* synthetic */ Object L$0;
-        private /* synthetic */ Object L$1;
-        int label;
-
-        public AnonymousClass1(Continuation continuation) {
-            super(3, continuation);
+    public static final class Companion {
+        private Companion() {
         }
 
-        public final Continuation<Unit> create(FlowCollector<? super R> flowCollector, T[] tArr, Continuation<? super Unit> continuation) {
-            AnonymousClass1 anonymousClass1 = new AnonymousClass1(continuation);
-            anonymousClass1.L$0 = flowCollector;
-            anonymousClass1.L$1 = tArr;
-            return anonymousClass1;
-        }
-
-        @Override // kotlin.jvm.functions.Function3
-        public final Object invoke(Object obj, Object obj2, Continuation<? super Unit> continuation) {
-            return ((AnonymousClass1) create((FlowCollector) obj, (Object[]) obj2, continuation)).invokeSuspend(Unit.INSTANCE);
-        }
-
-        @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-        public final Object invokeSuspend(Object obj) {
-            Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
-            int i2 = this.label;
-            if (i2 == 0) {
-                ResultKt.throwOnFailure(obj);
-                Function3 function3 = FlowKt__ZipKt$combineTransformUnsafe$1.this.$transform;
-                this.L$0 = null;
-                this.label = 1;
-                if (function3.invoke((FlowCollector) this.L$0, (Object[]) this.L$1, this) == coroutine_suspended) {
-                    return coroutine_suspended;
-                }
-            } else if (i2 != 1) {
-                throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
-            } else {
-                ResultKt.throwOnFailure(obj);
-            }
-            return Unit.INSTANCE;
-        }
-
-        public final Object invokeSuspend$$forInline(Object obj) {
-            FlowKt__ZipKt$combineTransformUnsafe$1.this.$transform.invoke((FlowCollector) this.L$0, (Object[]) this.L$1, this);
-            return Unit.INSTANCE;
+        public /* synthetic */ Companion(DefaultConstructorMarker defaultConstructorMarker) {
+            this();
         }
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        Function0 nullArrayFactory$FlowKt__ZipKt;
-        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
-        int i2 = this.label;
-        if (i2 == 0) {
-            ResultKt.throwOnFailure(obj);
-            Flow[] flowArr = this.$flows;
-            nullArrayFactory$FlowKt__ZipKt = FlowKt__ZipKt.nullArrayFactory$FlowKt__ZipKt();
-            this.label = 1;
-            if (CombineKt.combineInternal((FlowCollector) this.L$0, flowArr, nullArrayFactory$FlowKt__ZipKt, new AnonymousClass1(null), this) == coroutine_suspended) {
-                return coroutine_suspended;
-            }
-        } else if (i2 != 1) {
-            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
-        } else {
-            ResultKt.throwOnFailure(obj);
-        }
-        return Unit.INSTANCE;
+    /* renamed from: compareTo-7apg3OU  reason: not valid java name */
+    private static final int m315compareTo7apg3OU(short s2, byte b2) {
+        return Intrinsics.compare(s2 & MAX_VALUE, b2 & UByte.MAX_VALUE);
     }
 
-    public final Object invokeSuspend$$forInline(Object obj) {
-        Function0 nullArrayFactory$FlowKt__ZipKt;
-        Flow[] flowArr = this.$flows;
-        nullArrayFactory$FlowKt__ZipKt = FlowKt__ZipKt.nullArrayFactory$FlowKt__ZipKt();
-        InlineMarker.mark(0);
-        CombineKt.combineInternal((FlowCollector) this.L$0, flowArr, nullArrayFactory$FlowKt__ZipKt, new AnonymousClass1(null), this);
-        InlineMarker.mark(2);
-        InlineMarker.mark(1);
-        return Unit.INSTANCE;
+    /* renamed from: compareTo-xj2QHRw  reason: not valid java name */
+    private static int m319compareToxj2QHRw(short s2, short s3) {
+        return Intrinsics.compare(s2 & MAX_VALUE, s3 & MAX_VALUE);
+    }
+
+    /* renamed from: compareTo-WZ4Q5Ns  reason: not valid java name */
+    private static final int m317compareToWZ4Q5Ns(short s2, int i2) {
+        return UnsignedKt.uintCompare(UInt.m136constructorimpl(s2 & MAX_VALUE), i2);
+    }
+
+    /* renamed from: compareTo-VKZWuLQ  reason: not valid java name */
+    private static final int m316compareToVKZWuLQ(short s2, long j2) {
+        return UnsignedKt.ulongCompare(ULong.m214constructorimpl(s2 & WebSocketProtocol.PAYLOAD_SHORT_MAX), j2);
+    }
+
+    /* renamed from: plus-7apg3OU  reason: not valid java name */
+    private static final int m344plus7apg3OU(short s2, byte b2) {
+        return UInt.m136constructorimpl(UInt.m136constructorimpl(s2 & MAX_VALUE) + UInt.m136constructorimpl(b2 & UByte.MAX_VALUE));
+    }
+
+    /* renamed from: plus-xj2QHRw  reason: not valid java name */
+    private static final int m347plusxj2QHRw(short s2, short s3) {
+        return UInt.m136constructorimpl(UInt.m136constructorimpl(s2 & MAX_VALUE) + UInt.m136constructorimpl(s3 & MAX_VALUE));
+    }
+
+    /* renamed from: plus-WZ4Q5Ns  reason: not valid java name */
+    private static final int m346plusWZ4Q5Ns(short s2, int i2) {
+        return UInt.m136constructorimpl(UInt.m136constructorimpl(s2 & MAX_VALUE) + i2);
+    }
+
+    /* renamed from: plus-VKZWuLQ  reason: not valid java name */
+    private static final long m345plusVKZWuLQ(short s2, long j2) {
+        return ULong.m214constructorimpl(ULong.m214constructorimpl(s2 & WebSocketProtocol.PAYLOAD_SHORT_MAX) + j2);
+    }
+
+    /* renamed from: minus-7apg3OU  reason: not valid java name */
+    private static final int m335minus7apg3OU(short s2, byte b2) {
+        return UInt.m136constructorimpl(UInt.m136constructorimpl(s2 & MAX_VALUE) - UInt.m136constructorimpl(b2 & UByte.MAX_VALUE));
+    }
+
+    /* renamed from: minus-xj2QHRw  reason: not valid java name */
+    private static final int m338minusxj2QHRw(short s2, short s3) {
+        return UInt.m136constructorimpl(UInt.m136constructorimpl(s2 & MAX_VALUE) - UInt.m136constructorimpl(s3 & MAX_VALUE));
+    }
+
+    /* renamed from: minus-WZ4Q5Ns  reason: not valid java name */
+    private static final int m337minusWZ4Q5Ns(short s2, int i2) {
+        return UInt.m136constructorimpl(UInt.m136constructorimpl(s2 & MAX_VALUE) - i2);
+    }
+
+    /* renamed from: minus-VKZWuLQ  reason: not valid java name */
+    private static final long m336minusVKZWuLQ(short s2, long j2) {
+        return ULong.m214constructorimpl(ULong.m214constructorimpl(s2 & WebSocketProtocol.PAYLOAD_SHORT_MAX) - j2);
+    }
+
+    /* renamed from: times-7apg3OU  reason: not valid java name */
+    private static final int m353times7apg3OU(short s2, byte b2) {
+        return UInt.m136constructorimpl(UInt.m136constructorimpl(s2 & MAX_VALUE) * UInt.m136constructorimpl(b2 & UByte.MAX_VALUE));
+    }
+
+    /* renamed from: times-xj2QHRw  reason: not valid java name */
+    private static final int m356timesxj2QHRw(short s2, short s3) {
+        return UInt.m136constructorimpl(UInt.m136constructorimpl(s2 & MAX_VALUE) * UInt.m136constructorimpl(s3 & MAX_VALUE));
+    }
+
+    /* renamed from: times-WZ4Q5Ns  reason: not valid java name */
+    private static final int m355timesWZ4Q5Ns(short s2, int i2) {
+        return UInt.m136constructorimpl(UInt.m136constructorimpl(s2 & MAX_VALUE) * i2);
+    }
+
+    /* renamed from: times-VKZWuLQ  reason: not valid java name */
+    private static final long m354timesVKZWuLQ(short s2, long j2) {
+        return ULong.m214constructorimpl(ULong.m214constructorimpl(s2 & WebSocketProtocol.PAYLOAD_SHORT_MAX) * j2);
+    }
+
+    /* renamed from: div-7apg3OU  reason: not valid java name */
+    private static final int m322div7apg3OU(short s2, byte b2) {
+        return UnsignedKt.m389uintDivideJ1ME1BU(UInt.m136constructorimpl(s2 & MAX_VALUE), UInt.m136constructorimpl(b2 & UByte.MAX_VALUE));
+    }
+
+    /* renamed from: div-xj2QHRw  reason: not valid java name */
+    private static final int m325divxj2QHRw(short s2, short s3) {
+        return UnsignedKt.m389uintDivideJ1ME1BU(UInt.m136constructorimpl(s2 & MAX_VALUE), UInt.m136constructorimpl(s3 & MAX_VALUE));
+    }
+
+    /* renamed from: div-WZ4Q5Ns  reason: not valid java name */
+    private static final int m324divWZ4Q5Ns(short s2, int i2) {
+        return UnsignedKt.m389uintDivideJ1ME1BU(UInt.m136constructorimpl(s2 & MAX_VALUE), i2);
+    }
+
+    /* renamed from: div-VKZWuLQ  reason: not valid java name */
+    private static final long m323divVKZWuLQ(short s2, long j2) {
+        return UnsignedKt.m391ulongDivideeb3DHEI(ULong.m214constructorimpl(s2 & WebSocketProtocol.PAYLOAD_SHORT_MAX), j2);
+    }
+
+    /* renamed from: rem-7apg3OU  reason: not valid java name */
+    private static final int m349rem7apg3OU(short s2, byte b2) {
+        return UnsignedKt.m390uintRemainderJ1ME1BU(UInt.m136constructorimpl(s2 & MAX_VALUE), UInt.m136constructorimpl(b2 & UByte.MAX_VALUE));
+    }
+
+    /* renamed from: rem-xj2QHRw  reason: not valid java name */
+    private static final int m352remxj2QHRw(short s2, short s3) {
+        return UnsignedKt.m390uintRemainderJ1ME1BU(UInt.m136constructorimpl(s2 & MAX_VALUE), UInt.m136constructorimpl(s3 & MAX_VALUE));
+    }
+
+    /* renamed from: rem-WZ4Q5Ns  reason: not valid java name */
+    private static final int m351remWZ4Q5Ns(short s2, int i2) {
+        return UnsignedKt.m390uintRemainderJ1ME1BU(UInt.m136constructorimpl(s2 & MAX_VALUE), i2);
+    }
+
+    /* renamed from: rem-VKZWuLQ  reason: not valid java name */
+    private static final long m350remVKZWuLQ(short s2, long j2) {
+        return UnsignedKt.m392ulongRemaindereb3DHEI(ULong.m214constructorimpl(s2 & WebSocketProtocol.PAYLOAD_SHORT_MAX), j2);
+    }
+
+    /* renamed from: floorDiv-7apg3OU  reason: not valid java name */
+    private static final int m328floorDiv7apg3OU(short s2, byte b2) {
+        return UnsignedKt.m389uintDivideJ1ME1BU(UInt.m136constructorimpl(s2 & MAX_VALUE), UInt.m136constructorimpl(b2 & UByte.MAX_VALUE));
+    }
+
+    /* renamed from: floorDiv-xj2QHRw  reason: not valid java name */
+    private static final int m331floorDivxj2QHRw(short s2, short s3) {
+        return UnsignedKt.m389uintDivideJ1ME1BU(UInt.m136constructorimpl(s2 & MAX_VALUE), UInt.m136constructorimpl(s3 & MAX_VALUE));
+    }
+
+    /* renamed from: floorDiv-WZ4Q5Ns  reason: not valid java name */
+    private static final int m330floorDivWZ4Q5Ns(short s2, int i2) {
+        return UnsignedKt.m389uintDivideJ1ME1BU(UInt.m136constructorimpl(s2 & MAX_VALUE), i2);
+    }
+
+    /* renamed from: floorDiv-VKZWuLQ  reason: not valid java name */
+    private static final long m329floorDivVKZWuLQ(short s2, long j2) {
+        return UnsignedKt.m391ulongDivideeb3DHEI(ULong.m214constructorimpl(s2 & WebSocketProtocol.PAYLOAD_SHORT_MAX), j2);
+    }
+
+    /* renamed from: mod-7apg3OU  reason: not valid java name */
+    private static final byte m339mod7apg3OU(short s2, byte b2) {
+        return UByte.m60constructorimpl((byte) UnsignedKt.m390uintRemainderJ1ME1BU(UInt.m136constructorimpl(s2 & MAX_VALUE), UInt.m136constructorimpl(b2 & UByte.MAX_VALUE)));
+    }
+
+    /* renamed from: mod-xj2QHRw  reason: not valid java name */
+    private static final short m342modxj2QHRw(short s2, short s3) {
+        return m320constructorimpl((short) UnsignedKt.m390uintRemainderJ1ME1BU(UInt.m136constructorimpl(s2 & MAX_VALUE), UInt.m136constructorimpl(s3 & MAX_VALUE)));
+    }
+
+    /* renamed from: mod-WZ4Q5Ns  reason: not valid java name */
+    private static final int m341modWZ4Q5Ns(short s2, int i2) {
+        return UnsignedKt.m390uintRemainderJ1ME1BU(UInt.m136constructorimpl(s2 & MAX_VALUE), i2);
+    }
+
+    /* renamed from: mod-VKZWuLQ  reason: not valid java name */
+    private static final long m340modVKZWuLQ(short s2, long j2) {
+        return UnsignedKt.m392ulongRemaindereb3DHEI(ULong.m214constructorimpl(s2 & WebSocketProtocol.PAYLOAD_SHORT_MAX), j2);
+    }
+
+    /* renamed from: inc-Mh2AYeg  reason: not valid java name */
+    private static final short m333incMh2AYeg(short s2) {
+        return m320constructorimpl((short) (s2 + 1));
+    }
+
+    /* renamed from: dec-Mh2AYeg  reason: not valid java name */
+    private static final short m321decMh2AYeg(short s2) {
+        return m320constructorimpl((short) (s2 - 1));
+    }
+
+    /* renamed from: rangeTo-xj2QHRw  reason: not valid java name */
+    private static final UIntRange m348rangeToxj2QHRw(short s2, short s3) {
+        return new UIntRange(UInt.m136constructorimpl(s2 & MAX_VALUE), UInt.m136constructorimpl(s3 & MAX_VALUE), null);
+    }
+
+    /* renamed from: and-xj2QHRw  reason: not valid java name */
+    private static final short m313andxj2QHRw(short s2, short s3) {
+        return m320constructorimpl((short) (s2 & s3));
+    }
+
+    /* renamed from: or-xj2QHRw  reason: not valid java name */
+    private static final short m343orxj2QHRw(short s2, short s3) {
+        return m320constructorimpl((short) (s2 | s3));
+    }
+
+    /* renamed from: xor-xj2QHRw  reason: not valid java name */
+    private static final short m368xorxj2QHRw(short s2, short s3) {
+        return m320constructorimpl((short) (s2 ^ s3));
+    }
+
+    /* renamed from: inv-Mh2AYeg  reason: not valid java name */
+    private static final short m334invMh2AYeg(short s2) {
+        return m320constructorimpl((short) (~s2));
+    }
+
+    /* renamed from: toUByte-w2LRezQ  reason: not valid java name */
+    private static final byte m364toUBytew2LRezQ(short s2) {
+        return UByte.m60constructorimpl((byte) s2);
+    }
+
+    /* renamed from: toUInt-pVg5ArA  reason: not valid java name */
+    private static final int m365toUIntpVg5ArA(short s2) {
+        return UInt.m136constructorimpl(s2 & MAX_VALUE);
+    }
+
+    /* renamed from: toULong-s-VKNKU  reason: not valid java name */
+    private static final long m366toULongsVKNKU(short s2) {
+        return ULong.m214constructorimpl(s2 & WebSocketProtocol.PAYLOAD_SHORT_MAX);
+    }
+
+    /* renamed from: toString-impl  reason: not valid java name */
+    public static String m363toStringimpl(short s2) {
+        return String.valueOf(s2 & MAX_VALUE);
     }
 }

@@ -1,51 +1,69 @@
-package androidx.constraintlayout.motion.widget;
-
-import java.util.Arrays;
-import java.util.HashMap;
+package androidx.collection;
 
 /* loaded from: classes.dex */
-public class KeyCache {
-    HashMap<Object, HashMap<String, float[]>> map = new HashMap<>();
+class ContainerHelpers {
+    static final int[] EMPTY_INTS = new int[0];
+    static final long[] EMPTY_LONGS = new long[0];
+    static final Object[] EMPTY_OBJECTS = new Object[0];
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void setFloatValue(Object obj, String str, int i2, float f2) {
-        if (!this.map.containsKey(obj)) {
-            HashMap<String, float[]> hashMap = new HashMap<>();
-            float[] fArr = new float[i2 + 1];
-            fArr[i2] = f2;
-            hashMap.put(str, fArr);
-            this.map.put(obj, hashMap);
-            return;
+    public static int idealByteArraySize(int i2) {
+        for (int i3 = 4; i3 < 32; i3++) {
+            int i4 = (1 << i3) - 12;
+            if (i2 <= i4) {
+                return i4;
+            }
         }
-        HashMap<String, float[]> hashMap2 = this.map.get(obj);
-        if (!hashMap2.containsKey(str)) {
-            float[] fArr2 = new float[i2 + 1];
-            fArr2[i2] = f2;
-            hashMap2.put(str, fArr2);
-            this.map.put(obj, hashMap2);
-            return;
-        }
-        float[] fArr3 = hashMap2.get(str);
-        if (fArr3.length <= i2) {
-            fArr3 = Arrays.copyOf(fArr3, i2 + 1);
-        }
-        fArr3[i2] = f2;
-        hashMap2.put(str, fArr3);
+        return i2;
+    }
+
+    public static int idealIntArraySize(int i2) {
+        return idealByteArraySize(i2 * 4) / 4;
+    }
+
+    public static int idealLongArraySize(int i2) {
+        return idealByteArraySize(i2 * 8) / 8;
+    }
+
+    public static boolean equal(Object obj, Object obj2) {
+        return obj == obj2 || (obj != null && obj.equals(obj2));
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    public float getFloatValue(Object obj, String str, int i2) {
-        if (this.map.containsKey(obj)) {
-            HashMap<String, float[]> hashMap = this.map.get(obj);
-            if (hashMap.containsKey(str)) {
-                float[] fArr = hashMap.get(str);
-                if (fArr.length > i2) {
-                    return fArr[i2];
-                }
-                return Float.NaN;
+    public static int binarySearch(int[] iArr, int i2, int i3) {
+        int i4 = i2 - 1;
+        int i5 = 0;
+        while (i5 <= i4) {
+            int i6 = (i5 + i4) >>> 1;
+            int i7 = iArr[i6];
+            if (i7 < i3) {
+                i5 = i6 + 1;
+            } else if (i7 <= i3) {
+                return i6;
+            } else {
+                i4 = i6 - 1;
             }
-            return Float.NaN;
         }
-        return Float.NaN;
+        return ~i5;
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static int binarySearch(long[] jArr, int i2, long j2) {
+        int i3 = i2 - 1;
+        int i4 = 0;
+        while (i4 <= i3) {
+            int i5 = (i4 + i3) >>> 1;
+            int i6 = (jArr[i5] > j2 ? 1 : (jArr[i5] == j2 ? 0 : -1));
+            if (i6 < 0) {
+                i4 = i5 + 1;
+            } else if (i6 <= 0) {
+                return i5;
+            } else {
+                i3 = i5 - 1;
+            }
+        }
+        return ~i4;
+    }
+
+    private ContainerHelpers() {
     }
 }

@@ -1,9 +1,16 @@
-package kotlin.jvm.internal.markers;
+package com.google.crypto.tink.proto;
 
-import kotlin.Metadata;
+import com.google.crypto.tink.shaded.protobuf.MessageLiteOrBuilder;
 
-/* compiled from: KMarkers.kt */
-@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\bf\u0018\u00002\u00020\u0001¨\u0006\u0002"}, d2 = {"Lkotlin/jvm/internal/markers/KMutableCollection;", "Lkotlin/jvm/internal/markers/KMutableIterable;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public interface KMutableCollection extends KMutableIterable {
+public interface RsaSsaPssParamsOrBuilder extends MessageLiteOrBuilder {
+    HashType getMgf1Hash();
+
+    int getMgf1HashValue();
+
+    int getSaltLength();
+
+    HashType getSigHash();
+
+    int getSigHashValue();
 }

@@ -1,47 +1,12 @@
-package mono.android.accounts;
+package kotlin.internal;
 
-import android.accounts.Account;
-import android.accounts.OnAccountsUpdateListener;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: Annotations.kt */
+@Metadata(d1 = {"\u0000\f\n\u0002\u0018\u0002\n\u0002\u0010\u0010\n\u0002\b\u0005\b\u0081\u0001\u0018\u00002\b\u0012\u0004\u0012\u00020\u00000\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002j\u0002\b\u0003j\u0002\b\u0004j\u0002\b\u0005¨\u0006\u0006"}, d2 = {"Lkotlin/internal/RequireKotlinVersionKind;", "", "(Ljava/lang/String;I)V", "LANGUAGE_VERSION", "COMPILER_VERSION", "API_VERSION", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class OnAccountsUpdateListenerImplementor implements IGCUserPeer, OnAccountsUpdateListener {
-    public static final String __md_methods = "n_onAccountsUpdated:([Landroid/accounts/Account;)V:GetOnAccountsUpdated_arrayLandroid_accounts_Account_Handler:Android.Accounts.IOnAccountsUpdateListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onAccountsUpdated(Account[] accountArr);
-
-    static {
-        Runtime.register("Android.Accounts.IOnAccountsUpdateListenerImplementor, Mono.Android", OnAccountsUpdateListenerImplementor.class, __md_methods);
-    }
-
-    public OnAccountsUpdateListenerImplementor() {
-        if (getClass() == OnAccountsUpdateListenerImplementor.class) {
-            TypeManager.Activate("Android.Accounts.IOnAccountsUpdateListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.accounts.OnAccountsUpdateListener
-    public void onAccountsUpdated(Account[] accountArr) {
-        n_onAccountsUpdated(accountArr);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public enum RequireKotlinVersionKind {
+    LANGUAGE_VERSION,
+    COMPILER_VERSION,
+    API_VERSION
 }

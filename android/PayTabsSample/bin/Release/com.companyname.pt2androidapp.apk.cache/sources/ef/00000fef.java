@@ -1,11 +1,15 @@
-package kotlin.comparisons;
+package com.google.crypto.tink.proto;
 
-import kotlin.Metadata;
+import com.google.crypto.tink.shaded.protobuf.ByteString;
+import com.google.crypto.tink.shaded.protobuf.MessageLiteOrBuilder;
 
-/* compiled from: _UComparisons.kt */
-@Metadata(d1 = {"kotlin/comparisons/UComparisonsKt___UComparisonsKt"}, k = 4, mv = {1, 5, 1}, xi = 1)
 /* loaded from: classes.dex */
-public final class UComparisonsKt extends UComparisonsKt___UComparisonsKt {
-    private UComparisonsKt() {
-    }
+public interface AesCtrKeyOrBuilder extends MessageLiteOrBuilder {
+    ByteString getKeyValue();
+
+    AesCtrParams getParams();
+
+    int getVersion();
+
+    boolean hasParams();
 }

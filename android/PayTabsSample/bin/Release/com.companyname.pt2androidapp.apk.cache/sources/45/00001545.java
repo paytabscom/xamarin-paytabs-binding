@@ -1,62 +1,39 @@
-package kotlinx.coroutines.internal;
+package kotlin.collections;
 
-import java.util.Objects;
+import java.util.List;
 import kotlin.Metadata;
-import kotlin.collections.ArraysKt;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.ranges.IntRange;
 
-/* compiled from: ArrayQueue.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000,\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u0011\n\u0002\b\u0002\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000b\n\u0002\b\u0003\n\u0002\u0010\u0002\n\u0002\b\u0007\b\u0010\u0018\u0000*\b\b\u0000\u0010\u0001*\u00020\u00022\u00020\u0002B\u0005¢\u0006\u0002\u0010\u0003J\u0013\u0010\r\u001a\u00020\u000e2\u0006\u0010\u000f\u001a\u00028\u0000¢\u0006\u0002\u0010\u0010J\u0006\u0010\u0011\u001a\u00020\u000eJ\b\u0010\u0012\u001a\u00020\u000eH\u0002J\r\u0010\u0013\u001a\u0004\u0018\u00018\u0000¢\u0006\u0002\u0010\u0014R\u0018\u0010\u0004\u001a\n\u0012\u0006\u0012\u0004\u0018\u00010\u00020\u0005X\u0082\u000e¢\u0006\u0004\n\u0002\u0010\u0006R\u000e\u0010\u0007\u001a\u00020\bX\u0082\u000e¢\u0006\u0002\n\u0000R\u0011\u0010\t\u001a\u00020\n8F¢\u0006\u0006\u001a\u0004\b\t\u0010\u000bR\u000e\u0010\f\u001a\u00020\bX\u0082\u000e¢\u0006\u0002\n\u0000¨\u0006\u0015"}, d2 = {"Lkotlinx/coroutines/internal/ArrayQueue;", "T", "", "()V", "elements", "", "[Ljava/lang/Object;", "head", "", "isEmpty", "", "()Z", "tail", "addLast", "", "element", "(Ljava/lang/Object;)V", "clear", "ensureCapacity", "removeFirstOrNull", "()Ljava/lang/Object;", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
+/* compiled from: ReversedViews.kt */
+@Metadata(d1 = {"\u0000\u0018\n\u0000\n\u0002\u0010 \n\u0000\n\u0002\u0010!\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0005\u001a\u001c\u0010\u0000\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0001\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u0001\u001a#\u0010\u0000\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0003\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u0003H\u0007¢\u0006\u0002\b\u0004\u001a\u001d\u0010\u0005\u001a\u00020\u0006*\u0006\u0012\u0002\b\u00030\u00012\u0006\u0010\u0007\u001a\u00020\u0006H\u0002¢\u0006\u0002\b\b\u001a\u001d\u0010\t\u001a\u00020\u0006*\u0006\u0012\u0002\b\u00030\u00012\u0006\u0010\u0007\u001a\u00020\u0006H\u0002¢\u0006\u0002\b\n¨\u0006\u000b"}, d2 = {"asReversed", "", "T", "", "asReversedMutable", "reverseElementIndex", "", "index", "reverseElementIndex$CollectionsKt__ReversedViewsKt", "reversePositionIndex", "reversePositionIndex$CollectionsKt__ReversedViewsKt", "kotlin-stdlib"}, k = 5, mv = {1, 5, 1}, xi = 1, xs = "kotlin/collections/CollectionsKt")
 /* loaded from: classes.dex */
-public class ArrayQueue<T> {
-    private Object[] elements = new Object[16];
-    private int head;
-    private int tail;
-
-    public final boolean isEmpty() {
-        return this.head == this.tail;
-    }
-
-    public final void addLast(T t2) {
-        Object[] objArr = this.elements;
-        int i2 = this.tail;
-        objArr[i2] = t2;
-        int length = (objArr.length - 1) & (i2 + 1);
-        this.tail = length;
-        if (length == this.head) {
-            ensureCapacity();
+class CollectionsKt__ReversedViewsKt extends CollectionsKt__MutableCollectionsKt {
+    /* JADX INFO: Access modifiers changed from: private */
+    public static final int reverseElementIndex$CollectionsKt__ReversedViewsKt(List<?> list, int i2) {
+        int lastIndex = CollectionsKt.getLastIndex(list);
+        if (i2 < 0 || lastIndex < i2) {
+            throw new IndexOutOfBoundsException("Element index " + i2 + " must be in range [" + new IntRange(0, CollectionsKt.getLastIndex(list)) + "].");
         }
+        return CollectionsKt.getLastIndex(list) - i2;
     }
 
-    public final T removeFirstOrNull() {
-        int i2 = this.head;
-        if (i2 == this.tail) {
-            return null;
+    /* JADX INFO: Access modifiers changed from: private */
+    public static final int reversePositionIndex$CollectionsKt__ReversedViewsKt(List<?> list, int i2) {
+        int size = list.size();
+        if (i2 < 0 || size < i2) {
+            throw new IndexOutOfBoundsException("Position index " + i2 + " must be in range [" + new IntRange(0, list.size()) + "].");
         }
-        Object[] objArr = this.elements;
-        T t2 = (T) objArr[i2];
-        objArr[i2] = null;
-        this.head = (i2 + 1) & (objArr.length - 1);
-        Objects.requireNonNull(t2, "null cannot be cast to non-null type T");
-        return t2;
+        return list.size() - i2;
     }
 
-    public final void clear() {
-        this.head = 0;
-        this.tail = 0;
-        this.elements = new Object[this.elements.length];
+    public static final <T> List<T> asReversed(List<? extends T> asReversed) {
+        Intrinsics.checkNotNullParameter(asReversed, "$this$asReversed");
+        return new ReversedListReadOnly(asReversed);
     }
 
-    private final void ensureCapacity() {
-        Object[] objArr = this.elements;
-        int length = objArr.length;
-        Object[] objArr2 = new Object[length << 1];
-        ArraysKt.copyInto$default(objArr, objArr2, 0, this.head, 0, 10, (Object) null);
-        Object[] objArr3 = this.elements;
-        int length2 = objArr3.length;
-        int i2 = this.head;
-        ArraysKt.copyInto$default(objArr3, objArr2, length2 - i2, 0, i2, 4, (Object) null);
-        this.elements = objArr2;
-        this.head = 0;
-        this.tail = length;
+    public static final <T> List<T> asReversedMutable(List<T> asReversed) {
+        Intrinsics.checkNotNullParameter(asReversed, "$this$asReversed");
+        return new ReversedList(asReversed);
     }
 }

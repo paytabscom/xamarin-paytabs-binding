@@ -1,46 +1,19 @@
-package mono.android.os;
+package kotlin.jvm.internal;
 
-import android.os.PowerManager;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.reflect.KClass;
+import kotlin.reflect.KDeclarationContainer;
 
 /* loaded from: classes.dex */
-public class PowerManager_OnThermalStatusChangedListenerImplementor implements IGCUserPeer, PowerManager.OnThermalStatusChangedListener {
-    public static final String __md_methods = "n_onThermalStatusChanged:(I)V:GetOnThermalStatusChanged_IHandler:Android.OS.PowerManager/IOnThermalStatusChangedListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onThermalStatusChanged(int i2);
-
-    static {
-        Runtime.register("Android.OS.PowerManager+IOnThermalStatusChangedListenerImplementor, Mono.Android", PowerManager_OnThermalStatusChangedListenerImplementor.class, __md_methods);
+public class FunctionReferenceImpl extends FunctionReference {
+    public FunctionReferenceImpl(int i2, KDeclarationContainer kDeclarationContainer, String str, String str2) {
+        super(i2, NO_RECEIVER, ((ClassBasedDeclarationContainer) kDeclarationContainer).getJClass(), str, str2, !(kDeclarationContainer instanceof KClass) ? 1 : 0);
     }
 
-    public PowerManager_OnThermalStatusChangedListenerImplementor() {
-        if (getClass() == PowerManager_OnThermalStatusChangedListenerImplementor.class) {
-            TypeManager.Activate("Android.OS.PowerManager+IOnThermalStatusChangedListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    public FunctionReferenceImpl(int i2, Class cls, String str, String str2, int i3) {
+        super(i2, NO_RECEIVER, cls, str, str2, i3);
     }
 
-    @Override // android.os.PowerManager.OnThermalStatusChangedListener
-    public void onThermalStatusChanged(int i2) {
-        n_onThermalStatusChanged(i2);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public FunctionReferenceImpl(int i2, Object obj, Class cls, String str, String str2, int i3) {
+        super(i2, obj, cls, str, str2, i3);
     }
 }

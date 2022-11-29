@@ -1,76 +1,141 @@
-package androidx.core.content;
+package androidx.core.app;
 
-import android.content.LocusId;
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.os.Build;
-import androidx.core.util.Preconditions;
+import android.util.Log;
 
 /* loaded from: classes.dex */
-public final class LocusIdCompat {
-    private final String mId;
-    private final LocusId mWrapped;
+public final class NavUtils {
+    public static final String PARENT_ACTIVITY = "android.support.PARENT_ACTIVITY";
+    private static final String TAG = "NavUtils";
 
-    public LocusIdCompat(String str) {
-        this.mId = (String) Preconditions.checkStringNotEmpty(str, "id cannot be empty");
-        if (Build.VERSION.SDK_INT >= 29) {
-            this.mWrapped = Api29Impl.create(str);
-        } else {
-            this.mWrapped = null;
+    public static boolean shouldUpRecreateTask(Activity activity, Intent intent) {
+        if (Build.VERSION.SDK_INT >= 16) {
+            return Api16Impl.shouldUpRecreateTask(activity, intent);
         }
+        String action = activity.getIntent().getAction();
+        return (action == null || action.equals("android.intent.action.MAIN")) ? false : true;
     }
 
-    public String getId() {
-        return this.mId;
-    }
-
-    public int hashCode() {
-        String str = this.mId;
-        return 31 + (str == null ? 0 : str.hashCode());
-    }
-
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
+    public static void navigateUpFromSameTask(Activity activity) {
+        Intent parentActivityIntent = getParentActivityIntent(activity);
+        if (parentActivityIntent == null) {
+            throw new IllegalArgumentException("Activity " + activity.getClass().getSimpleName() + " does not have a parent activity name specified. (Did you forget to add the android.support.PARENT_ACTIVITY <meta-data>  element in your manifest?)");
         }
-        if (obj != null && getClass() == obj.getClass()) {
-            LocusIdCompat locusIdCompat = (LocusIdCompat) obj;
-            String str = this.mId;
-            if (str == null) {
-                return locusIdCompat.mId == null;
+        navigateUpTo(activity, parentActivityIntent);
+    }
+
+    public static void navigateUpTo(Activity activity, Intent intent) {
+        if (Build.VERSION.SDK_INT >= 16) {
+            Api16Impl.navigateUpTo(activity, intent);
+            return;
+        }
+        intent.addFlags(67108864);
+        activity.startActivity(intent);
+        activity.finish();
+    }
+
+    public static Intent getParentActivityIntent(Activity activity) {
+        Intent parentActivityIntent;
+        if (Build.VERSION.SDK_INT < 16 || (parentActivityIntent = Api16Impl.getParentActivityIntent(activity)) == null) {
+            String parentActivityName = getParentActivityName(activity);
+            if (parentActivityName == null) {
+                return null;
             }
-            return str.equals(locusIdCompat.mId);
+            ComponentName componentName = new ComponentName(activity, parentActivityName);
+            try {
+                if (getParentActivityName(activity, componentName) == null) {
+                    return Intent.makeMainActivity(componentName);
+                }
+                return new Intent().setComponent(componentName);
+            } catch (PackageManager.NameNotFoundException unused) {
+                Log.e(TAG, "getParentActivityIntent: bad parentActivityName '" + parentActivityName + "' in manifest");
+                return null;
+            }
         }
-        return false;
+        return parentActivityIntent;
     }
 
-    public String toString() {
-        return "LocusIdCompat[" + getSanitizedId() + "]";
+    public static Intent getParentActivityIntent(Context context, Class<?> cls) throws PackageManager.NameNotFoundException {
+        String parentActivityName = getParentActivityName(context, new ComponentName(context, cls));
+        if (parentActivityName == null) {
+            return null;
+        }
+        ComponentName componentName = new ComponentName(context, parentActivityName);
+        if (getParentActivityName(context, componentName) == null) {
+            return Intent.makeMainActivity(componentName);
+        }
+        return new Intent().setComponent(componentName);
     }
 
-    public LocusId toLocusId() {
-        return this.mWrapped;
+    public static Intent getParentActivityIntent(Context context, ComponentName componentName) throws PackageManager.NameNotFoundException {
+        String parentActivityName = getParentActivityName(context, componentName);
+        if (parentActivityName == null) {
+            return null;
+        }
+        ComponentName componentName2 = new ComponentName(componentName.getPackageName(), parentActivityName);
+        if (getParentActivityName(context, componentName2) == null) {
+            return Intent.makeMainActivity(componentName2);
+        }
+        return new Intent().setComponent(componentName2);
     }
 
-    public static LocusIdCompat toLocusIdCompat(LocusId locusId) {
-        Preconditions.checkNotNull(locusId, "locusId cannot be null");
-        return new LocusIdCompat((String) Preconditions.checkStringNotEmpty(Api29Impl.getId(locusId), "id cannot be empty"));
+    public static String getParentActivityName(Activity activity) {
+        try {
+            return getParentActivityName(activity, activity.getComponentName());
+        } catch (PackageManager.NameNotFoundException e2) {
+            throw new IllegalArgumentException(e2);
+        }
     }
 
-    private String getSanitizedId() {
-        int length = this.mId.length();
-        return length + "_chars";
+    public static String getParentActivityName(Context context, ComponentName componentName) throws PackageManager.NameNotFoundException {
+        String string;
+        String str;
+        PackageManager packageManager = context.getPackageManager();
+        int i2 = Build.VERSION.SDK_INT;
+        int i3 = 640;
+        if (Build.VERSION.SDK_INT >= 29) {
+            i3 = 269222528;
+        } else if (Build.VERSION.SDK_INT >= 24) {
+            i3 = 787072;
+        }
+        ActivityInfo activityInfo = packageManager.getActivityInfo(componentName, i3);
+        if (Build.VERSION.SDK_INT < 16 || (str = activityInfo.parentActivityName) == null) {
+            if (activityInfo.metaData == null || (string = activityInfo.metaData.getString(PARENT_ACTIVITY)) == null) {
+                return null;
+            }
+            if (string.charAt(0) == '.') {
+                return context.getPackageName() + string;
+            }
+            return string;
+        }
+        return str;
     }
 
+    private NavUtils() {
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
     /* loaded from: classes.dex */
-    private static class Api29Impl {
-        private Api29Impl() {
+    public static class Api16Impl {
+        private Api16Impl() {
         }
 
-        static LocusId create(String str) {
-            return new LocusId(str);
+        static boolean shouldUpRecreateTask(Activity activity, Intent intent) {
+            return activity.shouldUpRecreateTask(intent);
         }
 
-        static String getId(LocusId locusId) {
-            return locusId.getId();
+        static boolean navigateUpTo(Activity activity, Intent intent) {
+            return activity.navigateUpTo(intent);
+        }
+
+        static Intent getParentActivityIntent(Activity activity) {
+            return activity.getParentActivityIntent();
         }
     }
 }

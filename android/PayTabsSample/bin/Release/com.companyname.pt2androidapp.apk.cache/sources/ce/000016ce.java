@@ -1,46 +1,11 @@
-package mono.android.view.accessibility;
+package kotlin.jvm.jdk8;
 
-import android.view.accessibility.AccessibilityManager;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: JvmRepeatable.kt */
+@Metadata(d1 = {"\u0000\u000e\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003*\u001a\b\u0007\u0010\u0000\"\u00020\u00012\u00020\u0001B\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0004¨\u0006\u0005"}, d2 = {"JvmRepeatable", "Ljava/lang/annotation/Repeatable;", "Lkotlin/SinceKotlin;", "version", "1.6", "kotlin-stdlib-jdk8"}, k = 2, mv = {1, 7, 1}, pn = "kotlin.jvm", xi = 48)
 /* loaded from: classes.dex */
-public class AccessibilityManager_TouchExplorationStateChangeListenerImplementor implements IGCUserPeer, AccessibilityManager.TouchExplorationStateChangeListener {
-    public static final String __md_methods = "n_onTouchExplorationStateChanged:(Z)V:GetOnTouchExplorationStateChanged_ZHandler:Android.Views.Accessibility.AccessibilityManager/ITouchExplorationStateChangeListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onTouchExplorationStateChanged(boolean z2);
-
-    static {
-        Runtime.register("Android.Views.Accessibility.AccessibilityManager+ITouchExplorationStateChangeListenerImplementor, Mono.Android", AccessibilityManager_TouchExplorationStateChangeListenerImplementor.class, __md_methods);
-    }
-
-    public AccessibilityManager_TouchExplorationStateChangeListenerImplementor() {
-        if (getClass() == AccessibilityManager_TouchExplorationStateChangeListenerImplementor.class) {
-            TypeManager.Activate("Android.Views.Accessibility.AccessibilityManager+ITouchExplorationStateChangeListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener
-    public void onTouchExplorationStateChanged(boolean z2) {
-        n_onTouchExplorationStateChanged(z2);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+public final class JvmRepeatableKt {
+    public static /* synthetic */ void JvmRepeatable$annotations() {
     }
 }

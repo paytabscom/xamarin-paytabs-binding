@@ -1,104 +1,136 @@
-package com.google.android.material.progressindicator;
+package com.facebook.device.yearclass;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import com.google.android.material.color.MaterialColors;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.os.Build;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.IOException;
+import okhttp3.internal.ws.RealWebSocket;
 
 /* loaded from: classes.dex */
-final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndicatorSpec> {
-    private float adjustedRadius;
-    private int arcDirectionFactor;
-    private float displayedCornerRadius;
-    private float displayedTrackThickness;
+public class DeviceInfo {
+    private static final FileFilter CPU_FILTER = new FileFilter() { // from class: com.facebook.device.yearclass.DeviceInfo.1
+        @Override // java.io.FileFilter
+        public boolean accept(File file) {
+            String name = file.getName();
+            if (name.startsWith("cpu")) {
+                for (int i2 = 3; i2 < name.length(); i2++) {
+                    if (name.charAt(i2) < '0' || name.charAt(i2) > '9') {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+    };
+    public static final int DEVICEINFO_UNKNOWN = -1;
 
-    public CircularDrawingDelegate(CircularProgressIndicatorSpec circularProgressIndicatorSpec) {
-        super(circularProgressIndicatorSpec);
-        this.arcDirectionFactor = 1;
-    }
-
-    @Override // com.google.android.material.progressindicator.DrawingDelegate
-    public int getPreferredWidth() {
-        return getSize();
-    }
-
-    @Override // com.google.android.material.progressindicator.DrawingDelegate
-    public int getPreferredHeight() {
-        return getSize();
-    }
-
-    @Override // com.google.android.material.progressindicator.DrawingDelegate
-    public void adjustCanvas(Canvas canvas, float f2) {
-        float f3 = (((CircularProgressIndicatorSpec) this.spec).indicatorSize / 2.0f) + ((CircularProgressIndicatorSpec) this.spec).indicatorInset;
-        canvas.translate(f3, f3);
-        canvas.rotate(-90.0f);
-        float f4 = -f3;
-        canvas.clipRect(f4, f4, f3, f3);
-        this.arcDirectionFactor = ((CircularProgressIndicatorSpec) this.spec).indicatorDirection == 0 ? 1 : -1;
-        this.displayedTrackThickness = ((CircularProgressIndicatorSpec) this.spec).trackThickness * f2;
-        this.displayedCornerRadius = ((CircularProgressIndicatorSpec) this.spec).trackCornerRadius * f2;
-        this.adjustedRadius = (((CircularProgressIndicatorSpec) this.spec).indicatorSize - ((CircularProgressIndicatorSpec) this.spec).trackThickness) / 2.0f;
-        if ((this.drawable.isShowing() && ((CircularProgressIndicatorSpec) this.spec).showAnimationBehavior == 2) || (this.drawable.isHiding() && ((CircularProgressIndicatorSpec) this.spec).hideAnimationBehavior == 1)) {
-            this.adjustedRadius += ((1.0f - f2) * ((CircularProgressIndicatorSpec) this.spec).trackThickness) / 2.0f;
-        } else if ((this.drawable.isShowing() && ((CircularProgressIndicatorSpec) this.spec).showAnimationBehavior == 1) || (this.drawable.isHiding() && ((CircularProgressIndicatorSpec) this.spec).hideAnimationBehavior == 2)) {
-            this.adjustedRadius -= ((1.0f - f2) * ((CircularProgressIndicatorSpec) this.spec).trackThickness) / 2.0f;
+    public static int getNumberOfCPUCores() {
+        if (Build.VERSION.SDK_INT <= 10) {
+            return 1;
+        }
+        try {
+            return new File("/sys/devices/system/cpu/").listFiles(CPU_FILTER).length;
+        } catch (NullPointerException | SecurityException unused) {
+            return -1;
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    @Override // com.google.android.material.progressindicator.DrawingDelegate
-    public void fillIndicator(Canvas canvas, Paint paint, float f2, float f3, int i2) {
-        if (f2 == f3) {
-            return;
+    public static int getCPUMaxFreqKHz() {
+        int i2 = -1;
+        for (int i3 = 0; i3 < getNumberOfCPUCores(); i3++) {
+            try {
+                File file = new File("/sys/devices/system/cpu/cpu" + i3 + "/cpufreq/cpuinfo_max_freq");
+                if (file.exists()) {
+                    byte[] bArr = new byte[128];
+                    FileInputStream fileInputStream = new FileInputStream(file);
+                    try {
+                        fileInputStream.read(bArr);
+                        int i4 = 0;
+                        while (bArr[i4] >= 48 && bArr[i4] <= 57 && i4 < 128) {
+                            i4++;
+                        }
+                        Integer valueOf = Integer.valueOf(Integer.parseInt(new String(bArr, 0, i4)));
+                        if (valueOf.intValue() > i2) {
+                            i2 = valueOf.intValue();
+                        }
+                    } catch (NumberFormatException unused) {
+                    }
+                    fileInputStream.close();
+                }
+            } catch (IOException unused2) {
+                return -1;
+            }
         }
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeCap(Paint.Cap.BUTT);
-        paint.setAntiAlias(true);
-        paint.setColor(i2);
-        paint.setStrokeWidth(this.displayedTrackThickness);
-        int i3 = this.arcDirectionFactor;
-        float f4 = f2 * 360.0f * i3;
-        float f5 = (f3 >= f2 ? f3 - f2 : (f3 + 1.0f) - f2) * 360.0f * i3;
-        float f6 = this.adjustedRadius;
-        canvas.drawArc(new RectF(-f6, -f6, f6, f6), f4, f5, false, paint);
-        if (this.displayedCornerRadius <= 0.0f || Math.abs(f5) >= 360.0f) {
-            return;
+        if (i2 == -1) {
+            FileInputStream fileInputStream2 = new FileInputStream("/proc/cpuinfo");
+            int parseFileForValue = parseFileForValue("cpu MHz", fileInputStream2) * 1000;
+            if (parseFileForValue > i2) {
+                i2 = parseFileForValue;
+            }
+            fileInputStream2.close();
         }
-        paint.setStyle(Paint.Style.FILL);
-        float f7 = this.displayedCornerRadius;
-        RectF rectF = new RectF(-f7, -f7, f7, f7);
-        drawRoundedEnd(canvas, paint, this.displayedTrackThickness, this.displayedCornerRadius, f4, true, rectF);
-        drawRoundedEnd(canvas, paint, this.displayedTrackThickness, this.displayedCornerRadius, f4 + f5, false, rectF);
+        return i2;
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    @Override // com.google.android.material.progressindicator.DrawingDelegate
-    public void fillTrack(Canvas canvas, Paint paint) {
-        int compositeARGBWithAlpha = MaterialColors.compositeARGBWithAlpha(((CircularProgressIndicatorSpec) this.spec).trackColor, this.drawable.getAlpha());
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeCap(Paint.Cap.BUTT);
-        paint.setAntiAlias(true);
-        paint.setColor(compositeARGBWithAlpha);
-        paint.setStrokeWidth(this.displayedTrackThickness);
-        float f2 = this.adjustedRadius;
-        canvas.drawArc(new RectF(-f2, -f2, f2, f2), 0.0f, 360.0f, false, paint);
+    public static long getTotalMemory(Context context) {
+        if (Build.VERSION.SDK_INT >= 16) {
+            ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
+            ((ActivityManager) context.getSystemService("activity")).getMemoryInfo(memoryInfo);
+            return memoryInfo.totalMem;
+        }
+        long j2 = -1;
+        try {
+            FileInputStream fileInputStream = new FileInputStream("/proc/meminfo");
+            j2 = parseFileForValue("MemTotal", fileInputStream) * RealWebSocket.DEFAULT_MINIMUM_DEFLATE_SIZE;
+            fileInputStream.close();
+        } catch (IOException unused) {
+        }
+        return j2;
     }
 
-    private int getSize() {
-        return ((CircularProgressIndicatorSpec) this.spec).indicatorSize + (((CircularProgressIndicatorSpec) this.spec).indicatorInset * 2);
+    private static int parseFileForValue(String str, FileInputStream fileInputStream) {
+        byte[] bArr = new byte[1024];
+        try {
+            int read = fileInputStream.read(bArr);
+            int i2 = 0;
+            while (i2 < read) {
+                if (bArr[i2] == 10 || i2 == 0) {
+                    if (bArr[i2] == 10) {
+                        i2++;
+                    }
+                    for (int i3 = i2; i3 < read; i3++) {
+                        int i4 = i3 - i2;
+                        if (bArr[i3] != str.charAt(i4)) {
+                            break;
+                        } else if (i4 == str.length() - 1) {
+                            return extractValue(bArr, i3);
+                        }
+                    }
+                    continue;
+                }
+                i2++;
+            }
+            return -1;
+        } catch (IOException | NumberFormatException unused) {
+            return -1;
+        }
     }
 
-    private void drawRoundedEnd(Canvas canvas, Paint paint, float f2, float f3, float f4, boolean z2, RectF rectF) {
-        float f5 = z2 ? -1.0f : 1.0f;
-        canvas.save();
-        canvas.rotate(f4);
-        float f6 = f2 / 2.0f;
-        float f7 = f5 * f3;
-        canvas.drawRect((this.adjustedRadius - f6) + f3, Math.min(0.0f, this.arcDirectionFactor * f7), (this.adjustedRadius + f6) - f3, Math.max(0.0f, f7 * this.arcDirectionFactor), paint);
-        canvas.translate((this.adjustedRadius - f6) + f3, 0.0f);
-        canvas.drawArc(rectF, 180.0f, (-f5) * 90.0f * this.arcDirectionFactor, true, paint);
-        canvas.translate(f2 - (f3 * 2.0f), 0.0f);
-        canvas.drawArc(rectF, 0.0f, f5 * 90.0f * this.arcDirectionFactor, true, paint);
-        canvas.restore();
+    private static int extractValue(byte[] bArr, int i2) {
+        while (i2 < bArr.length && bArr[i2] != 10) {
+            if (bArr[i2] >= 48 && bArr[i2] <= 57) {
+                int i3 = i2 + 1;
+                while (i3 < bArr.length && bArr[i3] >= 48 && bArr[i3] <= 57) {
+                    i3++;
+                }
+                return Integer.parseInt(new String(bArr, 0, i2, i3 - i2));
+            }
+            i2++;
+        }
+        return -1;
     }
 }

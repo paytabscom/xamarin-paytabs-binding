@@ -1,76 +1,135 @@
-package kotlinx.coroutines.selects;
+package kotlin.concurrent;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import kotlin.Metadata;
 import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.jvm.functions.Function0;
 import kotlin.jvm.functions.Function1;
-import kotlin.jvm.functions.Function2;
-import kotlinx.coroutines.selects.SelectBuilder;
 
-/* compiled from: SelectUnbiased.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000h\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0010\u0003\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\t\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\b\u0001\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u00002\b\u0012\u0004\u0012\u0002H\u00010\u0002B\u0013\u0012\f\u0010\u0003\u001a\b\u0012\u0004\u0012\u00028\u00000\u0004¢\u0006\u0002\u0010\u0005J\u0010\u0010\u0011\u001a\u00020\t2\u0006\u0010\u0012\u001a\u00020\u0013H\u0001J\n\u0010\u0014\u001a\u0004\u0018\u00010\u0015H\u0001J6\u0010\u0016\u001a\u00020\t2\u0006\u0010\u0017\u001a\u00020\u00182\u001c\u0010\u0019\u001a\u0018\b\u0001\u0012\n\u0012\b\u0012\u0004\u0012\u00028\u00000\u0004\u0012\u0006\u0012\u0004\u0018\u00010\u00150\u001aH\u0016ø\u0001\u0000¢\u0006\u0002\u0010\u001bJ3\u0010\u001c\u001a\u00020\t*\u00020\u001d2\u001c\u0010\u0019\u001a\u0018\b\u0001\u0012\n\u0012\b\u0012\u0004\u0012\u00028\u00000\u0004\u0012\u0006\u0012\u0004\u0018\u00010\u00150\u001aH\u0096\u0002ø\u0001\u0000¢\u0006\u0002\u0010\u001eJE\u0010\u001c\u001a\u00020\t\"\u0004\b\u0001\u0010\u001f*\b\u0012\u0004\u0012\u0002H\u001f0 2\"\u0010\u0019\u001a\u001e\b\u0001\u0012\u0004\u0012\u0002H\u001f\u0012\n\u0012\b\u0012\u0004\u0012\u00028\u00000\u0004\u0012\u0006\u0012\u0004\u0018\u00010\u00150!H\u0096\u0002ø\u0001\u0000¢\u0006\u0002\u0010\"JY\u0010\u001c\u001a\u00020\t\"\u0004\b\u0001\u0010#\"\u0004\b\u0002\u0010\u001f*\u000e\u0012\u0004\u0012\u0002H#\u0012\u0004\u0012\u0002H\u001f0$2\u0006\u0010%\u001a\u0002H#2\"\u0010\u0019\u001a\u001e\b\u0001\u0012\u0004\u0012\u0002H\u001f\u0012\n\u0012\b\u0012\u0004\u0012\u00028\u00000\u0004\u0012\u0006\u0012\u0004\u0018\u00010\u00150!H\u0096\u0002ø\u0001\u0000¢\u0006\u0002\u0010&R-\u0010\u0006\u001a\u001e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\t0\b0\u0007j\u000e\u0012\n\u0012\b\u0012\u0004\u0012\u00020\t0\b`\n¢\u0006\b\n\u0000\u001a\u0004\b\u000b\u0010\fR\u0017\u0010\r\u001a\b\u0012\u0004\u0012\u00028\u00000\u000e¢\u0006\b\n\u0000\u001a\u0004\b\u000f\u0010\u0010\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006'"}, d2 = {"Lkotlinx/coroutines/selects/UnbiasedSelectBuilderImpl;", "R", "Lkotlinx/coroutines/selects/SelectBuilder;", "uCont", "Lkotlin/coroutines/Continuation;", "(Lkotlin/coroutines/Continuation;)V", "clauses", "Ljava/util/ArrayList;", "Lkotlin/Function0;", "", "Lkotlin/collections/ArrayList;", "getClauses", "()Ljava/util/ArrayList;", "instance", "Lkotlinx/coroutines/selects/SelectBuilderImpl;", "getInstance", "()Lkotlinx/coroutines/selects/SelectBuilderImpl;", "handleBuilderException", "e", "", "initSelectResult", "", "onTimeout", "timeMillis", "", "block", "Lkotlin/Function1;", "(JLkotlin/jvm/functions/Function1;)V", "invoke", "Lkotlinx/coroutines/selects/SelectClause0;", "(Lkotlinx/coroutines/selects/SelectClause0;Lkotlin/jvm/functions/Function1;)V", "Q", "Lkotlinx/coroutines/selects/SelectClause1;", "Lkotlin/Function2;", "(Lkotlinx/coroutines/selects/SelectClause1;Lkotlin/jvm/functions/Function2;)V", "P", "Lkotlinx/coroutines/selects/SelectClause2;", "param", "(Lkotlinx/coroutines/selects/SelectClause2;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)V", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
+/* compiled from: Timer.kt */
+@Metadata(d1 = {"\u00004\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\n\u0002\u0010\u000b\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\t\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0002\u0018\u0002\n\u0002\b\b\u001aM\u0010\u0000\u001a\u00020\u00012\n\b\u0002\u0010\u0002\u001a\u0004\u0018\u00010\u00032\b\b\u0002\u0010\u0004\u001a\u00020\u00052\u0006\u0010\u0006\u001a\u00020\u00072\u0006\u0010\b\u001a\u00020\t2\u0019\b\u0004\u0010\n\u001a\u0013\u0012\u0004\u0012\u00020\f\u0012\u0004\u0012\u00020\r0\u000b¢\u0006\u0002\b\u000eH\u0087\bø\u0001\u0000\u001aO\u0010\u0000\u001a\u00020\u00012\n\b\u0002\u0010\u0002\u001a\u0004\u0018\u00010\u00032\b\b\u0002\u0010\u0004\u001a\u00020\u00052\b\b\u0002\u0010\u000f\u001a\u00020\t2\u0006\u0010\b\u001a\u00020\t2\u0019\b\u0004\u0010\n\u001a\u0013\u0012\u0004\u0012\u00020\f\u0012\u0004\u0012\u00020\r0\u000b¢\u0006\u0002\b\u000eH\u0087\bø\u0001\u0000\u001a\u001a\u0010\u0010\u001a\u00020\u00012\b\u0010\u0002\u001a\u0004\u0018\u00010\u00032\u0006\u0010\u0004\u001a\u00020\u0005H\u0001\u001aM\u0010\u0010\u001a\u00020\u00012\n\b\u0002\u0010\u0002\u001a\u0004\u0018\u00010\u00032\b\b\u0002\u0010\u0004\u001a\u00020\u00052\u0006\u0010\u0006\u001a\u00020\u00072\u0006\u0010\b\u001a\u00020\t2\u0019\b\u0004\u0010\n\u001a\u0013\u0012\u0004\u0012\u00020\f\u0012\u0004\u0012\u00020\r0\u000b¢\u0006\u0002\b\u000eH\u0087\bø\u0001\u0000\u001aO\u0010\u0010\u001a\u00020\u00012\n\b\u0002\u0010\u0002\u001a\u0004\u0018\u00010\u00032\b\b\u0002\u0010\u0004\u001a\u00020\u00052\b\b\u0002\u0010\u000f\u001a\u00020\t2\u0006\u0010\b\u001a\u00020\t2\u0019\b\u0004\u0010\n\u001a\u0013\u0012\u0004\u0012\u00020\f\u0012\u0004\u0012\u00020\r0\u000b¢\u0006\u0002\b\u000eH\u0087\bø\u0001\u0000\u001a'\u0010\u0011\u001a\u00020\f2\u0019\b\u0004\u0010\n\u001a\u0013\u0012\u0004\u0012\u00020\f\u0012\u0004\u0012\u00020\r0\u000b¢\u0006\u0002\b\u000eH\u0087\bø\u0001\u0000\u001a3\u0010\u0012\u001a\u00020\f*\u00020\u00012\u0006\u0010\u0013\u001a\u00020\u00072\u0019\b\u0004\u0010\n\u001a\u0013\u0012\u0004\u0012\u00020\f\u0012\u0004\u0012\u00020\r0\u000b¢\u0006\u0002\b\u000eH\u0087\bø\u0001\u0000\u001a;\u0010\u0012\u001a\u00020\f*\u00020\u00012\u0006\u0010\u0013\u001a\u00020\u00072\u0006\u0010\b\u001a\u00020\t2\u0019\b\u0004\u0010\n\u001a\u0013\u0012\u0004\u0012\u00020\f\u0012\u0004\u0012\u00020\r0\u000b¢\u0006\u0002\b\u000eH\u0087\bø\u0001\u0000\u001a3\u0010\u0012\u001a\u00020\f*\u00020\u00012\u0006\u0010\u0014\u001a\u00020\t2\u0019\b\u0004\u0010\n\u001a\u0013\u0012\u0004\u0012\u00020\f\u0012\u0004\u0012\u00020\r0\u000b¢\u0006\u0002\b\u000eH\u0087\bø\u0001\u0000\u001a;\u0010\u0012\u001a\u00020\f*\u00020\u00012\u0006\u0010\u0014\u001a\u00020\t2\u0006\u0010\b\u001a\u00020\t2\u0019\b\u0004\u0010\n\u001a\u0013\u0012\u0004\u0012\u00020\f\u0012\u0004\u0012\u00020\r0\u000b¢\u0006\u0002\b\u000eH\u0087\bø\u0001\u0000\u001a;\u0010\u0015\u001a\u00020\f*\u00020\u00012\u0006\u0010\u0013\u001a\u00020\u00072\u0006\u0010\b\u001a\u00020\t2\u0019\b\u0004\u0010\n\u001a\u0013\u0012\u0004\u0012\u00020\f\u0012\u0004\u0012\u00020\r0\u000b¢\u0006\u0002\b\u000eH\u0087\bø\u0001\u0000\u001a;\u0010\u0015\u001a\u00020\f*\u00020\u00012\u0006\u0010\u0014\u001a\u00020\t2\u0006\u0010\b\u001a\u00020\t2\u0019\b\u0004\u0010\n\u001a\u0013\u0012\u0004\u0012\u00020\f\u0012\u0004\u0012\u00020\r0\u000b¢\u0006\u0002\b\u000eH\u0087\bø\u0001\u0000\u0082\u0002\u0007\n\u0005\b\u009920\u0001¨\u0006\u0016"}, d2 = {"fixedRateTimer", "Ljava/util/Timer;", "name", "", "daemon", "", "startAt", "Ljava/util/Date;", "period", "", "action", "Lkotlin/Function1;", "Ljava/util/TimerTask;", "", "Lkotlin/ExtensionFunctionType;", "initialDelay", "timer", "timerTask", "schedule", "time", "delay", "scheduleAtFixedRate", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class UnbiasedSelectBuilderImpl<R> implements SelectBuilder<R> {
-    private final ArrayList<Function0<Unit>> clauses = new ArrayList<>();
-    private final SelectBuilderImpl<R> instance;
-
-    public UnbiasedSelectBuilderImpl(Continuation<? super R> continuation) {
-        this.instance = new SelectBuilderImpl<>(continuation);
+public final class TimersKt {
+    private static final TimerTask schedule(Timer timer, long j2, Function1<? super TimerTask, Unit> function1) {
+        TimersKt$timerTask$1 timersKt$timerTask$1 = new TimersKt$timerTask$1(function1);
+        timer.schedule(timersKt$timerTask$1, j2);
+        return timersKt$timerTask$1;
     }
 
-    @Override // kotlinx.coroutines.selects.SelectBuilder
-    public <P, Q> void invoke(SelectClause2<? super P, ? extends Q> selectClause2, Function2<? super Q, ? super Continuation<? super R>, ? extends Object> function2) {
-        SelectBuilder.DefaultImpls.invoke(this, selectClause2, function2);
+    private static final TimerTask schedule(Timer timer, Date date, Function1<? super TimerTask, Unit> function1) {
+        TimersKt$timerTask$1 timersKt$timerTask$1 = new TimersKt$timerTask$1(function1);
+        timer.schedule(timersKt$timerTask$1, date);
+        return timersKt$timerTask$1;
     }
 
-    public final SelectBuilderImpl<R> getInstance() {
-        return this.instance;
+    private static final TimerTask schedule(Timer timer, long j2, long j3, Function1<? super TimerTask, Unit> function1) {
+        TimersKt$timerTask$1 timersKt$timerTask$1 = new TimersKt$timerTask$1(function1);
+        timer.schedule(timersKt$timerTask$1, j2, j3);
+        return timersKt$timerTask$1;
     }
 
-    public final ArrayList<Function0<Unit>> getClauses() {
-        return this.clauses;
+    private static final TimerTask schedule(Timer timer, Date date, long j2, Function1<? super TimerTask, Unit> function1) {
+        TimersKt$timerTask$1 timersKt$timerTask$1 = new TimersKt$timerTask$1(function1);
+        timer.schedule(timersKt$timerTask$1, date, j2);
+        return timersKt$timerTask$1;
     }
 
-    public final void handleBuilderException(Throwable th) {
-        this.instance.handleBuilderException(th);
+    private static final TimerTask scheduleAtFixedRate(Timer timer, long j2, long j3, Function1<? super TimerTask, Unit> function1) {
+        TimersKt$timerTask$1 timersKt$timerTask$1 = new TimersKt$timerTask$1(function1);
+        timer.scheduleAtFixedRate(timersKt$timerTask$1, j2, j3);
+        return timersKt$timerTask$1;
     }
 
-    public final Object initSelectResult() {
-        if (!this.instance.isSelected()) {
-            try {
-                Collections.shuffle(this.clauses);
-                Iterator<T> it = this.clauses.iterator();
-                while (it.hasNext()) {
-                    ((Function0) it.next()).invoke();
-                }
-            } catch (Throwable th) {
-                this.instance.handleBuilderException(th);
-            }
+    private static final TimerTask scheduleAtFixedRate(Timer timer, Date date, long j2, Function1<? super TimerTask, Unit> function1) {
+        TimersKt$timerTask$1 timersKt$timerTask$1 = new TimersKt$timerTask$1(function1);
+        timer.scheduleAtFixedRate(timersKt$timerTask$1, date, j2);
+        return timersKt$timerTask$1;
+    }
+
+    public static final Timer timer(String str, boolean z2) {
+        return str == null ? new Timer(z2) : new Timer(str, z2);
+    }
+
+    static /* synthetic */ Timer timer$default(String str, boolean z2, long j2, long j3, Function1 function1, int i2, Object obj) {
+        if ((i2 & 1) != 0) {
+            str = null;
         }
-        return this.instance.getResult();
+        if ((i2 & 2) != 0) {
+            z2 = false;
+        }
+        if ((i2 & 4) != 0) {
+            j2 = 0;
+        }
+        Timer timer = timer(str, z2);
+        timer.schedule(new TimersKt$timerTask$1(function1), j2, j3);
+        return timer;
     }
 
-    @Override // kotlinx.coroutines.selects.SelectBuilder
-    public void invoke(SelectClause0 selectClause0, Function1<? super Continuation<? super R>, ? extends Object> function1) {
-        this.clauses.add(new UnbiasedSelectBuilderImpl$invoke$1(this, selectClause0, function1));
+    private static final Timer timer(String str, boolean z2, long j2, long j3, Function1<? super TimerTask, Unit> function1) {
+        Timer timer = timer(str, z2);
+        timer.schedule(new TimersKt$timerTask$1(function1), j2, j3);
+        return timer;
     }
 
-    @Override // kotlinx.coroutines.selects.SelectBuilder
-    public <Q> void invoke(SelectClause1<? extends Q> selectClause1, Function2<? super Q, ? super Continuation<? super R>, ? extends Object> function2) {
-        this.clauses.add(new UnbiasedSelectBuilderImpl$invoke$2(this, selectClause1, function2));
+    static /* synthetic */ Timer timer$default(String str, boolean z2, Date date, long j2, Function1 function1, int i2, Object obj) {
+        if ((i2 & 1) != 0) {
+            str = null;
+        }
+        if ((i2 & 2) != 0) {
+            z2 = false;
+        }
+        Timer timer = timer(str, z2);
+        timer.schedule(new TimersKt$timerTask$1(function1), date, j2);
+        return timer;
     }
 
-    @Override // kotlinx.coroutines.selects.SelectBuilder
-    public <P, Q> void invoke(SelectClause2<? super P, ? extends Q> selectClause2, P p2, Function2<? super Q, ? super Continuation<? super R>, ? extends Object> function2) {
-        this.clauses.add(new UnbiasedSelectBuilderImpl$invoke$3(this, selectClause2, p2, function2));
+    private static final Timer timer(String str, boolean z2, Date date, long j2, Function1<? super TimerTask, Unit> function1) {
+        Timer timer = timer(str, z2);
+        timer.schedule(new TimersKt$timerTask$1(function1), date, j2);
+        return timer;
     }
 
-    @Override // kotlinx.coroutines.selects.SelectBuilder
-    public void onTimeout(long j2, Function1<? super Continuation<? super R>, ? extends Object> function1) {
-        this.clauses.add(new UnbiasedSelectBuilderImpl$onTimeout$1(this, j2, function1));
+    static /* synthetic */ Timer fixedRateTimer$default(String str, boolean z2, long j2, long j3, Function1 function1, int i2, Object obj) {
+        if ((i2 & 1) != 0) {
+            str = null;
+        }
+        if ((i2 & 2) != 0) {
+            z2 = false;
+        }
+        if ((i2 & 4) != 0) {
+            j2 = 0;
+        }
+        Timer timer = timer(str, z2);
+        timer.scheduleAtFixedRate(new TimersKt$timerTask$1(function1), j2, j3);
+        return timer;
+    }
+
+    private static final Timer fixedRateTimer(String str, boolean z2, long j2, long j3, Function1<? super TimerTask, Unit> function1) {
+        Timer timer = timer(str, z2);
+        timer.scheduleAtFixedRate(new TimersKt$timerTask$1(function1), j2, j3);
+        return timer;
+    }
+
+    static /* synthetic */ Timer fixedRateTimer$default(String str, boolean z2, Date date, long j2, Function1 function1, int i2, Object obj) {
+        if ((i2 & 1) != 0) {
+            str = null;
+        }
+        if ((i2 & 2) != 0) {
+            z2 = false;
+        }
+        Timer timer = timer(str, z2);
+        timer.scheduleAtFixedRate(new TimersKt$timerTask$1(function1), date, j2);
+        return timer;
+    }
+
+    private static final Timer fixedRateTimer(String str, boolean z2, Date date, long j2, Function1<? super TimerTask, Unit> function1) {
+        Timer timer = timer(str, z2);
+        timer.scheduleAtFixedRate(new TimersKt$timerTask$1(function1), date, j2);
+        return timer;
+    }
+
+    private static final TimerTask timerTask(Function1<? super TimerTask, Unit> function1) {
+        return new TimersKt$timerTask$1(function1);
     }
 }

@@ -1,35 +1,182 @@
-package kotlin.text;
+package com.google.crypto.tink.shaded.protobuf;
 
+import java.util.AbstractList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
-import kotlin.Metadata;
-import kotlin.Pair;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.internal.Intrinsics;
-import kotlin.ranges.IntRange;
-import kotlin.sequences.Sequence;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.RandomAccess;
 
-/* JADX INFO: Access modifiers changed from: package-private */
-/* compiled from: Strings.kt */
-@Metadata(d1 = {"\u0000:\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\r\n\u0000\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010(\n\u0000\b\u0002\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001BY\u0012\u0006\u0010\u0003\u001a\u00020\u0004\u0012\u0006\u0010\u0005\u001a\u00020\u0006\u0012\u0006\u0010\u0007\u001a\u00020\u0006\u0012:\u0010\b\u001a6\u0012\u0004\u0012\u00020\u0004\u0012\u0013\u0012\u00110\u0006¢\u0006\f\b\n\u0012\b\b\u000b\u0012\u0004\b\b(\f\u0012\u0012\u0012\u0010\u0012\u0004\u0012\u00020\u0006\u0012\u0004\u0012\u00020\u0006\u0018\u00010\r0\t¢\u0006\u0002\b\u000e¢\u0006\u0002\u0010\u000fJ\u000f\u0010\u0010\u001a\b\u0012\u0004\u0012\u00020\u00020\u0011H\u0096\u0002RB\u0010\b\u001a6\u0012\u0004\u0012\u00020\u0004\u0012\u0013\u0012\u00110\u0006¢\u0006\f\b\n\u0012\b\b\u000b\u0012\u0004\b\b(\f\u0012\u0012\u0012\u0010\u0012\u0004\u0012\u00020\u0006\u0012\u0004\u0012\u00020\u0006\u0018\u00010\r0\t¢\u0006\u0002\b\u000eX\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\u0003\u001a\u00020\u0004X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\u0007\u001a\u00020\u0006X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0006X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\u0012"}, d2 = {"Lkotlin/text/DelimitedRangesSequence;", "Lkotlin/sequences/Sequence;", "Lkotlin/ranges/IntRange;", "input", "", "startIndex", "", "limit", "getNextMatch", "Lkotlin/Function2;", "Lkotlin/ParameterName;", "name", "currentIndex", "Lkotlin/Pair;", "Lkotlin/ExtensionFunctionType;", "(Ljava/lang/CharSequence;IILkotlin/jvm/functions/Function2;)V", "iterator", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class DelimitedRangesSequence implements Sequence<IntRange> {
-    private final Function2<CharSequence, Integer, Pair<Integer, Integer>> getNextMatch;
-    private final CharSequence input;
-    private final int limit;
-    private final int startIndex;
+public class UnmodifiableLazyStringList extends AbstractList<String> implements LazyStringList, RandomAccess {
+    private final LazyStringList list;
 
-    /* JADX WARN: Multi-variable type inference failed */
-    public DelimitedRangesSequence(CharSequence input, int i2, int i3, Function2<? super CharSequence, ? super Integer, Pair<Integer, Integer>> getNextMatch) {
-        Intrinsics.checkNotNullParameter(input, "input");
-        Intrinsics.checkNotNullParameter(getNextMatch, "getNextMatch");
-        this.input = input;
-        this.startIndex = i2;
-        this.limit = i3;
-        this.getNextMatch = getNextMatch;
+    @Override // com.google.crypto.tink.shaded.protobuf.LazyStringList
+    public LazyStringList getUnmodifiableView() {
+        return this;
     }
 
-    @Override // kotlin.sequences.Sequence
-    public Iterator<IntRange> iterator() {
-        return new DelimitedRangesSequence$iterator$1(this);
+    public UnmodifiableLazyStringList(LazyStringList list) {
+        this.list = list;
+    }
+
+    @Override // java.util.AbstractList, java.util.List
+    public String get(int index) {
+        return (String) this.list.get(index);
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.LazyStringList
+    public Object getRaw(int index) {
+        return this.list.getRaw(index);
+    }
+
+    @Override // java.util.AbstractCollection, java.util.Collection, java.util.List
+    public int size() {
+        return this.list.size();
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.LazyStringList
+    public ByteString getByteString(int index) {
+        return this.list.getByteString(index);
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.LazyStringList
+    public void add(ByteString element) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.LazyStringList
+    public void set(int index, ByteString element) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.LazyStringList
+    public boolean addAllByteString(Collection<? extends ByteString> element) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.LazyStringList
+    public byte[] getByteArray(int index) {
+        return this.list.getByteArray(index);
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.LazyStringList
+    public void add(byte[] element) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.LazyStringList
+    public void set(int index, byte[] element) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.LazyStringList
+    public boolean addAllByteArray(Collection<byte[]> element) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override // java.util.AbstractList, java.util.List
+    public ListIterator<String> listIterator(final int index) {
+        return new ListIterator<String>(index) { // from class: com.google.crypto.tink.shaded.protobuf.UnmodifiableLazyStringList.1
+            ListIterator<String> iter;
+            final /* synthetic */ int val$index;
+
+            {
+                this.val$index = index;
+                this.iter = UnmodifiableLazyStringList.this.list.listIterator(index);
+            }
+
+            @Override // java.util.ListIterator, java.util.Iterator
+            public boolean hasNext() {
+                return this.iter.hasNext();
+            }
+
+            @Override // java.util.ListIterator, java.util.Iterator
+            public String next() {
+                return this.iter.next();
+            }
+
+            @Override // java.util.ListIterator
+            public boolean hasPrevious() {
+                return this.iter.hasPrevious();
+            }
+
+            @Override // java.util.ListIterator
+            public String previous() {
+                return this.iter.previous();
+            }
+
+            @Override // java.util.ListIterator
+            public int nextIndex() {
+                return this.iter.nextIndex();
+            }
+
+            @Override // java.util.ListIterator
+            public int previousIndex() {
+                return this.iter.previousIndex();
+            }
+
+            @Override // java.util.ListIterator, java.util.Iterator
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override // java.util.ListIterator
+            public void set(String o2) {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override // java.util.ListIterator
+            public void add(String o2) {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @Override // java.util.AbstractList, java.util.AbstractCollection, java.util.Collection, java.lang.Iterable, java.util.List
+    public Iterator<String> iterator() {
+        return new Iterator<String>() { // from class: com.google.crypto.tink.shaded.protobuf.UnmodifiableLazyStringList.2
+            Iterator<String> iter;
+
+            {
+                this.iter = UnmodifiableLazyStringList.this.list.iterator();
+            }
+
+            @Override // java.util.Iterator
+            public boolean hasNext() {
+                return this.iter.hasNext();
+            }
+
+            @Override // java.util.Iterator
+            public String next() {
+                return this.iter.next();
+            }
+
+            @Override // java.util.Iterator
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
+        };
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.LazyStringList
+    public List<?> getUnderlyingElements() {
+        return this.list.getUnderlyingElements();
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.LazyStringList
+    public void mergeFrom(LazyStringList other) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.LazyStringList
+    public List<byte[]> asByteArrayList() {
+        return Collections.unmodifiableList(this.list.asByteArrayList());
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.ProtocolStringList
+    public List<ByteString> asByteStringList() {
+        return Collections.unmodifiableList(this.list.asByteStringList());
     }
 }

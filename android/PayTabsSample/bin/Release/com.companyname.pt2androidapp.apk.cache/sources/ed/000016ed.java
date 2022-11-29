@@ -1,53 +1,115 @@
-package mono.android.widget;
+package kotlin.ranges;
 
-import android.widget.SearchView;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.Iterator;
+import kotlin.Metadata;
+import kotlin.internal.ProgressionUtilKt;
+import kotlin.jvm.internal.DefaultConstructorMarker;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.internal.markers.KMappedMarker;
 
+/* compiled from: Progressions.kt */
+@Metadata(d1 = {"\u00004\n\u0002\u0018\u0002\n\u0002\u0010\u001c\n\u0002\u0010\f\n\u0002\b\u0003\n\u0002\u0010\b\n\u0002\b\t\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0002\b\u0016\u0018\u0000 \u00192\b\u0012\u0004\u0012\u00020\u00020\u0001:\u0001\u0019B\u001f\b\u0000\u0012\u0006\u0010\u0003\u001a\u00020\u0002\u0012\u0006\u0010\u0004\u001a\u00020\u0002\u0012\u0006\u0010\u0005\u001a\u00020\u0006¢\u0006\u0002\u0010\u0007J\u0013\u0010\u000f\u001a\u00020\u00102\b\u0010\u0011\u001a\u0004\u0018\u00010\u0012H\u0096\u0002J\b\u0010\u0013\u001a\u00020\u0006H\u0016J\b\u0010\u0014\u001a\u00020\u0010H\u0016J\t\u0010\u0015\u001a\u00020\u0016H\u0096\u0002J\b\u0010\u0017\u001a\u00020\u0018H\u0016R\u0011\u0010\b\u001a\u00020\u0002¢\u0006\b\n\u0000\u001a\u0004\b\t\u0010\nR\u0011\u0010\u000b\u001a\u00020\u0002¢\u0006\b\n\u0000\u001a\u0004\b\f\u0010\nR\u0011\u0010\u0005\u001a\u00020\u0006¢\u0006\b\n\u0000\u001a\u0004\b\r\u0010\u000e¨\u0006\u001a"}, d2 = {"Lkotlin/ranges/CharProgression;", "", "", "start", "endInclusive", "step", "", "(CCI)V", "first", "getFirst", "()C", "last", "getLast", "getStep", "()I", "equals", "", "other", "", "hashCode", "isEmpty", "iterator", "Lkotlin/collections/CharIterator;", "toString", "", "Companion", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class SearchView_OnQueryTextListenerImplementor implements IGCUserPeer, SearchView.OnQueryTextListener {
-    public static final String __md_methods = "n_onQueryTextChange:(Ljava/lang/String;)Z:GetOnQueryTextChange_Ljava_lang_String_Handler:Android.Widget.SearchView/IOnQueryTextListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onQueryTextSubmit:(Ljava/lang/String;)Z:GetOnQueryTextSubmit_Ljava_lang_String_Handler:Android.Widget.SearchView/IOnQueryTextListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public class CharProgression implements Iterable<Character>, KMappedMarker {
+    public static final Companion Companion = new Companion(null);
+    private final char first;
+    private final char last;
+    private final int step;
 
-    private native boolean n_onQueryTextChange(String str);
-
-    private native boolean n_onQueryTextSubmit(String str);
-
-    static {
-        Runtime.register("Android.Widget.SearchView+IOnQueryTextListenerImplementor, Mono.Android", SearchView_OnQueryTextListenerImplementor.class, __md_methods);
-    }
-
-    public SearchView_OnQueryTextListenerImplementor() {
-        if (getClass() == SearchView_OnQueryTextListenerImplementor.class) {
-            TypeManager.Activate("Android.Widget.SearchView+IOnQueryTextListenerImplementor, Mono.Android", "", this, new Object[0]);
+    public CharProgression(char c2, char c3, int i2) {
+        if (i2 == 0) {
+            throw new IllegalArgumentException("Step must be non-zero.");
         }
-    }
-
-    @Override // android.widget.SearchView.OnQueryTextListener
-    public boolean onQueryTextChange(String str) {
-        return n_onQueryTextChange(str);
-    }
-
-    @Override // android.widget.SearchView.OnQueryTextListener
-    public boolean onQueryTextSubmit(String str) {
-        return n_onQueryTextSubmit(str);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
+        if (i2 == Integer.MIN_VALUE) {
+            throw new IllegalArgumentException("Step must be greater than Int.MIN_VALUE to avoid overflow on negation.");
         }
-        this.refList.add(obj);
+        this.first = c2;
+        this.last = (char) ProgressionUtilKt.getProgressionLastElement((int) c2, (int) c3, i2);
+        this.step = i2;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
+    public final char getFirst() {
+        return this.first;
+    }
+
+    public final char getLast() {
+        return this.last;
+    }
+
+    public final int getStep() {
+        return this.step;
+    }
+
+    @Override // java.lang.Iterable
+    public Iterator<Character> iterator() {
+        return new CharProgressionIterator(this.first, this.last, this.step);
+    }
+
+    public boolean isEmpty() {
+        if (this.step > 0) {
+            if (Intrinsics.compare((int) this.first, (int) this.last) > 0) {
+                return true;
+            }
+        } else if (Intrinsics.compare((int) this.first, (int) this.last) < 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean equals(Object obj) {
+        if (obj instanceof CharProgression) {
+            if (!isEmpty() || !((CharProgression) obj).isEmpty()) {
+                CharProgression charProgression = (CharProgression) obj;
+                if (this.first != charProgression.first || this.last != charProgression.last || this.step != charProgression.step) {
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        if (isEmpty()) {
+            return -1;
+        }
+        return (((this.first * 31) + this.last) * 31) + this.step;
+    }
+
+    public String toString() {
+        StringBuilder sb;
+        int i2;
+        if (this.step > 0) {
+            sb = new StringBuilder();
+            sb.append(this.first);
+            sb.append("..");
+            sb.append(this.last);
+            sb.append(" step ");
+            i2 = this.step;
+        } else {
+            sb = new StringBuilder();
+            sb.append(this.first);
+            sb.append(" downTo ");
+            sb.append(this.last);
+            sb.append(" step ");
+            i2 = -this.step;
+        }
+        sb.append(i2);
+        return sb.toString();
+    }
+
+    /* compiled from: Progressions.kt */
+    @Metadata(d1 = {"\u0000 \n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\f\n\u0002\b\u0002\n\u0002\u0010\b\n\u0000\b\u0086\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J\u001e\u0010\u0003\u001a\u00020\u00042\u0006\u0010\u0005\u001a\u00020\u00062\u0006\u0010\u0007\u001a\u00020\u00062\u0006\u0010\b\u001a\u00020\t¨\u0006\n"}, d2 = {"Lkotlin/ranges/CharProgression$Companion;", "", "()V", "fromClosedRange", "Lkotlin/ranges/CharProgression;", "rangeStart", "", "rangeEnd", "step", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+    /* loaded from: classes.dex */
+    public static final class Companion {
+        private Companion() {
+        }
+
+        public /* synthetic */ Companion(DefaultConstructorMarker defaultConstructorMarker) {
+            this();
+        }
+
+        public final CharProgression fromClosedRange(char c2, char c3, int i2) {
+            return new CharProgression(c2, c3, i2);
         }
     }
 }

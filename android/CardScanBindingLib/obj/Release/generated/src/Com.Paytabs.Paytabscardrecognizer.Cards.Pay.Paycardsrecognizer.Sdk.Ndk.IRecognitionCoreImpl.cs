@@ -38,7 +38,8 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk']/interface[@name='RecognitionCoreImpl']/method[@name='setRecognitionMode' and count(parameter)=1 and parameter[1][@type='int']]"
 		[Register ("setRecognitionMode", "(I)V", "GetSetRecognitionMode_IHandler:Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk.IRecognitionCoreImplInvoker, CardScanBindingLib")]
-		void SetRecognitionMode (int p0);
+		void SetRecognitionMode ([global::Android.Runtime.IntDef (Flag = true, Type = "Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk.RecognitionConstants", Fields = new string [] {"RecognizerModeNumber", "RecognizerModeDate", "RecognizerModeName", "RecognizerModeGrabCardImage"})]
+		int p0);
 
 		// Metadata.xml XPath method reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk']/interface[@name='RecognitionCoreImpl']/method[@name='setStatusListener' and count(parameter)=1 and parameter[1][@type='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.RecognitionStatusListener']]"
 		[Register ("setStatusListener", "(Lcom/paytabs/paytabscardrecognizer/cards/pay/paycardsrecognizer/sdk/ndk/RecognitionStatusListener;)V", "GetSetStatusListener_Lcom_paytabs_paytabscardrecognizer_cards_pay_paycardsrecognizer_sdk_ndk_RecognitionStatusListener_Handler:Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk.IRecognitionCoreImplInvoker, CardScanBindingLib")]
@@ -289,7 +290,8 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk
 #pragma warning restore 0169
 
 		IntPtr id_setRecognitionMode_I;
-		public unsafe void SetRecognitionMode (int p0)
+		public unsafe void SetRecognitionMode ([global::Android.Runtime.IntDef (Flag = true, Type = "Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk.RecognitionConstants", Fields = new string [] {"RecognizerModeNumber", "RecognizerModeDate", "RecognizerModeName", "RecognizerModeGrabCardImage"})]
+		int p0)
 		{
 			if (id_setRecognitionMode_I == IntPtr.Zero)
 				id_setRecognitionMode_I = JNIEnv.GetMethodID (class_ref, "setRecognitionMode", "(I)V");

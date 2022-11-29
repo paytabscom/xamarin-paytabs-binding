@@ -1,26 +1,235 @@
-package kotlin.reflect;
+package com.google.crypto.tink.shaded.protobuf;
 
-import java.lang.reflect.Type;
-import kotlin.Metadata;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.internal.FunctionReferenceImpl;
-import kotlin.jvm.internal.Intrinsics;
+import com.google.crypto.tink.shaded.protobuf.Internal;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.RandomAccess;
 
-/* compiled from: TypesJVM.kt */
-@Metadata(d1 = {"\u0000\u000e\n\u0000\n\u0002\u0010\u000e\n\u0000\n\u0002\u0018\u0002\n\u0000\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0002\b\u0004"}, d2 = {"<anonymous>", "", "p1", "Ljava/lang/reflect/Type;", "invoke"}, k = 3, mv = {1, 5, 1})
+/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-final /* synthetic */ class ParameterizedTypeImpl$getTypeName$1$1 extends FunctionReferenceImpl implements Function1<Type, String> {
-    public static final ParameterizedTypeImpl$getTypeName$1$1 INSTANCE = new ParameterizedTypeImpl$getTypeName$1$1();
+public final class IntArrayList extends AbstractProtobufList<Integer> implements Internal.IntList, RandomAccess, PrimitiveNonBoxingCollection {
+    private static final IntArrayList EMPTY_LIST;
+    private int[] array;
+    private int size;
 
-    ParameterizedTypeImpl$getTypeName$1$1() {
-        super(1, TypesJVMKt.class, "typeToString", "typeToString(Ljava/lang/reflect/Type;)Ljava/lang/String;", 1);
+    static {
+        IntArrayList intArrayList = new IntArrayList(new int[0], 0);
+        EMPTY_LIST = intArrayList;
+        intArrayList.makeImmutable();
     }
 
-    @Override // kotlin.jvm.functions.Function1
-    public final String invoke(Type p1) {
-        String typeToString;
-        Intrinsics.checkNotNullParameter(p1, "p1");
-        typeToString = TypesJVMKt.typeToString(p1);
-        return typeToString;
+    public static IntArrayList emptyList() {
+        return EMPTY_LIST;
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public IntArrayList() {
+        this(new int[10], 0);
+    }
+
+    private IntArrayList(int[] other, int size) {
+        this.array = other;
+        this.size = size;
+    }
+
+    @Override // java.util.AbstractList
+    protected void removeRange(int fromIndex, int toIndex) {
+        ensureIsMutable();
+        if (toIndex < fromIndex) {
+            throw new IndexOutOfBoundsException("toIndex < fromIndex");
+        }
+        int[] iArr = this.array;
+        System.arraycopy(iArr, toIndex, iArr, fromIndex, this.size - toIndex);
+        this.size -= toIndex - fromIndex;
+        this.modCount++;
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.AbstractProtobufList, java.util.AbstractList, java.util.Collection, java.util.List
+    public boolean equals(Object o2) {
+        if (this == o2) {
+            return true;
+        }
+        if (!(o2 instanceof IntArrayList)) {
+            return super.equals(o2);
+        }
+        IntArrayList intArrayList = (IntArrayList) o2;
+        if (this.size != intArrayList.size) {
+            return false;
+        }
+        int[] iArr = intArrayList.array;
+        for (int i2 = 0; i2 < this.size; i2++) {
+            if (this.array[i2] != iArr[i2]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.AbstractProtobufList, java.util.AbstractList, java.util.Collection, java.util.List
+    public int hashCode() {
+        int i2 = 1;
+        for (int i3 = 0; i3 < this.size; i3++) {
+            i2 = (i2 * 31) + this.array[i3];
+        }
+        return i2;
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.Internal.ProtobufList, com.google.crypto.tink.shaded.protobuf.Internal.BooleanList
+    /* renamed from: mutableCopyWithCapacity */
+    public Internal.ProtobufList<Integer> mutableCopyWithCapacity2(int capacity) {
+        if (capacity < this.size) {
+            throw new IllegalArgumentException();
+        }
+        return new IntArrayList(Arrays.copyOf(this.array, capacity), this.size);
+    }
+
+    @Override // java.util.AbstractList, java.util.List
+    public Integer get(int index) {
+        return Integer.valueOf(getInt(index));
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.Internal.IntList
+    public int getInt(int index) {
+        ensureIndexInRange(index);
+        return this.array[index];
+    }
+
+    @Override // java.util.AbstractList, java.util.List
+    public int indexOf(Object element) {
+        if (element instanceof Integer) {
+            int intValue = ((Integer) element).intValue();
+            int size = size();
+            for (int i2 = 0; i2 < size; i2++) {
+                if (this.array[i2] == intValue) {
+                    return i2;
+                }
+            }
+            return -1;
+        }
+        return -1;
+    }
+
+    @Override // java.util.AbstractCollection, java.util.Collection, java.util.List
+    public boolean contains(Object element) {
+        return indexOf(element) != -1;
+    }
+
+    @Override // java.util.AbstractCollection, java.util.Collection, java.util.List
+    public int size() {
+        return this.size;
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.AbstractProtobufList, java.util.AbstractList, java.util.List
+    public Integer set(int index, Integer element) {
+        return Integer.valueOf(setInt(index, element.intValue()));
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.Internal.IntList
+    public int setInt(int index, int element) {
+        ensureIsMutable();
+        ensureIndexInRange(index);
+        int[] iArr = this.array;
+        int i2 = iArr[index];
+        iArr[index] = element;
+        return i2;
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.AbstractProtobufList, java.util.AbstractList, java.util.AbstractCollection, java.util.Collection, java.util.List
+    public boolean add(Integer element) {
+        addInt(element.intValue());
+        return true;
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.AbstractProtobufList, java.util.AbstractList, java.util.List
+    public void add(int index, Integer element) {
+        addInt(index, element.intValue());
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.Internal.IntList
+    public void addInt(int element) {
+        ensureIsMutable();
+        int i2 = this.size;
+        int[] iArr = this.array;
+        if (i2 == iArr.length) {
+            int[] iArr2 = new int[((i2 * 3) / 2) + 1];
+            System.arraycopy(iArr, 0, iArr2, 0, i2);
+            this.array = iArr2;
+        }
+        int[] iArr3 = this.array;
+        int i3 = this.size;
+        this.size = i3 + 1;
+        iArr3[i3] = element;
+    }
+
+    private void addInt(int index, int element) {
+        int i2;
+        ensureIsMutable();
+        if (index < 0 || index > (i2 = this.size)) {
+            throw new IndexOutOfBoundsException(makeOutOfBoundsExceptionMessage(index));
+        }
+        int[] iArr = this.array;
+        if (i2 < iArr.length) {
+            System.arraycopy(iArr, index, iArr, index + 1, i2 - index);
+        } else {
+            int[] iArr2 = new int[((i2 * 3) / 2) + 1];
+            System.arraycopy(iArr, 0, iArr2, 0, index);
+            System.arraycopy(this.array, index, iArr2, index + 1, this.size - index);
+            this.array = iArr2;
+        }
+        this.array[index] = element;
+        this.size++;
+        this.modCount++;
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.AbstractProtobufList, java.util.AbstractCollection, java.util.Collection, java.util.List
+    public boolean addAll(Collection<? extends Integer> collection) {
+        ensureIsMutable();
+        Internal.checkNotNull(collection);
+        if (!(collection instanceof IntArrayList)) {
+            return super.addAll(collection);
+        }
+        IntArrayList intArrayList = (IntArrayList) collection;
+        int i2 = intArrayList.size;
+        if (i2 == 0) {
+            return false;
+        }
+        int i3 = this.size;
+        if (Integer.MAX_VALUE - i3 < i2) {
+            throw new OutOfMemoryError();
+        }
+        int i4 = i3 + i2;
+        int[] iArr = this.array;
+        if (i4 > iArr.length) {
+            this.array = Arrays.copyOf(iArr, i4);
+        }
+        System.arraycopy(intArrayList.array, 0, this.array, this.size, intArrayList.size);
+        this.size = i4;
+        this.modCount++;
+        return true;
+    }
+
+    @Override // com.google.crypto.tink.shaded.protobuf.AbstractProtobufList, java.util.AbstractList, java.util.List
+    public Integer remove(int index) {
+        int i2;
+        ensureIsMutable();
+        ensureIndexInRange(index);
+        int[] iArr = this.array;
+        int i3 = iArr[index];
+        if (index < this.size - 1) {
+            System.arraycopy(iArr, index + 1, iArr, index, (i2 - index) - 1);
+        }
+        this.size--;
+        this.modCount++;
+        return Integer.valueOf(i3);
+    }
+
+    private void ensureIndexInRange(int index) {
+        if (index < 0 || index >= this.size) {
+            throw new IndexOutOfBoundsException(makeOutOfBoundsExceptionMessage(index));
+        }
+    }
+
+    private String makeOutOfBoundsExceptionMessage(int index) {
+        return "Index:" + index + ", Size:" + this.size;
     }
 }

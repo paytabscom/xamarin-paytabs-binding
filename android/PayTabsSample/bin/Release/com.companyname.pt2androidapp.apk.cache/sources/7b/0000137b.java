@@ -1,34 +1,91 @@
-package kotlinx.coroutines.channels;
+package com.payment.paymentsdk.creditcard.view.cardform.view;
 
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.CoroutineContext;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.jvm.functions.Function2;
-import kotlinx.coroutines.intrinsics.CancellableKt;
+import android.content.Context;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.SingleLineTransformationMethod;
+import android.util.AttributeSet;
+import com.payment.paymentsdk.R;
+import k.b;
 
-/* JADX INFO: Access modifiers changed from: package-private */
-/* compiled from: Broadcast.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000:\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0002\u0010\u0000\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0000\b\u0002\u0018\u0000*\u0004\b\u0000\u0010\u00012\b\u0012\u0004\u0012\u0002H\u00010\u0002BM\u0012\u0006\u0010\u0003\u001a\u00020\u0004\u0012\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u00028\u00000\u0006\u0012-\u0010\u0007\u001a)\b\u0001\u0012\n\u0012\b\u0012\u0004\u0012\u00028\u00000\t\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u000b0\n\u0012\u0006\u0012\u0004\u0018\u00010\f0\b¢\u0006\u0002\b\rø\u0001\u0000¢\u0006\u0002\u0010\u000eJ\b\u0010\u0010\u001a\u00020\u000bH\u0014J\u000e\u0010\u0011\u001a\b\u0012\u0004\u0012\u00028\u00000\u0012H\u0016R\u0014\u0010\u000f\u001a\b\u0012\u0004\u0012\u00020\u000b0\nX\u0082\u0004¢\u0006\u0002\n\u0000\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\u0013"}, d2 = {"Lkotlinx/coroutines/channels/LazyBroadcastCoroutine;", "E", "Lkotlinx/coroutines/channels/BroadcastCoroutine;", "parentContext", "Lkotlin/coroutines/CoroutineContext;", "channel", "Lkotlinx/coroutines/channels/BroadcastChannel;", "block", "Lkotlin/Function2;", "Lkotlinx/coroutines/channels/ProducerScope;", "Lkotlin/coroutines/Continuation;", "", "", "Lkotlin/ExtensionFunctionType;", "(Lkotlin/coroutines/CoroutineContext;Lkotlinx/coroutines/channels/BroadcastChannel;Lkotlin/jvm/functions/Function2;)V", "continuation", "onStart", "openSubscription", "Lkotlinx/coroutines/channels/ReceiveChannel;", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class LazyBroadcastCoroutine<E> extends BroadcastCoroutine<E> {
-    private final Continuation<Unit> continuation;
+public class CvvEditText extends l.a implements TextWatcher {
 
-    public LazyBroadcastCoroutine(CoroutineContext coroutineContext, BroadcastChannel<E> broadcastChannel, Function2<? super ProducerScope<? super E>, ? super Continuation<? super Unit>, ? extends Object> function2) {
-        super(coroutineContext, broadcastChannel, false);
-        this.continuation = IntrinsicsKt.createCoroutineUnintercepted(function2, this, this);
+    /* renamed from: d  reason: collision with root package name */
+    private b f150d;
+
+    public CvvEditText(Context context) {
+        super(context);
+        b();
     }
 
-    @Override // kotlinx.coroutines.channels.BroadcastCoroutine, kotlinx.coroutines.channels.BroadcastChannel
-    public ReceiveChannel<E> openSubscription() {
-        ReceiveChannel<E> openSubscription = get_channel().openSubscription();
-        start();
-        return openSubscription;
+    public CvvEditText(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        b();
     }
 
-    @Override // kotlinx.coroutines.AbstractCoroutine
-    protected void onStart() {
-        CancellableKt.startCoroutineCancellable(this.continuation, this);
+    public CvvEditText(Context context, AttributeSet attributeSet, int i2) {
+        super(context, attributeSet, i2);
+        b();
+    }
+
+    private void b() {
+        setFilters(new InputFilter[]{new InputFilter.LengthFilter(3)});
+        addTextChangedListener(this);
+    }
+
+    private int getSecurityCodeLength() {
+        b bVar = this.f150d;
+        if (bVar == null) {
+            return 3;
+        }
+        return bVar.e();
+    }
+
+    @Override // android.text.TextWatcher
+    public void afterTextChanged(Editable editable) {
+        b bVar = this.f150d;
+        if (bVar != null && bVar.e() == editable.length() && getSelectionStart() == editable.length()) {
+            e();
+        }
+    }
+
+    @Override // android.text.TextWatcher
+    public void beforeTextChanged(CharSequence charSequence, int i2, int i3, int i4) {
+    }
+
+    @Override // l.a
+    public boolean d() {
+        return c() || getText().toString().length() == getSecurityCodeLength();
+    }
+
+    @Override // l.a
+    public String getErrorMessage() {
+        Context context;
+        int f2;
+        if (this.f150d == null) {
+            context = getContext();
+            f2 = R.string.payment_sdk_card_cvv;
+        } else {
+            context = getContext();
+            f2 = this.f150d.f();
+        }
+        String string = context.getString(f2);
+        return TextUtils.isEmpty(getText()) ? getContext().getString(R.string.payment_sdk_card_error_empty_cvv, string) : getContext().getString(R.string.payment_sdk_card_cvv_invalid, string);
+    }
+
+    public void setCardType(b bVar) {
+        this.f150d = bVar;
+        setFilters(new InputFilter[]{new InputFilter.LengthFilter(bVar.e())});
+        setContentDescription(getContext().getString(bVar.f()));
+        setFieldHint(bVar.f());
+        invalidate();
+    }
+
+    public void setMask(boolean z2) {
+        setTransformationMethod(z2 ? PasswordTransformationMethod.getInstance() : SingleLineTransformationMethod.getInstance());
     }
 }

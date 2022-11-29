@@ -1,146 +1,245 @@
-package kotlinx.coroutines.flow;
+package kotlin;
 
-import kotlin.Metadata;
-import kotlin.ResultKt;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-import kotlin.coroutines.jvm.internal.SuspendLambda;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.functions.Function3;
-import kotlin.jvm.internal.InlineMarker;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.NoSuchElementException;
+import kotlin.collections.ArraysKt;
+import kotlin.collections.ULongIterator;
+import kotlin.jvm.JvmInline;
+import kotlin.jvm.internal.CollectionToArray;
 import kotlin.jvm.internal.Intrinsics;
-import kotlin.jvm.internal.Lambda;
-import kotlinx.coroutines.flow.internal.CombineKt;
+import kotlin.jvm.internal.markers.KMappedMarker;
 
-/* compiled from: Zip.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0012\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\u0010\u0000\u001a\u00020\u0001\"\u0006\b\u0000\u0010\u0002\u0018\u0001\"\u0004\b\u0001\u0010\u0003*\b\u0012\u0004\u0012\u0002H\u00030\u0004H\u008a@¢\u0006\u0004\b\u0005\u0010\u0006"}, d2 = {"<anonymous>", "", "T", "R", "Lkotlinx/coroutines/flow/FlowCollector;", "invoke", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransform$6", f = "Zip.kt", i = {}, l = {251}, m = "invokeSuspend", n = {}, s = {})
+/* compiled from: ULongArray.kt */
+@Metadata(d1 = {"\u0000F\n\u0002\u0018\u0002\n\u0002\u0010\u001e\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\u0016\n\u0002\b\u0006\n\u0002\u0010\u000b\n\u0002\b\t\n\u0002\u0010\u0000\n\u0002\b\f\n\u0002\u0010(\n\u0002\b\u0003\n\u0002\u0010\u0002\n\u0002\b\u0004\n\u0002\u0010\u000e\n\u0002\b\u0004\b\u0087@\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001:\u00012B\u0014\b\u0016\u0012\u0006\u0010\u0003\u001a\u00020\u0004ø\u0001\u0000¢\u0006\u0004\b\u0005\u0010\u0006B\u0014\b\u0001\u0012\u0006\u0010\u0007\u001a\u00020\bø\u0001\u0000¢\u0006\u0004\b\u0005\u0010\tJ\u001b\u0010\u000e\u001a\u00020\u000f2\u0006\u0010\u0010\u001a\u00020\u0002H\u0096\u0002ø\u0001\u0000¢\u0006\u0004\b\u0011\u0010\u0012J \u0010\u0013\u001a\u00020\u000f2\f\u0010\u0014\u001a\b\u0012\u0004\u0012\u00020\u00020\u0001H\u0016ø\u0001\u0000¢\u0006\u0004\b\u0015\u0010\u0016J\u001a\u0010\u0017\u001a\u00020\u000f2\b\u0010\u0018\u001a\u0004\u0018\u00010\u0019HÖ\u0003¢\u0006\u0004\b\u001a\u0010\u001bJ\u001e\u0010\u001c\u001a\u00020\u00022\u0006\u0010\u001d\u001a\u00020\u0004H\u0086\u0002ø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\b\u001e\u0010\u001fJ\u0010\u0010 \u001a\u00020\u0004HÖ\u0001¢\u0006\u0004\b!\u0010\u000bJ\u000f\u0010\"\u001a\u00020\u000fH\u0016¢\u0006\u0004\b#\u0010$J\u0019\u0010%\u001a\b\u0012\u0004\u0012\u00020\u00020&H\u0096\u0002ø\u0001\u0000¢\u0006\u0004\b'\u0010(J#\u0010)\u001a\u00020*2\u0006\u0010\u001d\u001a\u00020\u00042\u0006\u0010+\u001a\u00020\u0002H\u0086\u0002ø\u0001\u0000¢\u0006\u0004\b,\u0010-J\u0010\u0010.\u001a\u00020/HÖ\u0001¢\u0006\u0004\b0\u00101R\u0014\u0010\u0003\u001a\u00020\u00048VX\u0096\u0004¢\u0006\u0006\u001a\u0004\b\n\u0010\u000bR\u0016\u0010\u0007\u001a\u00020\b8\u0000X\u0081\u0004¢\u0006\b\n\u0000\u0012\u0004\b\f\u0010\r\u0088\u0001\u0007\u0092\u0001\u00020\bø\u0001\u0000\u0082\u0002\b\n\u0002\b\u0019\n\u0002\b!¨\u00063"}, d2 = {"Lkotlin/ULongArray;", "", "Lkotlin/ULong;", "size", "", "constructor-impl", "(I)[J", "storage", "", "([J)[J", "getSize-impl", "([J)I", "getStorage$annotations", "()V", "contains", "", "element", "contains-VKZWuLQ", "([JJ)Z", "containsAll", "elements", "containsAll-impl", "([JLjava/util/Collection;)Z", "equals", "other", "", "equals-impl", "([JLjava/lang/Object;)Z", "get", "index", "get-s-VKNKU", "([JI)J", "hashCode", "hashCode-impl", "isEmpty", "isEmpty-impl", "([J)Z", "iterator", "", "iterator-impl", "([J)Ljava/util/Iterator;", "set", "", "value", "set-k8EXiF4", "([JIJ)V", "toString", "", "toString-impl", "([J)Ljava/lang/String;", "Iterator", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+@JvmInline
 /* loaded from: classes.dex */
-public final class FlowKt__ZipKt$combineTransform$6 extends SuspendLambda implements Function2<FlowCollector<? super R>, Continuation<? super Unit>, Object> {
-    final /* synthetic */ Flow[] $flows;
-    final /* synthetic */ Function3 $transform;
-    private /* synthetic */ Object L$0;
-    int label;
+public final class ULongArray implements Collection<ULong>, KMappedMarker {
+    private final long[] storage;
 
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public FlowKt__ZipKt$combineTransform$6(Flow[] flowArr, Function3 function3, Continuation continuation) {
-        super(2, continuation);
-        this.$flows = flowArr;
-        this.$transform = function3;
+    /* renamed from: constructor-impl  reason: not valid java name */
+    public static long[] m268constructorimpl(long[] storage) {
+        Intrinsics.checkNotNullParameter(storage, "storage");
+        return storage;
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Continuation<Unit> create(Object obj, Continuation<?> continuation) {
-        FlowKt__ZipKt$combineTransform$6 flowKt__ZipKt$combineTransform$6 = new FlowKt__ZipKt$combineTransform$6(this.$flows, this.$transform, continuation);
-        flowKt__ZipKt$combineTransform$6.L$0 = obj;
-        return flowKt__ZipKt$combineTransform$6;
+    /* renamed from: equals-impl  reason: not valid java name */
+    public static boolean m271equalsimpl(long[] jArr, Object obj) {
+        return (obj instanceof ULongArray) && Intrinsics.areEqual(jArr, ((ULongArray) obj).m282unboximpl());
     }
 
-    @Override // kotlin.jvm.functions.Function2
-    public final Object invoke(Object obj, Continuation<? super Unit> continuation) {
-        return ((FlowKt__ZipKt$combineTransform$6) create(obj, continuation)).invokeSuspend(Unit.INSTANCE);
+    /* renamed from: equals-impl0  reason: not valid java name */
+    public static final boolean m272equalsimpl0(long[] jArr, long[] jArr2) {
+        return Intrinsics.areEqual(jArr, jArr2);
     }
 
-    /* compiled from: Zip.kt */
-    @Metadata(bv = {1, 0, 3}, d1 = {"\u0000\n\n\u0000\n\u0002\u0010\u0011\n\u0002\b\u0004\u0010\u0000\u001a\f\u0012\u0006\u0012\u0004\u0018\u0001H\u0002\u0018\u00010\u0001\"\u0006\b\u0000\u0010\u0002\u0018\u0001\"\u0004\b\u0001\u0010\u0003H\n¢\u0006\u0004\b\u0004\u0010\u0005"}, d2 = {"<anonymous>", "", "T", "R", "invoke", "()[Ljava/lang/Object;"}, k = 3, mv = {1, 4, 2})
-    /* renamed from: kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransform$6$1  reason: invalid class name */
+    public static /* synthetic */ void getStorage$annotations() {
+    }
+
+    /* renamed from: hashCode-impl  reason: not valid java name */
+    public static int m275hashCodeimpl(long[] jArr) {
+        if (jArr != null) {
+            return Arrays.hashCode(jArr);
+        }
+        return 0;
+    }
+
+    /* renamed from: toString-impl  reason: not valid java name */
+    public static String m279toStringimpl(long[] jArr) {
+        return "ULongArray(storage=" + Arrays.toString(jArr) + ")";
+    }
+
+    @Override // java.util.Collection
+    public /* synthetic */ boolean add(ULong uLong) {
+        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
+    }
+
+    /* renamed from: add-VKZWuLQ  reason: not valid java name */
+    public boolean m280addVKZWuLQ(long j2) {
+        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
+    }
+
+    @Override // java.util.Collection
+    public boolean addAll(Collection<? extends ULong> collection) {
+        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
+    }
+
+    @Override // java.util.Collection
+    public void clear() {
+        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
+    }
+
+    /* renamed from: contains-VKZWuLQ  reason: not valid java name */
+    public boolean m281containsVKZWuLQ(long j2) {
+        return m269containsVKZWuLQ(this.storage, j2);
+    }
+
+    @Override // java.util.Collection
+    public boolean containsAll(Collection<? extends Object> collection) {
+        return m270containsAllimpl(this.storage, collection);
+    }
+
+    @Override // java.util.Collection
+    public boolean equals(Object obj) {
+        return m271equalsimpl(this.storage, obj);
+    }
+
+    public int getSize() {
+        return m274getSizeimpl(this.storage);
+    }
+
+    @Override // java.util.Collection
+    public int hashCode() {
+        return m275hashCodeimpl(this.storage);
+    }
+
+    @Override // java.util.Collection
+    public boolean isEmpty() {
+        return m276isEmptyimpl(this.storage);
+    }
+
+    @Override // java.util.Collection, java.lang.Iterable
+    public java.util.Iterator<ULong> iterator() {
+        return m277iteratorimpl(this.storage);
+    }
+
+    @Override // java.util.Collection
+    public boolean remove(Object obj) {
+        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
+    }
+
+    @Override // java.util.Collection
+    public boolean removeAll(Collection<? extends Object> collection) {
+        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
+    }
+
+    @Override // java.util.Collection
+    public boolean retainAll(Collection<? extends Object> collection) {
+        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
+    }
+
+    @Override // java.util.Collection
+    public Object[] toArray() {
+        return CollectionToArray.toArray(this);
+    }
+
+    @Override // java.util.Collection
+    public <T> T[] toArray(T[] tArr) {
+        return (T[]) CollectionToArray.toArray(this, tArr);
+    }
+
+    public String toString() {
+        return m279toStringimpl(this.storage);
+    }
+
+    /* renamed from: unbox-impl  reason: not valid java name */
+    public final /* synthetic */ long[] m282unboximpl() {
+        return this.storage;
+    }
+
+    @Override // java.util.Collection
+    public final /* bridge */ boolean contains(Object obj) {
+        if (obj instanceof ULong) {
+            return m281containsVKZWuLQ(((ULong) obj).m265unboximpl());
+        }
+        return false;
+    }
+
+    @Override // java.util.Collection
+    public final /* bridge */ int size() {
+        return getSize();
+    }
+
+    private /* synthetic */ ULongArray(long[] storage) {
+        Intrinsics.checkNotNullParameter(storage, "storage");
+        this.storage = storage;
+    }
+
+    /* renamed from: constructor-impl  reason: not valid java name */
+    public static long[] m267constructorimpl(int i2) {
+        return m268constructorimpl(new long[i2]);
+    }
+
+    /* renamed from: get-s-VKNKU  reason: not valid java name */
+    public static final long m273getsVKNKU(long[] jArr, int i2) {
+        return ULong.m214constructorimpl(jArr[i2]);
+    }
+
+    /* renamed from: set-k8EXiF4  reason: not valid java name */
+    public static final void m278setk8EXiF4(long[] jArr, int i2, long j2) {
+        jArr[i2] = j2;
+    }
+
+    /* renamed from: getSize-impl  reason: not valid java name */
+    public static int m274getSizeimpl(long[] jArr) {
+        return jArr.length;
+    }
+
+    /* renamed from: iterator-impl  reason: not valid java name */
+    public static java.util.Iterator<ULong> m277iteratorimpl(long[] jArr) {
+        return new Iterator(jArr);
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    /* compiled from: ULongArray.kt */
+    @Metadata(d1 = {"\u0000&\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0016\n\u0002\b\u0002\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u000b\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\b\u0002\u0018\u00002\u00020\u0001B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0002\u0010\u0004J\t\u0010\u0007\u001a\u00020\bH\u0096\u0002J\u0015\u0010\t\u001a\u00020\nH\u0016ø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\b\u000b\u0010\fR\u000e\u0010\u0002\u001a\u00020\u0003X\u0082\u0004¢\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0006X\u0082\u000e¢\u0006\u0002\n\u0000\u0082\u0002\b\n\u0002\b\u0019\n\u0002\b!¨\u0006\r"}, d2 = {"Lkotlin/ULongArray$Iterator;", "Lkotlin/collections/ULongIterator;", "array", "", "([J)V", "index", "", "hasNext", "", "nextULong", "Lkotlin/ULong;", "nextULong-s-VKNKU", "()J", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
     /* loaded from: classes.dex */
-    public static final class AnonymousClass1 extends Lambda implements Function0<T[]> {
-        public AnonymousClass1() {
-            super(0);
+    public static final class Iterator extends ULongIterator {
+        private final long[] array;
+        private int index;
+
+        public Iterator(long[] array) {
+            Intrinsics.checkNotNullParameter(array, "array");
+            this.array = array;
         }
 
-        /* JADX WARN: Type inference failed for: r0v3, types: [T[], java.lang.Object[]] */
-        @Override // kotlin.jvm.functions.Function0
-        public final T[] invoke() {
-            int length = FlowKt__ZipKt$combineTransform$6.this.$flows.length;
-            Intrinsics.reifiedOperationMarker(0, "T?");
-            return new Object[length];
+        @Override // java.util.Iterator
+        public boolean hasNext() {
+            return this.index < this.array.length;
+        }
+
+        @Override // kotlin.collections.ULongIterator
+        /* renamed from: nextULong-s-VKNKU  reason: not valid java name */
+        public long mo283nextULongsVKNKU() {
+            int i2 = this.index;
+            long[] jArr = this.array;
+            if (i2 < jArr.length) {
+                this.index = i2 + 1;
+                return ULong.m214constructorimpl(jArr[i2]);
+            }
+            throw new NoSuchElementException(String.valueOf(this.index));
         }
     }
 
-    /* compiled from: Zip.kt */
-    @Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0018\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0011\n\u0002\b\u0002\u0010\u0000\u001a\u00020\u0001\"\u0006\b\u0000\u0010\u0002\u0018\u0001\"\u0004\b\u0001\u0010\u0003*\b\u0012\u0004\u0012\u0002H\u00030\u00042\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0006H\u008a@¢\u0006\u0004\b\u0007\u0010\b"}, d2 = {"<anonymous>", "", "T", "R", "Lkotlinx/coroutines/flow/FlowCollector;", "it", "", "invoke", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"}, k = 3, mv = {1, 4, 2})
-    @DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransform$6$2", f = "Zip.kt", i = {}, l = {251}, m = "invokeSuspend", n = {}, s = {})
-    /* renamed from: kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransform$6$2  reason: invalid class name */
-    /* loaded from: classes.dex */
-    public static final class AnonymousClass2 extends SuspendLambda implements Function3<FlowCollector<? super R>, T[], Continuation<? super Unit>, Object> {
-        private /* synthetic */ Object L$0;
-        private /* synthetic */ Object L$1;
-        int label;
+    /* renamed from: contains-VKZWuLQ  reason: not valid java name */
+    public static boolean m269containsVKZWuLQ(long[] jArr, long j2) {
+        return ArraysKt.contains(jArr, j2);
+    }
 
-        public AnonymousClass2(Continuation continuation) {
-            super(3, continuation);
-        }
-
-        public final Continuation<Unit> create(FlowCollector<? super R> flowCollector, T[] tArr, Continuation<? super Unit> continuation) {
-            AnonymousClass2 anonymousClass2 = new AnonymousClass2(continuation);
-            anonymousClass2.L$0 = flowCollector;
-            anonymousClass2.L$1 = tArr;
-            return anonymousClass2;
-        }
-
-        @Override // kotlin.jvm.functions.Function3
-        public final Object invoke(Object obj, Object obj2, Continuation<? super Unit> continuation) {
-            return ((AnonymousClass2) create((FlowCollector) obj, (Object[]) obj2, continuation)).invokeSuspend(Unit.INSTANCE);
-        }
-
-        @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-        public final Object invokeSuspend(Object obj) {
-            Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
-            int i2 = this.label;
-            if (i2 == 0) {
-                ResultKt.throwOnFailure(obj);
-                Function3 function3 = FlowKt__ZipKt$combineTransform$6.this.$transform;
-                this.L$0 = null;
-                this.label = 1;
-                if (function3.invoke((FlowCollector) this.L$0, (Object[]) this.L$1, this) == coroutine_suspended) {
-                    return coroutine_suspended;
+    /* renamed from: containsAll-impl  reason: not valid java name */
+    public static boolean m270containsAllimpl(long[] jArr, Collection<ULong> elements) {
+        boolean z2;
+        Intrinsics.checkNotNullParameter(elements, "elements");
+        Collection<ULong> collection = elements;
+        if (!collection.isEmpty()) {
+            for (Object obj : collection) {
+                if ((obj instanceof ULong) && ArraysKt.contains(jArr, ((ULong) obj).m265unboximpl())) {
+                    z2 = true;
+                    continue;
+                } else {
+                    z2 = false;
+                    continue;
                 }
-            } else if (i2 != 1) {
-                throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
-            } else {
-                ResultKt.throwOnFailure(obj);
+                if (!z2) {
+                    return false;
+                }
             }
-            return Unit.INSTANCE;
         }
-
-        public final Object invokeSuspend$$forInline(Object obj) {
-            FlowKt__ZipKt$combineTransform$6.this.$transform.invoke((FlowCollector) this.L$0, (Object[]) this.L$1, this);
-            return Unit.INSTANCE;
-        }
+        return true;
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
-        int i2 = this.label;
-        if (i2 == 0) {
-            ResultKt.throwOnFailure(obj);
-            Flow[] flowArr = this.$flows;
-            Intrinsics.needClassReification();
-            this.label = 1;
-            if (CombineKt.combineInternal((FlowCollector) this.L$0, flowArr, new AnonymousClass1(), new AnonymousClass2(null), this) == coroutine_suspended) {
-                return coroutine_suspended;
-            }
-        } else if (i2 != 1) {
-            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
-        } else {
-            ResultKt.throwOnFailure(obj);
-        }
-        return Unit.INSTANCE;
-    }
-
-    public final Object invokeSuspend$$forInline(Object obj) {
-        Flow[] flowArr = this.$flows;
-        Intrinsics.needClassReification();
-        InlineMarker.mark(0);
-        CombineKt.combineInternal((FlowCollector) this.L$0, flowArr, new AnonymousClass1(), new AnonymousClass2(null), this);
-        InlineMarker.mark(2);
-        InlineMarker.mark(1);
-        return Unit.INSTANCE;
+    /* renamed from: isEmpty-impl  reason: not valid java name */
+    public static boolean m276isEmptyimpl(long[] jArr) {
+        return jArr.length == 0;
     }
 }

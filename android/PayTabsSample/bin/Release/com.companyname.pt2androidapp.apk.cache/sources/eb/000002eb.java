@@ -1,178 +1,185 @@
-package androidx.constraintlayout.motion.utils;
+package androidx.cardview.widget;
 
-import android.util.Log;
-import java.util.Arrays;
+import android.content.res.ColorStateList;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Outline;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 
 /* loaded from: classes.dex */
-public class Easing {
-    private static final String ACCELERATE = "cubic(0.4, 0.05, 0.8, 0.7)";
-    private static final String DECELERATE = "cubic(0.0, 0.0, 0.2, 0.95)";
-    private static final String LINEAR = "cubic(1, 1, 0, 0)";
-    private static final String STANDARD = "cubic(0.4, 0.0, 0.2, 1)";
-    String str = "identity";
-    static Easing sDefault = new Easing();
-    private static final String STANDARD_NAME = "standard";
-    private static final String ACCELERATE_NAME = "accelerate";
-    private static final String DECELERATE_NAME = "decelerate";
-    private static final String LINEAR_NAME = "linear";
-    public static String[] NAMED_EASING = {STANDARD_NAME, ACCELERATE_NAME, DECELERATE_NAME, LINEAR_NAME};
+class RoundRectDrawable extends Drawable {
+    private ColorStateList mBackground;
+    private final RectF mBoundsF;
+    private final Rect mBoundsI;
+    private float mPadding;
+    private float mRadius;
+    private ColorStateList mTint;
+    private PorterDuffColorFilter mTintFilter;
+    private boolean mInsetForPadding = false;
+    private boolean mInsetForRadius = true;
+    private PorterDuff.Mode mTintMode = PorterDuff.Mode.SRC_IN;
+    private final Paint mPaint = new Paint(5);
 
-    public double get(double d2) {
-        return d2;
+    @Override // android.graphics.drawable.Drawable
+    public int getOpacity() {
+        return -3;
     }
 
-    public double getDiff(double d2) {
-        return 1.0d;
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public RoundRectDrawable(ColorStateList colorStateList, float f2) {
+        this.mRadius = f2;
+        setBackground(colorStateList);
+        this.mBoundsF = new RectF();
+        this.mBoundsI = new Rect();
     }
 
-    public static Easing getInterpolator(String str) {
-        if (str == null) {
+    private void setBackground(ColorStateList colorStateList) {
+        if (colorStateList == null) {
+            colorStateList = ColorStateList.valueOf(0);
+        }
+        this.mBackground = colorStateList;
+        this.mPaint.setColor(colorStateList.getColorForState(getState(), this.mBackground.getDefaultColor()));
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public void setPadding(float f2, boolean z2, boolean z3) {
+        if (f2 == this.mPadding && this.mInsetForPadding == z2 && this.mInsetForRadius == z3) {
+            return;
+        }
+        this.mPadding = f2;
+        this.mInsetForPadding = z2;
+        this.mInsetForRadius = z3;
+        updateBounds(null);
+        invalidateSelf();
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public float getPadding() {
+        return this.mPadding;
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public void draw(Canvas canvas) {
+        boolean z2;
+        Paint paint = this.mPaint;
+        if (this.mTintFilter == null || paint.getColorFilter() != null) {
+            z2 = false;
+        } else {
+            paint.setColorFilter(this.mTintFilter);
+            z2 = true;
+        }
+        RectF rectF = this.mBoundsF;
+        float f2 = this.mRadius;
+        canvas.drawRoundRect(rectF, f2, f2, paint);
+        if (z2) {
+            paint.setColorFilter(null);
+        }
+    }
+
+    private void updateBounds(Rect rect) {
+        if (rect == null) {
+            rect = getBounds();
+        }
+        this.mBoundsF.set(rect.left, rect.top, rect.right, rect.bottom);
+        this.mBoundsI.set(rect);
+        if (this.mInsetForPadding) {
+            float calculateVerticalPadding = RoundRectDrawableWithShadow.calculateVerticalPadding(this.mPadding, this.mRadius, this.mInsetForRadius);
+            this.mBoundsI.inset((int) Math.ceil(RoundRectDrawableWithShadow.calculateHorizontalPadding(this.mPadding, this.mRadius, this.mInsetForRadius)), (int) Math.ceil(calculateVerticalPadding));
+            this.mBoundsF.set(this.mBoundsI);
+        }
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    protected void onBoundsChange(Rect rect) {
+        super.onBoundsChange(rect);
+        updateBounds(rect);
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public void getOutline(Outline outline) {
+        outline.setRoundRect(this.mBoundsI, this.mRadius);
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public void setRadius(float f2) {
+        if (f2 == this.mRadius) {
+            return;
+        }
+        this.mRadius = f2;
+        updateBounds(null);
+        invalidateSelf();
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public void setAlpha(int i2) {
+        this.mPaint.setAlpha(i2);
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public void setColorFilter(ColorFilter colorFilter) {
+        this.mPaint.setColorFilter(colorFilter);
+    }
+
+    public float getRadius() {
+        return this.mRadius;
+    }
+
+    public void setColor(ColorStateList colorStateList) {
+        setBackground(colorStateList);
+        invalidateSelf();
+    }
+
+    public ColorStateList getColor() {
+        return this.mBackground;
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public void setTintList(ColorStateList colorStateList) {
+        this.mTint = colorStateList;
+        this.mTintFilter = createTintFilter(colorStateList, this.mTintMode);
+        invalidateSelf();
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public void setTintMode(PorterDuff.Mode mode) {
+        this.mTintMode = mode;
+        this.mTintFilter = createTintFilter(this.mTint, mode);
+        invalidateSelf();
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    protected boolean onStateChange(int[] iArr) {
+        PorterDuff.Mode mode;
+        ColorStateList colorStateList = this.mBackground;
+        int colorForState = colorStateList.getColorForState(iArr, colorStateList.getDefaultColor());
+        boolean z2 = colorForState != this.mPaint.getColor();
+        if (z2) {
+            this.mPaint.setColor(colorForState);
+        }
+        ColorStateList colorStateList2 = this.mTint;
+        if (colorStateList2 == null || (mode = this.mTintMode) == null) {
+            return z2;
+        }
+        this.mTintFilter = createTintFilter(colorStateList2, mode);
+        return true;
+    }
+
+    @Override // android.graphics.drawable.Drawable
+    public boolean isStateful() {
+        ColorStateList colorStateList;
+        ColorStateList colorStateList2 = this.mTint;
+        return (colorStateList2 != null && colorStateList2.isStateful()) || ((colorStateList = this.mBackground) != null && colorStateList.isStateful()) || super.isStateful();
+    }
+
+    private PorterDuffColorFilter createTintFilter(ColorStateList colorStateList, PorterDuff.Mode mode) {
+        if (colorStateList == null || mode == null) {
             return null;
         }
-        if (str.startsWith("cubic")) {
-            return new CubicEasing(str);
-        }
-        str.hashCode();
-        char c2 = 65535;
-        switch (str.hashCode()) {
-            case -1354466595:
-                if (str.equals(ACCELERATE_NAME)) {
-                    c2 = 0;
-                    break;
-                }
-                break;
-            case -1263948740:
-                if (str.equals(DECELERATE_NAME)) {
-                    c2 = 1;
-                    break;
-                }
-                break;
-            case -1102672091:
-                if (str.equals(LINEAR_NAME)) {
-                    c2 = 2;
-                    break;
-                }
-                break;
-            case 1312628413:
-                if (str.equals(STANDARD_NAME)) {
-                    c2 = 3;
-                    break;
-                }
-                break;
-        }
-        switch (c2) {
-            case 0:
-                return new CubicEasing(ACCELERATE);
-            case 1:
-                return new CubicEasing(DECELERATE);
-            case 2:
-                return new CubicEasing(LINEAR);
-            case 3:
-                return new CubicEasing(STANDARD);
-            default:
-                Log.e("ConstraintSet", "transitionEasing syntax error syntax:transitionEasing=\"cubic(1.0,0.5,0.0,0.6)\" or " + Arrays.toString(NAMED_EASING));
-                return sDefault;
-        }
-    }
-
-    public String toString() {
-        return this.str;
-    }
-
-    /* loaded from: classes.dex */
-    static class CubicEasing extends Easing {
-        private static double d_error = 1.0E-4d;
-        private static double error = 0.01d;
-        double x1;
-        double x2;
-        double y1;
-        double y2;
-
-        CubicEasing(String str) {
-            this.str = str;
-            int indexOf = str.indexOf(40);
-            int indexOf2 = str.indexOf(44, indexOf);
-            this.x1 = Double.parseDouble(str.substring(indexOf + 1, indexOf2).trim());
-            int i2 = indexOf2 + 1;
-            int indexOf3 = str.indexOf(44, i2);
-            this.y1 = Double.parseDouble(str.substring(i2, indexOf3).trim());
-            int i3 = indexOf3 + 1;
-            int indexOf4 = str.indexOf(44, i3);
-            this.x2 = Double.parseDouble(str.substring(i3, indexOf4).trim());
-            int i4 = indexOf4 + 1;
-            this.y2 = Double.parseDouble(str.substring(i4, str.indexOf(41, i4)).trim());
-        }
-
-        public CubicEasing(double d2, double d3, double d4, double d5) {
-            setup(d2, d3, d4, d5);
-        }
-
-        void setup(double d2, double d3, double d4, double d5) {
-            this.x1 = d2;
-            this.y1 = d3;
-            this.x2 = d4;
-            this.y2 = d5;
-        }
-
-        private double getX(double d2) {
-            double d3 = 1.0d - d2;
-            double d4 = 3.0d * d3;
-            return (this.x1 * d3 * d4 * d2) + (this.x2 * d4 * d2 * d2) + (d2 * d2 * d2);
-        }
-
-        private double getY(double d2) {
-            double d3 = 1.0d - d2;
-            double d4 = 3.0d * d3;
-            return (this.y1 * d3 * d4 * d2) + (this.y2 * d4 * d2 * d2) + (d2 * d2 * d2);
-        }
-
-        private double getDiffX(double d2) {
-            double d3 = 1.0d - d2;
-            double d4 = this.x1;
-            double d5 = this.x2;
-            return (d3 * 3.0d * d3 * d4) + (d3 * 6.0d * d2 * (d5 - d4)) + (3.0d * d2 * d2 * (1.0d - d5));
-        }
-
-        private double getDiffY(double d2) {
-            double d3 = 1.0d - d2;
-            double d4 = this.y1;
-            double d5 = this.y2;
-            return (d3 * 3.0d * d3 * d4) + (d3 * 6.0d * d2 * (d5 - d4)) + (3.0d * d2 * d2 * (1.0d - d5));
-        }
-
-        @Override // androidx.constraintlayout.motion.utils.Easing
-        public double getDiff(double d2) {
-            double d3 = 0.5d;
-            double d4 = 0.5d;
-            while (d3 > d_error) {
-                d3 *= 0.5d;
-                d4 = getX(d4) < d2 ? d4 + d3 : d4 - d3;
-            }
-            double d5 = d4 - d3;
-            double d6 = d4 + d3;
-            return (getY(d6) - getY(d5)) / (getX(d6) - getX(d5));
-        }
-
-        @Override // androidx.constraintlayout.motion.utils.Easing
-        public double get(double d2) {
-            if (d2 <= 0.0d) {
-                return 0.0d;
-            }
-            if (d2 >= 1.0d) {
-                return 1.0d;
-            }
-            double d3 = 0.5d;
-            double d4 = 0.5d;
-            while (d3 > error) {
-                d3 *= 0.5d;
-                d4 = getX(d4) < d2 ? d4 + d3 : d4 - d3;
-            }
-            double d5 = d4 - d3;
-            double x2 = getX(d5);
-            double d6 = d4 + d3;
-            double x3 = getX(d6);
-            double y2 = getY(d5);
-            return (((getY(d6) - y2) * (d2 - x2)) / (x3 - x2)) + y2;
-        }
+        return new PorterDuffColorFilter(colorStateList.getColorForState(getState(), 0), mode);
     }
 }

@@ -1,188 +1,24 @@
-package androidx.transition;
+package androidx.lifecycle;
 
-import android.animation.Animator;
-import android.animation.TimeInterpolator;
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.util.AttributeSet;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import androidx.core.content.res.TypedArrayUtils;
-import androidx.core.view.ViewCompat;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import org.xmlpull.v1.XmlPullParser;
+import androidx.lifecycle.viewmodel.CreationExtras;
+import kotlin.Metadata;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.internal.Lambda;
 
+/* compiled from: SavedStateHandleSupport.kt */
+@Metadata(d1 = {"\u0000\f\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\u0010\u0000\u001a\u00020\u0001*\u00020\u0002H\n¢\u0006\u0002\b\u0003"}, d2 = {"<anonymous>", "Landroidx/lifecycle/SavedStateHandlesVM;", "Landroidx/lifecycle/viewmodel/CreationExtras;", "invoke"}, k = 3, mv = {1, 6, 0}, xi = 48)
 /* loaded from: classes.dex */
-public class Slide extends Visibility {
-    private static final String PROPNAME_SCREEN_POSITION = "android:slide:screenPosition";
-    private CalculateSlide mSlideCalculator;
-    private int mSlideEdge;
-    private static final TimeInterpolator sDecelerate = new DecelerateInterpolator();
-    private static final TimeInterpolator sAccelerate = new AccelerateInterpolator();
-    private static final CalculateSlide sCalculateLeft = new CalculateSlideHorizontal() { // from class: androidx.transition.Slide.1
-        @Override // androidx.transition.Slide.CalculateSlide
-        public float getGoneX(ViewGroup viewGroup, View view) {
-            return view.getTranslationX() - viewGroup.getWidth();
-        }
-    };
-    private static final CalculateSlide sCalculateStart = new CalculateSlideHorizontal() { // from class: androidx.transition.Slide.2
-        @Override // androidx.transition.Slide.CalculateSlide
-        public float getGoneX(ViewGroup viewGroup, View view) {
-            if (ViewCompat.getLayoutDirection(viewGroup) == 1) {
-                return view.getTranslationX() + viewGroup.getWidth();
-            }
-            return view.getTranslationX() - viewGroup.getWidth();
-        }
-    };
-    private static final CalculateSlide sCalculateTop = new CalculateSlideVertical() { // from class: androidx.transition.Slide.3
-        @Override // androidx.transition.Slide.CalculateSlide
-        public float getGoneY(ViewGroup viewGroup, View view) {
-            return view.getTranslationY() - viewGroup.getHeight();
-        }
-    };
-    private static final CalculateSlide sCalculateRight = new CalculateSlideHorizontal() { // from class: androidx.transition.Slide.4
-        @Override // androidx.transition.Slide.CalculateSlide
-        public float getGoneX(ViewGroup viewGroup, View view) {
-            return view.getTranslationX() + viewGroup.getWidth();
-        }
-    };
-    private static final CalculateSlide sCalculateEnd = new CalculateSlideHorizontal() { // from class: androidx.transition.Slide.5
-        @Override // androidx.transition.Slide.CalculateSlide
-        public float getGoneX(ViewGroup viewGroup, View view) {
-            if (ViewCompat.getLayoutDirection(viewGroup) == 1) {
-                return view.getTranslationX() - viewGroup.getWidth();
-            }
-            return view.getTranslationX() + viewGroup.getWidth();
-        }
-    };
-    private static final CalculateSlide sCalculateBottom = new CalculateSlideVertical() { // from class: androidx.transition.Slide.6
-        @Override // androidx.transition.Slide.CalculateSlide
-        public float getGoneY(ViewGroup viewGroup, View view) {
-            return view.getTranslationY() + viewGroup.getHeight();
-        }
-    };
+final class SavedStateHandleSupport$savedStateHandlesVM$1$1 extends Lambda implements Function1<CreationExtras, SavedStateHandlesVM> {
+    public static final SavedStateHandleSupport$savedStateHandlesVM$1$1 INSTANCE = new SavedStateHandleSupport$savedStateHandlesVM$1$1();
 
-    /* JADX INFO: Access modifiers changed from: private */
-    /* loaded from: classes.dex */
-    public interface CalculateSlide {
-        float getGoneX(ViewGroup viewGroup, View view);
-
-        float getGoneY(ViewGroup viewGroup, View view);
+    SavedStateHandleSupport$savedStateHandlesVM$1$1() {
+        super(1);
     }
 
-    @Retention(RetentionPolicy.SOURCE)
-    /* loaded from: classes.dex */
-    public @interface GravityFlag {
-    }
-
-    /* loaded from: classes.dex */
-    private static abstract class CalculateSlideHorizontal implements CalculateSlide {
-        private CalculateSlideHorizontal() {
-        }
-
-        @Override // androidx.transition.Slide.CalculateSlide
-        public float getGoneY(ViewGroup viewGroup, View view) {
-            return view.getTranslationY();
-        }
-    }
-
-    /* loaded from: classes.dex */
-    private static abstract class CalculateSlideVertical implements CalculateSlide {
-        private CalculateSlideVertical() {
-        }
-
-        @Override // androidx.transition.Slide.CalculateSlide
-        public float getGoneX(ViewGroup viewGroup, View view) {
-            return view.getTranslationX();
-        }
-    }
-
-    public Slide() {
-        this.mSlideCalculator = sCalculateBottom;
-        this.mSlideEdge = 80;
-        setSlideEdge(80);
-    }
-
-    public Slide(int i2) {
-        this.mSlideCalculator = sCalculateBottom;
-        this.mSlideEdge = 80;
-        setSlideEdge(i2);
-    }
-
-    public Slide(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet);
-        this.mSlideCalculator = sCalculateBottom;
-        this.mSlideEdge = 80;
-        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, Styleable.SLIDE);
-        int namedInt = TypedArrayUtils.getNamedInt(obtainStyledAttributes, (XmlPullParser) attributeSet, "slideEdge", 0, 80);
-        obtainStyledAttributes.recycle();
-        setSlideEdge(namedInt);
-    }
-
-    private void captureValues(TransitionValues transitionValues) {
-        int[] iArr = new int[2];
-        transitionValues.view.getLocationOnScreen(iArr);
-        transitionValues.values.put(PROPNAME_SCREEN_POSITION, iArr);
-    }
-
-    @Override // androidx.transition.Visibility, androidx.transition.Transition
-    public void captureStartValues(TransitionValues transitionValues) {
-        super.captureStartValues(transitionValues);
-        captureValues(transitionValues);
-    }
-
-    @Override // androidx.transition.Visibility, androidx.transition.Transition
-    public void captureEndValues(TransitionValues transitionValues) {
-        super.captureEndValues(transitionValues);
-        captureValues(transitionValues);
-    }
-
-    public void setSlideEdge(int i2) {
-        if (i2 == 3) {
-            this.mSlideCalculator = sCalculateLeft;
-        } else if (i2 == 5) {
-            this.mSlideCalculator = sCalculateRight;
-        } else if (i2 == 48) {
-            this.mSlideCalculator = sCalculateTop;
-        } else if (i2 == 80) {
-            this.mSlideCalculator = sCalculateBottom;
-        } else if (i2 == 8388611) {
-            this.mSlideCalculator = sCalculateStart;
-        } else if (i2 == 8388613) {
-            this.mSlideCalculator = sCalculateEnd;
-        } else {
-            throw new IllegalArgumentException("Invalid slide direction");
-        }
-        this.mSlideEdge = i2;
-        SidePropagation sidePropagation = new SidePropagation();
-        sidePropagation.setSide(i2);
-        setPropagation(sidePropagation);
-    }
-
-    public int getSlideEdge() {
-        return this.mSlideEdge;
-    }
-
-    @Override // androidx.transition.Visibility
-    public Animator onAppear(ViewGroup viewGroup, View view, TransitionValues transitionValues, TransitionValues transitionValues2) {
-        if (transitionValues2 == null) {
-            return null;
-        }
-        int[] iArr = (int[]) transitionValues2.values.get(PROPNAME_SCREEN_POSITION);
-        float translationX = view.getTranslationX();
-        float translationY = view.getTranslationY();
-        return TranslationAnimationCreator.createAnimation(view, transitionValues2, iArr[0], iArr[1], this.mSlideCalculator.getGoneX(viewGroup, view), this.mSlideCalculator.getGoneY(viewGroup, view), translationX, translationY, sDecelerate, this);
-    }
-
-    @Override // androidx.transition.Visibility
-    public Animator onDisappear(ViewGroup viewGroup, View view, TransitionValues transitionValues, TransitionValues transitionValues2) {
-        if (transitionValues == null) {
-            return null;
-        }
-        int[] iArr = (int[]) transitionValues.values.get(PROPNAME_SCREEN_POSITION);
-        return TranslationAnimationCreator.createAnimation(view, transitionValues, iArr[0], iArr[1], view.getTranslationX(), view.getTranslationY(), this.mSlideCalculator.getGoneX(viewGroup, view), this.mSlideCalculator.getGoneY(viewGroup, view), sAccelerate, this);
+    @Override // kotlin.jvm.functions.Function1
+    public final SavedStateHandlesVM invoke(CreationExtras initializer) {
+        Intrinsics.checkNotNullParameter(initializer, "$this$initializer");
+        return new SavedStateHandlesVM();
     }
 }

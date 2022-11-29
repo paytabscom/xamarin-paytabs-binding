@@ -1,47 +1,33 @@
-package mono.android.view;
+package kotlin.jvm.internal;
 
-import android.view.MotionEvent;
-import android.view.View;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: PrimitiveSpreadBuilders.kt */
+@Metadata(d1 = {"\u0000$\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0017\n\u0000\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\n\n\u0002\b\u0003\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\r\u0012\u0006\u0010\u0003\u001a\u00020\u0004¢\u0006\u0002\u0010\u0005J\u000e\u0010\u0007\u001a\u00020\b2\u0006\u0010\t\u001a\u00020\nJ\u0006\u0010\u000b\u001a\u00020\u0002J\f\u0010\f\u001a\u00020\u0004*\u00020\u0002H\u0014R\u000e\u0010\u0006\u001a\u00020\u0002X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\r"}, d2 = {"Lkotlin/jvm/internal/ShortSpreadBuilder;", "Lkotlin/jvm/internal/PrimitiveSpreadBuilder;", "", "size", "", "(I)V", "values", "add", "", "value", "", "toArray", "getSize", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class View_OnCapturedPointerListenerImplementor implements IGCUserPeer, View.OnCapturedPointerListener {
-    public static final String __md_methods = "n_onCapturedPointer:(Landroid/view/View;Landroid/view/MotionEvent;)Z:GetOnCapturedPointer_Landroid_view_View_Landroid_view_MotionEvent_Handler:Android.Views.View/IOnCapturedPointerListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public final class ShortSpreadBuilder extends PrimitiveSpreadBuilder<short[]> {
+    private final short[] values;
 
-    private native boolean n_onCapturedPointer(View view, MotionEvent motionEvent);
-
-    static {
-        Runtime.register("Android.Views.View+IOnCapturedPointerListenerImplementor, Mono.Android", View_OnCapturedPointerListenerImplementor.class, __md_methods);
+    public ShortSpreadBuilder(int i2) {
+        super(i2);
+        this.values = new short[i2];
     }
 
-    public View_OnCapturedPointerListenerImplementor() {
-        if (getClass() == View_OnCapturedPointerListenerImplementor.class) {
-            TypeManager.Activate("Android.Views.View+IOnCapturedPointerListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // kotlin.jvm.internal.PrimitiveSpreadBuilder
+    public int getSize(short[] getSize) {
+        Intrinsics.checkNotNullParameter(getSize, "$this$getSize");
+        return getSize.length;
     }
 
-    @Override // android.view.View.OnCapturedPointerListener
-    public boolean onCapturedPointer(View view, MotionEvent motionEvent) {
-        return n_onCapturedPointer(view, motionEvent);
+    public final void add(short s2) {
+        short[] sArr = this.values;
+        int position = getPosition();
+        setPosition(position + 1);
+        sArr[position] = s2;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public final short[] toArray() {
+        return toArray(this.values, new short[size()]);
     }
 }

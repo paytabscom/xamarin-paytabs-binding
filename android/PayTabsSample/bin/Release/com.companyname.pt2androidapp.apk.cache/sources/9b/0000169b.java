@@ -1,74 +1,58 @@
-package mono.android.runtime;
-
-import java.io.OutputStream;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+package kotlin.jvm.internal;
 
 /* loaded from: classes.dex */
-public class OutputStreamAdapter extends OutputStream implements IGCUserPeer {
-    public static final String __md_methods = "n_close:()V:GetCloseHandler\nn_flush:()V:GetFlushHandler\nn_write:([B)V:GetWrite_arrayBHandler\nn_write:([BII)V:GetWrite_arrayBIIHandler\nn_write:(I)V:GetWrite_IHandler\n";
-    private ArrayList refList;
-
-    private native void n_close();
-
-    private native void n_flush();
-
-    private native void n_write(int i2);
-
-    private native void n_write(byte[] bArr);
-
-    private native void n_write(byte[] bArr, int i2, int i3);
-
-    static {
-        Runtime.register("Android.Runtime.OutputStreamAdapter, Mono.Android", OutputStreamAdapter.class, __md_methods);
+public class MagicApiIntrinsics {
+    public static <T> T anyMagicApiCall(int i2) {
+        return null;
     }
 
-    public OutputStreamAdapter() {
-        if (getClass() == OutputStreamAdapter.class) {
-            TypeManager.Activate("Android.Runtime.OutputStreamAdapter, Mono.Android", "", this, new Object[0]);
-        }
+    public static <T> T anyMagicApiCall(int i2, long j2, long j3, Object obj) {
+        return null;
     }
 
-    @Override // java.io.OutputStream, java.io.Closeable, java.lang.AutoCloseable
-    public void close() {
-        n_close();
+    public static <T> T anyMagicApiCall(int i2, long j2, Object obj) {
+        return null;
     }
 
-    @Override // java.io.OutputStream, java.io.Flushable
-    public void flush() {
-        n_flush();
+    public static <T> T anyMagicApiCall(int i2, Object obj, Object obj2) {
+        return null;
     }
 
-    @Override // java.io.OutputStream
-    public void write(byte[] bArr) {
-        n_write(bArr);
+    public static <T> T anyMagicApiCall(int i2, Object obj, Object obj2, Object obj3, Object obj4) {
+        return null;
     }
 
-    @Override // java.io.OutputStream
-    public void write(byte[] bArr, int i2, int i3) {
-        n_write(bArr, i2, i3);
+    public static <T> T anyMagicApiCall(Object obj) {
+        return null;
     }
 
-    @Override // java.io.OutputStream
-    public void write(int i2) {
-        n_write(i2);
+    public static int intMagicApiCall(int i2) {
+        return 0;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
+    public static int intMagicApiCall(int i2, long j2, long j3, Object obj) {
+        return 0;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public static int intMagicApiCall(int i2, long j2, Object obj) {
+        return 0;
+    }
+
+    public static int intMagicApiCall(int i2, Object obj, Object obj2) {
+        return 0;
+    }
+
+    public static int intMagicApiCall(int i2, Object obj, Object obj2, Object obj3, Object obj4) {
+        return 0;
+    }
+
+    public static int intMagicApiCall(Object obj) {
+        return 0;
+    }
+
+    public static void voidMagicApiCall(int i2) {
+    }
+
+    public static void voidMagicApiCall(Object obj) {
     }
 }

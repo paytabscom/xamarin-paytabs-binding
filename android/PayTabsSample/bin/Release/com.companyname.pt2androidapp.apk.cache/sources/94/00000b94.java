@@ -1,795 +1,1145 @@
-package com.google.android.material.floatingactionbutton;
+package androidx.viewpager2.widget;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.FloatEvaluator;
-import android.animation.ObjectAnimator;
-import android.animation.TimeInterpolator;
-import android.animation.TypeEvaluator;
-import android.animation.ValueAnimator;
-import android.content.res.ColorStateList;
-import android.graphics.Matrix;
-import android.graphics.PorterDuff;
+import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.InsetDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.AttributeSet;
+import android.util.SparseArray;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.util.Preconditions;
+import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
 import androidx.core.view.ViewCompat;
-import com.google.android.material.R;
-import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.animation.AnimatorSetCompat;
-import com.google.android.material.animation.ImageMatrixProperty;
-import com.google.android.material.animation.MatrixEvaluator;
-import com.google.android.material.animation.MotionSpec;
-import com.google.android.material.internal.StateListAnimator;
-import com.google.android.material.ripple.RippleDrawableCompat;
-import com.google.android.material.ripple.RippleUtils;
-import com.google.android.material.shadow.ShadowViewDelegate;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.MaterialShapeUtils;
-import com.google.android.material.shape.ShapeAppearanceModel;
-import com.google.android.material.shape.Shapeable;
-import java.util.ArrayList;
-import java.util.Iterator;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityViewCommand;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.R;
+import androidx.viewpager2.adapter.StatefulAdapter;
+import com.google.android.material.badge.BadgeDrawable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
-/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-public class FloatingActionButtonImpl {
-    static final int ANIM_STATE_HIDING = 1;
-    static final int ANIM_STATE_NONE = 0;
-    static final int ANIM_STATE_SHOWING = 2;
-    static final long ELEVATION_ANIM_DELAY = 100;
-    static final long ELEVATION_ANIM_DURATION = 100;
-    private static final float HIDE_ICON_SCALE = 0.0f;
-    private static final float HIDE_OPACITY = 0.0f;
-    private static final float HIDE_SCALE = 0.0f;
-    static final float SHADOW_MULTIPLIER = 1.5f;
-    private static final float SHOW_ICON_SCALE = 1.0f;
-    private static final float SHOW_OPACITY = 1.0f;
-    private static final float SHOW_SCALE = 1.0f;
-    BorderDrawable borderDrawable;
-    Drawable contentBackground;
-    private Animator currentAnimator;
-    private MotionSpec defaultHideMotionSpec;
-    private MotionSpec defaultShowMotionSpec;
-    float elevation;
-    boolean ensureMinTouchTargetSize;
-    private ArrayList<Animator.AnimatorListener> hideListeners;
-    private MotionSpec hideMotionSpec;
-    float hoveredFocusedTranslationZ;
-    private int maxImageSize;
-    int minTouchTargetSize;
-    private ViewTreeObserver.OnPreDrawListener preDrawListener;
-    float pressedTranslationZ;
-    Drawable rippleDrawable;
-    private float rotation;
-    final ShadowViewDelegate shadowViewDelegate;
-    ShapeAppearanceModel shapeAppearance;
-    MaterialShapeDrawable shapeDrawable;
-    private ArrayList<Animator.AnimatorListener> showListeners;
-    private MotionSpec showMotionSpec;
-    private final StateListAnimator stateListAnimator;
-    private ArrayList<InternalTransformationCallback> transformationCallbacks;
-    final FloatingActionButton view;
-    static final TimeInterpolator ELEVATION_ANIM_INTERPOLATOR = AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR;
-    static final int[] PRESSED_ENABLED_STATE_SET = {16842919, 16842910};
-    static final int[] HOVERED_FOCUSED_ENABLED_STATE_SET = {16843623, 16842908, 16842910};
-    static final int[] FOCUSED_ENABLED_STATE_SET = {16842908, 16842910};
-    static final int[] HOVERED_ENABLED_STATE_SET = {16843623, 16842910};
-    static final int[] ENABLED_STATE_SET = {16842910};
-    static final int[] EMPTY_STATE_SET = new int[0];
-    boolean shadowPaddingEnabled = true;
-    private float imageMatrixScale = 1.0f;
-    private int animState = 0;
-    private final Rect tmpRect = new Rect();
-    private final RectF tmpRectF1 = new RectF();
-    private final RectF tmpRectF2 = new RectF();
-    private final Matrix tmpMatrix = new Matrix();
+public final class ViewPager2 extends ViewGroup {
+    public static final int OFFSCREEN_PAGE_LIMIT_DEFAULT = -1;
+    public static final int ORIENTATION_HORIZONTAL = 0;
+    public static final int ORIENTATION_VERTICAL = 1;
+    public static final int SCROLL_STATE_DRAGGING = 1;
+    public static final int SCROLL_STATE_IDLE = 0;
+    public static final int SCROLL_STATE_SETTLING = 2;
+    static boolean sFeatureEnhancedA11yEnabled = true;
+    AccessibilityProvider mAccessibilityProvider;
+    int mCurrentItem;
+    private RecyclerView.AdapterDataObserver mCurrentItemDataSetChangeObserver;
+    boolean mCurrentItemDirty;
+    private CompositeOnPageChangeCallback mExternalPageChangeCallbacks;
+    private FakeDrag mFakeDragger;
+    private LinearLayoutManager mLayoutManager;
+    private int mOffscreenPageLimit;
+    private CompositeOnPageChangeCallback mPageChangeEventDispatcher;
+    private PageTransformerAdapter mPageTransformerAdapter;
+    private PagerSnapHelper mPagerSnapHelper;
+    private Parcelable mPendingAdapterState;
+    private int mPendingCurrentItem;
+    RecyclerView mRecyclerView;
+    private RecyclerView.ItemAnimator mSavedItemAnimator;
+    private boolean mSavedItemAnimatorPresent;
+    ScrollEventAdapter mScrollEventAdapter;
+    private final Rect mTmpChildRect;
+    private final Rect mTmpContainerRect;
+    private boolean mUserInputEnabled;
 
+    @Retention(RetentionPolicy.SOURCE)
     /* loaded from: classes.dex */
-    interface InternalTransformationCallback {
-        void onScaleChanged();
-
-        void onTranslationChanged();
+    public @interface OffscreenPageLimit {
     }
 
     /* loaded from: classes.dex */
-    interface InternalVisibilityChangedListener {
-        void onHidden();
-
-        void onShown();
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void onCompatShadowChanged() {
-    }
-
-    boolean requirePreDrawListener() {
-        return true;
-    }
-
-    boolean shouldAddPadding() {
-        return true;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public FloatingActionButtonImpl(FloatingActionButton floatingActionButton, ShadowViewDelegate shadowViewDelegate) {
-        this.view = floatingActionButton;
-        this.shadowViewDelegate = shadowViewDelegate;
-        StateListAnimator stateListAnimator = new StateListAnimator();
-        this.stateListAnimator = stateListAnimator;
-        stateListAnimator.addState(PRESSED_ENABLED_STATE_SET, createElevationAnimator(new ElevateToPressedTranslationZAnimation()));
-        stateListAnimator.addState(HOVERED_FOCUSED_ENABLED_STATE_SET, createElevationAnimator(new ElevateToHoveredFocusedTranslationZAnimation()));
-        stateListAnimator.addState(FOCUSED_ENABLED_STATE_SET, createElevationAnimator(new ElevateToHoveredFocusedTranslationZAnimation()));
-        stateListAnimator.addState(HOVERED_ENABLED_STATE_SET, createElevationAnimator(new ElevateToHoveredFocusedTranslationZAnimation()));
-        stateListAnimator.addState(ENABLED_STATE_SET, createElevationAnimator(new ResetElevationAnimation()));
-        stateListAnimator.addState(EMPTY_STATE_SET, createElevationAnimator(new DisabledElevationAnimation()));
-        this.rotation = floatingActionButton.getRotation();
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void initializeBackgroundDrawable(ColorStateList colorStateList, PorterDuff.Mode mode, ColorStateList colorStateList2, int i2) {
-        MaterialShapeDrawable createShapeDrawable = createShapeDrawable();
-        this.shapeDrawable = createShapeDrawable;
-        createShapeDrawable.setTintList(colorStateList);
-        if (mode != null) {
-            this.shapeDrawable.setTintMode(mode);
+    public static abstract class OnPageChangeCallback {
+        public void onPageScrollStateChanged(int i2) {
         }
-        this.shapeDrawable.setShadowColor(-12303292);
-        this.shapeDrawable.initializeElevationOverlay(this.view.getContext());
-        RippleDrawableCompat rippleDrawableCompat = new RippleDrawableCompat(this.shapeDrawable.getShapeAppearanceModel());
-        rippleDrawableCompat.setTintList(RippleUtils.sanitizeRippleDrawableColor(colorStateList2));
-        this.rippleDrawable = rippleDrawableCompat;
-        this.contentBackground = new LayerDrawable(new Drawable[]{(Drawable) Preconditions.checkNotNull(this.shapeDrawable), rippleDrawableCompat});
-    }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void setBackgroundTintList(ColorStateList colorStateList) {
-        MaterialShapeDrawable materialShapeDrawable = this.shapeDrawable;
-        if (materialShapeDrawable != null) {
-            materialShapeDrawable.setTintList(colorStateList);
+        public void onPageScrolled(int i2, float f2, int i3) {
         }
-        BorderDrawable borderDrawable = this.borderDrawable;
-        if (borderDrawable != null) {
-            borderDrawable.setBorderTint(colorStateList);
+
+        public void onPageSelected(int i2) {
         }
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void setBackgroundTintMode(PorterDuff.Mode mode) {
-        MaterialShapeDrawable materialShapeDrawable = this.shapeDrawable;
-        if (materialShapeDrawable != null) {
-            materialShapeDrawable.setTintMode(mode);
-        }
+    @Retention(RetentionPolicy.SOURCE)
+    /* loaded from: classes.dex */
+    public @interface Orientation {
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void setMinTouchTargetSize(int i2) {
-        this.minTouchTargetSize = i2;
+    /* loaded from: classes.dex */
+    public interface PageTransformer {
+        void transformPage(View view, float f2);
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void setRippleColor(ColorStateList colorStateList) {
-        Drawable drawable = this.rippleDrawable;
-        if (drawable != null) {
-            DrawableCompat.setTintList(drawable, RippleUtils.sanitizeRippleDrawableColor(colorStateList));
-        }
+    @Retention(RetentionPolicy.SOURCE)
+    /* loaded from: classes.dex */
+    public @interface ScrollState {
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final void setElevation(float f2) {
-        if (this.elevation != f2) {
-            this.elevation = f2;
-            onElevationsChanged(f2, this.hoveredFocusedTranslationZ, this.pressedTranslationZ);
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public float getElevation() {
-        return this.elevation;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public float getHoveredFocusedTranslationZ() {
-        return this.hoveredFocusedTranslationZ;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public float getPressedTranslationZ() {
-        return this.pressedTranslationZ;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final void setHoveredFocusedTranslationZ(float f2) {
-        if (this.hoveredFocusedTranslationZ != f2) {
-            this.hoveredFocusedTranslationZ = f2;
-            onElevationsChanged(this.elevation, f2, this.pressedTranslationZ);
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final void setPressedTranslationZ(float f2) {
-        if (this.pressedTranslationZ != f2) {
-            this.pressedTranslationZ = f2;
-            onElevationsChanged(this.elevation, this.hoveredFocusedTranslationZ, f2);
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final void setMaxImageSize(int i2) {
-        if (this.maxImageSize != i2) {
-            this.maxImageSize = i2;
-            updateImageMatrixScale();
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final void updateImageMatrixScale() {
-        setImageMatrixScale(this.imageMatrixScale);
-    }
-
-    final void setImageMatrixScale(float f2) {
-        this.imageMatrixScale = f2;
-        Matrix matrix = this.tmpMatrix;
-        calculateImageMatrixFromScale(f2, matrix);
-        this.view.setImageMatrix(matrix);
-    }
-
-    private void calculateImageMatrixFromScale(float f2, Matrix matrix) {
-        matrix.reset();
-        Drawable drawable = this.view.getDrawable();
-        if (drawable == null || this.maxImageSize == 0) {
-            return;
-        }
-        RectF rectF = this.tmpRectF1;
-        RectF rectF2 = this.tmpRectF2;
-        rectF.set(0.0f, 0.0f, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-        int i2 = this.maxImageSize;
-        rectF2.set(0.0f, 0.0f, i2, i2);
-        matrix.setRectToRect(rectF, rectF2, Matrix.ScaleToFit.CENTER);
-        int i3 = this.maxImageSize;
-        matrix.postScale(f2, f2, i3 / 2.0f, i3 / 2.0f);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final void setShapeAppearance(ShapeAppearanceModel shapeAppearanceModel) {
-        this.shapeAppearance = shapeAppearanceModel;
-        MaterialShapeDrawable materialShapeDrawable = this.shapeDrawable;
-        if (materialShapeDrawable != null) {
-            materialShapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
-        }
-        Drawable drawable = this.rippleDrawable;
-        if (drawable instanceof Shapeable) {
-            ((Shapeable) drawable).setShapeAppearanceModel(shapeAppearanceModel);
-        }
-        BorderDrawable borderDrawable = this.borderDrawable;
-        if (borderDrawable != null) {
-            borderDrawable.setShapeAppearanceModel(shapeAppearanceModel);
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final ShapeAppearanceModel getShapeAppearance() {
-        return this.shapeAppearance;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final MotionSpec getShowMotionSpec() {
-        return this.showMotionSpec;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final void setShowMotionSpec(MotionSpec motionSpec) {
-        this.showMotionSpec = motionSpec;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final MotionSpec getHideMotionSpec() {
-        return this.hideMotionSpec;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final void setHideMotionSpec(MotionSpec motionSpec) {
-        this.hideMotionSpec = motionSpec;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final boolean shouldExpandBoundsForA11y() {
-        return !this.ensureMinTouchTargetSize || this.view.getSizeDimension() >= this.minTouchTargetSize;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public boolean getEnsureMinTouchTargetSize() {
-        return this.ensureMinTouchTargetSize;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void setEnsureMinTouchTargetSize(boolean z2) {
-        this.ensureMinTouchTargetSize = z2;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void setShadowPaddingEnabled(boolean z2) {
-        this.shadowPaddingEnabled = z2;
-        updatePadding();
-    }
-
-    void onElevationsChanged(float f2, float f3, float f4) {
-        updatePadding();
-        updateShapeElevation(f2);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void updateShapeElevation(float f2) {
-        MaterialShapeDrawable materialShapeDrawable = this.shapeDrawable;
-        if (materialShapeDrawable != null) {
-            materialShapeDrawable.setElevation(f2);
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void onDrawableStateChanged(int[] iArr) {
-        this.stateListAnimator.setState(iArr);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void jumpDrawableToCurrentState() {
-        this.stateListAnimator.jumpToCurrentState();
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void addOnShowAnimationListener(Animator.AnimatorListener animatorListener) {
-        if (this.showListeners == null) {
-            this.showListeners = new ArrayList<>();
-        }
-        this.showListeners.add(animatorListener);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void removeOnShowAnimationListener(Animator.AnimatorListener animatorListener) {
-        ArrayList<Animator.AnimatorListener> arrayList = this.showListeners;
-        if (arrayList == null) {
-            return;
-        }
-        arrayList.remove(animatorListener);
-    }
-
-    public void addOnHideAnimationListener(Animator.AnimatorListener animatorListener) {
-        if (this.hideListeners == null) {
-            this.hideListeners = new ArrayList<>();
-        }
-        this.hideListeners.add(animatorListener);
-    }
-
-    public void removeOnHideAnimationListener(Animator.AnimatorListener animatorListener) {
-        ArrayList<Animator.AnimatorListener> arrayList = this.hideListeners;
-        if (arrayList == null) {
-            return;
-        }
-        arrayList.remove(animatorListener);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void hide(final InternalVisibilityChangedListener internalVisibilityChangedListener, final boolean z2) {
-        if (isOrWillBeHidden()) {
-            return;
-        }
-        Animator animator = this.currentAnimator;
-        if (animator != null) {
-            animator.cancel();
-        }
-        if (shouldAnimateVisibilityChange()) {
-            MotionSpec motionSpec = this.hideMotionSpec;
-            if (motionSpec == null) {
-                motionSpec = getDefaultHideMotionSpec();
+    public ViewPager2(Context context) {
+        super(context);
+        this.mTmpContainerRect = new Rect();
+        this.mTmpChildRect = new Rect();
+        this.mExternalPageChangeCallbacks = new CompositeOnPageChangeCallback(3);
+        this.mCurrentItemDirty = false;
+        this.mCurrentItemDataSetChangeObserver = new DataSetChangeObserver() { // from class: androidx.viewpager2.widget.ViewPager2.1
+            @Override // androidx.viewpager2.widget.ViewPager2.DataSetChangeObserver, androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+            public void onChanged() {
+                ViewPager2.this.mCurrentItemDirty = true;
+                ViewPager2.this.mScrollEventAdapter.notifyDataSetChangeHappened();
             }
-            AnimatorSet createAnimator = createAnimator(motionSpec, 0.0f, 0.0f, 0.0f);
-            createAnimator.addListener(new AnimatorListenerAdapter() { // from class: com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.1
-                private boolean cancelled;
+        };
+        this.mPendingCurrentItem = -1;
+        this.mSavedItemAnimator = null;
+        this.mSavedItemAnimatorPresent = false;
+        this.mUserInputEnabled = true;
+        this.mOffscreenPageLimit = -1;
+        initialize(context, null);
+    }
 
-                @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
-                public void onAnimationStart(Animator animator2) {
-                    FloatingActionButtonImpl.this.view.internalSetVisibility(0, z2);
-                    FloatingActionButtonImpl.this.animState = 1;
-                    FloatingActionButtonImpl.this.currentAnimator = animator2;
-                    this.cancelled = false;
-                }
+    public ViewPager2(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+        this.mTmpContainerRect = new Rect();
+        this.mTmpChildRect = new Rect();
+        this.mExternalPageChangeCallbacks = new CompositeOnPageChangeCallback(3);
+        this.mCurrentItemDirty = false;
+        this.mCurrentItemDataSetChangeObserver = new DataSetChangeObserver() { // from class: androidx.viewpager2.widget.ViewPager2.1
+            @Override // androidx.viewpager2.widget.ViewPager2.DataSetChangeObserver, androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+            public void onChanged() {
+                ViewPager2.this.mCurrentItemDirty = true;
+                ViewPager2.this.mScrollEventAdapter.notifyDataSetChangeHappened();
+            }
+        };
+        this.mPendingCurrentItem = -1;
+        this.mSavedItemAnimator = null;
+        this.mSavedItemAnimatorPresent = false;
+        this.mUserInputEnabled = true;
+        this.mOffscreenPageLimit = -1;
+        initialize(context, attributeSet);
+    }
 
-                @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
-                public void onAnimationCancel(Animator animator2) {
-                    this.cancelled = true;
-                }
+    public ViewPager2(Context context, AttributeSet attributeSet, int i2) {
+        super(context, attributeSet, i2);
+        this.mTmpContainerRect = new Rect();
+        this.mTmpChildRect = new Rect();
+        this.mExternalPageChangeCallbacks = new CompositeOnPageChangeCallback(3);
+        this.mCurrentItemDirty = false;
+        this.mCurrentItemDataSetChangeObserver = new DataSetChangeObserver() { // from class: androidx.viewpager2.widget.ViewPager2.1
+            @Override // androidx.viewpager2.widget.ViewPager2.DataSetChangeObserver, androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+            public void onChanged() {
+                ViewPager2.this.mCurrentItemDirty = true;
+                ViewPager2.this.mScrollEventAdapter.notifyDataSetChangeHappened();
+            }
+        };
+        this.mPendingCurrentItem = -1;
+        this.mSavedItemAnimator = null;
+        this.mSavedItemAnimatorPresent = false;
+        this.mUserInputEnabled = true;
+        this.mOffscreenPageLimit = -1;
+        initialize(context, attributeSet);
+    }
 
-                @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
-                public void onAnimationEnd(Animator animator2) {
-                    FloatingActionButtonImpl.this.animState = 0;
-                    FloatingActionButtonImpl.this.currentAnimator = null;
-                    if (this.cancelled) {
-                        return;
-                    }
-                    FloatingActionButton floatingActionButton = FloatingActionButtonImpl.this.view;
-                    boolean z3 = z2;
-                    floatingActionButton.internalSetVisibility(z3 ? 8 : 4, z3);
-                    InternalVisibilityChangedListener internalVisibilityChangedListener2 = internalVisibilityChangedListener;
-                    if (internalVisibilityChangedListener2 != null) {
-                        internalVisibilityChangedListener2.onHidden();
-                    }
-                }
-            });
-            ArrayList<Animator.AnimatorListener> arrayList = this.hideListeners;
-            if (arrayList != null) {
-                Iterator<Animator.AnimatorListener> it = arrayList.iterator();
-                while (it.hasNext()) {
-                    createAnimator.addListener(it.next());
+    public ViewPager2(Context context, AttributeSet attributeSet, int i2, int i3) {
+        super(context, attributeSet, i2, i3);
+        this.mTmpContainerRect = new Rect();
+        this.mTmpChildRect = new Rect();
+        this.mExternalPageChangeCallbacks = new CompositeOnPageChangeCallback(3);
+        this.mCurrentItemDirty = false;
+        this.mCurrentItemDataSetChangeObserver = new DataSetChangeObserver() { // from class: androidx.viewpager2.widget.ViewPager2.1
+            @Override // androidx.viewpager2.widget.ViewPager2.DataSetChangeObserver, androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+            public void onChanged() {
+                ViewPager2.this.mCurrentItemDirty = true;
+                ViewPager2.this.mScrollEventAdapter.notifyDataSetChangeHappened();
+            }
+        };
+        this.mPendingCurrentItem = -1;
+        this.mSavedItemAnimator = null;
+        this.mSavedItemAnimatorPresent = false;
+        this.mUserInputEnabled = true;
+        this.mOffscreenPageLimit = -1;
+        initialize(context, attributeSet);
+    }
+
+    private void initialize(Context context, AttributeSet attributeSet) {
+        this.mAccessibilityProvider = sFeatureEnhancedA11yEnabled ? new PageAwareAccessibilityProvider() : new BasicAccessibilityProvider();
+        RecyclerViewImpl recyclerViewImpl = new RecyclerViewImpl(context);
+        this.mRecyclerView = recyclerViewImpl;
+        recyclerViewImpl.setId(ViewCompat.generateViewId());
+        this.mRecyclerView.setDescendantFocusability(131072);
+        LinearLayoutManagerImpl linearLayoutManagerImpl = new LinearLayoutManagerImpl(context);
+        this.mLayoutManager = linearLayoutManagerImpl;
+        this.mRecyclerView.setLayoutManager(linearLayoutManagerImpl);
+        this.mRecyclerView.setScrollingTouchSlop(1);
+        setOrientation(context, attributeSet);
+        this.mRecyclerView.setLayoutParams(new ViewGroup.LayoutParams(-1, -1));
+        this.mRecyclerView.addOnChildAttachStateChangeListener(enforceChildFillListener());
+        ScrollEventAdapter scrollEventAdapter = new ScrollEventAdapter(this);
+        this.mScrollEventAdapter = scrollEventAdapter;
+        this.mFakeDragger = new FakeDrag(this, scrollEventAdapter, this.mRecyclerView);
+        PagerSnapHelperImpl pagerSnapHelperImpl = new PagerSnapHelperImpl();
+        this.mPagerSnapHelper = pagerSnapHelperImpl;
+        pagerSnapHelperImpl.attachToRecyclerView(this.mRecyclerView);
+        this.mRecyclerView.addOnScrollListener(this.mScrollEventAdapter);
+        CompositeOnPageChangeCallback compositeOnPageChangeCallback = new CompositeOnPageChangeCallback(3);
+        this.mPageChangeEventDispatcher = compositeOnPageChangeCallback;
+        this.mScrollEventAdapter.setOnPageChangeCallback(compositeOnPageChangeCallback);
+        OnPageChangeCallback onPageChangeCallback = new OnPageChangeCallback() { // from class: androidx.viewpager2.widget.ViewPager2.2
+            @Override // androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+            public void onPageSelected(int i2) {
+                if (ViewPager2.this.mCurrentItem != i2) {
+                    ViewPager2.this.mCurrentItem = i2;
+                    ViewPager2.this.mAccessibilityProvider.onSetNewCurrentItem();
                 }
             }
-            createAnimator.start();
+
+            @Override // androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+            public void onPageScrollStateChanged(int i2) {
+                if (i2 == 0) {
+                    ViewPager2.this.updateCurrentItem();
+                }
+            }
+        };
+        OnPageChangeCallback onPageChangeCallback2 = new OnPageChangeCallback() { // from class: androidx.viewpager2.widget.ViewPager2.3
+            @Override // androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+            public void onPageSelected(int i2) {
+                ViewPager2.this.clearFocus();
+                if (ViewPager2.this.hasFocus()) {
+                    ViewPager2.this.mRecyclerView.requestFocus(2);
+                }
+            }
+        };
+        this.mPageChangeEventDispatcher.addOnPageChangeCallback(onPageChangeCallback);
+        this.mPageChangeEventDispatcher.addOnPageChangeCallback(onPageChangeCallback2);
+        this.mAccessibilityProvider.onInitialize(this.mPageChangeEventDispatcher, this.mRecyclerView);
+        this.mPageChangeEventDispatcher.addOnPageChangeCallback(this.mExternalPageChangeCallbacks);
+        PageTransformerAdapter pageTransformerAdapter = new PageTransformerAdapter(this.mLayoutManager);
+        this.mPageTransformerAdapter = pageTransformerAdapter;
+        this.mPageChangeEventDispatcher.addOnPageChangeCallback(pageTransformerAdapter);
+        RecyclerView recyclerView = this.mRecyclerView;
+        attachViewToParent(recyclerView, 0, recyclerView.getLayoutParams());
+    }
+
+    private RecyclerView.OnChildAttachStateChangeListener enforceChildFillListener() {
+        return new RecyclerView.OnChildAttachStateChangeListener() { // from class: androidx.viewpager2.widget.ViewPager2.4
+            @Override // androidx.recyclerview.widget.RecyclerView.OnChildAttachStateChangeListener
+            public void onChildViewDetachedFromWindow(View view) {
+            }
+
+            @Override // androidx.recyclerview.widget.RecyclerView.OnChildAttachStateChangeListener
+            public void onChildViewAttachedToWindow(View view) {
+                RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) view.getLayoutParams();
+                if (layoutParams.width != -1 || layoutParams.height != -1) {
+                    throw new IllegalStateException("Pages must fill the whole ViewPager2 (use match_parent)");
+                }
+            }
+        };
+    }
+
+    @Override // android.view.ViewGroup, android.view.View
+    public CharSequence getAccessibilityClassName() {
+        if (this.mAccessibilityProvider.handlesGetAccessibilityClassName()) {
+            return this.mAccessibilityProvider.onGetAccessibilityClassName();
+        }
+        return super.getAccessibilityClassName();
+    }
+
+    private void setOrientation(Context context, AttributeSet attributeSet) {
+        TypedArray obtainStyledAttributes = context.obtainStyledAttributes(attributeSet, R.styleable.ViewPager2);
+        if (Build.VERSION.SDK_INT >= 29) {
+            saveAttributeDataForStyleable(context, R.styleable.ViewPager2, attributeSet, obtainStyledAttributes, 0, 0);
+        }
+        try {
+            setOrientation(obtainStyledAttributes.getInt(R.styleable.ViewPager2_android_orientation, 0));
+        } finally {
+            obtainStyledAttributes.recycle();
+        }
+    }
+
+    @Override // android.view.View
+    protected Parcelable onSaveInstanceState() {
+        SavedState savedState = new SavedState(super.onSaveInstanceState());
+        savedState.mRecyclerViewId = this.mRecyclerView.getId();
+        int i2 = this.mPendingCurrentItem;
+        if (i2 == -1) {
+            i2 = this.mCurrentItem;
+        }
+        savedState.mCurrentItem = i2;
+        Parcelable parcelable = this.mPendingAdapterState;
+        if (parcelable != null) {
+            savedState.mAdapterState = parcelable;
+        } else {
+            RecyclerView.Adapter adapter = this.mRecyclerView.getAdapter();
+            if (adapter instanceof StatefulAdapter) {
+                savedState.mAdapterState = ((StatefulAdapter) adapter).saveState();
+            }
+        }
+        return savedState;
+    }
+
+    @Override // android.view.View
+    protected void onRestoreInstanceState(Parcelable parcelable) {
+        if (!(parcelable instanceof SavedState)) {
+            super.onRestoreInstanceState(parcelable);
             return;
         }
-        this.view.internalSetVisibility(z2 ? 8 : 4, z2);
-        if (internalVisibilityChangedListener != null) {
-            internalVisibilityChangedListener.onHidden();
+        SavedState savedState = (SavedState) parcelable;
+        super.onRestoreInstanceState(savedState.getSuperState());
+        this.mPendingCurrentItem = savedState.mCurrentItem;
+        this.mPendingAdapterState = savedState.mAdapterState;
+    }
+
+    private void restorePendingState() {
+        RecyclerView.Adapter adapter;
+        if (this.mPendingCurrentItem == -1 || (adapter = getAdapter()) == null) {
+            return;
         }
+        Parcelable parcelable = this.mPendingAdapterState;
+        if (parcelable != null) {
+            if (adapter instanceof StatefulAdapter) {
+                ((StatefulAdapter) adapter).restoreState(parcelable);
+            }
+            this.mPendingAdapterState = null;
+        }
+        int max = Math.max(0, Math.min(this.mPendingCurrentItem, adapter.getItemCount() - 1));
+        this.mCurrentItem = max;
+        this.mPendingCurrentItem = -1;
+        this.mRecyclerView.scrollToPosition(max);
+        this.mAccessibilityProvider.onRestorePendingState();
+    }
+
+    @Override // android.view.ViewGroup, android.view.View
+    protected void dispatchRestoreInstanceState(SparseArray<Parcelable> sparseArray) {
+        Parcelable parcelable = sparseArray.get(getId());
+        if (parcelable instanceof SavedState) {
+            int i2 = ((SavedState) parcelable).mRecyclerViewId;
+            sparseArray.put(this.mRecyclerView.getId(), sparseArray.get(i2));
+            sparseArray.remove(i2);
+        }
+        super.dispatchRestoreInstanceState(sparseArray);
+        restorePendingState();
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    public void show(final InternalVisibilityChangedListener internalVisibilityChangedListener, final boolean z2) {
-        if (isOrWillBeShown()) {
-            return;
-        }
-        Animator animator = this.currentAnimator;
-        if (animator != null) {
-            animator.cancel();
-        }
-        if (shouldAnimateVisibilityChange()) {
-            if (this.view.getVisibility() != 0) {
-                this.view.setAlpha(0.0f);
-                this.view.setScaleY(0.0f);
-                this.view.setScaleX(0.0f);
-                setImageMatrixScale(0.0f);
-            }
-            MotionSpec motionSpec = this.showMotionSpec;
-            if (motionSpec == null) {
-                motionSpec = getDefaultShowMotionSpec();
-            }
-            AnimatorSet createAnimator = createAnimator(motionSpec, 1.0f, 1.0f, 1.0f);
-            createAnimator.addListener(new AnimatorListenerAdapter() { // from class: com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.2
-                @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
-                public void onAnimationStart(Animator animator2) {
-                    FloatingActionButtonImpl.this.view.internalSetVisibility(0, z2);
-                    FloatingActionButtonImpl.this.animState = 2;
-                    FloatingActionButtonImpl.this.currentAnimator = animator2;
-                }
-
-                @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
-                public void onAnimationEnd(Animator animator2) {
-                    FloatingActionButtonImpl.this.animState = 0;
-                    FloatingActionButtonImpl.this.currentAnimator = null;
-                    InternalVisibilityChangedListener internalVisibilityChangedListener2 = internalVisibilityChangedListener;
-                    if (internalVisibilityChangedListener2 != null) {
-                        internalVisibilityChangedListener2.onShown();
-                    }
-                }
-            });
-            ArrayList<Animator.AnimatorListener> arrayList = this.showListeners;
-            if (arrayList != null) {
-                Iterator<Animator.AnimatorListener> it = arrayList.iterator();
-                while (it.hasNext()) {
-                    createAnimator.addListener(it.next());
-                }
-            }
-            createAnimator.start();
-            return;
-        }
-        this.view.internalSetVisibility(0, z2);
-        this.view.setAlpha(1.0f);
-        this.view.setScaleY(1.0f);
-        this.view.setScaleX(1.0f);
-        setImageMatrixScale(1.0f);
-        if (internalVisibilityChangedListener != null) {
-            internalVisibilityChangedListener.onShown();
-        }
-    }
-
-    private MotionSpec getDefaultShowMotionSpec() {
-        if (this.defaultShowMotionSpec == null) {
-            this.defaultShowMotionSpec = MotionSpec.createFromResource(this.view.getContext(), R.animator.design_fab_show_motion_spec);
-        }
-        return (MotionSpec) Preconditions.checkNotNull(this.defaultShowMotionSpec);
-    }
-
-    private MotionSpec getDefaultHideMotionSpec() {
-        if (this.defaultHideMotionSpec == null) {
-            this.defaultHideMotionSpec = MotionSpec.createFromResource(this.view.getContext(), R.animator.design_fab_hide_motion_spec);
-        }
-        return (MotionSpec) Preconditions.checkNotNull(this.defaultHideMotionSpec);
-    }
-
-    private AnimatorSet createAnimator(MotionSpec motionSpec, float f2, float f3, float f4) {
-        ArrayList arrayList = new ArrayList();
-        ObjectAnimator ofFloat = ObjectAnimator.ofFloat(this.view, View.ALPHA, f2);
-        motionSpec.getTiming("opacity").apply(ofFloat);
-        arrayList.add(ofFloat);
-        ObjectAnimator ofFloat2 = ObjectAnimator.ofFloat(this.view, View.SCALE_X, f3);
-        motionSpec.getTiming("scale").apply(ofFloat2);
-        workAroundOreoBug(ofFloat2);
-        arrayList.add(ofFloat2);
-        ObjectAnimator ofFloat3 = ObjectAnimator.ofFloat(this.view, View.SCALE_Y, f3);
-        motionSpec.getTiming("scale").apply(ofFloat3);
-        workAroundOreoBug(ofFloat3);
-        arrayList.add(ofFloat3);
-        calculateImageMatrixFromScale(f4, this.tmpMatrix);
-        ObjectAnimator ofObject = ObjectAnimator.ofObject(this.view, new ImageMatrixProperty(), new MatrixEvaluator() { // from class: com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.3
+    /* loaded from: classes.dex */
+    public static class SavedState extends View.BaseSavedState {
+        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.ClassLoaderCreator<SavedState>() { // from class: androidx.viewpager2.widget.ViewPager2.SavedState.1
             /* JADX WARN: Can't rename method to resolve collision */
-            @Override // com.google.android.material.animation.MatrixEvaluator, android.animation.TypeEvaluator
-            public Matrix evaluate(float f5, Matrix matrix, Matrix matrix2) {
-                FloatingActionButtonImpl.this.imageMatrixScale = f5;
-                return super.evaluate(f5, matrix, matrix2);
+            @Override // android.os.Parcelable.ClassLoaderCreator
+            public SavedState createFromParcel(Parcel parcel, ClassLoader classLoader) {
+                return Build.VERSION.SDK_INT >= 24 ? new SavedState(parcel, classLoader) : new SavedState(parcel);
             }
-        }, new Matrix(this.tmpMatrix));
-        motionSpec.getTiming("iconScale").apply(ofObject);
-        arrayList.add(ofObject);
-        AnimatorSet animatorSet = new AnimatorSet();
-        AnimatorSetCompat.playTogether(animatorSet, arrayList);
-        return animatorSet;
+
+            @Override // android.os.Parcelable.Creator
+            public SavedState createFromParcel(Parcel parcel) {
+                return createFromParcel(parcel, (ClassLoader) null);
+            }
+
+            @Override // android.os.Parcelable.Creator
+            public SavedState[] newArray(int i2) {
+                return new SavedState[i2];
+            }
+        };
+        Parcelable mAdapterState;
+        int mCurrentItem;
+        int mRecyclerViewId;
+
+        SavedState(Parcel parcel, ClassLoader classLoader) {
+            super(parcel, classLoader);
+            readValues(parcel, classLoader);
+        }
+
+        SavedState(Parcel parcel) {
+            super(parcel);
+            readValues(parcel, null);
+        }
+
+        SavedState(Parcelable parcelable) {
+            super(parcelable);
+        }
+
+        private void readValues(Parcel parcel, ClassLoader classLoader) {
+            this.mRecyclerViewId = parcel.readInt();
+            this.mCurrentItem = parcel.readInt();
+            this.mAdapterState = parcel.readParcelable(classLoader);
+        }
+
+        @Override // android.view.View.BaseSavedState, android.view.AbsSavedState, android.os.Parcelable
+        public void writeToParcel(Parcel parcel, int i2) {
+            super.writeToParcel(parcel, i2);
+            parcel.writeInt(this.mRecyclerViewId);
+            parcel.writeInt(this.mCurrentItem);
+            parcel.writeParcelable(this.mAdapterState, i2);
+        }
     }
 
-    private void workAroundOreoBug(ObjectAnimator objectAnimator) {
-        if (Build.VERSION.SDK_INT != 26) {
+    public void setAdapter(RecyclerView.Adapter adapter) {
+        RecyclerView.Adapter adapter2 = this.mRecyclerView.getAdapter();
+        this.mAccessibilityProvider.onDetachAdapter(adapter2);
+        unregisterCurrentItemDataSetTracker(adapter2);
+        this.mRecyclerView.setAdapter(adapter);
+        this.mCurrentItem = 0;
+        restorePendingState();
+        this.mAccessibilityProvider.onAttachAdapter(adapter);
+        registerCurrentItemDataSetTracker(adapter);
+    }
+
+    private void registerCurrentItemDataSetTracker(RecyclerView.Adapter<?> adapter) {
+        if (adapter != null) {
+            adapter.registerAdapterDataObserver(this.mCurrentItemDataSetChangeObserver);
+        }
+    }
+
+    private void unregisterCurrentItemDataSetTracker(RecyclerView.Adapter<?> adapter) {
+        if (adapter != null) {
+            adapter.unregisterAdapterDataObserver(this.mCurrentItemDataSetChangeObserver);
+        }
+    }
+
+    public RecyclerView.Adapter getAdapter() {
+        return this.mRecyclerView.getAdapter();
+    }
+
+    @Override // android.view.ViewGroup
+    public void onViewAdded(View view) {
+        throw new IllegalStateException(getClass().getSimpleName() + " does not support direct child views");
+    }
+
+    @Override // android.view.View
+    protected void onMeasure(int i2, int i3) {
+        measureChild(this.mRecyclerView, i2, i3);
+        int measuredWidth = this.mRecyclerView.getMeasuredWidth();
+        int measuredHeight = this.mRecyclerView.getMeasuredHeight();
+        int measuredState = this.mRecyclerView.getMeasuredState();
+        int paddingLeft = measuredWidth + getPaddingLeft() + getPaddingRight();
+        int paddingTop = measuredHeight + getPaddingTop() + getPaddingBottom();
+        setMeasuredDimension(resolveSizeAndState(Math.max(paddingLeft, getSuggestedMinimumWidth()), i2, measuredState), resolveSizeAndState(Math.max(paddingTop, getSuggestedMinimumHeight()), i3, measuredState << 16));
+    }
+
+    @Override // android.view.ViewGroup, android.view.View
+    protected void onLayout(boolean z2, int i2, int i3, int i4, int i5) {
+        int measuredWidth = this.mRecyclerView.getMeasuredWidth();
+        int measuredHeight = this.mRecyclerView.getMeasuredHeight();
+        this.mTmpContainerRect.left = getPaddingLeft();
+        this.mTmpContainerRect.right = (i4 - i2) - getPaddingRight();
+        this.mTmpContainerRect.top = getPaddingTop();
+        this.mTmpContainerRect.bottom = (i5 - i3) - getPaddingBottom();
+        Gravity.apply(BadgeDrawable.TOP_START, measuredWidth, measuredHeight, this.mTmpContainerRect, this.mTmpChildRect);
+        this.mRecyclerView.layout(this.mTmpChildRect.left, this.mTmpChildRect.top, this.mTmpChildRect.right, this.mTmpChildRect.bottom);
+        if (this.mCurrentItemDirty) {
+            updateCurrentItem();
+        }
+    }
+
+    void updateCurrentItem() {
+        PagerSnapHelper pagerSnapHelper = this.mPagerSnapHelper;
+        if (pagerSnapHelper == null) {
+            throw new IllegalStateException("Design assumption violated.");
+        }
+        View findSnapView = pagerSnapHelper.findSnapView(this.mLayoutManager);
+        if (findSnapView == null) {
             return;
         }
-        objectAnimator.setEvaluator(new TypeEvaluator<Float>() { // from class: com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.4
-            FloatEvaluator floatEvaluator = new FloatEvaluator();
+        int position = this.mLayoutManager.getPosition(findSnapView);
+        if (position != this.mCurrentItem && getScrollState() == 0) {
+            this.mPageChangeEventDispatcher.onPageSelected(position);
+        }
+        this.mCurrentItemDirty = false;
+    }
 
-            @Override // android.animation.TypeEvaluator
-            public Float evaluate(float f2, Float f3, Float f4) {
-                float floatValue = this.floatEvaluator.evaluate(f2, (Number) f3, (Number) f4).floatValue();
-                if (floatValue < 0.1f) {
-                    floatValue = 0.0f;
+    int getPageSize() {
+        int height;
+        int paddingBottom;
+        RecyclerView recyclerView = this.mRecyclerView;
+        if (getOrientation() == 0) {
+            height = recyclerView.getWidth() - recyclerView.getPaddingLeft();
+            paddingBottom = recyclerView.getPaddingRight();
+        } else {
+            height = recyclerView.getHeight() - recyclerView.getPaddingTop();
+            paddingBottom = recyclerView.getPaddingBottom();
+        }
+        return height - paddingBottom;
+    }
+
+    public void setOrientation(int i2) {
+        this.mLayoutManager.setOrientation(i2);
+        this.mAccessibilityProvider.onSetOrientation();
+    }
+
+    public int getOrientation() {
+        return this.mLayoutManager.getOrientation();
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public boolean isRtl() {
+        return this.mLayoutManager.getLayoutDirection() == 1;
+    }
+
+    public void setCurrentItem(int i2) {
+        setCurrentItem(i2, true);
+    }
+
+    public void setCurrentItem(int i2, boolean z2) {
+        if (isFakeDragging()) {
+            throw new IllegalStateException("Cannot change current item when ViewPager2 is fake dragging");
+        }
+        setCurrentItemInternal(i2, z2);
+    }
+
+    void setCurrentItemInternal(int i2, boolean z2) {
+        RecyclerView.Adapter adapter = getAdapter();
+        if (adapter == null) {
+            if (this.mPendingCurrentItem != -1) {
+                this.mPendingCurrentItem = Math.max(i2, 0);
+            }
+        } else if (adapter.getItemCount() <= 0) {
+        } else {
+            int min = Math.min(Math.max(i2, 0), adapter.getItemCount() - 1);
+            if (min == this.mCurrentItem && this.mScrollEventAdapter.isIdle()) {
+                return;
+            }
+            int i3 = this.mCurrentItem;
+            if (min == i3 && z2) {
+                return;
+            }
+            double d2 = i3;
+            this.mCurrentItem = min;
+            this.mAccessibilityProvider.onSetNewCurrentItem();
+            if (!this.mScrollEventAdapter.isIdle()) {
+                d2 = this.mScrollEventAdapter.getRelativeScrollPosition();
+            }
+            this.mScrollEventAdapter.notifyProgrammaticScroll(min, z2);
+            if (!z2) {
+                this.mRecyclerView.scrollToPosition(min);
+                return;
+            }
+            double d3 = min;
+            if (Math.abs(d3 - d2) > 3.0d) {
+                this.mRecyclerView.scrollToPosition(d3 > d2 ? min - 3 : min + 3);
+                RecyclerView recyclerView = this.mRecyclerView;
+                recyclerView.post(new SmoothScrollToPosition(min, recyclerView));
+                return;
+            }
+            this.mRecyclerView.smoothScrollToPosition(min);
+        }
+    }
+
+    public int getCurrentItem() {
+        return this.mCurrentItem;
+    }
+
+    public int getScrollState() {
+        return this.mScrollEventAdapter.getScrollState();
+    }
+
+    public boolean beginFakeDrag() {
+        return this.mFakeDragger.beginFakeDrag();
+    }
+
+    public boolean fakeDragBy(float f2) {
+        return this.mFakeDragger.fakeDragBy(f2);
+    }
+
+    public boolean endFakeDrag() {
+        return this.mFakeDragger.endFakeDrag();
+    }
+
+    public boolean isFakeDragging() {
+        return this.mFakeDragger.isFakeDragging();
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public void snapToPage() {
+        View findSnapView = this.mPagerSnapHelper.findSnapView(this.mLayoutManager);
+        if (findSnapView == null) {
+            return;
+        }
+        int[] calculateDistanceToFinalSnap = this.mPagerSnapHelper.calculateDistanceToFinalSnap(this.mLayoutManager, findSnapView);
+        if (calculateDistanceToFinalSnap[0] == 0 && calculateDistanceToFinalSnap[1] == 0) {
+            return;
+        }
+        this.mRecyclerView.smoothScrollBy(calculateDistanceToFinalSnap[0], calculateDistanceToFinalSnap[1]);
+    }
+
+    public void setUserInputEnabled(boolean z2) {
+        this.mUserInputEnabled = z2;
+        this.mAccessibilityProvider.onSetUserInputEnabled();
+    }
+
+    public boolean isUserInputEnabled() {
+        return this.mUserInputEnabled;
+    }
+
+    public void setOffscreenPageLimit(int i2) {
+        if (i2 < 1 && i2 != -1) {
+            throw new IllegalArgumentException("Offscreen page limit must be OFFSCREEN_PAGE_LIMIT_DEFAULT or a number > 0");
+        }
+        this.mOffscreenPageLimit = i2;
+        this.mRecyclerView.requestLayout();
+    }
+
+    public int getOffscreenPageLimit() {
+        return this.mOffscreenPageLimit;
+    }
+
+    @Override // android.view.View
+    public boolean canScrollHorizontally(int i2) {
+        return this.mRecyclerView.canScrollHorizontally(i2);
+    }
+
+    @Override // android.view.View
+    public boolean canScrollVertically(int i2) {
+        return this.mRecyclerView.canScrollVertically(i2);
+    }
+
+    public void registerOnPageChangeCallback(OnPageChangeCallback onPageChangeCallback) {
+        this.mExternalPageChangeCallbacks.addOnPageChangeCallback(onPageChangeCallback);
+    }
+
+    public void unregisterOnPageChangeCallback(OnPageChangeCallback onPageChangeCallback) {
+        this.mExternalPageChangeCallbacks.removeOnPageChangeCallback(onPageChangeCallback);
+    }
+
+    public void setPageTransformer(PageTransformer pageTransformer) {
+        if (pageTransformer != null) {
+            if (!this.mSavedItemAnimatorPresent) {
+                this.mSavedItemAnimator = this.mRecyclerView.getItemAnimator();
+                this.mSavedItemAnimatorPresent = true;
+            }
+            this.mRecyclerView.setItemAnimator(null);
+        } else if (this.mSavedItemAnimatorPresent) {
+            this.mRecyclerView.setItemAnimator(this.mSavedItemAnimator);
+            this.mSavedItemAnimator = null;
+            this.mSavedItemAnimatorPresent = false;
+        }
+        if (pageTransformer == this.mPageTransformerAdapter.getPageTransformer()) {
+            return;
+        }
+        this.mPageTransformerAdapter.setPageTransformer(pageTransformer);
+        requestTransform();
+    }
+
+    public void requestTransform() {
+        if (this.mPageTransformerAdapter.getPageTransformer() == null) {
+            return;
+        }
+        double relativeScrollPosition = this.mScrollEventAdapter.getRelativeScrollPosition();
+        int i2 = (int) relativeScrollPosition;
+        float f2 = (float) (relativeScrollPosition - i2);
+        this.mPageTransformerAdapter.onPageScrolled(i2, f2, Math.round(getPageSize() * f2));
+    }
+
+    @Override // android.view.View
+    public void setLayoutDirection(int i2) {
+        super.setLayoutDirection(i2);
+        this.mAccessibilityProvider.onSetLayoutDirection();
+    }
+
+    @Override // android.view.View
+    public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo accessibilityNodeInfo) {
+        super.onInitializeAccessibilityNodeInfo(accessibilityNodeInfo);
+        this.mAccessibilityProvider.onInitializeAccessibilityNodeInfo(accessibilityNodeInfo);
+    }
+
+    @Override // android.view.View
+    public boolean performAccessibilityAction(int i2, Bundle bundle) {
+        if (this.mAccessibilityProvider.handlesPerformAccessibilityAction(i2, bundle)) {
+            return this.mAccessibilityProvider.onPerformAccessibilityAction(i2, bundle);
+        }
+        return super.performAccessibilityAction(i2, bundle);
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    /* loaded from: classes.dex */
+    public class RecyclerViewImpl extends RecyclerView {
+        RecyclerViewImpl(Context context) {
+            super(context);
+        }
+
+        @Override // androidx.recyclerview.widget.RecyclerView, android.view.ViewGroup, android.view.View
+        public CharSequence getAccessibilityClassName() {
+            if (ViewPager2.this.mAccessibilityProvider.handlesRvGetAccessibilityClassName()) {
+                return ViewPager2.this.mAccessibilityProvider.onRvGetAccessibilityClassName();
+            }
+            return super.getAccessibilityClassName();
+        }
+
+        @Override // android.view.View
+        public void onInitializeAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+            super.onInitializeAccessibilityEvent(accessibilityEvent);
+            accessibilityEvent.setFromIndex(ViewPager2.this.mCurrentItem);
+            accessibilityEvent.setToIndex(ViewPager2.this.mCurrentItem);
+            ViewPager2.this.mAccessibilityProvider.onRvInitializeAccessibilityEvent(accessibilityEvent);
+        }
+
+        @Override // androidx.recyclerview.widget.RecyclerView, android.view.View
+        public boolean onTouchEvent(MotionEvent motionEvent) {
+            return ViewPager2.this.isUserInputEnabled() && super.onTouchEvent(motionEvent);
+        }
+
+        @Override // androidx.recyclerview.widget.RecyclerView, android.view.ViewGroup
+        public boolean onInterceptTouchEvent(MotionEvent motionEvent) {
+            return ViewPager2.this.isUserInputEnabled() && super.onInterceptTouchEvent(motionEvent);
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    /* loaded from: classes.dex */
+    public class LinearLayoutManagerImpl extends LinearLayoutManager {
+        @Override // androidx.recyclerview.widget.RecyclerView.LayoutManager
+        public boolean requestChildRectangleOnScreen(RecyclerView recyclerView, View view, Rect rect, boolean z2, boolean z3) {
+            return false;
+        }
+
+        LinearLayoutManagerImpl(Context context) {
+            super(context);
+        }
+
+        @Override // androidx.recyclerview.widget.RecyclerView.LayoutManager
+        public boolean performAccessibilityAction(RecyclerView.Recycler recycler, RecyclerView.State state, int i2, Bundle bundle) {
+            if (ViewPager2.this.mAccessibilityProvider.handlesLmPerformAccessibilityAction(i2)) {
+                return ViewPager2.this.mAccessibilityProvider.onLmPerformAccessibilityAction(i2);
+            }
+            return super.performAccessibilityAction(recycler, state, i2, bundle);
+        }
+
+        @Override // androidx.recyclerview.widget.RecyclerView.LayoutManager
+        public void onInitializeAccessibilityNodeInfo(RecyclerView.Recycler recycler, RecyclerView.State state, AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
+            super.onInitializeAccessibilityNodeInfo(recycler, state, accessibilityNodeInfoCompat);
+            ViewPager2.this.mAccessibilityProvider.onLmInitializeAccessibilityNodeInfo(accessibilityNodeInfoCompat);
+        }
+
+        /* JADX INFO: Access modifiers changed from: protected */
+        @Override // androidx.recyclerview.widget.LinearLayoutManager
+        public void calculateExtraLayoutSpace(RecyclerView.State state, int[] iArr) {
+            int offscreenPageLimit = ViewPager2.this.getOffscreenPageLimit();
+            if (offscreenPageLimit == -1) {
+                super.calculateExtraLayoutSpace(state, iArr);
+                return;
+            }
+            int pageSize = ViewPager2.this.getPageSize() * offscreenPageLimit;
+            iArr[0] = pageSize;
+            iArr[1] = pageSize;
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    /* loaded from: classes.dex */
+    public class PagerSnapHelperImpl extends PagerSnapHelper {
+        PagerSnapHelperImpl() {
+        }
+
+        @Override // androidx.recyclerview.widget.PagerSnapHelper, androidx.recyclerview.widget.SnapHelper
+        public View findSnapView(RecyclerView.LayoutManager layoutManager) {
+            if (ViewPager2.this.isFakeDragging()) {
+                return null;
+            }
+            return super.findSnapView(layoutManager);
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    /* loaded from: classes.dex */
+    public static class SmoothScrollToPosition implements Runnable {
+        private final int mPosition;
+        private final RecyclerView mRecyclerView;
+
+        SmoothScrollToPosition(int i2, RecyclerView recyclerView) {
+            this.mPosition = i2;
+            this.mRecyclerView = recyclerView;
+        }
+
+        @Override // java.lang.Runnable
+        public void run() {
+            this.mRecyclerView.smoothScrollToPosition(this.mPosition);
+        }
+    }
+
+    public void addItemDecoration(RecyclerView.ItemDecoration itemDecoration) {
+        this.mRecyclerView.addItemDecoration(itemDecoration);
+    }
+
+    public void addItemDecoration(RecyclerView.ItemDecoration itemDecoration, int i2) {
+        this.mRecyclerView.addItemDecoration(itemDecoration, i2);
+    }
+
+    public RecyclerView.ItemDecoration getItemDecorationAt(int i2) {
+        return this.mRecyclerView.getItemDecorationAt(i2);
+    }
+
+    public int getItemDecorationCount() {
+        return this.mRecyclerView.getItemDecorationCount();
+    }
+
+    public void invalidateItemDecorations() {
+        this.mRecyclerView.invalidateItemDecorations();
+    }
+
+    public void removeItemDecorationAt(int i2) {
+        this.mRecyclerView.removeItemDecorationAt(i2);
+    }
+
+    public void removeItemDecoration(RecyclerView.ItemDecoration itemDecoration) {
+        this.mRecyclerView.removeItemDecoration(itemDecoration);
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    /* loaded from: classes.dex */
+    public abstract class AccessibilityProvider {
+        boolean handlesGetAccessibilityClassName() {
+            return false;
+        }
+
+        boolean handlesLmPerformAccessibilityAction(int i2) {
+            return false;
+        }
+
+        boolean handlesPerformAccessibilityAction(int i2, Bundle bundle) {
+            return false;
+        }
+
+        boolean handlesRvGetAccessibilityClassName() {
+            return false;
+        }
+
+        void onAttachAdapter(RecyclerView.Adapter<?> adapter) {
+        }
+
+        void onDetachAdapter(RecyclerView.Adapter<?> adapter) {
+        }
+
+        void onInitialize(CompositeOnPageChangeCallback compositeOnPageChangeCallback, RecyclerView recyclerView) {
+        }
+
+        void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo accessibilityNodeInfo) {
+        }
+
+        void onLmInitializeAccessibilityNodeInfo(AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
+        }
+
+        void onRestorePendingState() {
+        }
+
+        void onRvInitializeAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+        }
+
+        void onSetLayoutDirection() {
+        }
+
+        void onSetNewCurrentItem() {
+        }
+
+        void onSetOrientation() {
+        }
+
+        void onSetUserInputEnabled() {
+        }
+
+        private AccessibilityProvider() {
+        }
+
+        String onGetAccessibilityClassName() {
+            throw new IllegalStateException("Not implemented.");
+        }
+
+        boolean onPerformAccessibilityAction(int i2, Bundle bundle) {
+            throw new IllegalStateException("Not implemented.");
+        }
+
+        boolean onLmPerformAccessibilityAction(int i2) {
+            throw new IllegalStateException("Not implemented.");
+        }
+
+        CharSequence onRvGetAccessibilityClassName() {
+            throw new IllegalStateException("Not implemented.");
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* loaded from: classes.dex */
+    public class BasicAccessibilityProvider extends AccessibilityProvider {
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public boolean handlesRvGetAccessibilityClassName() {
+            return true;
+        }
+
+        BasicAccessibilityProvider() {
+            super();
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public boolean handlesLmPerformAccessibilityAction(int i2) {
+            return (i2 == 8192 || i2 == 4096) && !ViewPager2.this.isUserInputEnabled();
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public boolean onLmPerformAccessibilityAction(int i2) {
+            if (handlesLmPerformAccessibilityAction(i2)) {
+                return false;
+            }
+            throw new IllegalStateException();
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public void onLmInitializeAccessibilityNodeInfo(AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
+            if (ViewPager2.this.isUserInputEnabled()) {
+                return;
+            }
+            accessibilityNodeInfoCompat.removeAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_BACKWARD);
+            accessibilityNodeInfoCompat.removeAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_FORWARD);
+            accessibilityNodeInfoCompat.setScrollable(false);
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public CharSequence onRvGetAccessibilityClassName() {
+            if (handlesRvGetAccessibilityClassName()) {
+                return "androidx.viewpager.widget.ViewPager";
+            }
+            throw new IllegalStateException();
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* loaded from: classes.dex */
+    public class PageAwareAccessibilityProvider extends AccessibilityProvider {
+        private final AccessibilityViewCommand mActionPageBackward;
+        private final AccessibilityViewCommand mActionPageForward;
+        private RecyclerView.AdapterDataObserver mAdapterDataObserver;
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public boolean handlesGetAccessibilityClassName() {
+            return true;
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public boolean handlesPerformAccessibilityAction(int i2, Bundle bundle) {
+            return i2 == 8192 || i2 == 4096;
+        }
+
+        PageAwareAccessibilityProvider() {
+            super();
+            this.mActionPageForward = new AccessibilityViewCommand() { // from class: androidx.viewpager2.widget.ViewPager2.PageAwareAccessibilityProvider.1
+                @Override // androidx.core.view.accessibility.AccessibilityViewCommand
+                public boolean perform(View view, AccessibilityViewCommand.CommandArguments commandArguments) {
+                    PageAwareAccessibilityProvider.this.setCurrentItemFromAccessibilityCommand(((ViewPager2) view).getCurrentItem() + 1);
+                    return true;
                 }
-                return Float.valueOf(floatValue);
-            }
-        });
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void addTransformationCallback(InternalTransformationCallback internalTransformationCallback) {
-        if (this.transformationCallbacks == null) {
-            this.transformationCallbacks = new ArrayList<>();
-        }
-        this.transformationCallbacks.add(internalTransformationCallback);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void removeTransformationCallback(InternalTransformationCallback internalTransformationCallback) {
-        ArrayList<InternalTransformationCallback> arrayList = this.transformationCallbacks;
-        if (arrayList == null) {
-            return;
-        }
-        arrayList.remove(internalTransformationCallback);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void onTranslationChanged() {
-        ArrayList<InternalTransformationCallback> arrayList = this.transformationCallbacks;
-        if (arrayList != null) {
-            Iterator<InternalTransformationCallback> it = arrayList.iterator();
-            while (it.hasNext()) {
-                it.next().onTranslationChanged();
-            }
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void onScaleChanged() {
-        ArrayList<InternalTransformationCallback> arrayList = this.transformationCallbacks;
-        if (arrayList != null) {
-            Iterator<InternalTransformationCallback> it = arrayList.iterator();
-            while (it.hasNext()) {
-                it.next().onScaleChanged();
-            }
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final Drawable getContentBackground() {
-        return this.contentBackground;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public final void updatePadding() {
-        Rect rect = this.tmpRect;
-        getPadding(rect);
-        onPaddingUpdated(rect);
-        this.shadowViewDelegate.setShadowPadding(rect.left, rect.top, rect.right, rect.bottom);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void getPadding(Rect rect) {
-        int sizeDimension = this.ensureMinTouchTargetSize ? (this.minTouchTargetSize - this.view.getSizeDimension()) / 2 : 0;
-        float elevation = this.shadowPaddingEnabled ? getElevation() + this.pressedTranslationZ : 0.0f;
-        int max = Math.max(sizeDimension, (int) Math.ceil(elevation));
-        int max2 = Math.max(sizeDimension, (int) Math.ceil(elevation * SHADOW_MULTIPLIER));
-        rect.set(max, max2, max, max2);
-    }
-
-    void onPaddingUpdated(Rect rect) {
-        Preconditions.checkNotNull(this.contentBackground, "Didn't initialize content background");
-        if (shouldAddPadding()) {
-            this.shadowViewDelegate.setBackgroundDrawable(new InsetDrawable(this.contentBackground, rect.left, rect.top, rect.right, rect.bottom));
-            return;
-        }
-        this.shadowViewDelegate.setBackgroundDrawable(this.contentBackground);
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void onAttachedToWindow() {
-        MaterialShapeDrawable materialShapeDrawable = this.shapeDrawable;
-        if (materialShapeDrawable != null) {
-            MaterialShapeUtils.setParentAbsoluteElevation(this.view, materialShapeDrawable);
-        }
-        if (requirePreDrawListener()) {
-            this.view.getViewTreeObserver().addOnPreDrawListener(getOrCreatePreDrawListener());
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void onDetachedFromWindow() {
-        ViewTreeObserver viewTreeObserver = this.view.getViewTreeObserver();
-        ViewTreeObserver.OnPreDrawListener onPreDrawListener = this.preDrawListener;
-        if (onPreDrawListener != null) {
-            viewTreeObserver.removeOnPreDrawListener(onPreDrawListener);
-            this.preDrawListener = null;
-        }
-    }
-
-    void onPreDraw() {
-        float rotation = this.view.getRotation();
-        if (this.rotation != rotation) {
-            this.rotation = rotation;
-            updateFromViewRotation();
-        }
-    }
-
-    private ViewTreeObserver.OnPreDrawListener getOrCreatePreDrawListener() {
-        if (this.preDrawListener == null) {
-            this.preDrawListener = new ViewTreeObserver.OnPreDrawListener() { // from class: com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.5
-                @Override // android.view.ViewTreeObserver.OnPreDrawListener
-                public boolean onPreDraw() {
-                    FloatingActionButtonImpl.this.onPreDraw();
+            };
+            this.mActionPageBackward = new AccessibilityViewCommand() { // from class: androidx.viewpager2.widget.ViewPager2.PageAwareAccessibilityProvider.2
+                @Override // androidx.core.view.accessibility.AccessibilityViewCommand
+                public boolean perform(View view, AccessibilityViewCommand.CommandArguments commandArguments) {
+                    PageAwareAccessibilityProvider.this.setCurrentItemFromAccessibilityCommand(((ViewPager2) view).getCurrentItem() - 1);
                     return true;
                 }
             };
         }
-        return this.preDrawListener;
-    }
 
-    MaterialShapeDrawable createShapeDrawable() {
-        return new MaterialShapeDrawable((ShapeAppearanceModel) Preconditions.checkNotNull(this.shapeAppearance));
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public boolean isOrWillBeShown() {
-        return this.view.getVisibility() != 0 ? this.animState == 2 : this.animState != 1;
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public boolean isOrWillBeHidden() {
-        return this.view.getVisibility() == 0 ? this.animState == 1 : this.animState != 2;
-    }
-
-    private ValueAnimator createElevationAnimator(ShadowAnimatorImpl shadowAnimatorImpl) {
-        ValueAnimator valueAnimator = new ValueAnimator();
-        valueAnimator.setInterpolator(ELEVATION_ANIM_INTERPOLATOR);
-        valueAnimator.setDuration(100L);
-        valueAnimator.addListener(shadowAnimatorImpl);
-        valueAnimator.addUpdateListener(shadowAnimatorImpl);
-        valueAnimator.setFloatValues(0.0f, 1.0f);
-        return valueAnimator;
-    }
-
-    /* loaded from: classes.dex */
-    private abstract class ShadowAnimatorImpl extends AnimatorListenerAdapter implements ValueAnimator.AnimatorUpdateListener {
-        private float shadowSizeEnd;
-        private float shadowSizeStart;
-        private boolean validValues;
-
-        protected abstract float getTargetShadowSize();
-
-        private ShadowAnimatorImpl() {
-        }
-
-        @Override // android.animation.ValueAnimator.AnimatorUpdateListener
-        public void onAnimationUpdate(ValueAnimator valueAnimator) {
-            if (!this.validValues) {
-                this.shadowSizeStart = FloatingActionButtonImpl.this.shapeDrawable == null ? 0.0f : FloatingActionButtonImpl.this.shapeDrawable.getElevation();
-                this.shadowSizeEnd = getTargetShadowSize();
-                this.validValues = true;
-            }
-            FloatingActionButtonImpl floatingActionButtonImpl = FloatingActionButtonImpl.this;
-            float f2 = this.shadowSizeStart;
-            floatingActionButtonImpl.updateShapeElevation((int) (f2 + ((this.shadowSizeEnd - f2) * valueAnimator.getAnimatedFraction())));
-        }
-
-        @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
-        public void onAnimationEnd(Animator animator) {
-            FloatingActionButtonImpl.this.updateShapeElevation((int) this.shadowSizeEnd);
-            this.validValues = false;
-        }
-    }
-
-    /* loaded from: classes.dex */
-    private class ResetElevationAnimation extends ShadowAnimatorImpl {
-        ResetElevationAnimation() {
-            super();
-        }
-
-        @Override // com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.ShadowAnimatorImpl
-        protected float getTargetShadowSize() {
-            return FloatingActionButtonImpl.this.elevation;
-        }
-    }
-
-    /* loaded from: classes.dex */
-    private class ElevateToHoveredFocusedTranslationZAnimation extends ShadowAnimatorImpl {
-        ElevateToHoveredFocusedTranslationZAnimation() {
-            super();
-        }
-
-        @Override // com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.ShadowAnimatorImpl
-        protected float getTargetShadowSize() {
-            return FloatingActionButtonImpl.this.elevation + FloatingActionButtonImpl.this.hoveredFocusedTranslationZ;
-        }
-    }
-
-    /* loaded from: classes.dex */
-    private class ElevateToPressedTranslationZAnimation extends ShadowAnimatorImpl {
-        ElevateToPressedTranslationZAnimation() {
-            super();
-        }
-
-        @Override // com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.ShadowAnimatorImpl
-        protected float getTargetShadowSize() {
-            return FloatingActionButtonImpl.this.elevation + FloatingActionButtonImpl.this.pressedTranslationZ;
-        }
-    }
-
-    /* loaded from: classes.dex */
-    private class DisabledElevationAnimation extends ShadowAnimatorImpl {
-        @Override // com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.ShadowAnimatorImpl
-        protected float getTargetShadowSize() {
-            return 0.0f;
-        }
-
-        DisabledElevationAnimation() {
-            super();
-        }
-    }
-
-    private boolean shouldAnimateVisibilityChange() {
-        return ViewCompat.isLaidOut(this.view) && !this.view.isInEditMode();
-    }
-
-    void updateFromViewRotation() {
-        if (Build.VERSION.SDK_INT == 19) {
-            if (this.rotation % 90.0f != 0.0f) {
-                if (this.view.getLayerType() != 1) {
-                    this.view.setLayerType(1, null);
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public void onInitialize(CompositeOnPageChangeCallback compositeOnPageChangeCallback, RecyclerView recyclerView) {
+            ViewCompat.setImportantForAccessibility(recyclerView, 2);
+            this.mAdapterDataObserver = new DataSetChangeObserver() { // from class: androidx.viewpager2.widget.ViewPager2.PageAwareAccessibilityProvider.3
+                @Override // androidx.viewpager2.widget.ViewPager2.DataSetChangeObserver, androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+                public void onChanged() {
+                    PageAwareAccessibilityProvider.this.updatePageAccessibilityActions();
                 }
-            } else if (this.view.getLayerType() != 0) {
-                this.view.setLayerType(0, null);
+            };
+            if (ViewCompat.getImportantForAccessibility(ViewPager2.this) == 0) {
+                ViewCompat.setImportantForAccessibility(ViewPager2.this, 1);
             }
         }
-        MaterialShapeDrawable materialShapeDrawable = this.shapeDrawable;
-        if (materialShapeDrawable != null) {
-            materialShapeDrawable.setShadowCompatRotation((int) this.rotation);
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public String onGetAccessibilityClassName() {
+            if (handlesGetAccessibilityClassName()) {
+                return "androidx.viewpager.widget.ViewPager";
+            }
+            throw new IllegalStateException();
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public void onRestorePendingState() {
+            updatePageAccessibilityActions();
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public void onAttachAdapter(RecyclerView.Adapter<?> adapter) {
+            updatePageAccessibilityActions();
+            if (adapter != null) {
+                adapter.registerAdapterDataObserver(this.mAdapterDataObserver);
+            }
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public void onDetachAdapter(RecyclerView.Adapter<?> adapter) {
+            if (adapter != null) {
+                adapter.unregisterAdapterDataObserver(this.mAdapterDataObserver);
+            }
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public void onSetOrientation() {
+            updatePageAccessibilityActions();
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public void onSetNewCurrentItem() {
+            updatePageAccessibilityActions();
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public void onSetUserInputEnabled() {
+            updatePageAccessibilityActions();
+            if (Build.VERSION.SDK_INT < 21) {
+                ViewPager2.this.sendAccessibilityEvent(2048);
+            }
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public void onSetLayoutDirection() {
+            updatePageAccessibilityActions();
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo accessibilityNodeInfo) {
+            addCollectionInfo(accessibilityNodeInfo);
+            if (Build.VERSION.SDK_INT >= 16) {
+                addScrollActions(accessibilityNodeInfo);
+            }
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public boolean onPerformAccessibilityAction(int i2, Bundle bundle) {
+            int currentItem;
+            if (!handlesPerformAccessibilityAction(i2, bundle)) {
+                throw new IllegalStateException();
+            }
+            if (i2 == 8192) {
+                currentItem = ViewPager2.this.getCurrentItem() - 1;
+            } else {
+                currentItem = ViewPager2.this.getCurrentItem() + 1;
+            }
+            setCurrentItemFromAccessibilityCommand(currentItem);
+            return true;
+        }
+
+        @Override // androidx.viewpager2.widget.ViewPager2.AccessibilityProvider
+        public void onRvInitializeAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+            accessibilityEvent.setSource(ViewPager2.this);
+            accessibilityEvent.setClassName(onGetAccessibilityClassName());
+        }
+
+        void setCurrentItemFromAccessibilityCommand(int i2) {
+            if (ViewPager2.this.isUserInputEnabled()) {
+                ViewPager2.this.setCurrentItemInternal(i2, true);
+            }
+        }
+
+        void updatePageAccessibilityActions() {
+            int itemCount;
+            ViewPager2 viewPager2 = ViewPager2.this;
+            ViewCompat.removeAccessibilityAction(viewPager2, 16908360);
+            ViewCompat.removeAccessibilityAction(viewPager2, 16908361);
+            ViewCompat.removeAccessibilityAction(viewPager2, 16908358);
+            ViewCompat.removeAccessibilityAction(viewPager2, 16908359);
+            if (ViewPager2.this.getAdapter() == null || (itemCount = ViewPager2.this.getAdapter().getItemCount()) == 0 || !ViewPager2.this.isUserInputEnabled()) {
+                return;
+            }
+            if (ViewPager2.this.getOrientation() == 0) {
+                boolean isRtl = ViewPager2.this.isRtl();
+                int i2 = isRtl ? 16908360 : 16908361;
+                int i3 = isRtl ? 16908361 : 16908360;
+                if (ViewPager2.this.mCurrentItem < itemCount - 1) {
+                    ViewCompat.replaceAccessibilityAction(viewPager2, new AccessibilityNodeInfoCompat.AccessibilityActionCompat(i2, null), null, this.mActionPageForward);
+                }
+                if (ViewPager2.this.mCurrentItem > 0) {
+                    ViewCompat.replaceAccessibilityAction(viewPager2, new AccessibilityNodeInfoCompat.AccessibilityActionCompat(i3, null), null, this.mActionPageBackward);
+                    return;
+                }
+                return;
+            }
+            if (ViewPager2.this.mCurrentItem < itemCount - 1) {
+                ViewCompat.replaceAccessibilityAction(viewPager2, new AccessibilityNodeInfoCompat.AccessibilityActionCompat(16908359, null), null, this.mActionPageForward);
+            }
+            if (ViewPager2.this.mCurrentItem > 0) {
+                ViewCompat.replaceAccessibilityAction(viewPager2, new AccessibilityNodeInfoCompat.AccessibilityActionCompat(16908358, null), null, this.mActionPageBackward);
+            }
+        }
+
+        private void addCollectionInfo(AccessibilityNodeInfo accessibilityNodeInfo) {
+            int i2;
+            int i3;
+            if (ViewPager2.this.getAdapter() == null) {
+                i2 = 0;
+                i3 = 0;
+            } else if (ViewPager2.this.getOrientation() == 1) {
+                i2 = ViewPager2.this.getAdapter().getItemCount();
+                i3 = 0;
+            } else {
+                i3 = ViewPager2.this.getAdapter().getItemCount();
+                i2 = 0;
+            }
+            AccessibilityNodeInfoCompat.wrap(accessibilityNodeInfo).setCollectionInfo(AccessibilityNodeInfoCompat.CollectionInfoCompat.obtain(i2, i3, false, 0));
+        }
+
+        private void addScrollActions(AccessibilityNodeInfo accessibilityNodeInfo) {
+            int itemCount;
+            RecyclerView.Adapter adapter = ViewPager2.this.getAdapter();
+            if (adapter == null || (itemCount = adapter.getItemCount()) == 0 || !ViewPager2.this.isUserInputEnabled()) {
+                return;
+            }
+            if (ViewPager2.this.mCurrentItem > 0) {
+                accessibilityNodeInfo.addAction(8192);
+            }
+            if (ViewPager2.this.mCurrentItem < itemCount - 1) {
+                accessibilityNodeInfo.addAction(4096);
+            }
+            accessibilityNodeInfo.setScrollable(true);
+        }
+    }
+
+    /* loaded from: classes.dex */
+    private static abstract class DataSetChangeObserver extends RecyclerView.AdapterDataObserver {
+        @Override // androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+        public abstract void onChanged();
+
+        private DataSetChangeObserver() {
+        }
+
+        @Override // androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+        public final void onItemRangeChanged(int i2, int i3) {
+            onChanged();
+        }
+
+        @Override // androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+        public final void onItemRangeChanged(int i2, int i3, Object obj) {
+            onChanged();
+        }
+
+        @Override // androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+        public final void onItemRangeInserted(int i2, int i3) {
+            onChanged();
+        }
+
+        @Override // androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+        public final void onItemRangeRemoved(int i2, int i3) {
+            onChanged();
+        }
+
+        @Override // androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+        public final void onItemRangeMoved(int i2, int i3, int i4) {
+            onChanged();
         }
     }
 }

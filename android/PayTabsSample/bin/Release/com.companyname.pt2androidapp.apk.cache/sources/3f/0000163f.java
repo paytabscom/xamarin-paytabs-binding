@@ -1,47 +1,18 @@
-package mono.android.location;
+package kotlin.js;
 
-import android.location.GnssAntennaInfo;
-import java.util.ArrayList;
-import java.util.List;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import kotlin.Metadata;
+import kotlin.annotation.AnnotationRetention;
+import kotlin.annotation.MustBeDocumented;
 
+/* compiled from: JsAnnotationsH.kt */
+@MustBeDocumented
+@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\b\u0087\u0002\u0018\u00002\u00020\u0001B\u0000¨\u0006\u0002"}, d2 = {"Lkotlin/js/ExperimentalJsExport;", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+@Documented
+@Retention(RetentionPolicy.CLASS)
+@kotlin.annotation.Retention(AnnotationRetention.BINARY)
 /* loaded from: classes.dex */
-public class GnssAntennaInfo_ListenerImplementor implements IGCUserPeer, GnssAntennaInfo.Listener {
-    public static final String __md_methods = "n_onGnssAntennaInfoReceived:(Ljava/util/List;)V:GetOnGnssAntennaInfoReceived_Ljava_util_List_Handler:Android.Locations.GnssAntennaInfo/IListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onGnssAntennaInfoReceived(List list);
-
-    static {
-        Runtime.register("Android.Locations.GnssAntennaInfo+IListenerImplementor, Mono.Android", GnssAntennaInfo_ListenerImplementor.class, __md_methods);
-    }
-
-    public GnssAntennaInfo_ListenerImplementor() {
-        if (getClass() == GnssAntennaInfo_ListenerImplementor.class) {
-            TypeManager.Activate("Android.Locations.GnssAntennaInfo+IListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.location.GnssAntennaInfo.Listener
-    public void onGnssAntennaInfoReceived(List list) {
-        n_onGnssAntennaInfoReceived(list);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public @interface ExperimentalJsExport {
 }

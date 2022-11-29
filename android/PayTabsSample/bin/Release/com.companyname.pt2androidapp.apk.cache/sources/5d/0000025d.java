@@ -1,26 +1,70 @@
-package androidx.browser.browseractions;
+package androidx.arch.core.executor;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.View;
-import android.widget.LinearLayout;
-import androidx.browser.R;
-import androidx.constraintlayout.solver.widgets.analyzer.BasicMeasure;
+import java.util.concurrent.Executor;
 
-@Deprecated
 /* loaded from: classes.dex */
-public class BrowserActionsFallbackMenuView extends LinearLayout {
-    private final int mBrowserActionsMenuMaxWidthPx;
-    private final int mBrowserActionsMenuMinPaddingPx;
+public class ArchTaskExecutor extends TaskExecutor {
+    private static volatile ArchTaskExecutor sInstance;
+    private TaskExecutor mDefaultTaskExecutor;
+    private TaskExecutor mDelegate;
+    private static final Executor sMainThreadExecutor = new Executor() { // from class: androidx.arch.core.executor.ArchTaskExecutor.1
+        @Override // java.util.concurrent.Executor
+        public void execute(Runnable runnable) {
+            ArchTaskExecutor.getInstance().postToMainThread(runnable);
+        }
+    };
+    private static final Executor sIOThreadExecutor = new Executor() { // from class: androidx.arch.core.executor.ArchTaskExecutor.2
+        @Override // java.util.concurrent.Executor
+        public void execute(Runnable runnable) {
+            ArchTaskExecutor.getInstance().executeOnDiskIO(runnable);
+        }
+    };
 
-    public BrowserActionsFallbackMenuView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        this.mBrowserActionsMenuMinPaddingPx = getResources().getDimensionPixelOffset(R.dimen.browser_actions_context_menu_min_padding);
-        this.mBrowserActionsMenuMaxWidthPx = getResources().getDimensionPixelOffset(R.dimen.browser_actions_context_menu_max_width);
+    private ArchTaskExecutor() {
+        DefaultTaskExecutor defaultTaskExecutor = new DefaultTaskExecutor();
+        this.mDefaultTaskExecutor = defaultTaskExecutor;
+        this.mDelegate = defaultTaskExecutor;
     }
 
-    @Override // android.widget.LinearLayout, android.view.View
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(View.MeasureSpec.makeMeasureSpec(Math.min(getResources().getDisplayMetrics().widthPixels - (this.mBrowserActionsMenuMinPaddingPx * 2), this.mBrowserActionsMenuMaxWidthPx), BasicMeasure.EXACTLY), heightMeasureSpec);
+    public static ArchTaskExecutor getInstance() {
+        if (sInstance != null) {
+            return sInstance;
+        }
+        synchronized (ArchTaskExecutor.class) {
+            if (sInstance == null) {
+                sInstance = new ArchTaskExecutor();
+            }
+        }
+        return sInstance;
+    }
+
+    public void setDelegate(TaskExecutor taskExecutor) {
+        if (taskExecutor == null) {
+            taskExecutor = this.mDefaultTaskExecutor;
+        }
+        this.mDelegate = taskExecutor;
+    }
+
+    @Override // androidx.arch.core.executor.TaskExecutor
+    public void executeOnDiskIO(Runnable runnable) {
+        this.mDelegate.executeOnDiskIO(runnable);
+    }
+
+    @Override // androidx.arch.core.executor.TaskExecutor
+    public void postToMainThread(Runnable runnable) {
+        this.mDelegate.postToMainThread(runnable);
+    }
+
+    public static Executor getMainThreadExecutor() {
+        return sMainThreadExecutor;
+    }
+
+    public static Executor getIOThreadExecutor() {
+        return sIOThreadExecutor;
+    }
+
+    @Override // androidx.arch.core.executor.TaskExecutor
+    public boolean isMainThread() {
+        return this.mDelegate.isMainThread();
     }
 }

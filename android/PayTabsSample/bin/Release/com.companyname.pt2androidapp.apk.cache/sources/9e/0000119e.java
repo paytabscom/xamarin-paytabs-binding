@@ -1,29 +1,64 @@
-package kotlin.sequences;
+package com.google.crypto.tink.shaded.protobuf;
 
-import kotlin.Metadata;
-import kotlin.collections.IndexedValue;
-import kotlin.jvm.functions.Function1;
-import kotlin.jvm.internal.Intrinsics;
-import kotlin.jvm.internal.Lambda;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-/* compiled from: _Sequences.kt */
-@Metadata(d1 = {"\u0000\f\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0002\u0010\u0000\u001a\u0002H\u0001\"\u0004\b\u0000\u0010\u00012\f\u0010\u0002\u001a\b\u0012\u0004\u0012\u0002H\u00010\u0003H\n¢\u0006\u0004\b\u0004\u0010\u0005"}, d2 = {"<anonymous>", "T", "it", "Lkotlin/collections/IndexedValue;", "invoke", "(Lkotlin/collections/IndexedValue;)Ljava/lang/Object;"}, k = 3, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-final class SequencesKt___SequencesKt$filterIndexed$2 extends Lambda implements Function1<IndexedValue<? extends T>, T> {
-    public static final SequencesKt___SequencesKt$filterIndexed$2 INSTANCE = new SequencesKt___SequencesKt$filterIndexed$2();
+public interface MessageLite extends MessageLiteOrBuilder {
 
-    SequencesKt___SequencesKt$filterIndexed$2() {
-        super(1);
+    /* loaded from: classes.dex */
+    public interface Builder extends MessageLiteOrBuilder, Cloneable {
+        MessageLite build();
+
+        MessageLite buildPartial();
+
+        Builder clear();
+
+        Builder clone();
+
+        boolean mergeDelimitedFrom(InputStream input) throws IOException;
+
+        boolean mergeDelimitedFrom(InputStream input, ExtensionRegistryLite extensionRegistry) throws IOException;
+
+        Builder mergeFrom(ByteString data) throws InvalidProtocolBufferException;
+
+        Builder mergeFrom(ByteString data, ExtensionRegistryLite extensionRegistry) throws InvalidProtocolBufferException;
+
+        Builder mergeFrom(CodedInputStream input) throws IOException;
+
+        Builder mergeFrom(CodedInputStream input, ExtensionRegistryLite extensionRegistry) throws IOException;
+
+        Builder mergeFrom(MessageLite other);
+
+        Builder mergeFrom(InputStream input) throws IOException;
+
+        Builder mergeFrom(InputStream input, ExtensionRegistryLite extensionRegistry) throws IOException;
+
+        Builder mergeFrom(byte[] data) throws InvalidProtocolBufferException;
+
+        Builder mergeFrom(byte[] data, int off, int len) throws InvalidProtocolBufferException;
+
+        Builder mergeFrom(byte[] data, int off, int len, ExtensionRegistryLite extensionRegistry) throws InvalidProtocolBufferException;
+
+        Builder mergeFrom(byte[] data, ExtensionRegistryLite extensionRegistry) throws InvalidProtocolBufferException;
     }
 
-    @Override // kotlin.jvm.functions.Function1
-    public /* bridge */ /* synthetic */ Object invoke(Object obj) {
-        return invoke((IndexedValue<? extends Object>) obj);
-    }
+    Parser<? extends MessageLite> getParserForType();
 
-    /* JADX WARN: Type inference failed for: r2v1, types: [T, java.lang.Object] */
-    public final T invoke(IndexedValue<? extends T> it) {
-        Intrinsics.checkNotNullParameter(it, "it");
-        return it.getValue();
-    }
+    int getSerializedSize();
+
+    Builder newBuilderForType();
+
+    Builder toBuilder();
+
+    byte[] toByteArray();
+
+    ByteString toByteString();
+
+    void writeDelimitedTo(OutputStream output) throws IOException;
+
+    void writeTo(CodedOutputStream output) throws IOException;
+
+    void writeTo(OutputStream output) throws IOException;
 }

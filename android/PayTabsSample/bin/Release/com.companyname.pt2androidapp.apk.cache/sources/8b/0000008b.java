@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Documented
 @Retention(RetentionPolicy.CLASS)
 /* loaded from: classes.dex */
-public @interface IntegerRes {
+public @interface AnimatorRes {
 }

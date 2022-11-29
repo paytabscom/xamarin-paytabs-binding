@@ -1,27 +1,132 @@
-package kotlinx.coroutines;
+package com.google.crypto.tink.subtle;
 
-import kotlin.Metadata;
-import kotlin.Unit;
+import com.google.crypto.tink.subtle.Enums;
+import java.math.BigInteger;
+import java.nio.ByteBuffer;
+import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.util.Arrays;
 
-/* compiled from: JobSupport.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u0003\n\u0000\b\u0000\u0018\u00002\u00020\u0001B\r\u0012\u0006\u0010\u0002\u001a\u00020\u0003¢\u0006\u0002\u0010\u0004J\u0013\u0010\u0005\u001a\u00020\u00062\b\u0010\u0007\u001a\u0004\u0018\u00010\bH\u0096\u0002R\u000e\u0010\u0002\u001a\u00020\u0003X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\t"}, d2 = {"Lkotlinx/coroutines/DisposeOnCompletion;", "Lkotlinx/coroutines/JobNode;", "handle", "Lkotlinx/coroutines/DisposableHandle;", "(Lkotlinx/coroutines/DisposableHandle;)V", "invoke", "", "cause", "", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class DisposeOnCompletion extends JobNode {
-    private final DisposableHandle handle;
-
-    @Override // kotlin.jvm.functions.Function1
-    public /* bridge */ /* synthetic */ Unit invoke(Throwable th) {
-        invoke2(th);
-        return Unit.INSTANCE;
+public class SubtleUtil {
+    public static String toEcdsaAlgo(Enums.HashType hash) throws GeneralSecurityException {
+        Validators.validateSignatureHash(hash);
+        return hash + "withECDSA";
     }
 
-    public DisposeOnCompletion(DisposableHandle disposableHandle) {
-        this.handle = disposableHandle;
+    public static String toRsaSsaPkcs1Algo(Enums.HashType hash) throws GeneralSecurityException {
+        Validators.validateSignatureHash(hash);
+        return hash + "withRSA";
     }
 
-    @Override // kotlinx.coroutines.CompletionHandlerBase
-    /* renamed from: invoke  reason: avoid collision after fix types in other method */
-    public void invoke2(Throwable th) {
-        this.handle.dispose();
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* renamed from: com.google.crypto.tink.subtle.SubtleUtil$1  reason: invalid class name */
+    /* loaded from: classes.dex */
+    public static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType;
+
+        static {
+            int[] iArr = new int[Enums.HashType.values().length];
+            $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType = iArr;
+            try {
+                iArr[Enums.HashType.SHA1.ordinal()] = 1;
+            } catch (NoSuchFieldError unused) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType[Enums.HashType.SHA224.ordinal()] = 2;
+            } catch (NoSuchFieldError unused2) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType[Enums.HashType.SHA256.ordinal()] = 3;
+            } catch (NoSuchFieldError unused3) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType[Enums.HashType.SHA384.ordinal()] = 4;
+            } catch (NoSuchFieldError unused4) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType[Enums.HashType.SHA512.ordinal()] = 5;
+            } catch (NoSuchFieldError unused5) {
+            }
+        }
+    }
+
+    public static String toDigestAlgo(Enums.HashType hash) throws GeneralSecurityException {
+        int i2 = AnonymousClass1.$SwitchMap$com$google$crypto$tink$subtle$Enums$HashType[hash.ordinal()];
+        if (i2 != 1) {
+            if (i2 != 2) {
+                if (i2 != 3) {
+                    if (i2 != 4) {
+                        if (i2 == 5) {
+                            return "SHA-512";
+                        }
+                        throw new GeneralSecurityException("Unsupported hash " + hash);
+                    }
+                    return "SHA-384";
+                }
+                return "SHA-256";
+            }
+            return "SHA-224";
+        }
+        return "SHA-1";
+    }
+
+    public static boolean isAndroid() {
+        return "The Android Project".equals(System.getProperty("java.vendor"));
+    }
+
+    public static int androidApiLevel() {
+        try {
+            return Class.forName("android.os.Build$VERSION").getDeclaredField("SDK_INT").getInt(null);
+        } catch (ClassNotFoundException | IllegalAccessException | NoSuchFieldException unused) {
+            return -1;
+        }
+    }
+
+    public static BigInteger bytes2Integer(byte[] bs) {
+        return new BigInteger(1, bs);
+    }
+
+    public static byte[] integer2Bytes(BigInteger num, int intendedLength) throws GeneralSecurityException {
+        byte[] byteArray = num.toByteArray();
+        if (byteArray.length == intendedLength) {
+            return byteArray;
+        }
+        int i2 = intendedLength + 1;
+        if (byteArray.length > i2) {
+            throw new GeneralSecurityException("integer too large");
+        }
+        if (byteArray.length == i2) {
+            if (byteArray[0] == 0) {
+                return Arrays.copyOfRange(byteArray, 1, byteArray.length);
+            }
+            throw new GeneralSecurityException("integer too large");
+        }
+        byte[] bArr = new byte[intendedLength];
+        System.arraycopy(byteArray, 0, bArr, intendedLength - byteArray.length, byteArray.length);
+        return bArr;
+    }
+
+    public static byte[] mgf1(byte[] mgfSeed, int maskLen, Enums.HashType mgfHash) throws GeneralSecurityException {
+        MessageDigest engineFactory = EngineFactory.MESSAGE_DIGEST.getInstance(toDigestAlgo(mgfHash));
+        int digestLength = engineFactory.getDigestLength();
+        byte[] bArr = new byte[maskLen];
+        int i2 = 0;
+        for (int i3 = 0; i3 <= (maskLen - 1) / digestLength; i3++) {
+            engineFactory.reset();
+            engineFactory.update(mgfSeed);
+            engineFactory.update(integer2Bytes(BigInteger.valueOf(i3), 4));
+            byte[] digest = engineFactory.digest();
+            System.arraycopy(digest, 0, bArr, i2, Math.min(digest.length, maskLen - i2));
+            i2 += digest.length;
+        }
+        return bArr;
+    }
+
+    public static void putAsUnsigedInt(ByteBuffer buffer, long value) throws GeneralSecurityException {
+        if (0 > value || value >= 4294967296L) {
+            throw new GeneralSecurityException("Index out of range");
+        }
+        buffer.putInt((int) value);
     }
 }

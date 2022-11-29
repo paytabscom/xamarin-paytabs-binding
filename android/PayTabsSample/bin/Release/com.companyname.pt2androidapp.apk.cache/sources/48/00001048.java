@@ -1,21 +1,74 @@
-package kotlin.io;
+package com.google.crypto.tink.proto;
 
-import java.io.File;
-import kotlin.Metadata;
-import kotlin.jvm.internal.DefaultConstructorMarker;
-import kotlin.jvm.internal.Intrinsics;
+import com.google.crypto.tink.shaded.protobuf.Internal;
 
-/* compiled from: Exceptions.kt */
-@Metadata(d1 = {"\u0000\u001a\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0002\b\u0002\u0018\u00002\u00020\u0001B%\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\n\b\u0002\u0010\u0004\u001a\u0004\u0018\u00010\u0003\u0012\n\b\u0002\u0010\u0005\u001a\u0004\u0018\u00010\u0006¢\u0006\u0002\u0010\u0007¨\u0006\b"}, d2 = {"Lkotlin/io/AccessDeniedException;", "Lkotlin/io/FileSystemException;", "file", "Ljava/io/File;", "other", "reason", "", "(Ljava/io/File;Ljava/io/File;Ljava/lang/String;)V", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class AccessDeniedException extends FileSystemException {
-    public /* synthetic */ AccessDeniedException(File file, File file2, String str, int i2, DefaultConstructorMarker defaultConstructorMarker) {
-        this(file, (i2 & 2) != 0 ? null : file2, (i2 & 4) != 0 ? null : str);
+public enum EcdsaSignatureEncoding implements Internal.EnumLite {
+    UNKNOWN_ENCODING(0),
+    IEEE_P1363(1),
+    DER(2),
+    UNRECOGNIZED(-1);
+    
+    public static final int DER_VALUE = 2;
+    public static final int IEEE_P1363_VALUE = 1;
+    public static final int UNKNOWN_ENCODING_VALUE = 0;
+    private static final Internal.EnumLiteMap<EcdsaSignatureEncoding> internalValueMap = new Internal.EnumLiteMap<EcdsaSignatureEncoding>() { // from class: com.google.crypto.tink.proto.EcdsaSignatureEncoding.1
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumLiteMap
+        public EcdsaSignatureEncoding findValueByNumber(int number) {
+            return EcdsaSignatureEncoding.forNumber(number);
+        }
+    };
+    private final int value;
+
+    @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumLite
+    public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+            throw new IllegalArgumentException("Can't get the number of an unknown enum value.");
+        }
+        return this.value;
     }
 
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public AccessDeniedException(File file, File file2, String str) {
-        super(file, file2, str);
-        Intrinsics.checkNotNullParameter(file, "file");
+    @Deprecated
+    public static EcdsaSignatureEncoding valueOf(int value) {
+        return forNumber(value);
+    }
+
+    public static EcdsaSignatureEncoding forNumber(int value) {
+        if (value != 0) {
+            if (value != 1) {
+                if (value != 2) {
+                    return null;
+                }
+                return DER;
+            }
+            return IEEE_P1363;
+        }
+        return UNKNOWN_ENCODING;
+    }
+
+    public static Internal.EnumLiteMap<EcdsaSignatureEncoding> internalGetValueMap() {
+        return internalValueMap;
+    }
+
+    public static Internal.EnumVerifier internalGetVerifier() {
+        return EcdsaSignatureEncodingVerifier.INSTANCE;
+    }
+
+    /* loaded from: classes.dex */
+    private static final class EcdsaSignatureEncodingVerifier implements Internal.EnumVerifier {
+        static final Internal.EnumVerifier INSTANCE = new EcdsaSignatureEncodingVerifier();
+
+        private EcdsaSignatureEncodingVerifier() {
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumVerifier
+        public boolean isInRange(int number) {
+            return EcdsaSignatureEncoding.forNumber(number) != null;
+        }
+    }
+
+    EcdsaSignatureEncoding(int value) {
+        this.value = value;
     }
 }

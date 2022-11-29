@@ -1,49 +1,39 @@
-package com.google.android.material.transition;
+package com.google.android.material.floatingactionbutton;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
-import android.view.View;
-import android.view.ViewGroup;
+import android.animation.AnimatorSet;
+import com.google.android.material.animation.MotionSpec;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import java.util.List;
 
+/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-public final class FadeProvider implements VisibilityAnimatorProvider {
-    private float incomingEndThreshold = 1.0f;
+public interface MotionStrategy {
+    void addAnimationListener(Animator.AnimatorListener animatorListener);
 
-    public float getIncomingEndThreshold() {
-        return this.incomingEndThreshold;
-    }
+    AnimatorSet createAnimator();
 
-    public void setIncomingEndThreshold(float f2) {
-        this.incomingEndThreshold = f2;
-    }
+    MotionSpec getCurrentMotionSpec();
 
-    @Override // com.google.android.material.transition.VisibilityAnimatorProvider
-    public Animator createAppear(ViewGroup viewGroup, View view) {
-        float alpha = view.getAlpha() == 0.0f ? 1.0f : view.getAlpha();
-        return createFadeAnimator(view, 0.0f, alpha, 0.0f, this.incomingEndThreshold, alpha);
-    }
+    int getDefaultMotionSpecResource();
 
-    @Override // com.google.android.material.transition.VisibilityAnimatorProvider
-    public Animator createDisappear(ViewGroup viewGroup, View view) {
-        float alpha = view.getAlpha() == 0.0f ? 1.0f : view.getAlpha();
-        return createFadeAnimator(view, alpha, 0.0f, 0.0f, 1.0f, alpha);
-    }
+    List<Animator.AnimatorListener> getListeners();
 
-    private static Animator createFadeAnimator(final View view, final float f2, final float f3, final float f4, final float f5, final float f6) {
-        ValueAnimator ofFloat = ValueAnimator.ofFloat(0.0f, 1.0f);
-        ofFloat.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() { // from class: com.google.android.material.transition.FadeProvider.1
-            @Override // android.animation.ValueAnimator.AnimatorUpdateListener
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                view.setAlpha(TransitionUtils.lerp(f2, f3, f4, f5, ((Float) valueAnimator.getAnimatedValue()).floatValue()));
-            }
-        });
-        ofFloat.addListener(new AnimatorListenerAdapter() { // from class: com.google.android.material.transition.FadeProvider.2
-            @Override // android.animation.AnimatorListenerAdapter, android.animation.Animator.AnimatorListener
-            public void onAnimationEnd(Animator animator) {
-                view.setAlpha(f6);
-            }
-        });
-        return ofFloat;
-    }
+    MotionSpec getMotionSpec();
+
+    void onAnimationCancel();
+
+    void onAnimationEnd();
+
+    void onAnimationStart(Animator animator);
+
+    void onChange(ExtendedFloatingActionButton.OnChangedCallback onChangedCallback);
+
+    void performNow();
+
+    void removeAnimationListener(Animator.AnimatorListener animatorListener);
+
+    void setMotionSpec(MotionSpec motionSpec);
+
+    boolean shouldCancel();
 }

@@ -1,46 +1,21 @@
-package mono.android.animation;
+package kotlin.io;
 
-import android.animation.ValueAnimator;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.io.File;
+import kotlin.Metadata;
+import kotlin.jvm.internal.DefaultConstructorMarker;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: Exceptions.kt */
+@Metadata(d1 = {"\u0000\u001a\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u000e\n\u0002\b\u0002\u0018\u00002\u00020\u0001B%\u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\n\b\u0002\u0010\u0004\u001a\u0004\u0018\u00010\u0003\u0012\n\b\u0002\u0010\u0005\u001a\u0004\u0018\u00010\u0006¢\u0006\u0002\u0010\u0007¨\u0006\b"}, d2 = {"Lkotlin/io/AccessDeniedException;", "Lkotlin/io/FileSystemException;", "file", "Ljava/io/File;", "other", "reason", "", "(Ljava/io/File;Ljava/io/File;Ljava/lang/String;)V", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class ValueAnimator_AnimatorUpdateListenerImplementor implements IGCUserPeer, ValueAnimator.AnimatorUpdateListener {
-    public static final String __md_methods = "n_onAnimationUpdate:(Landroid/animation/ValueAnimator;)V:GetOnAnimationUpdate_Landroid_animation_ValueAnimator_Handler:Android.Animation.ValueAnimator/IAnimatorUpdateListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onAnimationUpdate(ValueAnimator valueAnimator);
-
-    static {
-        Runtime.register("Android.Animation.ValueAnimator+IAnimatorUpdateListenerImplementor, Mono.Android", ValueAnimator_AnimatorUpdateListenerImplementor.class, __md_methods);
+public final class AccessDeniedException extends FileSystemException {
+    public /* synthetic */ AccessDeniedException(File file, File file2, String str, int i2, DefaultConstructorMarker defaultConstructorMarker) {
+        this(file, (i2 & 2) != 0 ? null : file2, (i2 & 4) != 0 ? null : str);
     }
 
-    public ValueAnimator_AnimatorUpdateListenerImplementor() {
-        if (getClass() == ValueAnimator_AnimatorUpdateListenerImplementor.class) {
-            TypeManager.Activate("Android.Animation.ValueAnimator+IAnimatorUpdateListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.animation.ValueAnimator.AnimatorUpdateListener
-    public void onAnimationUpdate(ValueAnimator valueAnimator) {
-        n_onAnimationUpdate(valueAnimator);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public AccessDeniedException(File file, File file2, String str) {
+        super(file, file2, str);
+        Intrinsics.checkNotNullParameter(file, "file");
     }
 }

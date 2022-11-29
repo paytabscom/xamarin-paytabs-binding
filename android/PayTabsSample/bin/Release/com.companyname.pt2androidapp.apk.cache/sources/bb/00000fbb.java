@@ -1,11 +1,12 @@
-package kotlin.collections;
+package com.google.crypto.tink.proto;
 
-import kotlin.Metadata;
+import com.google.crypto.tink.shaded.protobuf.ExtensionRegistryLite;
 
-/* compiled from: _UCollections.kt */
-@Metadata(d1 = {"kotlin/collections/UCollectionsKt___UCollectionsKt"}, k = 4, mv = {1, 5, 1}, xi = 1)
 /* loaded from: classes.dex */
-public final class UCollectionsKt extends UCollectionsKt___UCollectionsKt {
-    private UCollectionsKt() {
+public final class AesCmac {
+    public static void registerAllExtensions(ExtensionRegistryLite registry) {
+    }
+
+    private AesCmac() {
     }
 }

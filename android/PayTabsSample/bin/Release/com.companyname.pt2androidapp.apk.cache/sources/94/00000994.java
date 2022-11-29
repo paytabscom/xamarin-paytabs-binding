@@ -1,36 +1,10 @@
-package androidx.transition;
-
-import android.graphics.drawable.Drawable;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroupOverlay;
+package androidx.lifecycle.runtime;
 
 /* loaded from: classes.dex */
-class ViewGroupOverlayApi18 implements ViewGroupOverlayImpl {
-    private final ViewGroupOverlay mViewGroupOverlay;
+public final class R {
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public ViewGroupOverlayApi18(ViewGroup viewGroup) {
-        this.mViewGroupOverlay = viewGroup.getOverlay();
-    }
-
-    @Override // androidx.transition.ViewOverlayImpl
-    public void add(Drawable drawable) {
-        this.mViewGroupOverlay.add(drawable);
-    }
-
-    @Override // androidx.transition.ViewOverlayImpl
-    public void remove(Drawable drawable) {
-        this.mViewGroupOverlay.remove(drawable);
-    }
-
-    @Override // androidx.transition.ViewGroupOverlayImpl
-    public void add(View view) {
-        this.mViewGroupOverlay.add(view);
-    }
-
-    @Override // androidx.transition.ViewGroupOverlayImpl
-    public void remove(View view) {
-        this.mViewGroupOverlay.remove(view);
+    /* loaded from: classes.dex */
+    public static final class id {
+        public static final int view_tree_lifecycle_owner = 0x7f0901ed;
     }
 }

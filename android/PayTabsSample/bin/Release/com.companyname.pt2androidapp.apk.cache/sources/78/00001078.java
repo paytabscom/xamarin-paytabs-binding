@@ -1,23 +1,89 @@
-package kotlin.jvm;
+package com.google.crypto.tink.proto;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import kotlin.Metadata;
-import kotlin.annotation.AnnotationRetention;
-import kotlin.annotation.AnnotationTarget;
-import kotlin.annotation.MustBeDocumented;
+import com.google.crypto.tink.shaded.protobuf.Internal;
 
-/* compiled from: JvmPlatformAnnotations.kt */
-@Target({ElementType.TYPE})
-@kotlin.annotation.Target(allowedTargets = {AnnotationTarget.CLASS})
-@Retention(RetentionPolicy.SOURCE)
-@kotlin.annotation.Retention(AnnotationRetention.SOURCE)
-@MustBeDocumented
-@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\b\u0087\u0002\u0018\u00002\u00020\u0001B\u0000¨\u0006\u0002"}, d2 = {"Lkotlin/jvm/JvmRecord;", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
-@Documented
 /* loaded from: classes.dex */
-public @interface JvmRecord {
+public enum HashType implements Internal.EnumLite {
+    UNKNOWN_HASH(0),
+    SHA1(1),
+    SHA384(2),
+    SHA256(3),
+    SHA512(4),
+    SHA224(5),
+    UNRECOGNIZED(-1);
+    
+    public static final int SHA1_VALUE = 1;
+    public static final int SHA224_VALUE = 5;
+    public static final int SHA256_VALUE = 3;
+    public static final int SHA384_VALUE = 2;
+    public static final int SHA512_VALUE = 4;
+    public static final int UNKNOWN_HASH_VALUE = 0;
+    private static final Internal.EnumLiteMap<HashType> internalValueMap = new Internal.EnumLiteMap<HashType>() { // from class: com.google.crypto.tink.proto.HashType.1
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumLiteMap
+        public HashType findValueByNumber(int number) {
+            return HashType.forNumber(number);
+        }
+    };
+    private final int value;
+
+    @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumLite
+    public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+            throw new IllegalArgumentException("Can't get the number of an unknown enum value.");
+        }
+        return this.value;
+    }
+
+    @Deprecated
+    public static HashType valueOf(int value) {
+        return forNumber(value);
+    }
+
+    public static HashType forNumber(int value) {
+        if (value != 0) {
+            if (value != 1) {
+                if (value != 2) {
+                    if (value != 3) {
+                        if (value != 4) {
+                            if (value != 5) {
+                                return null;
+                            }
+                            return SHA224;
+                        }
+                        return SHA512;
+                    }
+                    return SHA256;
+                }
+                return SHA384;
+            }
+            return SHA1;
+        }
+        return UNKNOWN_HASH;
+    }
+
+    public static Internal.EnumLiteMap<HashType> internalGetValueMap() {
+        return internalValueMap;
+    }
+
+    public static Internal.EnumVerifier internalGetVerifier() {
+        return HashTypeVerifier.INSTANCE;
+    }
+
+    /* loaded from: classes.dex */
+    private static final class HashTypeVerifier implements Internal.EnumVerifier {
+        static final Internal.EnumVerifier INSTANCE = new HashTypeVerifier();
+
+        private HashTypeVerifier() {
+        }
+
+        @Override // com.google.crypto.tink.shaded.protobuf.Internal.EnumVerifier
+        public boolean isInRange(int number) {
+            return HashType.forNumber(number) != null;
+        }
+    }
+
+    HashType(int value) {
+        this.value = value;
+    }
 }

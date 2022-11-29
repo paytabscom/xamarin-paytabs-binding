@@ -1,251 +1,521 @@
 package androidx.appcompat.widget;
 
-import android.content.res.AssetFileDescriptor;
-import android.content.res.ColorStateList;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.content.res.XmlResourceParser;
-import android.graphics.Movie;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import java.io.IOException;
-import java.io.InputStream;
-import org.xmlpull.v1.XmlPullParserException;
+import android.os.Build;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import androidx.appcompat.R;
+import androidx.appcompat.graphics.drawable.DrawableWrapper;
+import androidx.constraintlayout.solver.widgets.analyzer.BasicMeasure;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewPropertyAnimatorCompat;
+import androidx.core.widget.ListViewAutoScrollHelper;
+import java.lang.reflect.Field;
 
+/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-class ResourcesWrapper extends Resources {
-    private final Resources mResources;
+public class DropDownListView extends ListView {
+    public static final int INVALID_POSITION = -1;
+    public static final int NO_POSITION = -1;
+    private ViewPropertyAnimatorCompat mClickAnimation;
+    private boolean mDrawsInPressedState;
+    private boolean mHijackFocus;
+    private Field mIsChildViewEnabled;
+    private boolean mListSelectionHidden;
+    private int mMotionPosition;
+    ResolveHoverRunnable mResolveHoverRunnable;
+    private ListViewAutoScrollHelper mScrollHelper;
+    private int mSelectionBottomPadding;
+    private int mSelectionLeftPadding;
+    private int mSelectionRightPadding;
+    private int mSelectionTopPadding;
+    private GateKeeperDrawable mSelector;
+    private final Rect mSelectorRect;
 
-    public ResourcesWrapper(Resources resources) {
-        super(resources.getAssets(), resources.getDisplayMetrics(), resources.getConfiguration());
-        this.mResources = resources;
-    }
-
-    @Override // android.content.res.Resources
-    public CharSequence getText(int i2) throws Resources.NotFoundException {
-        return this.mResources.getText(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public CharSequence getQuantityText(int i2, int i3) throws Resources.NotFoundException {
-        return this.mResources.getQuantityText(i2, i3);
-    }
-
-    @Override // android.content.res.Resources
-    public String getString(int i2) throws Resources.NotFoundException {
-        return this.mResources.getString(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public String getString(int i2, Object... objArr) throws Resources.NotFoundException {
-        return this.mResources.getString(i2, objArr);
-    }
-
-    @Override // android.content.res.Resources
-    public String getQuantityString(int i2, int i3, Object... objArr) throws Resources.NotFoundException {
-        return this.mResources.getQuantityString(i2, i3, objArr);
-    }
-
-    @Override // android.content.res.Resources
-    public String getQuantityString(int i2, int i3) throws Resources.NotFoundException {
-        return this.mResources.getQuantityString(i2, i3);
-    }
-
-    @Override // android.content.res.Resources
-    public CharSequence getText(int i2, CharSequence charSequence) {
-        return this.mResources.getText(i2, charSequence);
-    }
-
-    @Override // android.content.res.Resources
-    public CharSequence[] getTextArray(int i2) throws Resources.NotFoundException {
-        return this.mResources.getTextArray(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public String[] getStringArray(int i2) throws Resources.NotFoundException {
-        return this.mResources.getStringArray(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public int[] getIntArray(int i2) throws Resources.NotFoundException {
-        return this.mResources.getIntArray(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public TypedArray obtainTypedArray(int i2) throws Resources.NotFoundException {
-        return this.mResources.obtainTypedArray(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public float getDimension(int i2) throws Resources.NotFoundException {
-        return this.mResources.getDimension(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public int getDimensionPixelOffset(int i2) throws Resources.NotFoundException {
-        return this.mResources.getDimensionPixelOffset(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public int getDimensionPixelSize(int i2) throws Resources.NotFoundException {
-        return this.mResources.getDimensionPixelSize(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public float getFraction(int i2, int i3, int i4) {
-        return this.mResources.getFraction(i2, i3, i4);
-    }
-
-    @Override // android.content.res.Resources
-    public Drawable getDrawable(int i2) throws Resources.NotFoundException {
-        return this.mResources.getDrawable(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public Drawable getDrawable(int i2, Resources.Theme theme) throws Resources.NotFoundException {
-        return this.mResources.getDrawable(i2, theme);
-    }
-
-    @Override // android.content.res.Resources
-    public Drawable getDrawableForDensity(int i2, int i3) throws Resources.NotFoundException {
-        return this.mResources.getDrawableForDensity(i2, i3);
-    }
-
-    @Override // android.content.res.Resources
-    public Drawable getDrawableForDensity(int i2, int i3, Resources.Theme theme) {
-        return this.mResources.getDrawableForDensity(i2, i3, theme);
-    }
-
-    @Override // android.content.res.Resources
-    public Movie getMovie(int i2) throws Resources.NotFoundException {
-        return this.mResources.getMovie(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public int getColor(int i2) throws Resources.NotFoundException {
-        return this.mResources.getColor(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public ColorStateList getColorStateList(int i2) throws Resources.NotFoundException {
-        return this.mResources.getColorStateList(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public boolean getBoolean(int i2) throws Resources.NotFoundException {
-        return this.mResources.getBoolean(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public int getInteger(int i2) throws Resources.NotFoundException {
-        return this.mResources.getInteger(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public XmlResourceParser getLayout(int i2) throws Resources.NotFoundException {
-        return this.mResources.getLayout(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public XmlResourceParser getAnimation(int i2) throws Resources.NotFoundException {
-        return this.mResources.getAnimation(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public XmlResourceParser getXml(int i2) throws Resources.NotFoundException {
-        return this.mResources.getXml(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public InputStream openRawResource(int i2) throws Resources.NotFoundException {
-        return this.mResources.openRawResource(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public InputStream openRawResource(int i2, TypedValue typedValue) throws Resources.NotFoundException {
-        return this.mResources.openRawResource(i2, typedValue);
-    }
-
-    @Override // android.content.res.Resources
-    public AssetFileDescriptor openRawResourceFd(int i2) throws Resources.NotFoundException {
-        return this.mResources.openRawResourceFd(i2);
-    }
-
-    @Override // android.content.res.Resources
-    public void getValue(int i2, TypedValue typedValue, boolean z2) throws Resources.NotFoundException {
-        this.mResources.getValue(i2, typedValue, z2);
-    }
-
-    @Override // android.content.res.Resources
-    public void getValueForDensity(int i2, int i3, TypedValue typedValue, boolean z2) throws Resources.NotFoundException {
-        this.mResources.getValueForDensity(i2, i3, typedValue, z2);
-    }
-
-    @Override // android.content.res.Resources
-    public void getValue(String str, TypedValue typedValue, boolean z2) throws Resources.NotFoundException {
-        this.mResources.getValue(str, typedValue, z2);
-    }
-
-    @Override // android.content.res.Resources
-    public TypedArray obtainAttributes(AttributeSet attributeSet, int[] iArr) {
-        return this.mResources.obtainAttributes(attributeSet, iArr);
-    }
-
-    @Override // android.content.res.Resources
-    public void updateConfiguration(Configuration configuration, DisplayMetrics displayMetrics) {
-        super.updateConfiguration(configuration, displayMetrics);
-        Resources resources = this.mResources;
-        if (resources != null) {
-            resources.updateConfiguration(configuration, displayMetrics);
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public DropDownListView(Context context, boolean z2) {
+        super(context, null, R.attr.dropDownListViewStyle);
+        this.mSelectorRect = new Rect();
+        this.mSelectionLeftPadding = 0;
+        this.mSelectionTopPadding = 0;
+        this.mSelectionRightPadding = 0;
+        this.mSelectionBottomPadding = 0;
+        this.mHijackFocus = z2;
+        setCacheColorHint(0);
+        try {
+            Field declaredField = AbsListView.class.getDeclaredField("mIsChildViewEnabled");
+            this.mIsChildViewEnabled = declaredField;
+            declaredField.setAccessible(true);
+        } catch (NoSuchFieldException e2) {
+            e2.printStackTrace();
         }
     }
 
-    @Override // android.content.res.Resources
-    public DisplayMetrics getDisplayMetrics() {
-        return this.mResources.getDisplayMetrics();
+    @Override // android.view.View
+    public boolean isInTouchMode() {
+        return (this.mHijackFocus && this.mListSelectionHidden) || super.isInTouchMode();
     }
 
-    @Override // android.content.res.Resources
-    public Configuration getConfiguration() {
-        return this.mResources.getConfiguration();
+    @Override // android.view.View
+    public boolean hasWindowFocus() {
+        return this.mHijackFocus || super.hasWindowFocus();
     }
 
-    @Override // android.content.res.Resources
-    public int getIdentifier(String str, String str2, String str3) {
-        return this.mResources.getIdentifier(str, str2, str3);
+    @Override // android.view.View
+    public boolean isFocused() {
+        return this.mHijackFocus || super.isFocused();
     }
 
-    @Override // android.content.res.Resources
-    public String getResourceName(int i2) throws Resources.NotFoundException {
-        return this.mResources.getResourceName(i2);
+    @Override // android.view.ViewGroup, android.view.View
+    public boolean hasFocus() {
+        return this.mHijackFocus || super.hasFocus();
     }
 
-    @Override // android.content.res.Resources
-    public String getResourcePackageName(int i2) throws Resources.NotFoundException {
-        return this.mResources.getResourcePackageName(i2);
+    @Override // android.widget.AbsListView
+    public void setSelector(Drawable drawable) {
+        GateKeeperDrawable gateKeeperDrawable = drawable != null ? new GateKeeperDrawable(drawable) : null;
+        this.mSelector = gateKeeperDrawable;
+        super.setSelector(gateKeeperDrawable);
+        Rect rect = new Rect();
+        if (drawable != null) {
+            drawable.getPadding(rect);
+        }
+        this.mSelectionLeftPadding = rect.left;
+        this.mSelectionTopPadding = rect.top;
+        this.mSelectionRightPadding = rect.right;
+        this.mSelectionBottomPadding = rect.bottom;
     }
 
-    @Override // android.content.res.Resources
-    public String getResourceTypeName(int i2) throws Resources.NotFoundException {
-        return this.mResources.getResourceTypeName(i2);
+    @Override // android.widget.AbsListView, android.view.ViewGroup, android.view.View
+    protected void drawableStateChanged() {
+        if (this.mResolveHoverRunnable != null) {
+            return;
+        }
+        super.drawableStateChanged();
+        setSelectorEnabled(true);
+        updateSelectorStateCompat();
     }
 
-    @Override // android.content.res.Resources
-    public String getResourceEntryName(int i2) throws Resources.NotFoundException {
-        return this.mResources.getResourceEntryName(i2);
+    @Override // android.widget.ListView, android.widget.AbsListView, android.view.ViewGroup, android.view.View
+    protected void dispatchDraw(Canvas canvas) {
+        drawSelectorCompat(canvas);
+        super.dispatchDraw(canvas);
     }
 
-    @Override // android.content.res.Resources
-    public void parseBundleExtras(XmlResourceParser xmlResourceParser, Bundle bundle) throws XmlPullParserException, IOException {
-        this.mResources.parseBundleExtras(xmlResourceParser, bundle);
+    @Override // android.widget.AbsListView, android.view.View
+    public boolean onTouchEvent(MotionEvent motionEvent) {
+        if (motionEvent.getAction() == 0) {
+            this.mMotionPosition = pointToPosition((int) motionEvent.getX(), (int) motionEvent.getY());
+        }
+        ResolveHoverRunnable resolveHoverRunnable = this.mResolveHoverRunnable;
+        if (resolveHoverRunnable != null) {
+            resolveHoverRunnable.cancel();
+        }
+        return super.onTouchEvent(motionEvent);
     }
 
-    @Override // android.content.res.Resources
-    public void parseBundleExtra(String str, AttributeSet attributeSet, Bundle bundle) throws XmlPullParserException {
-        this.mResources.parseBundleExtra(str, attributeSet, bundle);
+    public int lookForSelectablePosition(int i2, boolean z2) {
+        int min;
+        ListAdapter adapter = getAdapter();
+        if (adapter != null && !isInTouchMode()) {
+            int count = adapter.getCount();
+            if (!getAdapter().areAllItemsEnabled()) {
+                if (z2) {
+                    min = Math.max(0, i2);
+                    while (min < count && !adapter.isEnabled(min)) {
+                        min++;
+                    }
+                } else {
+                    min = Math.min(i2, count - 1);
+                    while (min >= 0 && !adapter.isEnabled(min)) {
+                        min--;
+                    }
+                }
+                if (min < 0 || min >= count) {
+                    return -1;
+                }
+                return min;
+            } else if (i2 >= 0 && i2 < count) {
+                return i2;
+            }
+        }
+        return -1;
+    }
+
+    public int measureHeightOfChildrenCompat(int i2, int i3, int i4, int i5, int i6) {
+        int makeMeasureSpec;
+        int listPaddingTop = getListPaddingTop();
+        int listPaddingBottom = getListPaddingBottom();
+        int dividerHeight = getDividerHeight();
+        Drawable divider = getDivider();
+        ListAdapter adapter = getAdapter();
+        if (adapter == null) {
+            return listPaddingTop + listPaddingBottom;
+        }
+        int i7 = listPaddingTop + listPaddingBottom;
+        if (dividerHeight <= 0 || divider == null) {
+            dividerHeight = 0;
+        }
+        int count = adapter.getCount();
+        int i8 = 0;
+        int i9 = 0;
+        int i10 = 0;
+        View view = null;
+        while (i8 < count) {
+            int itemViewType = adapter.getItemViewType(i8);
+            if (itemViewType != i9) {
+                view = null;
+                i9 = itemViewType;
+            }
+            view = adapter.getView(i8, view, this);
+            ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+            if (layoutParams == null) {
+                layoutParams = generateDefaultLayoutParams();
+                view.setLayoutParams(layoutParams);
+            }
+            if (layoutParams.height > 0) {
+                makeMeasureSpec = View.MeasureSpec.makeMeasureSpec(layoutParams.height, BasicMeasure.EXACTLY);
+            } else {
+                makeMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, 0);
+            }
+            view.measure(i2, makeMeasureSpec);
+            view.forceLayout();
+            if (i8 > 0) {
+                i7 += dividerHeight;
+            }
+            i7 += view.getMeasuredHeight();
+            if (i7 >= i5) {
+                return (i6 < 0 || i8 <= i6 || i10 <= 0 || i7 == i5) ? i5 : i10;
+            }
+            if (i6 >= 0 && i8 >= i6) {
+                i10 = i7;
+            }
+            i8++;
+        }
+        return i7;
+    }
+
+    private void setSelectorEnabled(boolean z2) {
+        GateKeeperDrawable gateKeeperDrawable = this.mSelector;
+        if (gateKeeperDrawable != null) {
+            gateKeeperDrawable.setEnabled(z2);
+        }
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    /* loaded from: classes.dex */
+    public static class GateKeeperDrawable extends DrawableWrapper {
+        private boolean mEnabled;
+
+        GateKeeperDrawable(Drawable drawable) {
+            super(drawable);
+            this.mEnabled = true;
+        }
+
+        void setEnabled(boolean z2) {
+            this.mEnabled = z2;
+        }
+
+        @Override // androidx.appcompat.graphics.drawable.DrawableWrapper, android.graphics.drawable.Drawable
+        public boolean setState(int[] iArr) {
+            if (this.mEnabled) {
+                return super.setState(iArr);
+            }
+            return false;
+        }
+
+        @Override // androidx.appcompat.graphics.drawable.DrawableWrapper, android.graphics.drawable.Drawable
+        public void draw(Canvas canvas) {
+            if (this.mEnabled) {
+                super.draw(canvas);
+            }
+        }
+
+        @Override // androidx.appcompat.graphics.drawable.DrawableWrapper, android.graphics.drawable.Drawable
+        public void setHotspot(float f2, float f3) {
+            if (this.mEnabled) {
+                super.setHotspot(f2, f3);
+            }
+        }
+
+        @Override // androidx.appcompat.graphics.drawable.DrawableWrapper, android.graphics.drawable.Drawable
+        public void setHotspotBounds(int i2, int i3, int i4, int i5) {
+            if (this.mEnabled) {
+                super.setHotspotBounds(i2, i3, i4, i5);
+            }
+        }
+
+        @Override // androidx.appcompat.graphics.drawable.DrawableWrapper, android.graphics.drawable.Drawable
+        public boolean setVisible(boolean z2, boolean z3) {
+            if (this.mEnabled) {
+                return super.setVisible(z2, z3);
+            }
+            return false;
+        }
+    }
+
+    @Override // android.view.View
+    public boolean onHoverEvent(MotionEvent motionEvent) {
+        if (Build.VERSION.SDK_INT < 26) {
+            return super.onHoverEvent(motionEvent);
+        }
+        int actionMasked = motionEvent.getActionMasked();
+        if (actionMasked == 10 && this.mResolveHoverRunnable == null) {
+            ResolveHoverRunnable resolveHoverRunnable = new ResolveHoverRunnable();
+            this.mResolveHoverRunnable = resolveHoverRunnable;
+            resolveHoverRunnable.post();
+        }
+        boolean onHoverEvent = super.onHoverEvent(motionEvent);
+        if (actionMasked == 9 || actionMasked == 7) {
+            int pointToPosition = pointToPosition((int) motionEvent.getX(), (int) motionEvent.getY());
+            if (pointToPosition != -1 && pointToPosition != getSelectedItemPosition()) {
+                View childAt = getChildAt(pointToPosition - getFirstVisiblePosition());
+                if (childAt.isEnabled()) {
+                    setSelectionFromTop(pointToPosition, childAt.getTop() - getTop());
+                }
+                updateSelectorStateCompat();
+            }
+        } else {
+            setSelection(-1);
+        }
+        return onHoverEvent;
+    }
+
+    @Override // android.widget.ListView, android.widget.AbsListView, android.widget.AdapterView, android.view.ViewGroup, android.view.View
+    protected void onDetachedFromWindow() {
+        this.mResolveHoverRunnable = null;
+        super.onDetachedFromWindow();
+    }
+
+    /* JADX WARN: Code restructure failed: missing block: B:7:0x000c, code lost:
+        if (r0 != 3) goto L7;
+     */
+    /* JADX WARN: Removed duplicated region for block: B:22:0x0048 A[ADDED_TO_REGION] */
+    /* JADX WARN: Removed duplicated region for block: B:25:0x004f  */
+    /* JADX WARN: Removed duplicated region for block: B:29:0x0065  */
+    /*
+        Code decompiled incorrectly, please refer to instructions dump.
+        To view partially-correct code enable 'Show inconsistent code' option in preferences
+    */
+    public boolean onForwardedEvent(android.view.MotionEvent r8, int r9) {
+        /*
+            r7 = this;
+            int r0 = r8.getActionMasked()
+            r1 = 0
+            r2 = 1
+            if (r0 == r2) goto L16
+            r3 = 2
+            if (r0 == r3) goto L14
+            r9 = 3
+            if (r0 == r9) goto L11
+        Le:
+            r9 = r1
+            r3 = r2
+            goto L46
+        L11:
+            r9 = r1
+            r3 = r9
+            goto L46
+        L14:
+            r3 = r2
+            goto L17
+        L16:
+            r3 = r1
+        L17:
+            int r9 = r8.findPointerIndex(r9)
+            if (r9 >= 0) goto L1e
+            goto L11
+        L1e:
+            float r4 = r8.getX(r9)
+            int r4 = (int) r4
+            float r9 = r8.getY(r9)
+            int r9 = (int) r9
+            int r5 = r7.pointToPosition(r4, r9)
+            r6 = -1
+            if (r5 != r6) goto L31
+            r9 = r2
+            goto L46
+        L31:
+            int r3 = r7.getFirstVisiblePosition()
+            int r3 = r5 - r3
+            android.view.View r3 = r7.getChildAt(r3)
+            float r4 = (float) r4
+            float r9 = (float) r9
+            r7.setPressedItem(r3, r5, r4, r9)
+            if (r0 != r2) goto Le
+            r7.clickPressedItem(r3, r5)
+            goto Le
+        L46:
+            if (r3 == 0) goto L4a
+            if (r9 == 0) goto L4d
+        L4a:
+            r7.clearPressedItem()
+        L4d:
+            if (r3 == 0) goto L65
+            androidx.core.widget.ListViewAutoScrollHelper r9 = r7.mScrollHelper
+            if (r9 != 0) goto L5a
+            androidx.core.widget.ListViewAutoScrollHelper r9 = new androidx.core.widget.ListViewAutoScrollHelper
+            r9.<init>(r7)
+            r7.mScrollHelper = r9
+        L5a:
+            androidx.core.widget.ListViewAutoScrollHelper r9 = r7.mScrollHelper
+            r9.setEnabled(r2)
+            androidx.core.widget.ListViewAutoScrollHelper r9 = r7.mScrollHelper
+            r9.onTouch(r7, r8)
+            goto L6c
+        L65:
+            androidx.core.widget.ListViewAutoScrollHelper r8 = r7.mScrollHelper
+            if (r8 == 0) goto L6c
+            r8.setEnabled(r1)
+        L6c:
+            return r3
+        */
+        throw new UnsupportedOperationException("Method not decompiled: androidx.appcompat.widget.DropDownListView.onForwardedEvent(android.view.MotionEvent, int):boolean");
+    }
+
+    private void clickPressedItem(View view, int i2) {
+        performItemClick(view, i2, getItemIdAtPosition(i2));
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public void setListSelectionHidden(boolean z2) {
+        this.mListSelectionHidden = z2;
+    }
+
+    private void updateSelectorStateCompat() {
+        Drawable selector = getSelector();
+        if (selector != null && touchModeDrawsInPressedStateCompat() && isPressed()) {
+            selector.setState(getDrawableState());
+        }
+    }
+
+    private void drawSelectorCompat(Canvas canvas) {
+        Drawable selector;
+        if (this.mSelectorRect.isEmpty() || (selector = getSelector()) == null) {
+            return;
+        }
+        selector.setBounds(this.mSelectorRect);
+        selector.draw(canvas);
+    }
+
+    private void positionSelectorLikeTouchCompat(int i2, View view, float f2, float f3) {
+        positionSelectorLikeFocusCompat(i2, view);
+        Drawable selector = getSelector();
+        if (selector == null || i2 == -1) {
+            return;
+        }
+        DrawableCompat.setHotspot(selector, f2, f3);
+    }
+
+    private void positionSelectorLikeFocusCompat(int i2, View view) {
+        Drawable selector = getSelector();
+        boolean z2 = (selector == null || i2 == -1) ? false : true;
+        if (z2) {
+            selector.setVisible(false, false);
+        }
+        positionSelectorCompat(i2, view);
+        if (z2) {
+            Rect rect = this.mSelectorRect;
+            float exactCenterX = rect.exactCenterX();
+            float exactCenterY = rect.exactCenterY();
+            selector.setVisible(getVisibility() == 0, false);
+            DrawableCompat.setHotspot(selector, exactCenterX, exactCenterY);
+        }
+    }
+
+    private void positionSelectorCompat(int i2, View view) {
+        Rect rect = this.mSelectorRect;
+        rect.set(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
+        rect.left -= this.mSelectionLeftPadding;
+        rect.top -= this.mSelectionTopPadding;
+        rect.right += this.mSelectionRightPadding;
+        rect.bottom += this.mSelectionBottomPadding;
+        try {
+            boolean z2 = this.mIsChildViewEnabled.getBoolean(this);
+            if (view.isEnabled() != z2) {
+                this.mIsChildViewEnabled.set(this, Boolean.valueOf(!z2));
+                if (i2 != -1) {
+                    refreshDrawableState();
+                }
+            }
+        } catch (IllegalAccessException e2) {
+            e2.printStackTrace();
+        }
+    }
+
+    private void clearPressedItem() {
+        this.mDrawsInPressedState = false;
+        setPressed(false);
+        drawableStateChanged();
+        View childAt = getChildAt(this.mMotionPosition - getFirstVisiblePosition());
+        if (childAt != null) {
+            childAt.setPressed(false);
+        }
+        ViewPropertyAnimatorCompat viewPropertyAnimatorCompat = this.mClickAnimation;
+        if (viewPropertyAnimatorCompat != null) {
+            viewPropertyAnimatorCompat.cancel();
+            this.mClickAnimation = null;
+        }
+    }
+
+    private void setPressedItem(View view, int i2, float f2, float f3) {
+        View childAt;
+        this.mDrawsInPressedState = true;
+        if (Build.VERSION.SDK_INT >= 21) {
+            drawableHotspotChanged(f2, f3);
+        }
+        if (!isPressed()) {
+            setPressed(true);
+        }
+        layoutChildren();
+        int i3 = this.mMotionPosition;
+        if (i3 != -1 && (childAt = getChildAt(i3 - getFirstVisiblePosition())) != null && childAt != view && childAt.isPressed()) {
+            childAt.setPressed(false);
+        }
+        this.mMotionPosition = i2;
+        float left = f2 - view.getLeft();
+        float top = f3 - view.getTop();
+        if (Build.VERSION.SDK_INT >= 21) {
+            view.drawableHotspotChanged(left, top);
+        }
+        if (!view.isPressed()) {
+            view.setPressed(true);
+        }
+        positionSelectorLikeTouchCompat(i2, view, f2, f3);
+        setSelectorEnabled(false);
+        refreshDrawableState();
+    }
+
+    private boolean touchModeDrawsInPressedStateCompat() {
+        return this.mDrawsInPressedState;
+    }
+
+    /* JADX INFO: Access modifiers changed from: private */
+    /* loaded from: classes.dex */
+    public class ResolveHoverRunnable implements Runnable {
+        ResolveHoverRunnable() {
+        }
+
+        @Override // java.lang.Runnable
+        public void run() {
+            DropDownListView.this.mResolveHoverRunnable = null;
+            DropDownListView.this.drawableStateChanged();
+        }
+
+        public void cancel() {
+            DropDownListView.this.mResolveHoverRunnable = null;
+            DropDownListView.this.removeCallbacks(this);
+        }
+
+        public void post() {
+            DropDownListView.this.post(this);
+        }
     }
 }

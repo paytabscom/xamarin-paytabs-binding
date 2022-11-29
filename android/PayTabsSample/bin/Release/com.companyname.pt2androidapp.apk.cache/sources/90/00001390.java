@@ -1,31 +1,40 @@
-package kotlinx.coroutines.channels;
+package com.payment.paymentsdk.integrationmodels;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import kotlin.Metadata;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.jvm.internal.ContinuationImpl;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
+import kotlin.jvm.internal.Intrinsics;
 
-/* JADX INFO: Access modifiers changed from: package-private */
-/* compiled from: TickerChannels.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u001e\n\u0000\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\t\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\u0010\u0000\u001a\u0004\u0018\u00010\u00012\u0006\u0010\u0002\u001a\u00020\u00032\u0006\u0010\u0004\u001a\u00020\u00032\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u00020\u00070\u00062\f\u0010\b\u001a\b\u0012\u0004\u0012\u00020\u00070\tH\u0082@"}, d2 = {"fixedPeriodTicker", "", "delayMillis", "", "initialDelayMillis", "channel", "Lkotlinx/coroutines/channels/SendChannel;", "", "continuation", "Lkotlin/coroutines/Continuation;"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.channels.TickerChannelsKt", f = "TickerChannels.kt", i = {0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3}, l = {84, 88, 94, 96}, m = "fixedPeriodTicker", n = {"channel", "delayMillis", "deadline", "channel", "deadline", "delayNs", "channel", "deadline", "delayNs", "channel", "deadline", "delayNs"}, s = {"L$0", "J$0", "J$1", "L$0", "J$0", "J$1", "L$0", "J$0", "J$1", "L$0", "J$0", "J$1"})
+@Metadata(d1 = {"\u0000$\n\u0002\u0018\u0002\n\u0002\u0010\u0010\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\b\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0005\b\u0087\u0001\u0018\u00002\b\u0012\u0004\u0012\u00020\u00000\u00012\u00020\u0002B\u0007\b\u0002¢\u0006\u0002\u0010\u0003J\t\u0010\u0004\u001a\u00020\u0005HÖ\u0001J\u0019\u0010\u0006\u001a\u00020\u00072\u0006\u0010\b\u001a\u00020\t2\u0006\u0010\n\u001a\u00020\u0005HÖ\u0001j\u0002\b\u000bj\u0002\b\fj\u0002\b\r¨\u0006\u000e"}, d2 = {"Lcom/payment/paymentsdk/integrationmodels/PaymentSdkLanguageCode;", "", "Landroid/os/Parcelable;", "(Ljava/lang/String;I)V", "describeContents", "", "writeToParcel", "", "parcel", "Landroid/os/Parcel;", "flags", "AR", "EN", "DEFAULT", "paymentsdk_release"}, k = 1, mv = {1, 7, 1}, xi = 48)
 /* loaded from: classes.dex */
-public final class TickerChannelsKt$fixedPeriodTicker$1 extends ContinuationImpl {
-    long J$0;
-    long J$1;
-    Object L$0;
-    int label;
-    /* synthetic */ Object result;
+public enum PaymentSdkLanguageCode implements Parcelable {
+    AR,
+    EN,
+    DEFAULT;
+    
+    public static final Parcelable.Creator<PaymentSdkLanguageCode> CREATOR = new Parcelable.Creator<PaymentSdkLanguageCode>() { // from class: com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCode.Creator
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // android.os.Parcelable.Creator
+        public final PaymentSdkLanguageCode createFromParcel(Parcel parcel) {
+            Intrinsics.checkNotNullParameter(parcel, "parcel");
+            return PaymentSdkLanguageCode.valueOf(parcel.readString());
+        }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public TickerChannelsKt$fixedPeriodTicker$1(Continuation continuation) {
-        super(continuation);
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // android.os.Parcelable.Creator
+        public final PaymentSdkLanguageCode[] newArray(int i2) {
+            return new PaymentSdkLanguageCode[i2];
+        }
+    };
+
+    @Override // android.os.Parcelable
+    public int describeContents() {
+        return 0;
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        this.result = obj;
-        this.label |= Integer.MIN_VALUE;
-        return TickerChannelsKt.fixedPeriodTicker(0L, 0L, null, this);
+    @Override // android.os.Parcelable
+    public void writeToParcel(Parcel out, int i2) {
+        Intrinsics.checkNotNullParameter(out, "out");
+        out.writeString(name());
     }
 }

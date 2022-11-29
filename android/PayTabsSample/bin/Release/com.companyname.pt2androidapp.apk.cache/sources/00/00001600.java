@@ -1,47 +1,18 @@
-package mono.android.accessibilityservice;
+package kotlin.internal;
 
-import android.accessibilityservice.AccessibilityService;
-import android.graphics.Region;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import kotlin.Metadata;
+import kotlin.annotation.AnnotationRetention;
+import kotlin.annotation.AnnotationTarget;
 
+/* compiled from: InternalAnnotations.kt */
+@Target({})
+@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\b\u0081\u0002\u0018\u00002\u00020\u0001B\u0000¨\u0006\u0002"}, d2 = {"Lkotlin/internal/PureReifiable;", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+@kotlin.annotation.Target(allowedTargets = {AnnotationTarget.TYPE_PARAMETER})
+@Retention(RetentionPolicy.CLASS)
+@kotlin.annotation.Retention(AnnotationRetention.BINARY)
 /* loaded from: classes.dex */
-public class AccessibilityService_MagnificationController_OnMagnificationChangedListenerImplementor implements IGCUserPeer, AccessibilityService.MagnificationController.OnMagnificationChangedListener {
-    public static final String __md_methods = "n_onMagnificationChanged:(Landroid/accessibilityservice/AccessibilityService$MagnificationController;Landroid/graphics/Region;FFF)V:GetOnMagnificationChanged_Landroid_accessibilityservice_AccessibilityService_MagnificationController_Landroid_graphics_Region_FFFHandler:Android.AccessibilityServices.AccessibilityService/MagnificationController/IOnMagnificationChangedListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onMagnificationChanged(AccessibilityService.MagnificationController magnificationController, Region region, float f2, float f3, float f4);
-
-    static {
-        Runtime.register("Android.AccessibilityServices.AccessibilityService+MagnificationController+IOnMagnificationChangedListenerImplementor, Mono.Android", AccessibilityService_MagnificationController_OnMagnificationChangedListenerImplementor.class, __md_methods);
-    }
-
-    public AccessibilityService_MagnificationController_OnMagnificationChangedListenerImplementor() {
-        if (getClass() == AccessibilityService_MagnificationController_OnMagnificationChangedListenerImplementor.class) {
-            TypeManager.Activate("Android.AccessibilityServices.AccessibilityService+MagnificationController+IOnMagnificationChangedListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.accessibilityservice.AccessibilityService.MagnificationController.OnMagnificationChangedListener
-    public void onMagnificationChanged(AccessibilityService.MagnificationController magnificationController, Region region, float f2, float f3, float f4) {
-        n_onMagnificationChanged(magnificationController, region, f2, f3, f4);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public @interface PureReifiable {
 }

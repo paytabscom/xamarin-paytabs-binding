@@ -6,12 +6,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.ANNOTATION_TYPE})
+@Target({ElementType.METHOD, ElementType.PARAMETER, ElementType.FIELD, ElementType.LOCAL_VARIABLE})
 @Documented
 @Retention(RetentionPolicy.CLASS)
 /* loaded from: classes.dex */
-public @interface IntRange {
-    long from() default Long.MIN_VALUE;
-
-    long to() default Long.MAX_VALUE;
+public @interface AnimRes {
 }

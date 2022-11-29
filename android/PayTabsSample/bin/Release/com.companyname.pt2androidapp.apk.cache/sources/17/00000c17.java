@@ -1,45 +1,111 @@
-package com.google.android.material.progressindicator;
+package com.google.android.material.animation;
 
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.util.AttributeSet;
-import com.google.android.material.R;
-import com.google.android.material.internal.ThemeEnforcement;
+import android.animation.Animator;
+import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 /* loaded from: classes.dex */
-public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec {
-    boolean drawHorizontallyInverse;
-    public int indeterminateAnimationType;
-    public int indicatorDirection;
+public class MotionTiming {
+    private long delay;
+    private long duration;
+    private TimeInterpolator interpolator;
+    private int repeatCount;
+    private int repeatMode;
 
-    public LinearProgressIndicatorSpec(Context context, AttributeSet attributeSet) {
-        this(context, attributeSet, R.attr.linearProgressIndicatorStyle);
+    public MotionTiming(long j2, long j3) {
+        this.delay = 0L;
+        this.duration = 300L;
+        this.interpolator = null;
+        this.repeatCount = 0;
+        this.repeatMode = 1;
+        this.delay = j2;
+        this.duration = j3;
     }
 
-    public LinearProgressIndicatorSpec(Context context, AttributeSet attributeSet, int i2) {
-        this(context, attributeSet, i2, LinearProgressIndicator.DEF_STYLE_RES);
+    public MotionTiming(long j2, long j3, TimeInterpolator timeInterpolator) {
+        this.delay = 0L;
+        this.duration = 300L;
+        this.interpolator = null;
+        this.repeatCount = 0;
+        this.repeatMode = 1;
+        this.delay = j2;
+        this.duration = j3;
+        this.interpolator = timeInterpolator;
     }
 
-    public LinearProgressIndicatorSpec(Context context, AttributeSet attributeSet, int i2, int i3) {
-        super(context, attributeSet, i2, i3);
-        TypedArray obtainStyledAttributes = ThemeEnforcement.obtainStyledAttributes(context, attributeSet, R.styleable.LinearProgressIndicator, R.attr.linearProgressIndicatorStyle, LinearProgressIndicator.DEF_STYLE_RES, new int[0]);
-        this.indeterminateAnimationType = obtainStyledAttributes.getInt(R.styleable.LinearProgressIndicator_indeterminateAnimationType, 1);
-        this.indicatorDirection = obtainStyledAttributes.getInt(R.styleable.LinearProgressIndicator_indicatorDirectionLinear, 0);
-        obtainStyledAttributes.recycle();
-        validateSpec();
-        this.drawHorizontallyInverse = this.indicatorDirection == 1;
+    public void apply(Animator animator) {
+        animator.setStartDelay(getDelay());
+        animator.setDuration(getDuration());
+        animator.setInterpolator(getInterpolator());
+        if (animator instanceof ValueAnimator) {
+            ValueAnimator valueAnimator = (ValueAnimator) animator;
+            valueAnimator.setRepeatCount(getRepeatCount());
+            valueAnimator.setRepeatMode(getRepeatMode());
+        }
+    }
+
+    public long getDelay() {
+        return this.delay;
+    }
+
+    public long getDuration() {
+        return this.duration;
+    }
+
+    public TimeInterpolator getInterpolator() {
+        TimeInterpolator timeInterpolator = this.interpolator;
+        return timeInterpolator != null ? timeInterpolator : AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
+    }
+
+    public int getRepeatCount() {
+        return this.repeatCount;
+    }
+
+    public int getRepeatMode() {
+        return this.repeatMode;
     }
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    @Override // com.google.android.material.progressindicator.BaseProgressIndicatorSpec
-    public void validateSpec() {
-        if (this.indeterminateAnimationType == 0) {
-            if (this.trackCornerRadius > 0) {
-                throw new IllegalArgumentException("Rounded corners are not supported in contiguous indeterminate animation.");
-            }
-            if (this.indicatorColors.length < 3) {
-                throw new IllegalArgumentException("Contiguous indeterminate animation must be used with 3 or more indicator colors.");
-            }
+    public static MotionTiming createFromAnimator(ValueAnimator valueAnimator) {
+        MotionTiming motionTiming = new MotionTiming(valueAnimator.getStartDelay(), valueAnimator.getDuration(), getInterpolatorCompat(valueAnimator));
+        motionTiming.repeatCount = valueAnimator.getRepeatCount();
+        motionTiming.repeatMode = valueAnimator.getRepeatMode();
+        return motionTiming;
+    }
+
+    private static TimeInterpolator getInterpolatorCompat(ValueAnimator valueAnimator) {
+        TimeInterpolator interpolator = valueAnimator.getInterpolator();
+        if ((interpolator instanceof AccelerateDecelerateInterpolator) || interpolator == null) {
+            return AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
         }
+        if (interpolator instanceof AccelerateInterpolator) {
+            return AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR;
+        }
+        return interpolator instanceof DecelerateInterpolator ? AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR : interpolator;
+    }
+
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof MotionTiming) {
+            MotionTiming motionTiming = (MotionTiming) obj;
+            if (getDelay() == motionTiming.getDelay() && getDuration() == motionTiming.getDuration() && getRepeatCount() == motionTiming.getRepeatCount() && getRepeatMode() == motionTiming.getRepeatMode()) {
+                return getInterpolator().getClass().equals(motionTiming.getInterpolator().getClass());
+            }
+            return false;
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        return (((((((((int) (getDelay() ^ (getDelay() >>> 32))) * 31) + ((int) (getDuration() ^ (getDuration() >>> 32)))) * 31) + getInterpolator().getClass().hashCode()) * 31) + getRepeatCount()) * 31) + getRepeatMode();
+    }
+
+    public String toString() {
+        return '\n' + getClass().getName() + '{' + Integer.toHexString(System.identityHashCode(this)) + " delay: " + getDelay() + " duration: " + getDuration() + " interpolator: " + getInterpolator().getClass() + " repeatCount: " + getRepeatCount() + " repeatMode: " + getRepeatMode() + "}\n";
     }
 }

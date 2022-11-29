@@ -1,53 +1,22 @@
-package mono.android.media;
+package kotlin.jvm;
 
-import android.media.AudioRecord;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import kotlin.Metadata;
+import kotlin.annotation.AnnotationRetention;
+import kotlin.annotation.AnnotationTarget;
+import kotlin.annotation.MustBeDocumented;
 
+/* compiled from: JvmPlatformAnnotations.kt */
+@Target({})
+@kotlin.annotation.Target(allowedTargets = {AnnotationTarget.FILE})
+@Retention(RetentionPolicy.SOURCE)
+@kotlin.annotation.Retention(AnnotationRetention.SOURCE)
+@MustBeDocumented
+@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\b\u0087\u0002\u0018\u00002\u00020\u0001B\u0000¨\u0006\u0002"}, d2 = {"Lkotlin/jvm/JvmMultifileClass;", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+@Documented
 /* loaded from: classes.dex */
-public class AudioRecord_OnRecordPositionUpdateListenerImplementor implements IGCUserPeer, AudioRecord.OnRecordPositionUpdateListener {
-    public static final String __md_methods = "n_onMarkerReached:(Landroid/media/AudioRecord;)V:GetOnMarkerReached_Landroid_media_AudioRecord_Handler:Android.Media.AudioRecord/IOnRecordPositionUpdateListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onPeriodicNotification:(Landroid/media/AudioRecord;)V:GetOnPeriodicNotification_Landroid_media_AudioRecord_Handler:Android.Media.AudioRecord/IOnRecordPositionUpdateListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onMarkerReached(AudioRecord audioRecord);
-
-    private native void n_onPeriodicNotification(AudioRecord audioRecord);
-
-    static {
-        Runtime.register("Android.Media.AudioRecord+IOnRecordPositionUpdateListenerImplementor, Mono.Android", AudioRecord_OnRecordPositionUpdateListenerImplementor.class, __md_methods);
-    }
-
-    public AudioRecord_OnRecordPositionUpdateListenerImplementor() {
-        if (getClass() == AudioRecord_OnRecordPositionUpdateListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.AudioRecord+IOnRecordPositionUpdateListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.media.AudioRecord.OnRecordPositionUpdateListener
-    public void onMarkerReached(AudioRecord audioRecord) {
-        n_onMarkerReached(audioRecord);
-    }
-
-    @Override // android.media.AudioRecord.OnRecordPositionUpdateListener
-    public void onPeriodicNotification(AudioRecord audioRecord) {
-        n_onPeriodicNotification(audioRecord);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public @interface JvmMultifileClass {
 }

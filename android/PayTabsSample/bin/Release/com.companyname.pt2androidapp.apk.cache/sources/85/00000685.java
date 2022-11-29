@@ -1,65 +1,45 @@
-package androidx.core.widget;
+package androidx.core.util;
 
-import android.content.res.ColorStateList;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.widget.ImageView;
+import android.util.Log;
+import java.io.Writer;
 
+@Deprecated
 /* loaded from: classes.dex */
-public class ImageViewCompat {
-    public static ColorStateList getImageTintList(ImageView imageView) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            return imageView.getImageTintList();
-        }
-        if (imageView instanceof TintableImageSourceView) {
-            return ((TintableImageSourceView) imageView).getSupportImageTintList();
-        }
-        return null;
+public class LogWriter extends Writer {
+    private StringBuilder mBuilder = new StringBuilder(128);
+    private final String mTag;
+
+    public LogWriter(String str) {
+        this.mTag = str;
     }
 
-    public static void setImageTintList(ImageView imageView, ColorStateList colorStateList) {
-        Drawable drawable;
-        if (Build.VERSION.SDK_INT >= 21) {
-            imageView.setImageTintList(colorStateList);
-            if (Build.VERSION.SDK_INT != 21 || (drawable = imageView.getDrawable()) == null || imageView.getImageTintList() == null) {
-                return;
-            }
-            if (drawable.isStateful()) {
-                drawable.setState(imageView.getDrawableState());
-            }
-            imageView.setImageDrawable(drawable);
-        } else if (imageView instanceof TintableImageSourceView) {
-            ((TintableImageSourceView) imageView).setSupportImageTintList(colorStateList);
-        }
+    @Override // java.io.Writer, java.io.Closeable, java.lang.AutoCloseable
+    public void close() {
+        flushBuilder();
     }
 
-    public static PorterDuff.Mode getImageTintMode(ImageView imageView) {
-        if (Build.VERSION.SDK_INT >= 21) {
-            return imageView.getImageTintMode();
-        }
-        if (imageView instanceof TintableImageSourceView) {
-            return ((TintableImageSourceView) imageView).getSupportImageTintMode();
-        }
-        return null;
+    @Override // java.io.Writer, java.io.Flushable
+    public void flush() {
+        flushBuilder();
     }
 
-    public static void setImageTintMode(ImageView imageView, PorterDuff.Mode mode) {
-        Drawable drawable;
-        if (Build.VERSION.SDK_INT >= 21) {
-            imageView.setImageTintMode(mode);
-            if (Build.VERSION.SDK_INT != 21 || (drawable = imageView.getDrawable()) == null || imageView.getImageTintList() == null) {
-                return;
+    @Override // java.io.Writer
+    public void write(char[] cArr, int i2, int i3) {
+        for (int i4 = 0; i4 < i3; i4++) {
+            char c2 = cArr[i2 + i4];
+            if (c2 == '\n') {
+                flushBuilder();
+            } else {
+                this.mBuilder.append(c2);
             }
-            if (drawable.isStateful()) {
-                drawable.setState(imageView.getDrawableState());
-            }
-            imageView.setImageDrawable(drawable);
-        } else if (imageView instanceof TintableImageSourceView) {
-            ((TintableImageSourceView) imageView).setSupportImageTintMode(mode);
         }
     }
 
-    private ImageViewCompat() {
+    private void flushBuilder() {
+        if (this.mBuilder.length() > 0) {
+            Log.d(this.mTag, this.mBuilder.toString());
+            StringBuilder sb = this.mBuilder;
+            sb.delete(0, sb.length());
+        }
     }
 }

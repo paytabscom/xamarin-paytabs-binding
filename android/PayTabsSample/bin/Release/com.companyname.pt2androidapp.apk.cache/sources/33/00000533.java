@@ -1,59 +1,110 @@
-package androidx.core.os;
+package androidx.core.content.res;
 
-import android.os.Handler;
-import com.payment.paymentsdk.PaymentSdkParams;
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.internal.Intrinsics;
+import java.lang.reflect.Array;
 
-/* compiled from: Handler.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000$\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\t\n\u0000\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0002\b\u0003\u001a4\u0010\u0000\u001a\u00020\u0001*\u00020\u00022\u0006\u0010\u0003\u001a\u00020\u00042\n\b\u0002\u0010\u0005\u001a\u0004\u0018\u00010\u00062\u000e\b\u0004\u0010\u0007\u001a\b\u0012\u0004\u0012\u00020\t0\bH\u0086\bø\u0001\u0000\u001a4\u0010\n\u001a\u00020\u0001*\u00020\u00022\u0006\u0010\u000b\u001a\u00020\u00042\n\b\u0002\u0010\u0005\u001a\u0004\u0018\u00010\u00062\u000e\b\u0004\u0010\u0007\u001a\b\u0012\u0004\u0012\u00020\t0\bH\u0086\bø\u0001\u0000\u0082\u0002\u0007\n\u0005\b\u009920\u0001¨\u0006\f"}, d2 = {"postAtTime", "Ljava/lang/Runnable;", "Landroid/os/Handler;", "uptimeMillis", "", PaymentSdkParams.TOKEN, "", "action", "Lkotlin/Function0;", "", "postDelayed", "delayInMillis", "core-ktx_release"}, k = 2, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class HandlerKt {
-    public static /* synthetic */ Runnable postDelayed$default(Handler postDelayed, long j2, Object obj, Function0 action, int i2, Object obj2) {
-        if ((i2 & 2) != 0) {
-            obj = null;
+final class GrowingArrayUtils {
+    public static int growSize(int i2) {
+        if (i2 <= 4) {
+            return 8;
         }
-        Intrinsics.checkNotNullParameter(postDelayed, "$this$postDelayed");
-        Intrinsics.checkNotNullParameter(action, "action");
-        HandlerKt$postDelayed$runnable$1 handlerKt$postDelayed$runnable$1 = new HandlerKt$postDelayed$runnable$1(action);
-        if (obj == null) {
-            postDelayed.postDelayed(handlerKt$postDelayed$runnable$1, j2);
-        } else {
-            HandlerCompat.postDelayed(postDelayed, handlerKt$postDelayed$runnable$1, obj, j2);
-        }
-        return handlerKt$postDelayed$runnable$1;
+        return i2 * 2;
     }
 
-    public static final Runnable postDelayed(Handler postDelayed, long j2, Object obj, Function0<Unit> action) {
-        Intrinsics.checkNotNullParameter(postDelayed, "$this$postDelayed");
-        Intrinsics.checkNotNullParameter(action, "action");
-        HandlerKt$postDelayed$runnable$1 handlerKt$postDelayed$runnable$1 = new HandlerKt$postDelayed$runnable$1(action);
-        if (obj == null) {
-            postDelayed.postDelayed(handlerKt$postDelayed$runnable$1, j2);
-        } else {
-            HandlerCompat.postDelayed(postDelayed, handlerKt$postDelayed$runnable$1, obj, j2);
+    /* JADX WARN: Multi-variable type inference failed */
+    /* JADX WARN: Type inference failed for: r0v4, types: [java.lang.Object[], java.lang.Object] */
+    public static <T> T[] append(T[] tArr, int i2, T t2) {
+        if (i2 + 1 > tArr.length) {
+            ?? r02 = (Object[]) Array.newInstance(tArr.getClass().getComponentType(), growSize(i2));
+            System.arraycopy(tArr, 0, r02, 0, i2);
+            tArr = r02;
         }
-        return handlerKt$postDelayed$runnable$1;
+        tArr[i2] = t2;
+        return tArr;
     }
 
-    public static /* synthetic */ Runnable postAtTime$default(Handler postAtTime, long j2, Object obj, Function0 action, int i2, Object obj2) {
-        if ((i2 & 2) != 0) {
-            obj = null;
+    public static int[] append(int[] iArr, int i2, int i3) {
+        if (i2 + 1 > iArr.length) {
+            int[] iArr2 = new int[growSize(i2)];
+            System.arraycopy(iArr, 0, iArr2, 0, i2);
+            iArr = iArr2;
         }
-        Intrinsics.checkNotNullParameter(postAtTime, "$this$postAtTime");
-        Intrinsics.checkNotNullParameter(action, "action");
-        HandlerKt$postAtTime$runnable$1 handlerKt$postAtTime$runnable$1 = new HandlerKt$postAtTime$runnable$1(action);
-        postAtTime.postAtTime(handlerKt$postAtTime$runnable$1, obj, j2);
-        return handlerKt$postAtTime$runnable$1;
+        iArr[i2] = i3;
+        return iArr;
     }
 
-    public static final Runnable postAtTime(Handler postAtTime, long j2, Object obj, Function0<Unit> action) {
-        Intrinsics.checkNotNullParameter(postAtTime, "$this$postAtTime");
-        Intrinsics.checkNotNullParameter(action, "action");
-        HandlerKt$postAtTime$runnable$1 handlerKt$postAtTime$runnable$1 = new HandlerKt$postAtTime$runnable$1(action);
-        postAtTime.postAtTime(handlerKt$postAtTime$runnable$1, obj, j2);
-        return handlerKt$postAtTime$runnable$1;
+    public static long[] append(long[] jArr, int i2, long j2) {
+        if (i2 + 1 > jArr.length) {
+            long[] jArr2 = new long[growSize(i2)];
+            System.arraycopy(jArr, 0, jArr2, 0, i2);
+            jArr = jArr2;
+        }
+        jArr[i2] = j2;
+        return jArr;
+    }
+
+    public static boolean[] append(boolean[] zArr, int i2, boolean z2) {
+        if (i2 + 1 > zArr.length) {
+            boolean[] zArr2 = new boolean[growSize(i2)];
+            System.arraycopy(zArr, 0, zArr2, 0, i2);
+            zArr = zArr2;
+        }
+        zArr[i2] = z2;
+        return zArr;
+    }
+
+    public static <T> T[] insert(T[] tArr, int i2, int i3, T t2) {
+        if (i2 + 1 <= tArr.length) {
+            System.arraycopy(tArr, i3, tArr, i3 + 1, i2 - i3);
+            tArr[i3] = t2;
+            return tArr;
+        }
+        T[] tArr2 = (T[]) ((Object[]) Array.newInstance(tArr.getClass().getComponentType(), growSize(i2)));
+        System.arraycopy(tArr, 0, tArr2, 0, i3);
+        tArr2[i3] = t2;
+        System.arraycopy(tArr, i3, tArr2, i3 + 1, tArr.length - i3);
+        return tArr2;
+    }
+
+    public static int[] insert(int[] iArr, int i2, int i3, int i4) {
+        if (i2 + 1 <= iArr.length) {
+            System.arraycopy(iArr, i3, iArr, i3 + 1, i2 - i3);
+            iArr[i3] = i4;
+            return iArr;
+        }
+        int[] iArr2 = new int[growSize(i2)];
+        System.arraycopy(iArr, 0, iArr2, 0, i3);
+        iArr2[i3] = i4;
+        System.arraycopy(iArr, i3, iArr2, i3 + 1, iArr.length - i3);
+        return iArr2;
+    }
+
+    public static long[] insert(long[] jArr, int i2, int i3, long j2) {
+        if (i2 + 1 <= jArr.length) {
+            System.arraycopy(jArr, i3, jArr, i3 + 1, i2 - i3);
+            jArr[i3] = j2;
+            return jArr;
+        }
+        long[] jArr2 = new long[growSize(i2)];
+        System.arraycopy(jArr, 0, jArr2, 0, i3);
+        jArr2[i3] = j2;
+        System.arraycopy(jArr, i3, jArr2, i3 + 1, jArr.length - i3);
+        return jArr2;
+    }
+
+    public static boolean[] insert(boolean[] zArr, int i2, int i3, boolean z2) {
+        if (i2 + 1 <= zArr.length) {
+            System.arraycopy(zArr, i3, zArr, i3 + 1, i2 - i3);
+            zArr[i3] = z2;
+            return zArr;
+        }
+        boolean[] zArr2 = new boolean[growSize(i2)];
+        System.arraycopy(zArr, 0, zArr2, 0, i3);
+        zArr2[i3] = z2;
+        System.arraycopy(zArr, i3, zArr2, i3 + 1, zArr.length - i3);
+        return zArr2;
+    }
+
+    private GrowingArrayUtils() {
     }
 }

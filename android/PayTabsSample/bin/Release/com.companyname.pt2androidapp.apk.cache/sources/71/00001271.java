@@ -1,42 +1,114 @@
-package kotlinx.coroutines;
+package com.google.crypto.tink.subtle;
 
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.CoroutineContext;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.DebugProbesKt;
+import com.google.crypto.tink.PublicKeyVerify;
+import com.google.crypto.tink.config.TinkFips;
+import com.google.crypto.tink.subtle.Enums;
+import com.google.errorprone.annotations.Immutable;
+import java.math.BigInteger;
+import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.interfaces.RSAPublicKey;
 
-/* compiled from: Delay.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u00008\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\t\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\bg\u0018\u00002\u00020\u0001J\u0019\u0010\u0002\u001a\u00020\u00032\u0006\u0010\u0004\u001a\u00020\u0005H\u0096@ø\u0001\u0000¢\u0006\u0002\u0010\u0006J$\u0010\u0007\u001a\u00020\b2\u0006\u0010\t\u001a\u00020\u00052\n\u0010\n\u001a\u00060\u000bj\u0002`\f2\u0006\u0010\r\u001a\u00020\u000eH\u0016J\u001e\u0010\u000f\u001a\u00020\u00032\u0006\u0010\t\u001a\u00020\u00052\f\u0010\u0010\u001a\b\u0012\u0004\u0012\u00020\u00030\u0011H&\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\u0012"}, d2 = {"Lkotlinx/coroutines/Delay;", "", "delay", "", "time", "", "(JLkotlin/coroutines/Continuation;)Ljava/lang/Object;", "invokeOnTimeout", "Lkotlinx/coroutines/DisposableHandle;", "timeMillis", "block", "Ljava/lang/Runnable;", "Lkotlinx/coroutines/Runnable;", "context", "Lkotlin/coroutines/CoroutineContext;", "scheduleResumeAfterDelay", "continuation", "Lkotlinx/coroutines/CancellableContinuation;", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
+@Immutable
 /* loaded from: classes.dex */
-public interface Delay {
-    Object delay(long j2, Continuation<? super Unit> continuation);
+public final class RsaSsaPkcs1VerifyJce implements PublicKeyVerify {
+    private static final String ASN_PREFIX_SHA256 = "3031300d060960864801650304020105000420";
+    private static final String ASN_PREFIX_SHA384 = "3041300d060960864801650304020205000430";
+    private static final String ASN_PREFIX_SHA512 = "3051300d060960864801650304020305000440";
+    public static final TinkFips.AlgorithmFipsCompatibility FIPS = TinkFips.AlgorithmFipsCompatibility.ALGORITHM_REQUIRES_BORINGCRYPTO;
+    private final Enums.HashType hash;
+    private final RSAPublicKey publicKey;
 
-    DisposableHandle invokeOnTimeout(long j2, Runnable runnable, CoroutineContext coroutineContext);
+    public RsaSsaPkcs1VerifyJce(final RSAPublicKey pubKey, Enums.HashType hash) throws GeneralSecurityException {
+        if (!FIPS.isCompatible()) {
+            throw new GeneralSecurityException("Can not use RSA-PKCS1.5 in FIPS-mode, as BoringCrypto module is not available.");
+        }
+        Validators.validateSignatureHash(hash);
+        Validators.validateRsaModulusSize(pubKey.getModulus().bitLength());
+        Validators.validateRsaPublicExponent(pubKey.getPublicExponent());
+        this.publicKey = pubKey;
+        this.hash = hash;
+    }
 
-    void scheduleResumeAfterDelay(long j2, CancellableContinuation<? super Unit> cancellableContinuation);
+    @Override // com.google.crypto.tink.PublicKeyVerify
+    public void verify(final byte[] signature, final byte[] data) throws GeneralSecurityException {
+        BigInteger publicExponent = this.publicKey.getPublicExponent();
+        BigInteger modulus = this.publicKey.getModulus();
+        int bitLength = (modulus.bitLength() + 7) / 8;
+        if (bitLength != signature.length) {
+            throw new GeneralSecurityException("invalid signature's length");
+        }
+        BigInteger bytes2Integer = SubtleUtil.bytes2Integer(signature);
+        if (bytes2Integer.compareTo(modulus) >= 0) {
+            throw new GeneralSecurityException("signature out of range");
+        }
+        if (!Bytes.equal(SubtleUtil.integer2Bytes(bytes2Integer.modPow(publicExponent, modulus), bitLength), emsaPkcs1(data, bitLength, this.hash))) {
+            throw new GeneralSecurityException("invalid signature");
+        }
+    }
 
-    /* compiled from: Delay.kt */
-    @Metadata(bv = {1, 0, 3}, k = 3, mv = {1, 4, 2})
+    private byte[] emsaPkcs1(byte[] m2, int emLen, Enums.HashType hash) throws GeneralSecurityException {
+        int length;
+        Validators.validateSignatureHash(hash);
+        MessageDigest engineFactory = EngineFactory.MESSAGE_DIGEST.getInstance(SubtleUtil.toDigestAlgo(this.hash));
+        engineFactory.update(m2);
+        byte[] digest = engineFactory.digest();
+        byte[] asnPrefix = toAsnPrefix(hash);
+        if (emLen < asnPrefix.length + digest.length + 11) {
+            throw new GeneralSecurityException("intended encoded message length too short");
+        }
+        byte[] bArr = new byte[emLen];
+        bArr[0] = 0;
+        int i2 = 2;
+        bArr[1] = 1;
+        int i3 = 0;
+        while (i3 < (emLen - length) - 3) {
+            bArr[i2] = -1;
+            i3++;
+            i2++;
+        }
+        int i4 = i2 + 1;
+        bArr[i2] = 0;
+        System.arraycopy(asnPrefix, 0, bArr, i4, asnPrefix.length);
+        System.arraycopy(digest, 0, bArr, i4 + asnPrefix.length, digest.length);
+        return bArr;
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* renamed from: com.google.crypto.tink.subtle.RsaSsaPkcs1VerifyJce$1  reason: invalid class name */
     /* loaded from: classes.dex */
-    public static final class DefaultImpls {
-        public static Object delay(Delay delay, long j2, Continuation<? super Unit> continuation) {
-            if (j2 <= 0) {
-                return Unit.INSTANCE;
-            }
-            CancellableContinuationImpl cancellableContinuationImpl = new CancellableContinuationImpl(IntrinsicsKt.intercepted(continuation), 1);
-            cancellableContinuationImpl.initCancellability();
-            delay.scheduleResumeAfterDelay(j2, cancellableContinuationImpl);
-            Object result = cancellableContinuationImpl.getResult();
-            if (result == IntrinsicsKt.getCOROUTINE_SUSPENDED()) {
-                DebugProbesKt.probeCoroutineSuspended(continuation);
-            }
-            return result;
-        }
+    public static /* synthetic */ class AnonymousClass1 {
+        static final /* synthetic */ int[] $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType;
 
-        public static DisposableHandle invokeOnTimeout(Delay delay, long j2, Runnable runnable, CoroutineContext coroutineContext) {
-            return DefaultExecutorKt.getDefaultDelay().invokeOnTimeout(j2, runnable, coroutineContext);
+        static {
+            int[] iArr = new int[Enums.HashType.values().length];
+            $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType = iArr;
+            try {
+                iArr[Enums.HashType.SHA256.ordinal()] = 1;
+            } catch (NoSuchFieldError unused) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType[Enums.HashType.SHA384.ordinal()] = 2;
+            } catch (NoSuchFieldError unused2) {
+            }
+            try {
+                $SwitchMap$com$google$crypto$tink$subtle$Enums$HashType[Enums.HashType.SHA512.ordinal()] = 3;
+            } catch (NoSuchFieldError unused3) {
+            }
         }
+    }
+
+    private byte[] toAsnPrefix(Enums.HashType hash) throws GeneralSecurityException {
+        int i2 = AnonymousClass1.$SwitchMap$com$google$crypto$tink$subtle$Enums$HashType[hash.ordinal()];
+        if (i2 != 1) {
+            if (i2 != 2) {
+                if (i2 == 3) {
+                    return Hex.decode(ASN_PREFIX_SHA512);
+                }
+                throw new GeneralSecurityException("Unsupported hash " + hash);
+            }
+            return Hex.decode(ASN_PREFIX_SHA384);
+        }
+        return Hex.decode(ASN_PREFIX_SHA256);
     }
 }

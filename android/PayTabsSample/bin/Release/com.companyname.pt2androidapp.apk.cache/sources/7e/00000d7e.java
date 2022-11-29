@@ -1,88 +1,69 @@
-package com.google.android.material.transition.platform;
+package com.google.android.material.progressindicator;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.transition.TransitionValues;
-import android.transition.Visibility;
-import android.view.View;
-import android.view.ViewGroup;
-import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.animation.AnimatorSetCompat;
-import com.google.android.material.transition.platform.VisibilityAnimatorProvider;
-import java.util.ArrayList;
-import java.util.List;
+import android.content.Context;
+import android.content.res.TypedArray;
+import android.util.AttributeSet;
+import com.google.android.material.R;
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.resources.MaterialResources;
 
 /* loaded from: classes.dex */
-abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends Visibility {
-    private final List<VisibilityAnimatorProvider> additionalAnimatorProviders = new ArrayList();
-    private final P primaryAnimatorProvider;
-    private VisibilityAnimatorProvider secondaryAnimatorProvider;
+public abstract class BaseProgressIndicatorSpec {
+    public int hideAnimationBehavior;
+    public int[] indicatorColors = new int[0];
+    public int showAnimationBehavior;
+    public int trackColor;
+    public int trackCornerRadius;
+    public int trackThickness;
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public abstract void validateSpec();
 
     /* JADX INFO: Access modifiers changed from: protected */
-    public MaterialVisibility(P p2, VisibilityAnimatorProvider visibilityAnimatorProvider) {
-        this.primaryAnimatorProvider = p2;
-        this.secondaryAnimatorProvider = visibilityAnimatorProvider;
-        setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+    public BaseProgressIndicatorSpec(Context context, AttributeSet attributeSet, int i2, int i3) {
+        int dimensionPixelSize = context.getResources().getDimensionPixelSize(R.dimen.mtrl_progress_track_thickness);
+        TypedArray obtainStyledAttributes = ThemeEnforcement.obtainStyledAttributes(context, attributeSet, R.styleable.BaseProgressIndicator, i2, i3, new int[0]);
+        this.trackThickness = MaterialResources.getDimensionPixelSize(context, obtainStyledAttributes, R.styleable.BaseProgressIndicator_trackThickness, dimensionPixelSize);
+        this.trackCornerRadius = Math.min(MaterialResources.getDimensionPixelSize(context, obtainStyledAttributes, R.styleable.BaseProgressIndicator_trackCornerRadius, 0), this.trackThickness / 2);
+        this.showAnimationBehavior = obtainStyledAttributes.getInt(R.styleable.BaseProgressIndicator_showAnimationBehavior, 0);
+        this.hideAnimationBehavior = obtainStyledAttributes.getInt(R.styleable.BaseProgressIndicator_hideAnimationBehavior, 0);
+        loadIndicatorColors(context, obtainStyledAttributes);
+        loadTrackColor(context, obtainStyledAttributes);
+        obtainStyledAttributes.recycle();
     }
 
-    public P getPrimaryAnimatorProvider() {
-        return this.primaryAnimatorProvider;
-    }
-
-    public VisibilityAnimatorProvider getSecondaryAnimatorProvider() {
-        return this.secondaryAnimatorProvider;
-    }
-
-    public void setSecondaryAnimatorProvider(VisibilityAnimatorProvider visibilityAnimatorProvider) {
-        this.secondaryAnimatorProvider = visibilityAnimatorProvider;
-    }
-
-    public void addAdditionalAnimatorProvider(VisibilityAnimatorProvider visibilityAnimatorProvider) {
-        this.additionalAnimatorProviders.add(visibilityAnimatorProvider);
-    }
-
-    public boolean removeAdditionalAnimatorProvider(VisibilityAnimatorProvider visibilityAnimatorProvider) {
-        return this.additionalAnimatorProviders.remove(visibilityAnimatorProvider);
-    }
-
-    public void clearAdditionalAnimatorProvider() {
-        this.additionalAnimatorProviders.clear();
-    }
-
-    @Override // android.transition.Visibility
-    public Animator onAppear(ViewGroup viewGroup, View view, TransitionValues transitionValues, TransitionValues transitionValues2) {
-        return createAnimator(viewGroup, view, true);
-    }
-
-    @Override // android.transition.Visibility
-    public Animator onDisappear(ViewGroup viewGroup, View view, TransitionValues transitionValues, TransitionValues transitionValues2) {
-        return createAnimator(viewGroup, view, false);
-    }
-
-    private Animator createAnimator(ViewGroup viewGroup, View view, boolean z2) {
-        AnimatorSet animatorSet = new AnimatorSet();
-        ArrayList arrayList = new ArrayList();
-        addAnimatorIfNeeded(arrayList, this.primaryAnimatorProvider, viewGroup, view, z2);
-        addAnimatorIfNeeded(arrayList, this.secondaryAnimatorProvider, viewGroup, view, z2);
-        for (VisibilityAnimatorProvider visibilityAnimatorProvider : this.additionalAnimatorProviders) {
-            addAnimatorIfNeeded(arrayList, visibilityAnimatorProvider, viewGroup, view, z2);
+    private void loadIndicatorColors(Context context, TypedArray typedArray) {
+        if (!typedArray.hasValue(R.styleable.BaseProgressIndicator_indicatorColor)) {
+            this.indicatorColors = new int[]{MaterialColors.getColor(context, R.attr.colorPrimary, -1)};
+        } else if (typedArray.peekValue(R.styleable.BaseProgressIndicator_indicatorColor).type != 1) {
+            this.indicatorColors = new int[]{typedArray.getColor(R.styleable.BaseProgressIndicator_indicatorColor, -1)};
+        } else {
+            int[] intArray = context.getResources().getIntArray(typedArray.getResourceId(R.styleable.BaseProgressIndicator_indicatorColor, -1));
+            this.indicatorColors = intArray;
+            if (intArray.length == 0) {
+                throw new IllegalArgumentException("indicatorColors cannot be empty when indicatorColor is not used.");
+            }
         }
-        AnimatorSetCompat.playTogether(animatorSet, arrayList);
-        return animatorSet;
     }
 
-    private static void addAnimatorIfNeeded(List<Animator> list, VisibilityAnimatorProvider visibilityAnimatorProvider, ViewGroup viewGroup, View view, boolean z2) {
-        Animator createDisappear;
-        if (visibilityAnimatorProvider == null) {
+    private void loadTrackColor(Context context, TypedArray typedArray) {
+        if (typedArray.hasValue(R.styleable.BaseProgressIndicator_trackColor)) {
+            this.trackColor = typedArray.getColor(R.styleable.BaseProgressIndicator_trackColor, -1);
             return;
         }
-        if (z2) {
-            createDisappear = visibilityAnimatorProvider.createAppear(viewGroup, view);
-        } else {
-            createDisappear = visibilityAnimatorProvider.createDisappear(viewGroup, view);
-        }
-        if (createDisappear != null) {
-            list.add(createDisappear);
-        }
+        this.trackColor = this.indicatorColors[0];
+        TypedArray obtainStyledAttributes = context.getTheme().obtainStyledAttributes(new int[]{16842803});
+        float f2 = obtainStyledAttributes.getFloat(0, 0.2f);
+        obtainStyledAttributes.recycle();
+        this.trackColor = MaterialColors.compositeARGBWithAlpha(this.trackColor, (int) (f2 * 255.0f));
+    }
+
+    public boolean isShowAnimationEnabled() {
+        return this.showAnimationBehavior != 0;
+    }
+
+    public boolean isHideAnimationEnabled() {
+        return this.hideAnimationBehavior != 0;
     }
 }

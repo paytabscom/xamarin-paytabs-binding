@@ -1,74 +1,11 @@
-package mono.android.media;
+package kotlin.jvm.functions;
 
-import android.media.RemoteController;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Function;
+import kotlin.Metadata;
 
+/* compiled from: Functions.kt */
+@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\b\u0006\n\u0002\u0018\u0002\n\u0002\b\b\bf\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u0000*\u0006\b\u0001\u0010\u0002 \u0000*\u0006\b\u0002\u0010\u0003 \u0000*\u0006\b\u0003\u0010\u0004 \u0000*\u0006\b\u0004\u0010\u0005 \u0000*\u0006\b\u0005\u0010\u0006 \u00012\b\u0012\u0004\u0012\u0002H\u00060\u0007J6\u0010\b\u001a\u00028\u00052\u0006\u0010\t\u001a\u00028\u00002\u0006\u0010\n\u001a\u00028\u00012\u0006\u0010\u000b\u001a\u00028\u00022\u0006\u0010\f\u001a\u00028\u00032\u0006\u0010\r\u001a\u00028\u0004H¦\u0002¢\u0006\u0002\u0010\u000e¨\u0006\u000f"}, d2 = {"Lkotlin/jvm/functions/Function5;", "P1", "P2", "P3", "P4", "P5", "R", "Lkotlin/Function;", "invoke", "p1", "p2", "p3", "p4", "p5", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class RemoteController_OnClientUpdateListenerImplementor implements IGCUserPeer, RemoteController.OnClientUpdateListener {
-    public static final String __md_methods = "n_onClientChange:(Z)V:GetOnClientChange_ZHandler:Android.Media.RemoteController/IOnClientUpdateListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onClientMetadataUpdate:(Landroid/media/RemoteController$MetadataEditor;)V:GetOnClientMetadataUpdate_Landroid_media_RemoteController_MetadataEditor_Handler:Android.Media.RemoteController/IOnClientUpdateListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onClientPlaybackStateUpdate:(I)V:GetOnClientPlaybackStateUpdateSimple_IHandler:Android.Media.RemoteController/IOnClientUpdateListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onClientPlaybackStateUpdate:(IJJF)V:GetOnClientPlaybackStateUpdate_IJJFHandler:Android.Media.RemoteController/IOnClientUpdateListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onClientTransportControlUpdate:(I)V:GetOnClientTransportControlUpdate_IHandler:Android.Media.RemoteController/IOnClientUpdateListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onClientChange(boolean z2);
-
-    private native void n_onClientMetadataUpdate(RemoteController.MetadataEditor metadataEditor);
-
-    private native void n_onClientPlaybackStateUpdate(int i2);
-
-    private native void n_onClientPlaybackStateUpdate(int i2, long j2, long j3, float f2);
-
-    private native void n_onClientTransportControlUpdate(int i2);
-
-    static {
-        Runtime.register("Android.Media.RemoteController+IOnClientUpdateListenerImplementor, Mono.Android", RemoteController_OnClientUpdateListenerImplementor.class, __md_methods);
-    }
-
-    public RemoteController_OnClientUpdateListenerImplementor() {
-        if (getClass() == RemoteController_OnClientUpdateListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.RemoteController+IOnClientUpdateListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.media.RemoteController.OnClientUpdateListener
-    public void onClientChange(boolean z2) {
-        n_onClientChange(z2);
-    }
-
-    @Override // android.media.RemoteController.OnClientUpdateListener
-    public void onClientMetadataUpdate(RemoteController.MetadataEditor metadataEditor) {
-        n_onClientMetadataUpdate(metadataEditor);
-    }
-
-    @Override // android.media.RemoteController.OnClientUpdateListener
-    public void onClientPlaybackStateUpdate(int i2) {
-        n_onClientPlaybackStateUpdate(i2);
-    }
-
-    @Override // android.media.RemoteController.OnClientUpdateListener
-    public void onClientPlaybackStateUpdate(int i2, long j2, long j3, float f2) {
-        n_onClientPlaybackStateUpdate(i2, j2, j3, f2);
-    }
-
-    @Override // android.media.RemoteController.OnClientUpdateListener
-    public void onClientTransportControlUpdate(int i2) {
-        n_onClientTransportControlUpdate(i2);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public interface Function5<P1, P2, P3, P4, P5, R> extends Function<R> {
+    R invoke(P1 p1, P2 p2, P3 p3, P4 p4, P5 p5);
 }

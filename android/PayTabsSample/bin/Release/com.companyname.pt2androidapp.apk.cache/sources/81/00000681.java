@@ -1,92 +1,36 @@
-package androidx.core.widget;
+package androidx.core.util;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.ProgressBar;
+import java.util.concurrent.atomic.AtomicBoolean;
+import kotlin.Metadata;
+import kotlin.Result;
+import kotlin.coroutines.Continuation;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: Consumer.kt */
+@Metadata(d1 = {"\u0000&\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0002\b\u0003\n\u0002\u0010\u000e\n\u0000\b\u0003\u0018\u0000*\u0004\b\u0000\u0010\u00012\b\u0012\u0004\u0012\u0002H\u00010\u00022\u00020\u0003B\u0013\u0012\f\u0010\u0004\u001a\b\u0012\u0004\u0012\u00028\u00000\u0005¢\u0006\u0002\u0010\u0006J\u0015\u0010\u0007\u001a\u00020\b2\u0006\u0010\t\u001a\u00028\u0000H\u0016¢\u0006\u0002\u0010\nJ\b\u0010\u000b\u001a\u00020\fH\u0016R\u0014\u0010\u0004\u001a\b\u0012\u0004\u0012\u00028\u00000\u0005X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\r"}, d2 = {"Landroidx/core/util/ContinuationConsumer;", "T", "Ljava/util/function/Consumer;", "Ljava/util/concurrent/atomic/AtomicBoolean;", "continuation", "Lkotlin/coroutines/Continuation;", "(Lkotlin/coroutines/Continuation;)V", "accept", "", "value", "(Ljava/lang/Object;)V", "toString", "", "core-ktx_release"}, k = 1, mv = {1, 6, 0}, xi = 48)
 /* loaded from: classes.dex */
-public class ContentLoadingProgressBar extends ProgressBar {
-    private static final int MIN_DELAY = 500;
-    private static final int MIN_SHOW_TIME = 500;
-    private final Runnable mDelayedHide;
-    private final Runnable mDelayedShow;
-    boolean mDismissed;
-    boolean mPostedHide;
-    boolean mPostedShow;
-    long mStartTime;
+final class ContinuationConsumer<T> extends AtomicBoolean implements java.util.function.Consumer<T> {
+    private final Continuation<T> continuation;
 
-    public ContentLoadingProgressBar(Context context) {
-        this(context, null);
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    /* JADX WARN: Multi-variable type inference failed */
+    public ContinuationConsumer(Continuation<? super T> continuation) {
+        super(false);
+        Intrinsics.checkNotNullParameter(continuation, "continuation");
+        this.continuation = continuation;
     }
 
-    public ContentLoadingProgressBar(Context context, AttributeSet attributeSet) {
-        super(context, attributeSet, 0);
-        this.mStartTime = -1L;
-        this.mPostedHide = false;
-        this.mPostedShow = false;
-        this.mDismissed = false;
-        this.mDelayedHide = new Runnable() { // from class: androidx.core.widget.ContentLoadingProgressBar.1
-            @Override // java.lang.Runnable
-            public void run() {
-                ContentLoadingProgressBar.this.mPostedHide = false;
-                ContentLoadingProgressBar.this.mStartTime = -1L;
-                ContentLoadingProgressBar.this.setVisibility(8);
-            }
-        };
-        this.mDelayedShow = new Runnable() { // from class: androidx.core.widget.ContentLoadingProgressBar.2
-            @Override // java.lang.Runnable
-            public void run() {
-                ContentLoadingProgressBar.this.mPostedShow = false;
-                if (ContentLoadingProgressBar.this.mDismissed) {
-                    return;
-                }
-                ContentLoadingProgressBar.this.mStartTime = System.currentTimeMillis();
-                ContentLoadingProgressBar.this.setVisibility(0);
-            }
-        };
-    }
-
-    @Override // android.widget.ProgressBar, android.view.View
-    public void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        removeCallbacks();
-    }
-
-    @Override // android.widget.ProgressBar, android.view.View
-    public void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        removeCallbacks();
-    }
-
-    private void removeCallbacks() {
-        removeCallbacks(this.mDelayedHide);
-        removeCallbacks(this.mDelayedShow);
-    }
-
-    public synchronized void hide() {
-        this.mDismissed = true;
-        removeCallbacks(this.mDelayedShow);
-        this.mPostedShow = false;
-        long currentTimeMillis = System.currentTimeMillis();
-        long j2 = this.mStartTime;
-        long j3 = currentTimeMillis - j2;
-        if (j3 < 500 && j2 != -1) {
-            if (!this.mPostedHide) {
-                postDelayed(this.mDelayedHide, 500 - j3);
-                this.mPostedHide = true;
-            }
+    @Override // java.util.function.Consumer
+    public void accept(T t2) {
+        if (compareAndSet(false, true)) {
+            Continuation<T> continuation = this.continuation;
+            Result.Companion companion = Result.Companion;
+            continuation.resumeWith(Result.m42constructorimpl(t2));
         }
-        setVisibility(8);
     }
 
-    public synchronized void show() {
-        this.mStartTime = -1L;
-        this.mDismissed = false;
-        removeCallbacks(this.mDelayedHide);
-        this.mPostedHide = false;
-        if (!this.mPostedShow) {
-            postDelayed(this.mDelayedShow, 500L);
-            this.mPostedShow = true;
-        }
+    @Override // java.util.concurrent.atomic.AtomicBoolean
+    public String toString() {
+        return "ContinuationConsumer(resultAccepted = " + get() + ')';
     }
 }

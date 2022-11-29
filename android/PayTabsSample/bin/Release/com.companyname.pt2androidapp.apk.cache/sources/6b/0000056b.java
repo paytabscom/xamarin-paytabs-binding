@@ -1,20 +1,47 @@
-package androidx.core.text;
+package androidx.core.graphics;
 
-import android.text.TextUtils;
-import kotlin.Metadata;
-import kotlin.jvm.internal.Intrinsics;
+import android.graphics.Path;
+import android.graphics.PointF;
+import java.util.ArrayList;
+import java.util.Collection;
 
-/* compiled from: CharSequence.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0012\n\u0000\n\u0002\u0010\u000b\n\u0002\u0010\r\n\u0000\n\u0002\u0010\b\n\u0000\u001a\r\u0010\u0000\u001a\u00020\u0001*\u00020\u0002H\u0086\b\u001a\r\u0010\u0003\u001a\u00020\u0004*\u00020\u0002H\u0086\b¨\u0006\u0005"}, d2 = {"isDigitsOnly", "", "", "trimmedLength", "", "core-ktx_release"}, k = 2, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class CharSequenceKt {
-    public static final boolean isDigitsOnly(CharSequence isDigitsOnly) {
-        Intrinsics.checkNotNullParameter(isDigitsOnly, "$this$isDigitsOnly");
-        return TextUtils.isDigitsOnly(isDigitsOnly);
+public final class PathUtils {
+    public static Collection<PathSegment> flatten(Path path) {
+        return flatten(path, 0.5f);
     }
 
-    public static final int trimmedLength(CharSequence trimmedLength) {
-        Intrinsics.checkNotNullParameter(trimmedLength, "$this$trimmedLength");
-        return TextUtils.getTrimmedLength(trimmedLength);
+    public static Collection<PathSegment> flatten(Path path, float f2) {
+        float[] approximate = Api26Impl.approximate(path, f2);
+        int length = approximate.length / 3;
+        ArrayList arrayList = new ArrayList(length);
+        for (int i2 = 1; i2 < length; i2++) {
+            int i3 = i2 * 3;
+            int i4 = (i2 - 1) * 3;
+            float f3 = approximate[i3];
+            float f4 = approximate[i3 + 1];
+            float f5 = approximate[i3 + 2];
+            float f6 = approximate[i4];
+            float f7 = approximate[i4 + 1];
+            float f8 = approximate[i4 + 2];
+            if (f3 != f6 && (f4 != f7 || f5 != f8)) {
+                arrayList.add(new PathSegment(new PointF(f7, f8), f6, new PointF(f4, f5), f3));
+            }
+        }
+        return arrayList;
+    }
+
+    private PathUtils() {
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* loaded from: classes.dex */
+    public static class Api26Impl {
+        private Api26Impl() {
+        }
+
+        static float[] approximate(Path path, float f2) {
+            return path.approximate(f2);
+        }
     }
 }

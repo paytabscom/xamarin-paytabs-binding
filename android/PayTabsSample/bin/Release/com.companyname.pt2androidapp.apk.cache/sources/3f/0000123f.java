@@ -1,32 +1,35 @@
-package kotlinx.coroutines;
+package com.google.crypto.tink.subtle;
 
-import kotlin.Metadata;
-import kotlin.Unit;
+import com.google.crypto.tink.HybridEncrypt;
+import com.google.crypto.tink.subtle.EciesHkdfSenderKem;
+import com.google.crypto.tink.subtle.EllipticCurves;
+import java.nio.ByteBuffer;
+import java.security.GeneralSecurityException;
+import java.security.interfaces.ECPublicKey;
 
-/* compiled from: JobSupport.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000(\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u0003\n\u0000\n\u0002\u0010\u0002\n\u0000\b\u0000\u0018\u00002\u00020\u00012\u00020\u0002B\r\u0012\u0006\u0010\u0003\u001a\u00020\u0004¢\u0006\u0002\u0010\u0005J\u0010\u0010\u0006\u001a\u00020\u00072\u0006\u0010\b\u001a\u00020\tH\u0016J\u0013\u0010\n\u001a\u00020\u000b2\b\u0010\b\u001a\u0004\u0018\u00010\tH\u0096\u0002R\u0010\u0010\u0003\u001a\u00020\u00048\u0006X\u0087\u0004¢\u0006\u0002\n\u0000¨\u0006\f"}, d2 = {"Lkotlinx/coroutines/ChildHandleNode;", "Lkotlinx/coroutines/JobCancellingNode;", "Lkotlinx/coroutines/ChildHandle;", "childJob", "Lkotlinx/coroutines/ChildJob;", "(Lkotlinx/coroutines/ChildJob;)V", "childCancelled", "", "cause", "", "invoke", "", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class ChildHandleNode extends JobCancellingNode implements ChildHandle {
-    public final ChildJob childJob;
+public final class EciesAeadHkdfHybridEncrypt implements HybridEncrypt {
+    private static final byte[] EMPTY_AAD = new byte[0];
+    private final EciesAeadHkdfDemHelper demHelper;
+    private final EllipticCurves.PointFormatType ecPointFormat;
+    private final String hkdfHmacAlgo;
+    private final byte[] hkdfSalt;
+    private final EciesHkdfSenderKem senderKem;
 
-    @Override // kotlin.jvm.functions.Function1
-    public /* bridge */ /* synthetic */ Unit invoke(Throwable th) {
-        invoke2(th);
-        return Unit.INSTANCE;
+    public EciesAeadHkdfHybridEncrypt(final ECPublicKey recipientPublicKey, final byte[] hkdfSalt, String hkdfHmacAlgo, EllipticCurves.PointFormatType ecPointFormat, EciesAeadHkdfDemHelper demHelper) throws GeneralSecurityException {
+        EllipticCurves.checkPublicKey(recipientPublicKey);
+        this.senderKem = new EciesHkdfSenderKem(recipientPublicKey);
+        this.hkdfSalt = hkdfSalt;
+        this.hkdfHmacAlgo = hkdfHmacAlgo;
+        this.ecPointFormat = ecPointFormat;
+        this.demHelper = demHelper;
     }
 
-    public ChildHandleNode(ChildJob childJob) {
-        this.childJob = childJob;
-    }
-
-    @Override // kotlinx.coroutines.CompletionHandlerBase
-    /* renamed from: invoke  reason: avoid collision after fix types in other method */
-    public void invoke2(Throwable th) {
-        this.childJob.parentCancelled(getJob());
-    }
-
-    @Override // kotlinx.coroutines.ChildHandle
-    public boolean childCancelled(Throwable th) {
-        return getJob().childCancelled(th);
+    @Override // com.google.crypto.tink.HybridEncrypt
+    public byte[] encrypt(final byte[] plaintext, final byte[] contextInfo) throws GeneralSecurityException {
+        EciesHkdfSenderKem.KemKey generateKey = this.senderKem.generateKey(this.hkdfHmacAlgo, this.hkdfSalt, contextInfo, this.demHelper.getSymmetricKeySizeInBytes(), this.ecPointFormat);
+        byte[] encrypt = this.demHelper.getAeadOrDaead(generateKey.getSymmetricKey()).encrypt(plaintext, EMPTY_AAD);
+        byte[] kemBytes = generateKey.getKemBytes();
+        return ByteBuffer.allocate(kemBytes.length + encrypt.length).put(kemBytes).put(encrypt).array();
     }
 }

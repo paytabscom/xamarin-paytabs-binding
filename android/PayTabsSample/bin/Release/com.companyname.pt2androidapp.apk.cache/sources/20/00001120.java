@@ -1,32 +1,116 @@
-package kotlin.ranges;
+package com.google.crypto.tink.shaded.protobuf;
 
-import java.lang.Comparable;
-import kotlin.Metadata;
-import kotlin.jvm.internal.Intrinsics;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.ref.SoftReference;
+import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
 
-/* compiled from: Ranges.kt */
-@Metadata(d1 = {"\u0000\u0018\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000f\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u000b\n\u0002\b\b\bg\u0018\u0000*\u000e\b\u0000\u0010\u0001*\b\u0012\u0004\u0012\u0002H\u00010\u00022\b\u0012\u0004\u0012\u0002H\u00010\u0003J\u0016\u0010\u0004\u001a\u00020\u00052\u0006\u0010\u0006\u001a\u00028\u0000H\u0096\u0002¢\u0006\u0002\u0010\u0007J\b\u0010\b\u001a\u00020\u0005H\u0016J\u001d\u0010\t\u001a\u00020\u00052\u0006\u0010\n\u001a\u00028\u00002\u0006\u0010\u000b\u001a\u00028\u0000H&¢\u0006\u0002\u0010\f¨\u0006\r"}, d2 = {"Lkotlin/ranges/ClosedFloatingPointRange;", "T", "", "Lkotlin/ranges/ClosedRange;", "contains", "", "value", "(Ljava/lang/Comparable;)Z", "isEmpty", "lessThanOrEquals", "a", "b", "(Ljava/lang/Comparable;Ljava/lang/Comparable;)Z", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public interface ClosedFloatingPointRange<T extends Comparable<? super T>> extends ClosedRange<T> {
-    @Override // kotlin.ranges.ClosedRange
-    boolean contains(T t2);
+final class ByteBufferWriter {
+    private static final ThreadLocal<SoftReference<byte[]>> BUFFER = new ThreadLocal<>();
+    private static final float BUFFER_REALLOCATION_THRESHOLD = 0.5f;
+    private static final long CHANNEL_FIELD_OFFSET;
+    private static final Class<?> FILE_OUTPUT_STREAM_CLASS;
+    private static final int MAX_CACHED_BUFFER_SIZE = 16384;
+    private static final int MIN_CACHED_BUFFER_SIZE = 1024;
 
-    @Override // kotlin.ranges.ClosedRange
-    boolean isEmpty();
+    private static boolean needToReallocate(int requestedSize, int bufferLength) {
+        return bufferLength < requestedSize && ((float) bufferLength) < ((float) requestedSize) * 0.5f;
+    }
 
-    boolean lessThanOrEquals(T t2, T t3);
+    private ByteBufferWriter() {
+    }
 
-    /* compiled from: Ranges.kt */
-    @Metadata(k = 3, mv = {1, 5, 1})
-    /* loaded from: classes.dex */
-    public static final class DefaultImpls {
-        public static <T extends Comparable<? super T>> boolean contains(ClosedFloatingPointRange<T> closedFloatingPointRange, T value) {
-            Intrinsics.checkNotNullParameter(value, "value");
-            return closedFloatingPointRange.lessThanOrEquals(closedFloatingPointRange.getStart(), value) && closedFloatingPointRange.lessThanOrEquals(value, closedFloatingPointRange.getEndInclusive());
+    static {
+        Class<?> safeGetClass = safeGetClass("java.io.FileOutputStream");
+        FILE_OUTPUT_STREAM_CLASS = safeGetClass;
+        CHANNEL_FIELD_OFFSET = getChannelFieldOffset(safeGetClass);
+    }
+
+    static void clearCachedBuffer() {
+        BUFFER.set(null);
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static void write(ByteBuffer buffer, OutputStream output) throws IOException {
+        int position = buffer.position();
+        try {
+            if (buffer.hasArray()) {
+                output.write(buffer.array(), buffer.arrayOffset() + buffer.position(), buffer.remaining());
+            } else if (!writeToChannel(buffer, output)) {
+                byte[] orCreateBuffer = getOrCreateBuffer(buffer.remaining());
+                while (buffer.hasRemaining()) {
+                    int min = Math.min(buffer.remaining(), orCreateBuffer.length);
+                    buffer.get(orCreateBuffer, 0, min);
+                    output.write(orCreateBuffer, 0, min);
+                }
+            }
+        } finally {
+            buffer.position(position);
         }
+    }
 
-        public static <T extends Comparable<? super T>> boolean isEmpty(ClosedFloatingPointRange<T> closedFloatingPointRange) {
-            return !closedFloatingPointRange.lessThanOrEquals(closedFloatingPointRange.getStart(), closedFloatingPointRange.getEndInclusive());
+    private static byte[] getOrCreateBuffer(int requestedSize) {
+        int max = Math.max(requestedSize, 1024);
+        byte[] buffer = getBuffer();
+        if (buffer == null || needToReallocate(max, buffer.length)) {
+            buffer = new byte[max];
+            if (max <= 16384) {
+                setBuffer(buffer);
+            }
         }
+        return buffer;
+    }
+
+    private static byte[] getBuffer() {
+        SoftReference<byte[]> softReference = BUFFER.get();
+        if (softReference == null) {
+            return null;
+        }
+        return softReference.get();
+    }
+
+    private static void setBuffer(byte[] value) {
+        BUFFER.set(new SoftReference<>(value));
+    }
+
+    private static boolean writeToChannel(ByteBuffer buffer, OutputStream output) throws IOException {
+        long j2 = CHANNEL_FIELD_OFFSET;
+        if (j2 < 0 || !FILE_OUTPUT_STREAM_CLASS.isInstance(output)) {
+            return false;
+        }
+        WritableByteChannel writableByteChannel = null;
+        try {
+            writableByteChannel = (WritableByteChannel) UnsafeUtil.getObject(output, j2);
+        } catch (ClassCastException unused) {
+        }
+        if (writableByteChannel != null) {
+            writableByteChannel.write(buffer);
+            return true;
+        }
+        return false;
+    }
+
+    private static Class<?> safeGetClass(String className) {
+        try {
+            return Class.forName(className);
+        } catch (ClassNotFoundException unused) {
+            return null;
+        }
+    }
+
+    private static long getChannelFieldOffset(Class<?> clazz) {
+        if (clazz != null) {
+            try {
+                if (UnsafeUtil.hasUnsafeArrayOperations()) {
+                    return UnsafeUtil.objectFieldOffset(clazz.getDeclaredField("channel"));
+                }
+                return -1L;
+            } catch (Throwable unused) {
+                return -1L;
+            }
+        }
+        return -1L;
     }
 }

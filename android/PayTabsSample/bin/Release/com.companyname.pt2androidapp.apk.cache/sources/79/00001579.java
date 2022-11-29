@@ -1,54 +1,32 @@
-package kotlinx.coroutines.internal;
+package kotlin.collections;
 
-import androidx.core.internal.view.SupportMenu;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
+import java.util.Iterator;
+import kotlin.Deprecated;
+import kotlin.DeprecationLevel;
 import kotlin.Metadata;
-import kotlinx.coroutines.internal.Segment;
+import kotlin.ULong;
+import kotlin.jvm.internal.markers.KMappedMarker;
 
-/* compiled from: ConcurrentLinkedList.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000*\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\t\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\u000b\n\u0002\b\u0003\n\u0002\u0010\u0002\n\u0002\b\r\n\u0002\u0018\u0002\b \u0018\u0000*\u000e\b\u0000\u0010\u0001*\b\u0012\u0004\u0012\u00028\u00000\u00002\b\u0012\u0004\u0012\u00028\u00000\u001bB!\u0012\u0006\u0010\u0003\u001a\u00020\u0002\u0012\b\u0010\u0004\u001a\u0004\u0018\u00018\u0000\u0012\u0006\u0010\u0006\u001a\u00020\u0005¢\u0006\u0004\b\u0007\u0010\bJ\u000f\u0010\f\u001a\u00020\tH\u0000¢\u0006\u0004\b\n\u0010\u000bJ\r\u0010\u000e\u001a\u00020\r¢\u0006\u0004\b\u000e\u0010\u000fJ\u000f\u0010\u0011\u001a\u00020\tH\u0000¢\u0006\u0004\b\u0010\u0010\u000bR\u0019\u0010\u0003\u001a\u00020\u00028\u0006@\u0006¢\u0006\f\n\u0004\b\u0003\u0010\u0012\u001a\u0004\b\u0013\u0010\u0014R\u0016\u0010\u0017\u001a\u00020\u00058&@&X¦\u0004¢\u0006\u0006\u001a\u0004\b\u0015\u0010\u0016R\u0016\u0010\u0019\u001a\u00020\t8V@\u0016X\u0096\u0004¢\u0006\u0006\u001a\u0004\b\u0018\u0010\u000b¨\u0006\u001a"}, d2 = {"Lkotlinx/coroutines/internal/Segment;", "S", "", "id", "prev", "", "pointers", "<init>", "(JLkotlinx/coroutines/internal/Segment;I)V", "", "decPointers$kotlinx_coroutines_core", "()Z", "decPointers", "", "onSlotCleaned", "()V", "tryIncPointers$kotlinx_coroutines_core", "tryIncPointers", "J", "getId", "()J", "getMaxSlots", "()I", "maxSlots", "getRemoved", "removed", "kotlinx-coroutines-core", "Lkotlinx/coroutines/internal/ConcurrentLinkedListNode;"}, k = 1, mv = {1, 4, 2})
+/* compiled from: UIterators.kt */
+@Deprecated(level = DeprecationLevel.ERROR, message = "This class is not going to be stabilized and is to be removed soon.")
+@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\u0010(\n\u0002\u0018\u0002\n\u0002\b\u0007\b'\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\u0005¢\u0006\u0002\u0010\u0003J\u0016\u0010\u0004\u001a\u00020\u0002H\u0086\u0002ø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\b\u0005\u0010\u0006J\u0015\u0010\u0007\u001a\u00020\u0002H&ø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\b\b\u0010\u0006ø\u0001\u0000\u0082\u0002\b\n\u0002\b\u0019\n\u0002\b!¨\u0006\t"}, d2 = {"Lkotlin/collections/ULongIterator;", "", "Lkotlin/ULong;", "()V", "next", "next-s-VKNKU", "()J", "nextULong", "nextULong-s-VKNKU", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public abstract class Segment<S extends Segment<S>> extends ConcurrentLinkedListNode<S> {
-    private static final /* synthetic */ AtomicIntegerFieldUpdater cleanedAndPointers$FU = AtomicIntegerFieldUpdater.newUpdater(Segment.class, "cleanedAndPointers");
-    private volatile /* synthetic */ int cleanedAndPointers;
-    private final long id;
+public abstract class ULongIterator implements Iterator<ULong>, KMappedMarker {
+    /* renamed from: nextULong-s-VKNKU */
+    public abstract long mo283nextULongsVKNKU();
 
-    public abstract int getMaxSlots();
-
-    public Segment(long j2, S s2, int i2) {
-        super(s2);
-        this.id = j2;
-        this.cleanedAndPointers = i2 << 16;
+    @Override // java.util.Iterator
+    public void remove() {
+        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
     }
 
-    public final long getId() {
-        return this.id;
+    @Override // java.util.Iterator
+    public /* bridge */ /* synthetic */ ULong next() {
+        return ULong.m208boximpl(m503nextsVKNKU());
     }
 
-    @Override // kotlinx.coroutines.internal.ConcurrentLinkedListNode
-    public boolean getRemoved() {
-        return this.cleanedAndPointers == getMaxSlots() && !isTail();
-    }
-
-    public final boolean decPointers$kotlinx_coroutines_core() {
-        return cleanedAndPointers$FU.addAndGet(this, SupportMenu.CATEGORY_MASK) == getMaxSlots() && !isTail();
-    }
-
-    public final void onSlotCleaned() {
-        if (cleanedAndPointers$FU.incrementAndGet(this) != getMaxSlots() || isTail()) {
-            return;
-        }
-        remove();
-    }
-
-    public final boolean tryIncPointers$kotlinx_coroutines_core() {
-        int i2;
-        do {
-            i2 = this.cleanedAndPointers;
-            if (!(i2 != getMaxSlots() || isTail())) {
-                return false;
-            }
-        } while (!cleanedAndPointers$FU.compareAndSet(this, i2, 65536 + i2));
-        return true;
+    /* renamed from: next-s-VKNKU  reason: not valid java name */
+    public final long m503nextsVKNKU() {
+        return mo283nextULongsVKNKU();
     }
 }

@@ -1,68 +1,34 @@
-package mono.android.gesture;
+package kotlin.io;
 
-import android.gesture.GestureOverlayView;
-import android.view.MotionEvent;
 import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.internal.Intrinsics;
+import kotlin.jvm.internal.Lambda;
 
+/* compiled from: ReadWrite.kt */
+@Metadata(d1 = {"\u0000\u000e\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u0003H\n¢\u0006\u0002\b\u0004"}, d2 = {"<anonymous>", "", "it", "", "invoke"}, k = 3, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class GestureOverlayView_OnGestureListenerImplementor implements IGCUserPeer, GestureOverlayView.OnGestureListener {
-    public static final String __md_methods = "n_onGesture:(Landroid/gesture/GestureOverlayView;Landroid/view/MotionEvent;)V:GetOnGesture_Landroid_gesture_GestureOverlayView_Landroid_view_MotionEvent_Handler:Android.Gestures.GestureOverlayView/IOnGestureListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onGestureCancelled:(Landroid/gesture/GestureOverlayView;Landroid/view/MotionEvent;)V:GetOnGestureCancelled_Landroid_gesture_GestureOverlayView_Landroid_view_MotionEvent_Handler:Android.Gestures.GestureOverlayView/IOnGestureListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onGestureEnded:(Landroid/gesture/GestureOverlayView;Landroid/view/MotionEvent;)V:GetOnGestureEnded_Landroid_gesture_GestureOverlayView_Landroid_view_MotionEvent_Handler:Android.Gestures.GestureOverlayView/IOnGestureListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onGestureStarted:(Landroid/gesture/GestureOverlayView;Landroid/view/MotionEvent;)V:GetOnGestureStarted_Landroid_gesture_GestureOverlayView_Landroid_view_MotionEvent_Handler:Android.Gestures.GestureOverlayView/IOnGestureListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+final class TextStreamsKt$readLines$1 extends Lambda implements Function1<String, Unit> {
+    final /* synthetic */ ArrayList $result;
 
-    private native void n_onGesture(GestureOverlayView gestureOverlayView, MotionEvent motionEvent);
-
-    private native void n_onGestureCancelled(GestureOverlayView gestureOverlayView, MotionEvent motionEvent);
-
-    private native void n_onGestureEnded(GestureOverlayView gestureOverlayView, MotionEvent motionEvent);
-
-    private native void n_onGestureStarted(GestureOverlayView gestureOverlayView, MotionEvent motionEvent);
-
-    static {
-        Runtime.register("Android.Gestures.GestureOverlayView+IOnGestureListenerImplementor, Mono.Android", GestureOverlayView_OnGestureListenerImplementor.class, __md_methods);
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public TextStreamsKt$readLines$1(ArrayList arrayList) {
+        super(1);
+        this.$result = arrayList;
     }
 
-    public GestureOverlayView_OnGestureListenerImplementor() {
-        if (getClass() == GestureOverlayView_OnGestureListenerImplementor.class) {
-            TypeManager.Activate("Android.Gestures.GestureOverlayView+IOnGestureListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    @Override // kotlin.jvm.functions.Function1
+    public /* bridge */ /* synthetic */ Unit invoke(String str) {
+        invoke2(str);
+        return Unit.INSTANCE;
     }
 
-    @Override // android.gesture.GestureOverlayView.OnGestureListener
-    public void onGesture(GestureOverlayView gestureOverlayView, MotionEvent motionEvent) {
-        n_onGesture(gestureOverlayView, motionEvent);
-    }
-
-    @Override // android.gesture.GestureOverlayView.OnGestureListener
-    public void onGestureCancelled(GestureOverlayView gestureOverlayView, MotionEvent motionEvent) {
-        n_onGestureCancelled(gestureOverlayView, motionEvent);
-    }
-
-    @Override // android.gesture.GestureOverlayView.OnGestureListener
-    public void onGestureEnded(GestureOverlayView gestureOverlayView, MotionEvent motionEvent) {
-        n_onGestureEnded(gestureOverlayView, motionEvent);
-    }
-
-    @Override // android.gesture.GestureOverlayView.OnGestureListener
-    public void onGestureStarted(GestureOverlayView gestureOverlayView, MotionEvent motionEvent) {
-        n_onGestureStarted(gestureOverlayView, motionEvent);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    /* renamed from: invoke  reason: avoid collision after fix types in other method */
+    public final void invoke2(String it) {
+        Intrinsics.checkNotNullParameter(it, "it");
+        this.$result.add(it);
     }
 }

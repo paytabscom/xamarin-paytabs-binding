@@ -1,29 +1,39 @@
-package kotlinx.coroutines.flow;
+package com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.utils;
 
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.internal.Ref;
-
-/* compiled from: SafeCollector.common.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0019\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002*\u0001\u0000\b\n\u0018\u00002\b\u0012\u0004\u0012\u00028\u00000\u0001J\u001f\u0010\u0002\u001a\u00020\u00032\f\u0010\u0004\u001a\b\u0012\u0004\u0012\u00028\u00000\u0005H\u0096@ø\u0001\u0000¢\u0006\u0002\u0010\u0006\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\u0007¸\u0006\u0000"}, d2 = {"kotlinx/coroutines/flow/internal/SafeCollector_commonKt$unsafeFlow$1", "Lkotlinx/coroutines/flow/Flow;", "collect", "", "collector", "Lkotlinx/coroutines/flow/FlowCollector;", "(Lkotlinx/coroutines/flow/FlowCollector;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class FlowKt__LimitKt$dropWhile$$inlined$unsafeFlow$1 implements Flow<T> {
-    final /* synthetic */ Function2 $predicate$inlined;
-    final /* synthetic */ Flow $this_dropWhile$inlined;
+public class Size implements Comparable<Size> {
+    public final int height;
+    public final int width;
 
-    public FlowKt__LimitKt$dropWhile$$inlined$unsafeFlow$1(Flow flow, Function2 function2) {
-        this.$this_dropWhile$inlined = flow;
-        this.$predicate$inlined = function2;
+    public Size(int i2, int i3) {
+        this.width = i2;
+        this.height = i3;
     }
 
-    @Override // kotlinx.coroutines.flow.Flow
-    public Object collect(FlowCollector flowCollector, Continuation continuation) {
-        Ref.BooleanRef booleanRef = new Ref.BooleanRef();
-        booleanRef.element = false;
-        Object collect = this.$this_dropWhile$inlined.collect(new FlowKt__LimitKt$dropWhile$$inlined$unsafeFlow$1$lambda$1(flowCollector, booleanRef, this), continuation);
-        return collect == IntrinsicsKt.getCOROUTINE_SUSPENDED() ? collect : Unit.INSTANCE;
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Size size = (Size) obj;
+        return this.width == size.width && this.height == size.height;
+    }
+
+    public int hashCode() {
+        return (this.width * 31) + this.height;
+    }
+
+    @Override // java.lang.Comparable
+    public int compareTo(Size size) {
+        if (Math.max(this.width, this.height) <= Math.max(size.width, size.height) || Math.min(this.width, this.height) <= Math.min(size.width, size.height)) {
+            return (Math.max(this.width, this.height) >= Math.max(size.width, size.height) || Math.min(this.width, this.height) >= Math.min(size.width, size.height)) ? 0 : 1;
+        }
+        return -1;
+    }
+
+    public String toString() {
+        return this.width + "x" + this.height;
     }
 }

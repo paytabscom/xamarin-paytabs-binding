@@ -1,118 +1,60 @@
-package kotlinx.coroutines.flow;
+package kotlin;
 
-import kotlin.Metadata;
-import kotlin.ResultKt;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-import kotlin.coroutines.jvm.internal.SuspendLambda;
+import java.io.Serializable;
 import kotlin.jvm.functions.Function0;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.functions.Function3;
-import kotlin.jvm.functions.Function4;
-import kotlin.jvm.internal.InlineMarker;
-import kotlinx.coroutines.flow.internal.CombineKt;
+import kotlin.jvm.internal.DefaultConstructorMarker;
+import kotlin.jvm.internal.Intrinsics;
 
-/* compiled from: Zip.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0012\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\u0010\u0000\u001a\u00020\u0001\"\u0006\b\u0000\u0010\u0002\u0018\u0001\"\u0004\b\u0001\u0010\u0003*\b\u0012\u0004\u0012\u0002H\u00030\u0004H\u008a@¢\u0006\u0004\b\u0005\u0010\u0006¨\u0006\u0007"}, d2 = {"<anonymous>", "", "T", "R", "Lkotlinx/coroutines/flow/FlowCollector;", "invoke", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", "kotlinx/coroutines/flow/FlowKt__ZipKt$combineTransformUnsafe$1"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$2", f = "Zip.kt", i = {}, l = {273}, m = "invokeSuspend", n = {}, s = {})
+/* JADX INFO: Access modifiers changed from: package-private */
+/* compiled from: LazyJVM.kt */
+@Metadata(d1 = {"\u00000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0006\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0002\b\u0002\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u00012\b\u0012\u0004\u0012\u0002H\u00010\u00022\u00060\u0003j\u0002`\u0004B\u001f\u0012\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u00028\u00000\u0006\u0012\n\b\u0002\u0010\u0007\u001a\u0004\u0018\u00010\b¢\u0006\u0002\u0010\tJ\b\u0010\u000e\u001a\u00020\u000fH\u0016J\b\u0010\u0010\u001a\u00020\u0011H\u0016J\b\u0010\u0012\u001a\u00020\bH\u0002R\u0010\u0010\n\u001a\u0004\u0018\u00010\bX\u0082\u000e¢\u0006\u0002\n\u0000R\u0016\u0010\u0005\u001a\n\u0012\u0004\u0012\u00028\u0000\u0018\u00010\u0006X\u0088\u000e¢\u0006\u0002\n\u0000R\u000e\u0010\u0007\u001a\u00020\bX\u0082\u0004¢\u0006\u0002\n\u0000R\u0014\u0010\u000b\u001a\u00028\u00008VX\u0096\u0004¢\u0006\u0006\u001a\u0004\b\f\u0010\r¨\u0006\u0013"}, d2 = {"Lkotlin/SynchronizedLazyImpl;", "T", "Lkotlin/Lazy;", "Ljava/io/Serializable;", "Lkotlin/io/Serializable;", "initializer", "Lkotlin/Function0;", "lock", "", "(Lkotlin/jvm/functions/Function0;Ljava/lang/Object;)V", "_value", "value", "getValue", "()Ljava/lang/Object;", "isInitialized", "", "toString", "", "writeReplace", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$2 extends SuspendLambda implements Function2<FlowCollector<? super R>, Continuation<? super Unit>, Object> {
-    final /* synthetic */ Flow[] $flows;
-    final /* synthetic */ Function4 $transform$inlined;
-    private /* synthetic */ Object L$0;
-    int label;
+public final class SynchronizedLazyImpl<T> implements Lazy<T>, Serializable {
+    private volatile Object _value;
+    private Function0<? extends T> initializer;
+    private final Object lock;
 
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$2(Flow[] flowArr, Continuation continuation, Function4 function4) {
-        super(2, continuation);
-        this.$flows = flowArr;
-        this.$transform$inlined = function4;
+    public SynchronizedLazyImpl(Function0<? extends T> initializer, Object obj) {
+        Intrinsics.checkNotNullParameter(initializer, "initializer");
+        this.initializer = initializer;
+        this._value = UNINITIALIZED_VALUE.INSTANCE;
+        this.lock = obj == null ? this : obj;
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Continuation<Unit> create(Object obj, Continuation<?> continuation) {
-        FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$2 flowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$2 = new FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$2(this.$flows, continuation, this.$transform$inlined);
-        flowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$2.L$0 = obj;
-        return flowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$2;
+    public /* synthetic */ SynchronizedLazyImpl(Function0 function0, Object obj, int i2, DefaultConstructorMarker defaultConstructorMarker) {
+        this(function0, (i2 & 2) != 0 ? null : obj);
     }
 
-    @Override // kotlin.jvm.functions.Function2
-    public final Object invoke(Object obj, Continuation<? super Unit> continuation) {
-        return ((FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$2) create(obj, continuation)).invokeSuspend(Unit.INSTANCE);
-    }
-
-    /* compiled from: Zip.kt */
-    @Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0018\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0011\n\u0002\b\u0003\u0010\u0000\u001a\u00020\u0001\"\u0006\b\u0000\u0010\u0002\u0018\u0001\"\u0004\b\u0001\u0010\u0003*\b\u0012\u0004\u0012\u0002H\u00030\u00042\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0006H\u008a@¢\u0006\u0004\b\u0007\u0010\b¨\u0006\t"}, d2 = {"<anonymous>", "", "T", "R", "Lkotlinx/coroutines/flow/FlowCollector;", "it", "", "invoke", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", "kotlinx/coroutines/flow/FlowKt__ZipKt$combineTransformUnsafe$1$1"}, k = 3, mv = {1, 4, 2})
-    @DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$2$1", f = "Zip.kt", i = {}, l = {335}, m = "invokeSuspend", n = {}, s = {})
-    /* renamed from: kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$2$1  reason: invalid class name */
-    /* loaded from: classes.dex */
-    public static final class AnonymousClass1 extends SuspendLambda implements Function3<FlowCollector<? super R>, Object[], Continuation<? super Unit>, Object> {
-        private /* synthetic */ Object L$0;
-        private /* synthetic */ Object L$1;
-        int label;
-
-        public AnonymousClass1(Continuation continuation) {
-            super(3, continuation);
+    @Override // kotlin.Lazy
+    public T getValue() {
+        T t2;
+        T t3 = (T) this._value;
+        if (t3 != UNINITIALIZED_VALUE.INSTANCE) {
+            return t3;
         }
-
-        public final Continuation<Unit> create(FlowCollector<? super R> flowCollector, Object[] objArr, Continuation<? super Unit> continuation) {
-            AnonymousClass1 anonymousClass1 = new AnonymousClass1(continuation);
-            anonymousClass1.L$0 = flowCollector;
-            anonymousClass1.L$1 = objArr;
-            return anonymousClass1;
-        }
-
-        @Override // kotlin.jvm.functions.Function3
-        public final Object invoke(Object obj, Object[] objArr, Continuation<? super Unit> continuation) {
-            return ((AnonymousClass1) create((FlowCollector) obj, objArr, continuation)).invokeSuspend(Unit.INSTANCE);
-        }
-
-        @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-        public final Object invokeSuspend(Object obj) {
-            Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
-            int i2 = this.label;
-            if (i2 == 0) {
-                ResultKt.throwOnFailure(obj);
-                Object[] objArr = (Object[]) this.L$1;
-                Function4 function4 = FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$2.this.$transform$inlined;
-                Object obj2 = objArr[0];
-                Object obj3 = objArr[1];
-                this.label = 1;
-                InlineMarker.mark(6);
-                Object invoke = function4.invoke((FlowCollector) this.L$0, obj2, obj3, this);
-                InlineMarker.mark(7);
-                if (invoke == coroutine_suspended) {
-                    return coroutine_suspended;
-                }
-            } else if (i2 != 1) {
-                throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
-            } else {
-                ResultKt.throwOnFailure(obj);
+        synchronized (this.lock) {
+            t2 = (T) this._value;
+            if (t2 == UNINITIALIZED_VALUE.INSTANCE) {
+                Function0<? extends T> function0 = this.initializer;
+                Intrinsics.checkNotNull(function0);
+                t2 = function0.invoke();
+                this._value = t2;
+                this.initializer = null;
             }
-            return Unit.INSTANCE;
         }
+        return t2;
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        Function0 nullArrayFactory$FlowKt__ZipKt;
-        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
-        int i2 = this.label;
-        if (i2 == 0) {
-            ResultKt.throwOnFailure(obj);
-            Flow[] flowArr = this.$flows;
-            nullArrayFactory$FlowKt__ZipKt = FlowKt__ZipKt.nullArrayFactory$FlowKt__ZipKt();
-            this.label = 1;
-            if (CombineKt.combineInternal((FlowCollector) this.L$0, flowArr, nullArrayFactory$FlowKt__ZipKt, new AnonymousClass1(null), this) == coroutine_suspended) {
-                return coroutine_suspended;
-            }
-        } else if (i2 != 1) {
-            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
-        } else {
-            ResultKt.throwOnFailure(obj);
-        }
-        return Unit.INSTANCE;
+    @Override // kotlin.Lazy
+    public boolean isInitialized() {
+        return this._value != UNINITIALIZED_VALUE.INSTANCE;
+    }
+
+    public String toString() {
+        return isInitialized() ? String.valueOf(getValue()) : "Lazy value not initialized yet.";
+    }
+
+    private final Object writeReplace() {
+        return new InitializedLazyImpl(getValue());
     }
 }

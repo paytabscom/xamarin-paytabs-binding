@@ -1,54 +1,26 @@
-package androidx.core.provider;
+package androidx.core.database.sqlite;
 
-import android.graphics.Typeface;
-import android.os.Handler;
-import androidx.core.provider.FontRequestWorker;
-import androidx.core.provider.FontsContractCompat;
+import android.database.sqlite.SQLiteCursor;
+import android.os.Build;
 
-/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-public class CallbackWithHandler {
-    private final FontsContractCompat.FontRequestCallback mCallback;
-    private final Handler mCallbackHandler;
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public CallbackWithHandler(FontsContractCompat.FontRequestCallback fontRequestCallback, Handler handler) {
-        this.mCallback = fontRequestCallback;
-        this.mCallbackHandler = handler;
+public final class SQLiteCursorCompat {
+    private SQLiteCursorCompat() {
     }
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public CallbackWithHandler(FontsContractCompat.FontRequestCallback fontRequestCallback) {
-        this.mCallback = fontRequestCallback;
-        this.mCallbackHandler = CalleeHandler.create();
+    public static void setFillWindowForwardOnly(SQLiteCursor sQLiteCursor, boolean z2) {
+        if (Build.VERSION.SDK_INT >= 28) {
+            Api28Impl.setFillWindowForwardOnly(sQLiteCursor, z2);
+        }
     }
 
-    private void onTypefaceRetrieved(final Typeface typeface) {
-        final FontsContractCompat.FontRequestCallback fontRequestCallback = this.mCallback;
-        this.mCallbackHandler.post(new Runnable() { // from class: androidx.core.provider.CallbackWithHandler.1
-            @Override // java.lang.Runnable
-            public void run() {
-                fontRequestCallback.onTypefaceRetrieved(typeface);
-            }
-        });
-    }
+    /* loaded from: classes.dex */
+    static class Api28Impl {
+        private Api28Impl() {
+        }
 
-    private void onTypefaceRequestFailed(final int i2) {
-        final FontsContractCompat.FontRequestCallback fontRequestCallback = this.mCallback;
-        this.mCallbackHandler.post(new Runnable() { // from class: androidx.core.provider.CallbackWithHandler.2
-            @Override // java.lang.Runnable
-            public void run() {
-                fontRequestCallback.onTypefaceRequestFailed(i2);
-            }
-        });
-    }
-
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public void onTypefaceResult(FontRequestWorker.TypefaceResult typefaceResult) {
-        if (typefaceResult.isSuccess()) {
-            onTypefaceRetrieved(typefaceResult.mTypeface);
-        } else {
-            onTypefaceRequestFailed(typefaceResult.mResult);
+        static void setFillWindowForwardOnly(SQLiteCursor sQLiteCursor, boolean z2) {
+            sQLiteCursor.setFillWindowForwardOnly(z2);
         }
     }
 }

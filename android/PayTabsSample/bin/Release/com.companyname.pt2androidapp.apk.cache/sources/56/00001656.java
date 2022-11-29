@@ -1,46 +1,11 @@
-package mono.android.media;
+package kotlin.jvm.functions;
 
-import android.media.MediaPlayer;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Function;
+import kotlin.Metadata;
 
+/* compiled from: Functions.kt */
+@Metadata(d1 = {"\u0000\u0010\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\bf\u0018\u0000*\u0006\b\u0000\u0010\u0001 \u0000*\u0006\b\u0001\u0010\u0002 \u00012\b\u0012\u0004\u0012\u0002H\u00020\u0003J\u0016\u0010\u0004\u001a\u00028\u00012\u0006\u0010\u0005\u001a\u00028\u0000H¦\u0002¢\u0006\u0002\u0010\u0006¨\u0006\u0007"}, d2 = {"Lkotlin/jvm/functions/Function1;", "P1", "R", "Lkotlin/Function;", "invoke", "p1", "(Ljava/lang/Object;)Ljava/lang/Object;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class MediaPlayer_OnErrorListenerImplementor implements IGCUserPeer, MediaPlayer.OnErrorListener {
-    public static final String __md_methods = "n_onError:(Landroid/media/MediaPlayer;II)Z:GetOnError_Landroid_media_MediaPlayer_IIHandler:Android.Media.MediaPlayer/IOnErrorListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native boolean n_onError(MediaPlayer mediaPlayer, int i2, int i3);
-
-    static {
-        Runtime.register("Android.Media.MediaPlayer+IOnErrorListenerImplementor, Mono.Android", MediaPlayer_OnErrorListenerImplementor.class, __md_methods);
-    }
-
-    public MediaPlayer_OnErrorListenerImplementor() {
-        if (getClass() == MediaPlayer_OnErrorListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.MediaPlayer+IOnErrorListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.media.MediaPlayer.OnErrorListener
-    public boolean onError(MediaPlayer mediaPlayer, int i2, int i3) {
-        return n_onError(mediaPlayer, i2, i3);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public interface Function1<P1, R> extends Function<R> {
+    R invoke(P1 p1);
 }

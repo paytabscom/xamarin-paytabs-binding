@@ -1,21 +1,25 @@
-package com.google.android.material.transition.platform;
+package com.google.android.material.internal;
+
+import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.view.ViewOverlay;
 
 /* loaded from: classes.dex */
-class FitModeResult {
-    final float currentEndHeight;
-    final float currentEndWidth;
-    final float currentStartHeight;
-    final float currentStartWidth;
-    final float endScale;
-    final float startScale;
+class ViewOverlayApi18 implements ViewOverlayImpl {
+    private final ViewOverlay viewOverlay;
 
     /* JADX INFO: Access modifiers changed from: package-private */
-    public FitModeResult(float f2, float f3, float f4, float f5, float f6, float f7) {
-        this.startScale = f2;
-        this.endScale = f3;
-        this.currentStartWidth = f4;
-        this.currentStartHeight = f5;
-        this.currentEndWidth = f6;
-        this.currentEndHeight = f7;
+    public ViewOverlayApi18(View view) {
+        this.viewOverlay = view.getOverlay();
+    }
+
+    @Override // com.google.android.material.internal.ViewOverlayImpl
+    public void add(Drawable drawable) {
+        this.viewOverlay.add(drawable);
+    }
+
+    @Override // com.google.android.material.internal.ViewOverlayImpl
+    public void remove(Drawable drawable) {
+        this.viewOverlay.remove(drawable);
     }
 }

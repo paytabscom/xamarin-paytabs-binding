@@ -1,21 +1,22 @@
-package androidx.dynamicanimation.animation;
+package androidx.core.view;
+
+import android.view.View;
 
 /* loaded from: classes.dex */
-public final class FloatValueHolder {
-    private float mValue = 0.0f;
+public interface NestedScrollingParent {
+    int getNestedScrollAxes();
 
-    public FloatValueHolder() {
-    }
+    boolean onNestedFling(View view, float f2, float f3, boolean z2);
 
-    public FloatValueHolder(float f2) {
-        setValue(f2);
-    }
+    boolean onNestedPreFling(View view, float f2, float f3);
 
-    public void setValue(float f2) {
-        this.mValue = f2;
-    }
+    void onNestedPreScroll(View view, int i2, int i3, int[] iArr);
 
-    public float getValue() {
-        return this.mValue;
-    }
+    void onNestedScroll(View view, int i2, int i3, int i4, int i5);
+
+    void onNestedScrollAccepted(View view, View view2, int i2);
+
+    boolean onStartNestedScroll(View view, View view2, int i2);
+
+    void onStopNestedScroll(View view);
 }

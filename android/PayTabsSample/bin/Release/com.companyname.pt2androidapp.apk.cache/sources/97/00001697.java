@@ -1,46 +1,22 @@
-package mono.android.preference;
+package kotlin.jvm.internal;
 
-import android.preference.Preference;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.KotlinNothingValueException;
+import kotlin.Metadata;
+import kotlin.reflect.KDeclarationContainer;
 
+/* compiled from: localVariableReferences.kt */
+@Metadata(d1 = {"\u0000\u0018\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0000\b\u0017\u0018\u00002\u00020\u0001B\u0005¢\u0006\u0002\u0010\u0002J\n\u0010\u0003\u001a\u0004\u0018\u00010\u0004H\u0016J\b\u0010\u0005\u001a\u00020\u0006H\u0016¨\u0006\u0007"}, d2 = {"Lkotlin/jvm/internal/LocalVariableReference;", "Lkotlin/jvm/internal/PropertyReference0;", "()V", "get", "", "getOwner", "Lkotlin/reflect/KDeclarationContainer;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class Preference_OnPreferenceClickListenerImplementor implements IGCUserPeer, Preference.OnPreferenceClickListener {
-    public static final String __md_methods = "n_onPreferenceClick:(Landroid/preference/Preference;)Z:GetOnPreferenceClick_Landroid_preference_Preference_Handler:Android.Preferences.Preference/IOnPreferenceClickListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native boolean n_onPreferenceClick(Preference preference);
-
-    static {
-        Runtime.register("Android.Preferences.Preference+IOnPreferenceClickListenerImplementor, Mono.Android", Preference_OnPreferenceClickListenerImplementor.class, __md_methods);
+public class LocalVariableReference extends PropertyReference0 {
+    @Override // kotlin.jvm.internal.CallableReference
+    public KDeclarationContainer getOwner() {
+        LocalVariableReferencesKt.notSupportedError();
+        throw new KotlinNothingValueException();
     }
 
-    public Preference_OnPreferenceClickListenerImplementor() {
-        if (getClass() == Preference_OnPreferenceClickListenerImplementor.class) {
-            TypeManager.Activate("Android.Preferences.Preference+IOnPreferenceClickListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.preference.Preference.OnPreferenceClickListener
-    public boolean onPreferenceClick(Preference preference) {
-        return n_onPreferenceClick(preference);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    @Override // kotlin.reflect.KProperty0
+    public Object get() {
+        LocalVariableReferencesKt.notSupportedError();
+        throw new KotlinNothingValueException();
     }
 }

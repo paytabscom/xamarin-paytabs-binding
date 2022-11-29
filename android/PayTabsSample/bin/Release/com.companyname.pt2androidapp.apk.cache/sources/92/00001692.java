@@ -1,47 +1,33 @@
-package mono.android.os;
+package kotlin.jvm.internal;
 
-import android.os.StrictMode;
-import android.os.strictmode.Violation;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: PrimitiveSpreadBuilders.kt */
+@Metadata(d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u0015\n\u0000\n\u0002\u0010\b\n\u0002\b\u0003\n\u0002\u0010\u0002\n\u0002\b\u0004\u0018\u00002\b\u0012\u0004\u0012\u00020\u00020\u0001B\r\u0012\u0006\u0010\u0003\u001a\u00020\u0004¢\u0006\u0002\u0010\u0005J\u000e\u0010\u0007\u001a\u00020\b2\u0006\u0010\t\u001a\u00020\u0004J\u0006\u0010\n\u001a\u00020\u0002J\f\u0010\u000b\u001a\u00020\u0004*\u00020\u0002H\u0014R\u000e\u0010\u0006\u001a\u00020\u0002X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\f"}, d2 = {"Lkotlin/jvm/internal/IntSpreadBuilder;", "Lkotlin/jvm/internal/PrimitiveSpreadBuilder;", "", "size", "", "(I)V", "values", "add", "", "value", "toArray", "getSize", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class StrictMode_OnVmViolationListenerImplementor implements IGCUserPeer, StrictMode.OnVmViolationListener {
-    public static final String __md_methods = "n_onVmViolation:(Landroid/os/strictmode/Violation;)V:GetOnVmViolation_Landroid_os_strictmode_Violation_Handler:Android.OS.StrictMode/IOnVmViolationListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public final class IntSpreadBuilder extends PrimitiveSpreadBuilder<int[]> {
+    private final int[] values;
 
-    private native void n_onVmViolation(Violation violation);
-
-    static {
-        Runtime.register("Android.OS.StrictMode+IOnVmViolationListenerImplementor, Mono.Android", StrictMode_OnVmViolationListenerImplementor.class, __md_methods);
+    public IntSpreadBuilder(int i2) {
+        super(i2);
+        this.values = new int[i2];
     }
 
-    public StrictMode_OnVmViolationListenerImplementor() {
-        if (getClass() == StrictMode_OnVmViolationListenerImplementor.class) {
-            TypeManager.Activate("Android.OS.StrictMode+IOnVmViolationListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    /* JADX INFO: Access modifiers changed from: protected */
+    @Override // kotlin.jvm.internal.PrimitiveSpreadBuilder
+    public int getSize(int[] getSize) {
+        Intrinsics.checkNotNullParameter(getSize, "$this$getSize");
+        return getSize.length;
     }
 
-    @Override // android.os.StrictMode.OnVmViolationListener
-    public void onVmViolation(Violation violation) {
-        n_onVmViolation(violation);
+    public final void add(int i2) {
+        int[] iArr = this.values;
+        int position = getPosition();
+        setPosition(position + 1);
+        iArr[position] = i2;
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    public final int[] toArray() {
+        return toArray(this.values, new int[size()]);
     }
 }

@@ -1,46 +1,22 @@
-package mono.android.media;
+package kotlin.jvm;
 
-import android.media.MediaCodec;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import kotlin.Metadata;
+import kotlin.annotation.AnnotationRetention;
+import kotlin.annotation.AnnotationTarget;
+import kotlin.annotation.MustBeDocumented;
 
+/* compiled from: JvmPlatformAnnotations.kt */
+@Target({})
+@kotlin.annotation.Target(allowedTargets = {AnnotationTarget.TYPE})
+@Retention(RetentionPolicy.CLASS)
+@kotlin.annotation.Retention(AnnotationRetention.BINARY)
+@MustBeDocumented
+@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\b\u0087\u0002\u0018\u00002\u00020\u0001B\u0000¨\u0006\u0002"}, d2 = {"Lkotlin/jvm/JvmWildcard;", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+@Documented
 /* loaded from: classes.dex */
-public class MediaCodec_OnFrameRenderedListenerImplementor implements IGCUserPeer, MediaCodec.OnFrameRenderedListener {
-    public static final String __md_methods = "n_onFrameRendered:(Landroid/media/MediaCodec;JJ)V:GetOnFrameRendered_Landroid_media_MediaCodec_JJHandler:Android.Media.MediaCodec/IOnFrameRenderedListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onFrameRendered(MediaCodec mediaCodec, long j2, long j3);
-
-    static {
-        Runtime.register("Android.Media.MediaCodec+IOnFrameRenderedListenerImplementor, Mono.Android", MediaCodec_OnFrameRenderedListenerImplementor.class, __md_methods);
-    }
-
-    public MediaCodec_OnFrameRenderedListenerImplementor() {
-        if (getClass() == MediaCodec_OnFrameRenderedListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.MediaCodec+IOnFrameRenderedListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.media.MediaCodec.OnFrameRenderedListener
-    public void onFrameRendered(MediaCodec mediaCodec, long j2, long j3) {
-        n_onFrameRendered(mediaCodec, j2, j3);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public @interface JvmWildcard {
 }

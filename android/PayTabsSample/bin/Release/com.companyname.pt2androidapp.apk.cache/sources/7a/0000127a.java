@@ -1,24 +1,101 @@
-package kotlinx.coroutines;
+package com.google.crypto.tink.subtle;
 
-import java.util.concurrent.Future;
-import kotlin.Metadata;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
+import java.nio.channels.WritableByteChannel;
+import java.security.GeneralSecurityException;
 
-/* compiled from: Executors.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\u000e\n\u0000\b\u0002\u0018\u00002\u00020\u0001B\u0011\u0012\n\u0010\u0002\u001a\u0006\u0012\u0002\b\u00030\u0003¢\u0006\u0002\u0010\u0004J\b\u0010\u0005\u001a\u00020\u0006H\u0016J\b\u0010\u0007\u001a\u00020\bH\u0016R\u0012\u0010\u0002\u001a\u0006\u0012\u0002\b\u00030\u0003X\u0082\u0004¢\u0006\u0002\n\u0000¨\u0006\t"}, d2 = {"Lkotlinx/coroutines/DisposableFutureHandle;", "Lkotlinx/coroutines/DisposableHandle;", "future", "Ljava/util/concurrent/Future;", "(Ljava/util/concurrent/Future;)V", "dispose", "", "toString", "", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
+/* JADX INFO: Access modifiers changed from: package-private */
 /* loaded from: classes.dex */
-final class DisposableFutureHandle implements DisposableHandle {
-    private final Future<?> future;
+public class StreamingAeadEncryptingChannel implements WritableByteChannel {
+    private WritableByteChannel ciphertextChannel;
+    ByteBuffer ctBuffer;
+    private StreamSegmentEncrypter encrypter;
+    boolean open = true;
+    private int plaintextSegmentSize;
+    ByteBuffer ptBuffer;
 
-    public DisposableFutureHandle(Future<?> future) {
-        this.future = future;
+    public StreamingAeadEncryptingChannel(NonceBasedStreamingAead streamAead, WritableByteChannel ciphertextChannel, byte[] associatedData) throws GeneralSecurityException, IOException {
+        this.ciphertextChannel = ciphertextChannel;
+        this.encrypter = streamAead.newStreamSegmentEncrypter(associatedData);
+        int plaintextSegmentSize = streamAead.getPlaintextSegmentSize();
+        this.plaintextSegmentSize = plaintextSegmentSize;
+        ByteBuffer allocate = ByteBuffer.allocate(plaintextSegmentSize);
+        this.ptBuffer = allocate;
+        allocate.limit(this.plaintextSegmentSize - streamAead.getCiphertextOffset());
+        ByteBuffer allocate2 = ByteBuffer.allocate(streamAead.getCiphertextSegmentSize());
+        this.ctBuffer = allocate2;
+        allocate2.put(this.encrypter.getHeader());
+        this.ctBuffer.flip();
+        ciphertextChannel.write(this.ctBuffer);
     }
 
-    @Override // kotlinx.coroutines.DisposableHandle
-    public void dispose() {
-        this.future.cancel(false);
+    @Override // java.nio.channels.WritableByteChannel
+    public synchronized int write(ByteBuffer pt) throws IOException {
+        if (!this.open) {
+            throw new ClosedChannelException();
+        }
+        if (this.ctBuffer.remaining() > 0) {
+            this.ciphertextChannel.write(this.ctBuffer);
+        }
+        int position = pt.position();
+        while (pt.remaining() > this.ptBuffer.remaining()) {
+            if (this.ctBuffer.remaining() > 0) {
+                return pt.position() - position;
+            }
+            int remaining = this.ptBuffer.remaining();
+            ByteBuffer slice = pt.slice();
+            slice.limit(remaining);
+            pt.position(pt.position() + remaining);
+            try {
+                this.ptBuffer.flip();
+                this.ctBuffer.clear();
+                if (slice.remaining() != 0) {
+                    this.encrypter.encryptSegment(this.ptBuffer, slice, false, this.ctBuffer);
+                } else {
+                    this.encrypter.encryptSegment(this.ptBuffer, false, this.ctBuffer);
+                }
+                this.ctBuffer.flip();
+                this.ciphertextChannel.write(this.ctBuffer);
+                this.ptBuffer.clear();
+                this.ptBuffer.limit(this.plaintextSegmentSize);
+            } catch (GeneralSecurityException e2) {
+                throw new IOException(e2);
+            }
+        }
+        this.ptBuffer.put(pt);
+        return pt.position() - position;
     }
 
-    public String toString() {
-        return "DisposableFutureHandle[" + this.future + ']';
+    @Override // java.nio.channels.Channel, java.io.Closeable, java.lang.AutoCloseable
+    public synchronized void close() throws IOException {
+        if (this.open) {
+            while (this.ctBuffer.remaining() > 0) {
+                if (this.ciphertextChannel.write(this.ctBuffer) <= 0) {
+                    throw new IOException("Failed to write ciphertext before closing");
+                }
+            }
+            try {
+                this.ctBuffer.clear();
+                this.ptBuffer.flip();
+                this.encrypter.encryptSegment(this.ptBuffer, true, this.ctBuffer);
+                this.ctBuffer.flip();
+                while (this.ctBuffer.remaining() > 0) {
+                    if (this.ciphertextChannel.write(this.ctBuffer) <= 0) {
+                        throw new IOException("Failed to write ciphertext before closing");
+                    }
+                }
+                this.ciphertextChannel.close();
+                this.open = false;
+            } catch (GeneralSecurityException e2) {
+                throw new IOException(e2);
+            }
+        }
+    }
+
+    @Override // java.nio.channels.Channel
+    public boolean isOpen() {
+        return this.open;
     }
 }

@@ -1,121 +1,51 @@
-package kotlinx.coroutines.flow;
+package kotlin;
 
-import kotlin.Metadata;
-import kotlin.ResultKt;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.intrinsics.IntrinsicsKt;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-import kotlin.coroutines.jvm.internal.SuspendLambda;
-import kotlin.jvm.functions.Function0;
-import kotlin.jvm.functions.Function2;
-import kotlin.jvm.functions.Function3;
-import kotlin.jvm.functions.Function6;
-import kotlin.jvm.internal.InlineMarker;
-import kotlinx.coroutines.flow.internal.CombineKt;
-
-/* compiled from: Zip.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0012\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\u0010\u0000\u001a\u00020\u0001\"\u0006\b\u0000\u0010\u0002\u0018\u0001\"\u0004\b\u0001\u0010\u0003*\b\u0012\u0004\u0012\u0002H\u00030\u0004H\u008a@¢\u0006\u0004\b\u0005\u0010\u0006¨\u0006\u0007"}, d2 = {"<anonymous>", "", "T", "R", "Lkotlinx/coroutines/flow/FlowCollector;", "invoke", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", "kotlinx/coroutines/flow/FlowKt__ZipKt$combineTransformUnsafe$1"}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$4", f = "Zip.kt", i = {}, l = {273}, m = "invokeSuspend", n = {}, s = {})
+/* compiled from: TypeAliases.kt */
+@Metadata(d1 = {"\u0000f\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0000*\u001a\b\u0007\u0010\u0000\"\u00020\u00012\u00020\u0001B\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0004*\u001a\b\u0007\u0010\u0005\"\u00020\u00062\u00020\u0006B\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0007*\u001a\b\u0007\u0010\b\"\u00020\t2\u00020\tB\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0007*,\b\u0007\u0010\n\u001a\u0004\b\u0000\u0010\u000b\"\b\u0012\u0004\u0012\u0002H\u000b0\f2\b\u0012\u0004\u0012\u0002H\u000b0\fB\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0007*\u001a\b\u0007\u0010\r\"\u00020\u000e2\u00020\u000eB\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0004*\u001a\b\u0007\u0010\u000f\"\u00020\u00102\u00020\u0010B\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0007*\u001a\b\u0007\u0010\u0011\"\u00020\u00122\u00020\u0012B\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0007*\u001a\b\u0007\u0010\u0013\"\u00020\u00142\u00020\u0014B\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0007*\u001a\b\u0007\u0010\u0015\"\u00020\u00162\u00020\u0016B\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0007*\u001a\b\u0007\u0010\u0017\"\u00020\u00182\u00020\u0018B\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0007*\u001a\b\u0007\u0010\u0019\"\u00020\u001a2\u00020\u001aB\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0007*\u001a\b\u0007\u0010\u001b\"\u00020\u001c2\u00020\u001cB\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0007*\u001a\b\u0007\u0010\u001d\"\u00020\u001e2\u00020\u001eB\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0007*\u001a\b\u0007\u0010\u001f\"\u00020 2\u00020 B\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0007*\u001a\b\u0007\u0010!\"\u00020\"2\u00020\"B\f\b\u0002\u0012\b\b\u0003\u0012\u0004\b\b(\u0007¨\u0006#"}, d2 = {"ArithmeticException", "Ljava/lang/ArithmeticException;", "Lkotlin/SinceKotlin;", "version", "1.3", "AssertionError", "Ljava/lang/AssertionError;", "1.1", "ClassCastException", "Ljava/lang/ClassCastException;", "Comparator", "T", "Ljava/util/Comparator;", "ConcurrentModificationException", "Ljava/util/ConcurrentModificationException;", "Error", "Ljava/lang/Error;", "Exception", "Ljava/lang/Exception;", "IllegalArgumentException", "Ljava/lang/IllegalArgumentException;", "IllegalStateException", "Ljava/lang/IllegalStateException;", "IndexOutOfBoundsException", "Ljava/lang/IndexOutOfBoundsException;", "NoSuchElementException", "Ljava/util/NoSuchElementException;", "NullPointerException", "Ljava/lang/NullPointerException;", "NumberFormatException", "Ljava/lang/NumberFormatException;", "RuntimeException", "Ljava/lang/RuntimeException;", "UnsupportedOperationException", "Ljava/lang/UnsupportedOperationException;", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public final class FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$4 extends SuspendLambda implements Function2<FlowCollector<? super R>, Continuation<? super Unit>, Object> {
-    final /* synthetic */ Flow[] $flows;
-    final /* synthetic */ Function6 $transform$inlined;
-    private /* synthetic */ Object L$0;
-    int label;
-
-    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
-    public FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$4(Flow[] flowArr, Continuation continuation, Function6 function6) {
-        super(2, continuation);
-        this.$flows = flowArr;
-        this.$transform$inlined = function6;
+public final class TypeAliasesKt {
+    public static /* synthetic */ void ArithmeticException$annotations() {
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Continuation<Unit> create(Object obj, Continuation<?> continuation) {
-        FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$4 flowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$4 = new FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$4(this.$flows, continuation, this.$transform$inlined);
-        flowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$4.L$0 = obj;
-        return flowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$4;
+    public static /* synthetic */ void AssertionError$annotations() {
     }
 
-    @Override // kotlin.jvm.functions.Function2
-    public final Object invoke(Object obj, Continuation<? super Unit> continuation) {
-        return ((FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$4) create(obj, continuation)).invokeSuspend(Unit.INSTANCE);
+    public static /* synthetic */ void ClassCastException$annotations() {
     }
 
-    /* compiled from: Zip.kt */
-    @Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0018\n\u0000\n\u0002\u0010\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0011\n\u0002\b\u0003\u0010\u0000\u001a\u00020\u0001\"\u0006\b\u0000\u0010\u0002\u0018\u0001\"\u0004\b\u0001\u0010\u0003*\b\u0012\u0004\u0012\u0002H\u00030\u00042\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u0002H\u00020\u0006H\u008a@¢\u0006\u0004\b\u0007\u0010\b¨\u0006\t"}, d2 = {"<anonymous>", "", "T", "R", "Lkotlinx/coroutines/flow/FlowCollector;", "it", "", "invoke", "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;", "kotlinx/coroutines/flow/FlowKt__ZipKt$combineTransformUnsafe$1$1"}, k = 3, mv = {1, 4, 2})
-    @DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$4$1", f = "Zip.kt", i = {}, l = {337}, m = "invokeSuspend", n = {}, s = {})
-    /* renamed from: kotlinx.coroutines.flow.FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$4$1  reason: invalid class name */
-    /* loaded from: classes.dex */
-    public static final class AnonymousClass1 extends SuspendLambda implements Function3<FlowCollector<? super R>, Object[], Continuation<? super Unit>, Object> {
-        private /* synthetic */ Object L$0;
-        private /* synthetic */ Object L$1;
-        int label;
-
-        public AnonymousClass1(Continuation continuation) {
-            super(3, continuation);
-        }
-
-        public final Continuation<Unit> create(FlowCollector<? super R> flowCollector, Object[] objArr, Continuation<? super Unit> continuation) {
-            AnonymousClass1 anonymousClass1 = new AnonymousClass1(continuation);
-            anonymousClass1.L$0 = flowCollector;
-            anonymousClass1.L$1 = objArr;
-            return anonymousClass1;
-        }
-
-        @Override // kotlin.jvm.functions.Function3
-        public final Object invoke(Object obj, Object[] objArr, Continuation<? super Unit> continuation) {
-            return ((AnonymousClass1) create((FlowCollector) obj, objArr, continuation)).invokeSuspend(Unit.INSTANCE);
-        }
-
-        @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-        public final Object invokeSuspend(Object obj) {
-            Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
-            int i2 = this.label;
-            if (i2 == 0) {
-                ResultKt.throwOnFailure(obj);
-                FlowCollector flowCollector = (FlowCollector) this.L$0;
-                Object[] objArr = (Object[]) this.L$1;
-                Function6 function6 = FlowKt__ZipKt$combineTransform$$inlined$combineTransformUnsafe$FlowKt__ZipKt$4.this.$transform$inlined;
-                Object obj2 = objArr[0];
-                Object obj3 = objArr[1];
-                Object obj4 = objArr[2];
-                Object obj5 = objArr[3];
-                this.label = 1;
-                InlineMarker.mark(6);
-                Object invoke = function6.invoke(flowCollector, obj2, obj3, obj4, obj5, this);
-                InlineMarker.mark(7);
-                if (invoke == coroutine_suspended) {
-                    return coroutine_suspended;
-                }
-            } else if (i2 != 1) {
-                throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
-            } else {
-                ResultKt.throwOnFailure(obj);
-            }
-            return Unit.INSTANCE;
-        }
+    public static /* synthetic */ void Comparator$annotations() {
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        Function0 nullArrayFactory$FlowKt__ZipKt;
-        Object coroutine_suspended = IntrinsicsKt.getCOROUTINE_SUSPENDED();
-        int i2 = this.label;
-        if (i2 == 0) {
-            ResultKt.throwOnFailure(obj);
-            Flow[] flowArr = this.$flows;
-            nullArrayFactory$FlowKt__ZipKt = FlowKt__ZipKt.nullArrayFactory$FlowKt__ZipKt();
-            this.label = 1;
-            if (CombineKt.combineInternal((FlowCollector) this.L$0, flowArr, nullArrayFactory$FlowKt__ZipKt, new AnonymousClass1(null), this) == coroutine_suspended) {
-                return coroutine_suspended;
-            }
-        } else if (i2 != 1) {
-            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
-        } else {
-            ResultKt.throwOnFailure(obj);
-        }
-        return Unit.INSTANCE;
+    public static /* synthetic */ void ConcurrentModificationException$annotations() {
+    }
+
+    public static /* synthetic */ void Error$annotations() {
+    }
+
+    public static /* synthetic */ void Exception$annotations() {
+    }
+
+    public static /* synthetic */ void IllegalArgumentException$annotations() {
+    }
+
+    public static /* synthetic */ void IllegalStateException$annotations() {
+    }
+
+    public static /* synthetic */ void IndexOutOfBoundsException$annotations() {
+    }
+
+    public static /* synthetic */ void NoSuchElementException$annotations() {
+    }
+
+    public static /* synthetic */ void NullPointerException$annotations() {
+    }
+
+    public static /* synthetic */ void NumberFormatException$annotations() {
+    }
+
+    public static /* synthetic */ void RuntimeException$annotations() {
+    }
+
+    public static /* synthetic */ void UnsupportedOperationException$annotations() {
     }
 }

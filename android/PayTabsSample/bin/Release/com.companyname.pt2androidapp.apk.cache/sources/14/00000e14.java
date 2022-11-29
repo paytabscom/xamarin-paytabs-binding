@@ -1,121 +1,66 @@
-package com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera;
+package com.google.android.material.stateful;
 
-import java.util.concurrent.TimeUnit;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+import androidx.collection.SimpleArrayMap;
+import androidx.customview.view.AbsSavedState;
 
 /* loaded from: classes.dex */
-final class FpsCounter {
-    private float fpsLast;
-    private long fpsLastPeriod;
-    private float fpsLastTickTime;
-    private long fpsLastUpdateTime;
-    private long fpsStartTime;
-    private float fpsTotal;
-    private long fpsTotalDuration;
-    private int fpsTotalFrames;
-    private int fpsUpdateFramesInterval;
+public class ExtendableSavedState extends AbsSavedState {
+    public static final Parcelable.Creator<ExtendableSavedState> CREATOR = new Parcelable.ClassLoaderCreator<ExtendableSavedState>() { // from class: com.google.android.material.stateful.ExtendableSavedState.1
+        /* JADX WARN: Can't rename method to resolve collision */
+        @Override // android.os.Parcelable.ClassLoaderCreator
+        public ExtendableSavedState createFromParcel(Parcel parcel, ClassLoader classLoader) {
+            return new ExtendableSavedState(parcel, classLoader);
+        }
 
-    public FpsCounter() {
-        setUpdateFPSFrames(0);
+        @Override // android.os.Parcelable.Creator
+        public ExtendableSavedState createFromParcel(Parcel parcel) {
+            return new ExtendableSavedState(parcel, null);
+        }
+
+        @Override // android.os.Parcelable.Creator
+        public ExtendableSavedState[] newArray(int i2) {
+            return new ExtendableSavedState[i2];
+        }
+    };
+    public final SimpleArrayMap<String, Bundle> extendableStates;
+
+    public ExtendableSavedState(Parcelable parcelable) {
+        super(parcelable);
+        this.extendableStates = new SimpleArrayMap<>();
     }
 
-    public final synchronized void tickFPS() {
-        long millis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime());
-        int i2 = this.fpsUpdateFramesInterval;
-        if (i2 == 0) {
-            return;
-        }
-        int i3 = this.fpsTotalFrames + 1;
-        this.fpsTotalFrames = i3;
-        if (i3 % i2 == 0) {
-            long j2 = millis - this.fpsLastUpdateTime;
-            this.fpsLastPeriod = j2;
-            long max = Math.max(j2, 1L);
-            this.fpsLastPeriod = max;
-            this.fpsLast = (this.fpsUpdateFramesInterval * 1000.0f) / ((float) max);
-            long j3 = millis - this.fpsStartTime;
-            this.fpsTotalDuration = j3;
-            long max2 = Math.max(j3, 1L);
-            this.fpsTotalDuration = max2;
-            this.fpsTotal = (this.fpsTotalFrames * 1000.0f) / ((float) max2);
-            this.fpsLastUpdateTime = millis;
-        }
-        this.fpsLastTickTime = (float) millis;
-    }
-
-    public synchronized void update() {
-        long millis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime());
-        if (((float) millis) - this.fpsLastTickTime > 1000.0f) {
-            this.fpsLast = 0.0f;
-            this.fpsLastPeriod = 0L;
-            long j2 = millis - this.fpsStartTime;
-            this.fpsTotalDuration = j2;
-            this.fpsTotalDuration = Math.max(j2, 1L);
-            this.fpsLastUpdateTime = millis;
+    private ExtendableSavedState(Parcel parcel, ClassLoader classLoader) {
+        super(parcel, classLoader);
+        int readInt = parcel.readInt();
+        String[] strArr = new String[readInt];
+        parcel.readStringArray(strArr);
+        Bundle[] bundleArr = new Bundle[readInt];
+        parcel.readTypedArray(bundleArr, Bundle.CREATOR);
+        this.extendableStates = new SimpleArrayMap<>(readInt);
+        for (int i2 = 0; i2 < readInt; i2++) {
+            this.extendableStates.put(strArr[i2], bundleArr[i2]);
         }
     }
 
-    public StringBuilder toString(StringBuilder sb) {
-        if (sb == null) {
-            sb = new StringBuilder();
+    @Override // androidx.customview.view.AbsSavedState, android.os.Parcelable
+    public void writeToParcel(Parcel parcel, int i2) {
+        super.writeToParcel(parcel, i2);
+        int size = this.extendableStates.size();
+        parcel.writeInt(size);
+        String[] strArr = new String[size];
+        Bundle[] bundleArr = new Bundle[size];
+        for (int i3 = 0; i3 < size; i3++) {
+            strArr[i3] = this.extendableStates.keyAt(i3);
+            bundleArr[i3] = this.extendableStates.valueAt(i3);
         }
-        String valueOf = String.valueOf(this.fpsLast);
-        String substring = valueOf.substring(0, valueOf.indexOf(46) + 2);
-        String valueOf2 = String.valueOf(this.fpsTotal);
-        valueOf2.substring(0, valueOf2.indexOf(46) + 2);
-        sb.append((this.fpsTotalDuration / 1000) + " s: " + this.fpsUpdateFramesInterval + " f / " + this.fpsLastPeriod + " ms, " + substring + " fps, " + (this.fpsLastPeriod / this.fpsUpdateFramesInterval) + " ms/f; ");
-        return sb;
+        parcel.writeStringArray(strArr);
+        parcel.writeTypedArray(bundleArr, 0);
     }
 
     public String toString() {
-        return toString(null).toString();
-    }
-
-    public final synchronized void setUpdateFPSFrames(int i2) {
-        this.fpsUpdateFramesInterval = i2;
-        resetFPSCounter();
-    }
-
-    public final synchronized void resetFPSCounter() {
-        long millis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime());
-        this.fpsStartTime = millis;
-        this.fpsLastUpdateTime = millis;
-        this.fpsLastPeriod = 0L;
-        this.fpsTotalFrames = 0;
-        this.fpsLast = 0.0f;
-        this.fpsTotal = 0.0f;
-        this.fpsLastPeriod = 0L;
-        this.fpsTotalDuration = 0L;
-    }
-
-    public final synchronized int getUpdateFPSFrames() {
-        return this.fpsUpdateFramesInterval;
-    }
-
-    public final synchronized long getFPSStartTime() {
-        return this.fpsStartTime;
-    }
-
-    public final synchronized long getLastFPSUpdateTime() {
-        return this.fpsLastUpdateTime;
-    }
-
-    public final synchronized long getLastFPSPeriod() {
-        return this.fpsLastPeriod;
-    }
-
-    public final synchronized float getLastFPS() {
-        return this.fpsLast;
-    }
-
-    public final synchronized int getTotalFPSFrames() {
-        return this.fpsTotalFrames;
-    }
-
-    public final synchronized long getTotalFPSDuration() {
-        return this.fpsTotalDuration;
-    }
-
-    public final synchronized float getTotalFPS() {
-        return this.fpsTotal;
+        return "ExtendableSavedState{" + Integer.toHexString(System.identityHashCode(this)) + " states=" + this.extendableStates + "}";
     }
 }

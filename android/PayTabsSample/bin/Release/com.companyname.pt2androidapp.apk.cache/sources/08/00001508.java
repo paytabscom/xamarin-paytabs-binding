@@ -1,134 +1,69 @@
-package kotlinx.coroutines.flow.internal;
+package kotlin.collections;
 
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 import kotlin.Metadata;
-import kotlin.Result;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.jvm.functions.Function1;
+import kotlin.jvm.internal.DefaultConstructorMarker;
 import kotlin.jvm.internal.Intrinsics;
-import kotlinx.coroutines.flow.MutableStateFlow;
-import kotlinx.coroutines.flow.StateFlow;
-import kotlinx.coroutines.flow.StateFlowKt;
-import kotlinx.coroutines.flow.internal.AbstractSharedFlowSlot;
+import kotlin.jvm.internal.markers.KMappedMarker;
 
-/* compiled from: AbstractSharedFlow.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000@\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\u0010\b\n\u0002\b\u0005\n\u0002\u0010\u0011\n\u0002\b\u0006\n\u0002\u0018\u0002\n\u0002\b\t\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0004\b \u0018\u0000*\f\b\u0000\u0010\u0001*\u0006\u0012\u0002\b\u00030\u00022\u00060\u0003j\u0002`\u0004B\u0005¢\u0006\u0002\u0010\u0005J\r\u0010\u0018\u001a\u00028\u0000H\u0004¢\u0006\u0002\u0010\u0019J\r\u0010\u001a\u001a\u00028\u0000H$¢\u0006\u0002\u0010\u0019J\u001d\u0010\u001b\u001a\n\u0012\u0006\u0012\u0004\u0018\u00018\u00000\u000e2\u0006\u0010\u001c\u001a\u00020\bH$¢\u0006\u0002\u0010\u001dJ\u001d\u0010\u001e\u001a\u00020\u001f2\u0012\u0010 \u001a\u000e\u0012\u0004\u0012\u00028\u0000\u0012\u0004\u0012\u00020\u001f0!H\u0084\bJ\u0015\u0010\"\u001a\u00020\u001f2\u0006\u0010#\u001a\u00028\u0000H\u0004¢\u0006\u0002\u0010$R\u0016\u0010\u0006\u001a\n\u0012\u0004\u0012\u00020\b\u0018\u00010\u0007X\u0082\u000e¢\u0006\u0002\n\u0000R\u001e\u0010\n\u001a\u00020\b2\u0006\u0010\t\u001a\u00020\b@BX\u0084\u000e¢\u0006\b\n\u0000\u001a\u0004\b\u000b\u0010\fR\u000e\u0010\r\u001a\u00020\bX\u0082\u000e¢\u0006\u0002\n\u0000R:\u0010\u000f\u001a\f\u0012\u0006\u0012\u0004\u0018\u00018\u0000\u0018\u00010\u000e2\u0010\u0010\t\u001a\f\u0012\u0006\u0012\u0004\u0018\u00018\u0000\u0018\u00010\u000e@BX\u0084\u000e¢\u0006\u0010\n\u0002\u0010\u0013\u0012\u0004\b\u0010\u0010\u0005\u001a\u0004\b\u0011\u0010\u0012R\u0017\u0010\u0014\u001a\b\u0012\u0004\u0012\u00020\b0\u00158F¢\u0006\u0006\u001a\u0004\b\u0016\u0010\u0017¨\u0006%"}, d2 = {"Lkotlinx/coroutines/flow/internal/AbstractSharedFlow;", "S", "Lkotlinx/coroutines/flow/internal/AbstractSharedFlowSlot;", "", "Lkotlinx/coroutines/internal/SynchronizedObject;", "()V", "_subscriptionCount", "Lkotlinx/coroutines/flow/MutableStateFlow;", "", "<set-?>", "nCollectors", "getNCollectors", "()I", "nextIndex", "", "slots", "getSlots$annotations", "getSlots", "()[Lkotlinx/coroutines/flow/internal/AbstractSharedFlowSlot;", "[Lkotlinx/coroutines/flow/internal/AbstractSharedFlowSlot;", "subscriptionCount", "Lkotlinx/coroutines/flow/StateFlow;", "getSubscriptionCount", "()Lkotlinx/coroutines/flow/StateFlow;", "allocateSlot", "()Lkotlinx/coroutines/flow/internal/AbstractSharedFlowSlot;", "createSlot", "createSlotArray", "size", "(I)[Lkotlinx/coroutines/flow/internal/AbstractSharedFlowSlot;", "forEachSlotLocked", "", "block", "Lkotlin/Function1;", "freeSlot", "slot", "(Lkotlinx/coroutines/flow/internal/AbstractSharedFlowSlot;)V", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
+/* compiled from: AbstractSet.kt */
+@Metadata(d1 = {"\u0000&\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\"\n\u0002\b\u0002\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\b\n\u0002\b\u0002\b'\u0018\u0000 \u000b*\u0006\b\u0000\u0010\u0001 \u00012\b\u0012\u0004\u0012\u0002H\u00010\u00022\b\u0012\u0004\u0012\u0002H\u00010\u0003:\u0001\u000bB\u0007\b\u0004¢\u0006\u0002\u0010\u0004J\u0013\u0010\u0005\u001a\u00020\u00062\b\u0010\u0007\u001a\u0004\u0018\u00010\bH\u0096\u0002J\b\u0010\t\u001a\u00020\nH\u0016¨\u0006\f"}, d2 = {"Lkotlin/collections/AbstractSet;", "E", "Lkotlin/collections/AbstractCollection;", "", "()V", "equals", "", "other", "", "hashCode", "", "Companion", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public abstract class AbstractSharedFlow<S extends AbstractSharedFlowSlot<?>> {
-    private MutableStateFlow<Integer> _subscriptionCount;
-    private int nCollectors;
-    private int nextIndex;
-    private S[] slots;
+public abstract class AbstractSet<E> extends AbstractCollection<E> implements Set<E>, KMappedMarker {
+    public static final Companion Companion = new Companion(null);
 
-    protected static /* synthetic */ void getSlots$annotations() {
+    @Override // kotlin.collections.AbstractCollection, java.util.Collection, java.lang.Iterable
+    public Iterator<E> iterator() {
+        throw new UnsupportedOperationException("Operation is not supported for read-only collection");
     }
 
-    protected abstract S createSlot();
-
-    protected abstract S[] createSlotArray(int i2);
-
-    /* JADX INFO: Access modifiers changed from: protected */
-    public final S[] getSlots() {
-        return this.slots;
+    @Override // java.util.Collection, java.util.Set
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (obj instanceof Set) {
+            return Companion.setEquals$kotlin_stdlib(this, (Set) obj);
+        }
+        return false;
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    public final int getNCollectors() {
-        return this.nCollectors;
+    @Override // java.util.Collection, java.util.Set
+    public int hashCode() {
+        return Companion.unorderedHashCode$kotlin_stdlib(this);
     }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    public final S allocateSlot() {
-        S s2;
-        MutableStateFlow<Integer> mutableStateFlow;
-        synchronized (this) {
-            S[] sArr = this.slots;
-            if (sArr == null) {
-                sArr = createSlotArray(2);
-                this.slots = sArr;
-            } else if (this.nCollectors >= sArr.length) {
-                Object[] copyOf = Arrays.copyOf(sArr, sArr.length * 2);
-                Intrinsics.checkNotNullExpressionValue(copyOf, "java.util.Arrays.copyOf(this, newSize)");
-                this.slots = (S[]) ((AbstractSharedFlowSlot[]) copyOf);
-                sArr = (S[]) ((AbstractSharedFlowSlot[]) copyOf);
-            }
-            int i2 = this.nextIndex;
-            do {
-                s2 = sArr[i2];
-                if (s2 == null) {
-                    s2 = createSlot();
-                    sArr[i2] = s2;
-                }
-                i2++;
-                if (i2 >= sArr.length) {
-                    i2 = 0;
-                }
-                if (s2 == null) {
-                    throw new NullPointerException("null cannot be cast to non-null type kotlinx.coroutines.flow.internal.AbstractSharedFlowSlot<kotlin.Any>");
-                }
-            } while (!s2.allocateLocked(this));
-            this.nextIndex = i2;
-            this.nCollectors++;
-            mutableStateFlow = this._subscriptionCount;
+    /* compiled from: AbstractSet.kt */
+    @Metadata(d1 = {"\u0000&\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\"\n\u0002\b\u0003\n\u0002\u0010\b\n\u0002\u0010\u001e\n\u0002\b\u0002\b\u0080\u0003\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002J%\u0010\u0003\u001a\u00020\u00042\n\u0010\u0005\u001a\u0006\u0012\u0002\b\u00030\u00062\n\u0010\u0007\u001a\u0006\u0012\u0002\b\u00030\u0006H\u0000¢\u0006\u0002\b\bJ\u0019\u0010\t\u001a\u00020\n2\n\u0010\u0005\u001a\u0006\u0012\u0002\b\u00030\u000bH\u0000¢\u0006\u0002\b\f¨\u0006\r"}, d2 = {"Lkotlin/collections/AbstractSet$Companion;", "", "()V", "setEquals", "", "c", "", "other", "setEquals$kotlin_stdlib", "unorderedHashCode", "", "", "unorderedHashCode$kotlin_stdlib", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+    /* loaded from: classes.dex */
+    public static final class Companion {
+        private Companion() {
         }
-        if (mutableStateFlow != null) {
-            StateFlowKt.increment(mutableStateFlow, 1);
-        }
-        return s2;
-    }
 
-    /* JADX INFO: Access modifiers changed from: protected */
-    public final void freeSlot(S s2) {
-        MutableStateFlow<Integer> mutableStateFlow;
-        int i2;
-        Continuation<Unit>[] freeLocked;
-        synchronized (this) {
-            int i3 = this.nCollectors - 1;
-            this.nCollectors = i3;
-            mutableStateFlow = this._subscriptionCount;
-            if (i3 == 0) {
-                this.nextIndex = 0;
-            }
-            if (s2 != null) {
-                freeLocked = s2.freeLocked(this);
-            } else {
-                throw new NullPointerException("null cannot be cast to non-null type kotlinx.coroutines.flow.internal.AbstractSharedFlowSlot<kotlin.Any>");
-            }
+        public /* synthetic */ Companion(DefaultConstructorMarker defaultConstructorMarker) {
+            this();
         }
-        for (Continuation<Unit> continuation : freeLocked) {
-            if (continuation != null) {
-                Unit unit = Unit.INSTANCE;
-                Result.Companion companion = Result.Companion;
-                continuation.resumeWith(Result.m21constructorimpl(unit));
-            }
-        }
-        if (mutableStateFlow != null) {
-            StateFlowKt.increment(mutableStateFlow, -1);
-        }
-    }
 
-    protected final void forEachSlotLocked(Function1<? super S, Unit> function1) {
-        AbstractSharedFlowSlot[] abstractSharedFlowSlotArr;
-        if (this.nCollectors == 0 || (abstractSharedFlowSlotArr = this.slots) == null) {
-            return;
-        }
-        for (AbstractSharedFlowSlot abstractSharedFlowSlot : abstractSharedFlowSlotArr) {
-            if (abstractSharedFlowSlot != null) {
-                function1.invoke(abstractSharedFlowSlot);
+        public final int unorderedHashCode$kotlin_stdlib(Collection<?> c2) {
+            Intrinsics.checkNotNullParameter(c2, "c");
+            Iterator<?> it = c2.iterator();
+            int i2 = 0;
+            while (it.hasNext()) {
+                Object next = it.next();
+                i2 += next != null ? next.hashCode() : 0;
             }
+            return i2;
         }
-    }
 
-    public final StateFlow<Integer> getSubscriptionCount() {
-        MutableStateFlow<Integer> mutableStateFlow;
-        synchronized (this) {
-            mutableStateFlow = this._subscriptionCount;
-            if (mutableStateFlow == null) {
-                mutableStateFlow = StateFlowKt.MutableStateFlow(Integer.valueOf(this.nCollectors));
-                this._subscriptionCount = mutableStateFlow;
+        public final boolean setEquals$kotlin_stdlib(Set<?> c2, Set<?> other) {
+            Intrinsics.checkNotNullParameter(c2, "c");
+            Intrinsics.checkNotNullParameter(other, "other");
+            if (c2.size() != other.size()) {
+                return false;
             }
+            return c2.containsAll(other);
         }
-        return mutableStateFlow;
     }
 }

@@ -1,269 +1,155 @@
-package androidx.cursoradapter.widget;
+package androidx.core.util;
 
-import android.content.Context;
-import android.database.ContentObserver;
-import android.database.Cursor;
-import android.database.DataSetObserver;
-import android.os.Handler;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Filter;
-import android.widget.FilterQueryProvider;
-import android.widget.Filterable;
-import androidx.cursoradapter.widget.CursorFilter;
+import android.util.SparseBooleanArray;
+import kotlin.Metadata;
+import kotlin.Unit;
+import kotlin.collections.BooleanIterator;
+import kotlin.collections.IntIterator;
+import kotlin.jvm.functions.Function0;
+import kotlin.jvm.functions.Function2;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: SparseBooleanArray.kt */
+@Metadata(d1 = {"\u0000>\n\u0000\n\u0002\u0010\b\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u000b\n\u0002\b\u0005\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0018\u0002\n\u0002\b\u0006\n\u0002\u0018\u0002\n\u0000\u001a\u0015\u0010\u0005\u001a\u00020\u0006*\u00020\u00022\u0006\u0010\u0007\u001a\u00020\u0001H\u0086\n\u001a\u0015\u0010\b\u001a\u00020\u0006*\u00020\u00022\u0006\u0010\u0007\u001a\u00020\u0001H\u0086\b\u001a\u0015\u0010\t\u001a\u00020\u0006*\u00020\u00022\u0006\u0010\n\u001a\u00020\u0006H\u0086\b\u001aH\u0010\u000b\u001a\u00020\f*\u00020\u000226\u0010\r\u001a2\u0012\u0013\u0012\u00110\u0001¢\u0006\f\b\u000f\u0012\b\b\u0010\u0012\u0004\b\b(\u0007\u0012\u0013\u0012\u00110\u0006¢\u0006\f\b\u000f\u0012\b\b\u0010\u0012\u0004\b\b(\n\u0012\u0004\u0012\u00020\f0\u000eH\u0086\bø\u0001\u0000\u001a\u001d\u0010\u0011\u001a\u00020\u0006*\u00020\u00022\u0006\u0010\u0007\u001a\u00020\u00012\u0006\u0010\u0012\u001a\u00020\u0006H\u0086\b\u001a&\u0010\u0013\u001a\u00020\u0006*\u00020\u00022\u0006\u0010\u0007\u001a\u00020\u00012\f\u0010\u0012\u001a\b\u0012\u0004\u0012\u00020\u00060\u0014H\u0086\bø\u0001\u0000\u001a\r\u0010\u0015\u001a\u00020\u0006*\u00020\u0002H\u0086\b\u001a\r\u0010\u0016\u001a\u00020\u0006*\u00020\u0002H\u0086\b\u001a\n\u0010\u0017\u001a\u00020\u0018*\u00020\u0002\u001a\u0015\u0010\u0019\u001a\u00020\u0002*\u00020\u00022\u0006\u0010\u001a\u001a\u00020\u0002H\u0086\u0002\u001a\u0012\u0010\u001b\u001a\u00020\f*\u00020\u00022\u0006\u0010\u001a\u001a\u00020\u0002\u001a\u001a\u0010\u001c\u001a\u00020\u0006*\u00020\u00022\u0006\u0010\u0007\u001a\u00020\u00012\u0006\u0010\n\u001a\u00020\u0006\u001a\u001d\u0010\u001d\u001a\u00020\f*\u00020\u00022\u0006\u0010\u0007\u001a\u00020\u00012\u0006\u0010\n\u001a\u00020\u0006H\u0086\n\u001a\n\u0010\u001e\u001a\u00020\u001f*\u00020\u0002\"\u0016\u0010\u0000\u001a\u00020\u0001*\u00020\u00028Æ\u0002¢\u0006\u0006\u001a\u0004\b\u0003\u0010\u0004\u0082\u0002\u0007\n\u0005\b\u009920\u0001¨\u0006 "}, d2 = {"size", "", "Landroid/util/SparseBooleanArray;", "getSize", "(Landroid/util/SparseBooleanArray;)I", "contains", "", "key", "containsKey", "containsValue", "value", "forEach", "", "action", "Lkotlin/Function2;", "Lkotlin/ParameterName;", "name", "getOrDefault", "defaultValue", "getOrElse", "Lkotlin/Function0;", "isEmpty", "isNotEmpty", "keyIterator", "Lkotlin/collections/IntIterator;", "plus", "other", "putAll", "remove", "set", "valueIterator", "Lkotlin/collections/BooleanIterator;", "core-ktx_release"}, k = 2, mv = {1, 6, 0}, xi = 48)
 /* loaded from: classes.dex */
-public abstract class CursorAdapter extends BaseAdapter implements Filterable, CursorFilter.CursorFilterClient {
-    @Deprecated
-    public static final int FLAG_AUTO_REQUERY = 1;
-    public static final int FLAG_REGISTER_CONTENT_OBSERVER = 2;
-    protected boolean mAutoRequery;
-    protected ChangeObserver mChangeObserver;
-    protected Context mContext;
-    protected Cursor mCursor;
-    protected CursorFilter mCursorFilter;
-    protected DataSetObserver mDataSetObserver;
-    protected boolean mDataValid;
-    protected FilterQueryProvider mFilterQueryProvider;
-    protected int mRowIDColumn;
+public final class SparseBooleanArrayKt {
+    public static final int getSize(SparseBooleanArray sparseBooleanArray) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        return sparseBooleanArray.size();
+    }
 
-    public abstract void bindView(View view, Context context, Cursor cursor);
+    public static final boolean contains(SparseBooleanArray sparseBooleanArray, int i2) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        return sparseBooleanArray.indexOfKey(i2) >= 0;
+    }
 
-    @Override // android.widget.BaseAdapter, android.widget.Adapter
-    public boolean hasStableIds() {
+    public static final void set(SparseBooleanArray sparseBooleanArray, int i2, boolean z2) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        sparseBooleanArray.put(i2, z2);
+    }
+
+    public static final SparseBooleanArray plus(SparseBooleanArray sparseBooleanArray, SparseBooleanArray other) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        Intrinsics.checkNotNullParameter(other, "other");
+        SparseBooleanArray sparseBooleanArray2 = new SparseBooleanArray(sparseBooleanArray.size() + other.size());
+        putAll(sparseBooleanArray2, sparseBooleanArray);
+        putAll(sparseBooleanArray2, other);
+        return sparseBooleanArray2;
+    }
+
+    public static final boolean containsKey(SparseBooleanArray sparseBooleanArray, int i2) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        return sparseBooleanArray.indexOfKey(i2) >= 0;
+    }
+
+    public static final boolean containsValue(SparseBooleanArray sparseBooleanArray, boolean z2) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        return sparseBooleanArray.indexOfValue(z2) >= 0;
+    }
+
+    public static final boolean getOrDefault(SparseBooleanArray sparseBooleanArray, int i2, boolean z2) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        return sparseBooleanArray.get(i2, z2);
+    }
+
+    public static final boolean getOrElse(SparseBooleanArray sparseBooleanArray, int i2, Function0<Boolean> defaultValue) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        Intrinsics.checkNotNullParameter(defaultValue, "defaultValue");
+        int indexOfKey = sparseBooleanArray.indexOfKey(i2);
+        return indexOfKey >= 0 ? sparseBooleanArray.valueAt(indexOfKey) : defaultValue.invoke().booleanValue();
+    }
+
+    public static final boolean isEmpty(SparseBooleanArray sparseBooleanArray) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        return sparseBooleanArray.size() == 0;
+    }
+
+    public static final boolean isNotEmpty(SparseBooleanArray sparseBooleanArray) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        return sparseBooleanArray.size() != 0;
+    }
+
+    public static final boolean remove(SparseBooleanArray sparseBooleanArray, int i2, boolean z2) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        int indexOfKey = sparseBooleanArray.indexOfKey(i2);
+        if (indexOfKey < 0 || z2 != sparseBooleanArray.valueAt(indexOfKey)) {
+            return false;
+        }
+        sparseBooleanArray.delete(i2);
         return true;
     }
 
-    public abstract View newView(Context context, Cursor cursor, ViewGroup viewGroup);
-
-    @Deprecated
-    public CursorAdapter(Context context, Cursor cursor) {
-        init(context, cursor, 1);
-    }
-
-    public CursorAdapter(Context context, Cursor cursor, boolean z2) {
-        init(context, cursor, z2 ? 1 : 2);
-    }
-
-    public CursorAdapter(Context context, Cursor cursor, int i2) {
-        init(context, cursor, i2);
-    }
-
-    @Deprecated
-    protected void init(Context context, Cursor cursor, boolean z2) {
-        init(context, cursor, z2 ? 1 : 2);
-    }
-
-    void init(Context context, Cursor cursor, int i2) {
-        if ((i2 & 1) == 1) {
-            i2 |= 2;
-            this.mAutoRequery = true;
-        } else {
-            this.mAutoRequery = false;
+    public static final void forEach(SparseBooleanArray sparseBooleanArray, Function2<? super Integer, ? super Boolean, Unit> action) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        Intrinsics.checkNotNullParameter(action, "action");
+        int size = sparseBooleanArray.size();
+        for (int i2 = 0; i2 < size; i2++) {
+            action.invoke(Integer.valueOf(sparseBooleanArray.keyAt(i2)), Boolean.valueOf(sparseBooleanArray.valueAt(i2)));
         }
-        boolean z2 = cursor != null;
-        this.mCursor = cursor;
-        this.mDataValid = z2;
-        this.mContext = context;
-        this.mRowIDColumn = z2 ? cursor.getColumnIndexOrThrow("_id") : -1;
-        if ((i2 & 2) == 2) {
-            this.mChangeObserver = new ChangeObserver();
-            this.mDataSetObserver = new MyDataSetObserver();
-        } else {
-            this.mChangeObserver = null;
-            this.mDataSetObserver = null;
-        }
-        if (z2) {
-            ChangeObserver changeObserver = this.mChangeObserver;
-            if (changeObserver != null) {
-                cursor.registerContentObserver(changeObserver);
+    }
+
+    public static final IntIterator keyIterator(final SparseBooleanArray sparseBooleanArray) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        return new IntIterator() { // from class: androidx.core.util.SparseBooleanArrayKt$keyIterator$1
+            private int index;
+
+            public final int getIndex() {
+                return this.index;
             }
-            DataSetObserver dataSetObserver = this.mDataSetObserver;
-            if (dataSetObserver != null) {
-                cursor.registerDataSetObserver(dataSetObserver);
+
+            public final void setIndex(int i2) {
+                this.index = i2;
             }
-        }
-    }
 
-    @Override // androidx.cursoradapter.widget.CursorFilter.CursorFilterClient
-    public Cursor getCursor() {
-        return this.mCursor;
-    }
-
-    @Override // android.widget.Adapter
-    public int getCount() {
-        Cursor cursor;
-        if (!this.mDataValid || (cursor = this.mCursor) == null) {
-            return 0;
-        }
-        return cursor.getCount();
-    }
-
-    @Override // android.widget.Adapter
-    public Object getItem(int i2) {
-        Cursor cursor;
-        if (!this.mDataValid || (cursor = this.mCursor) == null) {
-            return null;
-        }
-        cursor.moveToPosition(i2);
-        return this.mCursor;
-    }
-
-    @Override // android.widget.Adapter
-    public long getItemId(int i2) {
-        Cursor cursor;
-        if (this.mDataValid && (cursor = this.mCursor) != null && cursor.moveToPosition(i2)) {
-            return this.mCursor.getLong(this.mRowIDColumn);
-        }
-        return 0L;
-    }
-
-    @Override // android.widget.Adapter
-    public View getView(int i2, View view, ViewGroup viewGroup) {
-        if (!this.mDataValid) {
-            throw new IllegalStateException("this should only be called when the cursor is valid");
-        }
-        if (!this.mCursor.moveToPosition(i2)) {
-            throw new IllegalStateException("couldn't move cursor to position " + i2);
-        }
-        if (view == null) {
-            view = newView(this.mContext, this.mCursor, viewGroup);
-        }
-        bindView(view, this.mContext, this.mCursor);
-        return view;
-    }
-
-    @Override // android.widget.BaseAdapter, android.widget.SpinnerAdapter
-    public View getDropDownView(int i2, View view, ViewGroup viewGroup) {
-        if (this.mDataValid) {
-            this.mCursor.moveToPosition(i2);
-            if (view == null) {
-                view = newDropDownView(this.mContext, this.mCursor, viewGroup);
+            @Override // java.util.Iterator
+            public boolean hasNext() {
+                return this.index < sparseBooleanArray.size();
             }
-            bindView(view, this.mContext, this.mCursor);
-            return view;
-        }
-        return null;
-    }
 
-    public View newDropDownView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        return newView(context, cursor, viewGroup);
-    }
-
-    public void changeCursor(Cursor cursor) {
-        Cursor swapCursor = swapCursor(cursor);
-        if (swapCursor != null) {
-            swapCursor.close();
-        }
-    }
-
-    public Cursor swapCursor(Cursor cursor) {
-        Cursor cursor2 = this.mCursor;
-        if (cursor == cursor2) {
-            return null;
-        }
-        if (cursor2 != null) {
-            ChangeObserver changeObserver = this.mChangeObserver;
-            if (changeObserver != null) {
-                cursor2.unregisterContentObserver(changeObserver);
+            @Override // kotlin.collections.IntIterator
+            public int nextInt() {
+                SparseBooleanArray sparseBooleanArray2 = sparseBooleanArray;
+                int i2 = this.index;
+                this.index = i2 + 1;
+                return sparseBooleanArray2.keyAt(i2);
             }
-            DataSetObserver dataSetObserver = this.mDataSetObserver;
-            if (dataSetObserver != null) {
-                cursor2.unregisterDataSetObserver(dataSetObserver);
+        };
+    }
+
+    public static final BooleanIterator valueIterator(final SparseBooleanArray sparseBooleanArray) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        return new BooleanIterator() { // from class: androidx.core.util.SparseBooleanArrayKt$valueIterator$1
+            private int index;
+
+            public final int getIndex() {
+                return this.index;
             }
-        }
-        this.mCursor = cursor;
-        if (cursor != null) {
-            ChangeObserver changeObserver2 = this.mChangeObserver;
-            if (changeObserver2 != null) {
-                cursor.registerContentObserver(changeObserver2);
+
+            public final void setIndex(int i2) {
+                this.index = i2;
             }
-            DataSetObserver dataSetObserver2 = this.mDataSetObserver;
-            if (dataSetObserver2 != null) {
-                cursor.registerDataSetObserver(dataSetObserver2);
+
+            @Override // java.util.Iterator
+            public boolean hasNext() {
+                return this.index < sparseBooleanArray.size();
             }
-            this.mRowIDColumn = cursor.getColumnIndexOrThrow("_id");
-            this.mDataValid = true;
-            notifyDataSetChanged();
-        } else {
-            this.mRowIDColumn = -1;
-            this.mDataValid = false;
-            notifyDataSetInvalidated();
-        }
-        return cursor2;
+
+            @Override // kotlin.collections.BooleanIterator
+            public boolean nextBoolean() {
+                SparseBooleanArray sparseBooleanArray2 = sparseBooleanArray;
+                int i2 = this.index;
+                this.index = i2 + 1;
+                return sparseBooleanArray2.valueAt(i2);
+            }
+        };
     }
 
-    public CharSequence convertToString(Cursor cursor) {
-        return cursor == null ? "" : cursor.toString();
-    }
-
-    public Cursor runQueryOnBackgroundThread(CharSequence charSequence) {
-        FilterQueryProvider filterQueryProvider = this.mFilterQueryProvider;
-        if (filterQueryProvider != null) {
-            return filterQueryProvider.runQuery(charSequence);
-        }
-        return this.mCursor;
-    }
-
-    @Override // android.widget.Filterable
-    public Filter getFilter() {
-        if (this.mCursorFilter == null) {
-            this.mCursorFilter = new CursorFilter(this);
-        }
-        return this.mCursorFilter;
-    }
-
-    public FilterQueryProvider getFilterQueryProvider() {
-        return this.mFilterQueryProvider;
-    }
-
-    public void setFilterQueryProvider(FilterQueryProvider filterQueryProvider) {
-        this.mFilterQueryProvider = filterQueryProvider;
-    }
-
-    protected void onContentChanged() {
-        Cursor cursor;
-        if (!this.mAutoRequery || (cursor = this.mCursor) == null || cursor.isClosed()) {
-            return;
-        }
-        this.mDataValid = this.mCursor.requery();
-    }
-
-    /* JADX INFO: Access modifiers changed from: private */
-    /* loaded from: classes.dex */
-    public class ChangeObserver extends ContentObserver {
-        @Override // android.database.ContentObserver
-        public boolean deliverSelfNotifications() {
-            return true;
-        }
-
-        ChangeObserver() {
-            super(new Handler());
-        }
-
-        @Override // android.database.ContentObserver
-        public void onChange(boolean z2) {
-            CursorAdapter.this.onContentChanged();
-        }
-    }
-
-    /* JADX INFO: Access modifiers changed from: private */
-    /* loaded from: classes.dex */
-    public class MyDataSetObserver extends DataSetObserver {
-        MyDataSetObserver() {
-        }
-
-        @Override // android.database.DataSetObserver
-        public void onChanged() {
-            CursorAdapter.this.mDataValid = true;
-            CursorAdapter.this.notifyDataSetChanged();
-        }
-
-        @Override // android.database.DataSetObserver
-        public void onInvalidated() {
-            CursorAdapter.this.mDataValid = false;
-            CursorAdapter.this.notifyDataSetInvalidated();
+    public static final void putAll(SparseBooleanArray sparseBooleanArray, SparseBooleanArray other) {
+        Intrinsics.checkNotNullParameter(sparseBooleanArray, "<this>");
+        Intrinsics.checkNotNullParameter(other, "other");
+        int size = other.size();
+        for (int i2 = 0; i2 < size; i2++) {
+            sparseBooleanArray.put(other.keyAt(i2), other.valueAt(i2));
         }
     }
 }

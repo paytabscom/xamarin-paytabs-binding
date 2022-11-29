@@ -1,127 +1,168 @@
-package androidx.core.graphics;
+package androidx.core.app;
 
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.CancellationSignal;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
-import androidx.collection.SimpleArrayMap;
-import androidx.core.content.res.FontResourcesParserCompat;
-import androidx.core.provider.FontsContractCompat;
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.nio.ByteBuffer;
-import java.util.List;
+import androidx.core.content.ContextCompat;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /* loaded from: classes.dex */
-class TypefaceCompatApi24Impl extends TypefaceCompatBaseImpl {
-    private static final String ADD_FONT_WEIGHT_STYLE_METHOD = "addFontWeightStyle";
-    private static final String CREATE_FROM_FAMILIES_WITH_DEFAULT_METHOD = "createFromFamiliesWithDefault";
-    private static final String FONT_FAMILY_CLASS = "android.graphics.FontFamily";
-    private static final String TAG = "TypefaceCompatApi24Impl";
-    private static final Method sAddFontWeightStyle;
-    private static final Method sCreateFromFamiliesWithDefault;
-    private static final Class<?> sFontFamily;
-    private static final Constructor<?> sFontFamilyCtor;
+public final class TaskStackBuilder implements Iterable<Intent> {
+    private static final String TAG = "TaskStackBuilder";
+    private final ArrayList<Intent> mIntents = new ArrayList<>();
+    private final Context mSourceContext;
 
-    static {
-        Class<?> cls;
-        Method method;
-        Method method2;
-        Constructor<?> constructor = null;
-        try {
-            cls = Class.forName(FONT_FAMILY_CLASS);
-            Constructor<?> constructor2 = cls.getConstructor(new Class[0]);
-            method2 = cls.getMethod(ADD_FONT_WEIGHT_STYLE_METHOD, ByteBuffer.class, Integer.TYPE, List.class, Integer.TYPE, Boolean.TYPE);
-            method = Typeface.class.getMethod(CREATE_FROM_FAMILIES_WITH_DEFAULT_METHOD, Array.newInstance(cls, 1).getClass());
-            constructor = constructor2;
-        } catch (ClassNotFoundException | NoSuchMethodException e2) {
-            Log.e(TAG, e2.getClass().getName(), e2);
-            cls = null;
-            method = null;
-            method2 = null;
-        }
-        sFontFamilyCtor = constructor;
-        sFontFamily = cls;
-        sAddFontWeightStyle = method2;
-        sCreateFromFamiliesWithDefault = method;
+    /* loaded from: classes.dex */
+    public interface SupportParentable {
+        Intent getSupportParentActivityIntent();
     }
 
-    public static boolean isUsable() {
-        Method method = sAddFontWeightStyle;
-        if (method == null) {
-            Log.w(TAG, "Unable to collect necessary private methods.Fallback to legacy implementation.");
-        }
-        return method != null;
+    private TaskStackBuilder(Context context) {
+        this.mSourceContext = context;
     }
 
-    private static Object newFamily() {
-        try {
-            return sFontFamilyCtor.newInstance(new Object[0]);
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException unused) {
-            return null;
-        }
+    public static TaskStackBuilder create(Context context) {
+        return new TaskStackBuilder(context);
     }
 
-    private static boolean addFontWeightStyle(Object obj, ByteBuffer byteBuffer, int i2, int i3, boolean z2) {
-        try {
-            return ((Boolean) sAddFontWeightStyle.invoke(obj, byteBuffer, Integer.valueOf(i2), null, Integer.valueOf(i3), Boolean.valueOf(z2))).booleanValue();
-        } catch (IllegalAccessException | InvocationTargetException unused) {
-            return false;
-        }
+    @Deprecated
+    public static TaskStackBuilder from(Context context) {
+        return create(context);
     }
 
-    private static Typeface createFromFamiliesWithDefault(Object obj) {
-        try {
-            Object newInstance = Array.newInstance(sFontFamily, 1);
-            Array.set(newInstance, 0, obj);
-            return (Typeface) sCreateFromFamiliesWithDefault.invoke(null, newInstance);
-        } catch (IllegalAccessException | InvocationTargetException unused) {
-            return null;
-        }
+    public TaskStackBuilder addNextIntent(Intent intent) {
+        this.mIntents.add(intent);
+        return this;
     }
 
-    @Override // androidx.core.graphics.TypefaceCompatBaseImpl
-    public Typeface createFromFontInfo(Context context, CancellationSignal cancellationSignal, FontsContractCompat.FontInfo[] fontInfoArr, int i2) {
-        Object newFamily = newFamily();
-        if (newFamily == null) {
-            return null;
+    public TaskStackBuilder addNextIntentWithParentStack(Intent intent) {
+        ComponentName component = intent.getComponent();
+        if (component == null) {
+            component = intent.resolveActivity(this.mSourceContext.getPackageManager());
         }
-        SimpleArrayMap simpleArrayMap = new SimpleArrayMap();
-        for (FontsContractCompat.FontInfo fontInfo : fontInfoArr) {
-            Uri uri = fontInfo.getUri();
-            ByteBuffer byteBuffer = (ByteBuffer) simpleArrayMap.get(uri);
-            if (byteBuffer == null) {
-                byteBuffer = TypefaceCompatUtil.mmap(context, cancellationSignal, uri);
-                simpleArrayMap.put(uri, byteBuffer);
+        if (component != null) {
+            addParentStack(component);
+        }
+        addNextIntent(intent);
+        return this;
+    }
+
+    public TaskStackBuilder addParentStack(Activity activity) {
+        Intent supportParentActivityIntent = activity instanceof SupportParentable ? ((SupportParentable) activity).getSupportParentActivityIntent() : null;
+        if (supportParentActivityIntent == null) {
+            supportParentActivityIntent = NavUtils.getParentActivityIntent(activity);
+        }
+        if (supportParentActivityIntent != null) {
+            ComponentName component = supportParentActivityIntent.getComponent();
+            if (component == null) {
+                component = supportParentActivityIntent.resolveActivity(this.mSourceContext.getPackageManager());
             }
-            if (byteBuffer == null || !addFontWeightStyle(newFamily, byteBuffer, fontInfo.getTtcIndex(), fontInfo.getWeight(), fontInfo.isItalic())) {
-                return null;
-            }
+            addParentStack(component);
+            addNextIntent(supportParentActivityIntent);
         }
-        Typeface createFromFamiliesWithDefault = createFromFamiliesWithDefault(newFamily);
-        if (createFromFamiliesWithDefault == null) {
-            return null;
-        }
-        return Typeface.create(createFromFamiliesWithDefault, i2);
+        return this;
     }
 
-    @Override // androidx.core.graphics.TypefaceCompatBaseImpl
-    public Typeface createFromFontFamilyFilesResourceEntry(Context context, FontResourcesParserCompat.FontFamilyFilesResourceEntry fontFamilyFilesResourceEntry, Resources resources, int i2) {
-        FontResourcesParserCompat.FontFileResourceEntry[] entries;
-        Object newFamily = newFamily();
-        if (newFamily == null) {
-            return null;
-        }
-        for (FontResourcesParserCompat.FontFileResourceEntry fontFileResourceEntry : fontFamilyFilesResourceEntry.getEntries()) {
-            ByteBuffer copyToDirectBuffer = TypefaceCompatUtil.copyToDirectBuffer(context, resources, fontFileResourceEntry.getResourceId());
-            if (copyToDirectBuffer == null || !addFontWeightStyle(newFamily, copyToDirectBuffer, fontFileResourceEntry.getTtcIndex(), fontFileResourceEntry.getWeight(), fontFileResourceEntry.isItalic())) {
-                return null;
+    public TaskStackBuilder addParentStack(Class<?> cls) {
+        return addParentStack(new ComponentName(this.mSourceContext, cls));
+    }
+
+    public TaskStackBuilder addParentStack(ComponentName componentName) {
+        int size = this.mIntents.size();
+        try {
+            Intent parentActivityIntent = NavUtils.getParentActivityIntent(this.mSourceContext, componentName);
+            while (parentActivityIntent != null) {
+                this.mIntents.add(size, parentActivityIntent);
+                parentActivityIntent = NavUtils.getParentActivityIntent(this.mSourceContext, parentActivityIntent.getComponent());
             }
+            return this;
+        } catch (PackageManager.NameNotFoundException e2) {
+            Log.e(TAG, "Bad ComponentName while traversing activity parent metadata");
+            throw new IllegalArgumentException(e2);
         }
-        return createFromFamiliesWithDefault(newFamily);
+    }
+
+    public int getIntentCount() {
+        return this.mIntents.size();
+    }
+
+    @Deprecated
+    public Intent getIntent(int i2) {
+        return editIntentAt(i2);
+    }
+
+    public Intent editIntentAt(int i2) {
+        return this.mIntents.get(i2);
+    }
+
+    @Override // java.lang.Iterable
+    @Deprecated
+    public Iterator<Intent> iterator() {
+        return this.mIntents.iterator();
+    }
+
+    public void startActivities() {
+        startActivities(null);
+    }
+
+    public void startActivities(Bundle bundle) {
+        if (this.mIntents.isEmpty()) {
+            throw new IllegalStateException("No intents added to TaskStackBuilder; cannot startActivities");
+        }
+        Intent[] intentArr = (Intent[]) this.mIntents.toArray(new Intent[0]);
+        intentArr[0] = new Intent(intentArr[0]).addFlags(268484608);
+        if (ContextCompat.startActivities(this.mSourceContext, intentArr, bundle)) {
+            return;
+        }
+        Intent intent = new Intent(intentArr[intentArr.length - 1]);
+        intent.addFlags(268435456);
+        this.mSourceContext.startActivity(intent);
+    }
+
+    public PendingIntent getPendingIntent(int i2, int i3) {
+        return getPendingIntent(i2, i3, null);
+    }
+
+    public PendingIntent getPendingIntent(int i2, int i3, Bundle bundle) {
+        if (this.mIntents.isEmpty()) {
+            throw new IllegalStateException("No intents added to TaskStackBuilder; cannot getPendingIntent");
+        }
+        Intent[] intentArr = (Intent[]) this.mIntents.toArray(new Intent[0]);
+        intentArr[0] = new Intent(intentArr[0]).addFlags(268484608);
+        if (Build.VERSION.SDK_INT >= 16) {
+            return Api16Impl.getActivities(this.mSourceContext, i2, intentArr, i3, bundle);
+        }
+        return PendingIntent.getActivities(this.mSourceContext, i2, intentArr, i3);
+    }
+
+    public Intent[] getIntents() {
+        int size = this.mIntents.size();
+        Intent[] intentArr = new Intent[size];
+        if (size == 0) {
+            return intentArr;
+        }
+        intentArr[0] = new Intent(this.mIntents.get(0)).addFlags(268484608);
+        for (int i2 = 1; i2 < size; i2++) {
+            intentArr[i2] = new Intent(this.mIntents.get(i2));
+        }
+        return intentArr;
+    }
+
+    /* JADX INFO: Access modifiers changed from: package-private */
+    /* loaded from: classes.dex */
+    public static class Api16Impl {
+        private Api16Impl() {
+        }
+
+        static PendingIntent getActivities(Context context, int i2, Intent[] intentArr, int i3, Bundle bundle) {
+            return PendingIntent.getActivities(context, i2, intentArr, i3, bundle);
+        }
     }
 }

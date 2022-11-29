@@ -1,47 +1,9 @@
-package mono.android.view;
+package kotlin.jvm.internal.markers;
 
-import android.view.KeyEvent;
-import android.view.View;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: KMarkers.kt */
+@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\bf\u0018\u00002\u00020\u0001¨\u0006\u0002"}, d2 = {"Lkotlin/jvm/internal/markers/KMutableList;", "Lkotlin/jvm/internal/markers/KMutableCollection;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class View_OnUnhandledKeyEventListenerImplementor implements IGCUserPeer, View.OnUnhandledKeyEventListener {
-    public static final String __md_methods = "n_onUnhandledKeyEvent:(Landroid/view/View;Landroid/view/KeyEvent;)Z:GetOnUnhandledKeyEvent_Landroid_view_View_Landroid_view_KeyEvent_Handler:Android.Views.View/IOnUnhandledKeyEventListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native boolean n_onUnhandledKeyEvent(View view, KeyEvent keyEvent);
-
-    static {
-        Runtime.register("Android.Views.View+IOnUnhandledKeyEventListenerImplementor, Mono.Android", View_OnUnhandledKeyEventListenerImplementor.class, __md_methods);
-    }
-
-    public View_OnUnhandledKeyEventListenerImplementor() {
-        if (getClass() == View_OnUnhandledKeyEventListenerImplementor.class) {
-            TypeManager.Activate("Android.Views.View+IOnUnhandledKeyEventListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.view.View.OnUnhandledKeyEventListener
-    public boolean onUnhandledKeyEvent(View view, KeyEvent keyEvent) {
-        return n_onUnhandledKeyEvent(view, keyEvent);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public interface KMutableList extends KMutableCollection {
 }

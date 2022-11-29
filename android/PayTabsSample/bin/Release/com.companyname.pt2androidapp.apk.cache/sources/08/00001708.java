@@ -1,46 +1,54 @@
-package mono.com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk;
+package kotlin.ranges;
 
-import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.TorchStatusListener;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.util.NoSuchElementException;
+import kotlin.Metadata;
+import kotlin.UInt;
+import kotlin.UnsignedKt;
+import kotlin.collections.UIntIterator;
+import kotlin.jvm.internal.DefaultConstructorMarker;
 
+/* compiled from: UIntRange.kt */
+@Metadata(d1 = {"\u0000\"\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0004\n\u0002\u0010\u000b\n\u0002\b\u0005\b\u0003\u0018\u00002\u00020\u0001B \u0012\u0006\u0010\u0002\u001a\u00020\u0003\u0012\u0006\u0010\u0004\u001a\u00020\u0003\u0012\u0006\u0010\u0005\u001a\u00020\u0006ø\u0001\u0000¢\u0006\u0002\u0010\u0007J\t\u0010\n\u001a\u00020\u000bH\u0096\u0002J\u0015\u0010\r\u001a\u00020\u0003H\u0016ø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\b\u000e\u0010\u000fR\u0016\u0010\b\u001a\u00020\u0003X\u0082\u0004ø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\n\u0002\u0010\tR\u000e\u0010\n\u001a\u00020\u000bX\u0082\u000e¢\u0006\u0002\n\u0000R\u0016\u0010\f\u001a\u00020\u0003X\u0082\u000eø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\n\u0002\u0010\tR\u0016\u0010\u0005\u001a\u00020\u0003X\u0082\u0004ø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\n\u0002\u0010\t\u0082\u0002\b\n\u0002\b\u0019\n\u0002\b!¨\u0006\u0010"}, d2 = {"Lkotlin/ranges/UIntProgressionIterator;", "Lkotlin/collections/UIntIterator;", "first", "Lkotlin/UInt;", "last", "step", "", "(IIILkotlin/jvm/internal/DefaultConstructorMarker;)V", "finalElement", "I", "hasNext", "", "next", "nextUInt", "nextUInt-pVg5ArA", "()I", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class TorchStatusListenerImplementor implements IGCUserPeer, TorchStatusListener {
-    public static final String __md_methods = "n_onTorchStatusChanged:(Z)V:GetOnTorchStatusChanged_ZHandler:Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk.ITorchStatusListenerInvoker, CardScanBindingLib\n";
-    private ArrayList refList;
+final class UIntProgressionIterator extends UIntIterator {
+    private final int finalElement;
+    private boolean hasNext;
+    private int next;
+    private final int step;
 
-    private native void n_onTorchStatusChanged(boolean z2);
-
-    static {
-        Runtime.register("Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk.ITorchStatusListenerImplementor, CardScanBindingLib", TorchStatusListenerImplementor.class, __md_methods);
-    }
-
-    public TorchStatusListenerImplementor() {
-        if (getClass() == TorchStatusListenerImplementor.class) {
-            TypeManager.Activate("Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Ndk.ITorchStatusListenerImplementor, CardScanBindingLib", "", this, new Object[0]);
+    private UIntProgressionIterator(int i2, int i3, int i4) {
+        this.finalElement = i3;
+        boolean z2 = true;
+        int uintCompare = UnsignedKt.uintCompare(i2, i3);
+        if (i4 <= 0 ? uintCompare < 0 : uintCompare > 0) {
+            z2 = false;
         }
+        this.hasNext = z2;
+        this.step = UInt.m136constructorimpl(i4);
+        this.next = this.hasNext ? i2 : i3;
     }
 
-    @Override // com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.ndk.TorchStatusListener
-    public void onTorchStatusChanged(boolean z2) {
-        n_onTorchStatusChanged(z2);
+    public /* synthetic */ UIntProgressionIterator(int i2, int i3, int i4, DefaultConstructorMarker defaultConstructorMarker) {
+        this(i2, i3, i4);
     }
 
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
+    @Override // java.util.Iterator
+    public boolean hasNext() {
+        return this.hasNext;
+    }
+
+    @Override // kotlin.collections.UIntIterator
+    /* renamed from: nextUInt-pVg5ArA */
+    public int mo205nextUIntpVg5ArA() {
+        int i2 = this.next;
+        if (i2 == this.finalElement) {
+            if (!this.hasNext) {
+                throw new NoSuchElementException();
+            }
+            this.hasNext = false;
+        } else {
+            this.next = UInt.m136constructorimpl(this.step + i2);
         }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+        return i2;
     }
 }

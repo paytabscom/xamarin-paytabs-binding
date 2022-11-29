@@ -1,95 +1,38 @@
-package mono.android.inputmethodservice;
+package kotlin.jdk7;
 
-import android.inputmethodservice.KeyboardView;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.ExceptionsKt;
+import kotlin.Metadata;
+import kotlin.jvm.functions.Function1;
+import kotlin.jvm.internal.InlineMarker;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: AutoCloseable.kt */
+@Metadata(d1 = {"\u0000\u001c\n\u0000\n\u0002\u0010\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0003\n\u0002\b\u0004\n\u0002\u0018\u0002\n\u0002\b\u0002\u001a\u0018\u0010\u0000\u001a\u00020\u0001*\u0004\u0018\u00010\u00022\b\u0010\u0003\u001a\u0004\u0018\u00010\u0004H\u0001\u001aH\u0010\u0005\u001a\u0002H\u0006\"\n\b\u0000\u0010\u0007*\u0004\u0018\u00010\u0002\"\u0004\b\u0001\u0010\u0006*\u0002H\u00072\u0012\u0010\b\u001a\u000e\u0012\u0004\u0012\u0002H\u0007\u0012\u0004\u0012\u0002H\u00060\tH\u0087\bø\u0001\u0000\u0082\u0002\n\n\b\b\u0001\u0012\u0002\u0010\u0001 \u0001¢\u0006\u0002\u0010\n\u0082\u0002\u0007\n\u0005\b\u009920\u0001¨\u0006\u000b"}, d2 = {"closeFinally", "", "Ljava/lang/AutoCloseable;", "cause", "", "use", "R", "T", "block", "Lkotlin/Function1;", "(Ljava/lang/AutoCloseable;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;", "kotlin-stdlib-jdk7"}, k = 2, mv = {1, 7, 1}, pn = "kotlin", xi = 48)
 /* loaded from: classes.dex */
-public class KeyboardView_OnKeyboardActionListenerImplementor implements IGCUserPeer, KeyboardView.OnKeyboardActionListener {
-    public static final String __md_methods = "n_onKey:(I[I)V:GetOnKey_IarrayIHandler:Android.InputMethodServices.KeyboardView/IOnKeyboardActionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onPress:(I)V:GetOnPress_IHandler:Android.InputMethodServices.KeyboardView/IOnKeyboardActionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onRelease:(I)V:GetOnRelease_IHandler:Android.InputMethodServices.KeyboardView/IOnKeyboardActionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onText:(Ljava/lang/CharSequence;)V:GetOnText_Ljava_lang_CharSequence_Handler:Android.InputMethodServices.KeyboardView/IOnKeyboardActionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_swipeDown:()V:GetSwipeDownHandler:Android.InputMethodServices.KeyboardView/IOnKeyboardActionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_swipeLeft:()V:GetSwipeLeftHandler:Android.InputMethodServices.KeyboardView/IOnKeyboardActionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_swipeRight:()V:GetSwipeRightHandler:Android.InputMethodServices.KeyboardView/IOnKeyboardActionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_swipeUp:()V:GetSwipeUpHandler:Android.InputMethodServices.KeyboardView/IOnKeyboardActionListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onKey(int i2, int[] iArr);
-
-    private native void n_onPress(int i2);
-
-    private native void n_onRelease(int i2);
-
-    private native void n_onText(CharSequence charSequence);
-
-    private native void n_swipeDown();
-
-    private native void n_swipeLeft();
-
-    private native void n_swipeRight();
-
-    private native void n_swipeUp();
-
-    static {
-        Runtime.register("Android.InputMethodServices.KeyboardView+IOnKeyboardActionListenerImplementor, Mono.Android", KeyboardView_OnKeyboardActionListenerImplementor.class, __md_methods);
-    }
-
-    public KeyboardView_OnKeyboardActionListenerImplementor() {
-        if (getClass() == KeyboardView_OnKeyboardActionListenerImplementor.class) {
-            TypeManager.Activate("Android.InputMethodServices.KeyboardView+IOnKeyboardActionListenerImplementor, Mono.Android", "", this, new Object[0]);
+public final class AutoCloseableKt {
+    private static final <T extends AutoCloseable, R> R use(T t2, Function1<? super T, ? extends R> block) {
+        Intrinsics.checkNotNullParameter(block, "block");
+        try {
+            R invoke = block.invoke(t2);
+            InlineMarker.finallyStart(1);
+            closeFinally(t2, null);
+            InlineMarker.finallyEnd(1);
+            return invoke;
+        } finally {
         }
     }
 
-    @Override // android.inputmethodservice.KeyboardView.OnKeyboardActionListener
-    public void onKey(int i2, int[] iArr) {
-        n_onKey(i2, iArr);
-    }
-
-    @Override // android.inputmethodservice.KeyboardView.OnKeyboardActionListener
-    public void onPress(int i2) {
-        n_onPress(i2);
-    }
-
-    @Override // android.inputmethodservice.KeyboardView.OnKeyboardActionListener
-    public void onRelease(int i2) {
-        n_onRelease(i2);
-    }
-
-    @Override // android.inputmethodservice.KeyboardView.OnKeyboardActionListener
-    public void onText(CharSequence charSequence) {
-        n_onText(charSequence);
-    }
-
-    @Override // android.inputmethodservice.KeyboardView.OnKeyboardActionListener
-    public void swipeDown() {
-        n_swipeDown();
-    }
-
-    @Override // android.inputmethodservice.KeyboardView.OnKeyboardActionListener
-    public void swipeLeft() {
-        n_swipeLeft();
-    }
-
-    @Override // android.inputmethodservice.KeyboardView.OnKeyboardActionListener
-    public void swipeRight() {
-        n_swipeRight();
-    }
-
-    @Override // android.inputmethodservice.KeyboardView.OnKeyboardActionListener
-    public void swipeUp() {
-        n_swipeUp();
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
+    public static final void closeFinally(AutoCloseable autoCloseable, Throwable th) {
+        if (autoCloseable != null) {
+            if (th == null) {
+                autoCloseable.close();
+                return;
+            }
+            try {
+                autoCloseable.close();
+            } catch (Throwable th2) {
+                ExceptionsKt.addSuppressed(th, th2);
+            }
         }
     }
 }

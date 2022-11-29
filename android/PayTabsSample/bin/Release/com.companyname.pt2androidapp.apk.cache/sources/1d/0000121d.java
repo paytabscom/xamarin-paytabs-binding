@@ -1,29 +1,48 @@
-package kotlin.time;
+package com.google.crypto.tink.streamingaead;
 
-import kotlin.Metadata;
+import com.google.crypto.tink.PrimitiveSet;
+import com.google.crypto.tink.StreamingAead;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.SeekableByteChannel;
+import java.nio.channels.WritableByteChannel;
+import java.security.GeneralSecurityException;
 
-/* compiled from: TimeSource.kt */
-@Metadata(d1 = {"\u0000\u001c\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u000b\n\u0002\b\b\b'\u0018\u00002\u00020\u0001B\u0005¢\u0006\u0002\u0010\u0002J\u0015\u0010\u0003\u001a\u00020\u0004H&ø\u0001\u0000ø\u0001\u0001¢\u0006\u0004\b\u0005\u0010\u0006J\u0006\u0010\u0007\u001a\u00020\bJ\u0006\u0010\t\u001a\u00020\bJ\u001b\u0010\n\u001a\u00020\u00002\u0006\u0010\u000b\u001a\u00020\u0004H\u0096\u0002ø\u0001\u0000¢\u0006\u0004\b\f\u0010\rJ\u001b\u0010\u000e\u001a\u00020\u00002\u0006\u0010\u000b\u001a\u00020\u0004H\u0096\u0002ø\u0001\u0000¢\u0006\u0004\b\u000f\u0010\r\u0082\u0002\b\n\u0002\b\u0019\n\u0002\b!¨\u0006\u0010"}, d2 = {"Lkotlin/time/TimeMark;", "", "()V", "elapsedNow", "Lkotlin/time/Duration;", "elapsedNow-UwyO8pc", "()J", "hasNotPassedNow", "", "hasPassedNow", "minus", "duration", "minus-LRDsOJo", "(J)Lkotlin/time/TimeMark;", "plus", "plus-LRDsOJo", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public abstract class TimeMark {
-    /* renamed from: elapsedNow-UwyO8pc */
-    public abstract long mo1296elapsedNowUwyO8pc();
+final class StreamingAeadHelper implements StreamingAead {
+    PrimitiveSet<StreamingAead> primitives;
 
-    /* renamed from: plus-LRDsOJo */
-    public TimeMark mo1297plusLRDsOJo(long j2) {
-        return new AdjustedTimeMark(this, j2, null);
+    public StreamingAeadHelper(PrimitiveSet<StreamingAead> primitives) throws GeneralSecurityException {
+        if (primitives.getPrimary() == null) {
+            throw new GeneralSecurityException("Missing primary primitive.");
+        }
+        this.primitives = primitives;
     }
 
-    /* renamed from: minus-LRDsOJo  reason: not valid java name */
-    public TimeMark m1389minusLRDsOJo(long j2) {
-        return mo1297plusLRDsOJo(Duration.m1358unaryMinusUwyO8pc(j2));
+    @Override // com.google.crypto.tink.StreamingAead
+    public WritableByteChannel newEncryptingChannel(WritableByteChannel ciphertextDestination, byte[] associatedData) throws GeneralSecurityException, IOException {
+        return this.primitives.getPrimary().getPrimitive().newEncryptingChannel(ciphertextDestination, associatedData);
     }
 
-    public final boolean hasPassedNow() {
-        return !Duration.m1338isNegativeimpl(mo1296elapsedNowUwyO8pc());
+    @Override // com.google.crypto.tink.StreamingAead
+    public ReadableByteChannel newDecryptingChannel(ReadableByteChannel ciphertextChannel, byte[] associatedData) throws GeneralSecurityException, IOException {
+        return new ReadableByteChannelDecrypter(this.primitives, ciphertextChannel, associatedData);
     }
 
-    public final boolean hasNotPassedNow() {
-        return Duration.m1338isNegativeimpl(mo1296elapsedNowUwyO8pc());
+    @Override // com.google.crypto.tink.StreamingAead
+    public SeekableByteChannel newSeekableDecryptingChannel(SeekableByteChannel ciphertextChannel, byte[] associatedData) throws GeneralSecurityException, IOException {
+        return new SeekableByteChannelDecrypter(this.primitives, ciphertextChannel, associatedData);
+    }
+
+    @Override // com.google.crypto.tink.StreamingAead
+    public InputStream newDecryptingStream(InputStream ciphertextStream, byte[] associatedData) throws GeneralSecurityException, IOException {
+        return new InputStreamDecrypter(this.primitives, ciphertextStream, associatedData);
+    }
+
+    @Override // com.google.crypto.tink.StreamingAead
+    public OutputStream newEncryptingStream(OutputStream ciphertext, byte[] associatedData) throws GeneralSecurityException, IOException {
+        return this.primitives.getPrimary().getPrimitive().newEncryptingStream(ciphertext, associatedData);
     }
 }

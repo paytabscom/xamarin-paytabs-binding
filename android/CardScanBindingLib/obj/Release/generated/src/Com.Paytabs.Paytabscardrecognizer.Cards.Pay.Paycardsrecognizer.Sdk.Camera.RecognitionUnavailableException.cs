@@ -8,6 +8,26 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Cam
 	// Metadata.xml XPath class reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera']/class[@name='RecognitionUnavailableException']"
 	[global::Android.Runtime.Register ("com/paytabs/paytabscardrecognizer/cards/pay/paycardsrecognizer/sdk/camera/RecognitionUnavailableException", DoNotGenerateAcw=true)]
 	public sealed partial class RecognitionUnavailableException : global::Java.Lang.Exception {
+
+		// Metadata.xml XPath field reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera']/class[@name='RecognitionUnavailableException']/field[@name='errorCode']"
+		[Register ("errorCode")]
+		public int ErrorCode {
+			get {
+				const string __id = "errorCode.I";
+
+				var __v = _members.InstanceFields.GetInt32Value (__id, this);
+				return __v;
+			}
+			set {
+				const string __id = "errorCode.I";
+
+				try {
+					_members.InstanceFields.SetValue (__id, this, value);
+				} finally {
+				}
+			}
+		}
+
 		// Metadata.xml XPath field reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera']/class[@name='RecognitionUnavailableException']/field[@name='ERROR_CAMERA_NOT_SUPPORTED']"
 		[Register ("ERROR_CAMERA_NOT_SUPPORTED")]
 		public const int ErrorCameraNotSupported = (int) 3;
@@ -31,26 +51,6 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Cam
 		// Metadata.xml XPath field reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera']/class[@name='RecognitionUnavailableException']/field[@name='ERROR_UNSUPPORTED_ARCHITECTURE']"
 		[Register ("ERROR_UNSUPPORTED_ARCHITECTURE")]
 		public const int ErrorUnsupportedArchitecture = (int) 5;
-
-
-		// Metadata.xml XPath field reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera']/class[@name='RecognitionUnavailableException']/field[@name='errorCode']"
-		[Register ("errorCode")]
-		public int ErrorCode {
-			get {
-				const string __id = "errorCode.I";
-
-				var __v = _members.InstanceFields.GetInt32Value (__id, this);
-				return __v;
-			}
-			set {
-				const string __id = "errorCode.I";
-
-				try {
-					_members.InstanceFields.SetValue (__id, this, value);
-				} finally {
-				}
-			}
-		}
 
 		static readonly JniPeerMembers _members = new XAPeerMembers ("com/paytabs/paytabscardrecognizer/cards/pay/paycardsrecognizer/sdk/camera/RecognitionUnavailableException", typeof (RecognitionUnavailableException));
 

@@ -11,10 +11,6 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Cam
 		// Metadata.xml XPath class reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.widget']/class[@name='CameraPreviewLayout.LayoutParams']"
 		[global::Android.Runtime.Register ("com/paytabs/paytabscardrecognizer/cards/pay/paycardsrecognizer/sdk/camera/widget/CameraPreviewLayout$LayoutParams", DoNotGenerateAcw=true)]
 		public partial class LayoutParams : global::Android.Widget.FrameLayout.LayoutParams {
-			// Metadata.xml XPath field reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.widget']/class[@name='CameraPreviewLayout.LayoutParams']/field[@name='UNSPECIFIED_CARD_GRAVITY']"
-			[Register ("UNSPECIFIED_CARD_GRAVITY")]
-			public const int UnspecifiedCardGravity = (int) -1;
-
 
 			// Metadata.xml XPath field reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.widget']/class[@name='CameraPreviewLayout.LayoutParams']/field[@name='cardGravity']"
 			[Register ("cardGravity")]
@@ -34,6 +30,10 @@ namespace Com.Paytabs.Paytabscardrecognizer.Cards.Pay.Paycardsrecognizer.Sdk.Cam
 					}
 				}
 			}
+
+			// Metadata.xml XPath field reference: path="/api/package[@name='com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.widget']/class[@name='CameraPreviewLayout.LayoutParams']/field[@name='UNSPECIFIED_CARD_GRAVITY']"
+			[Register ("UNSPECIFIED_CARD_GRAVITY")]
+			public const int UnspecifiedCardGravity = (int) -1;
 
 			static readonly JniPeerMembers _members = new XAPeerMembers ("com/paytabs/paytabscardrecognizer/cards/pay/paycardsrecognizer/sdk/camera/widget/CameraPreviewLayout$LayoutParams", typeof (LayoutParams));
 

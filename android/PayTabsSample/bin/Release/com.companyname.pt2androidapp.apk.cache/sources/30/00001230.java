@@ -1,39 +1,38 @@
-package kotlinx.coroutines;
+package com.google.crypto.tink.subtle;
 
-import kotlin.Metadata;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.CoroutineContext;
-import kotlin.jvm.functions.Function2;
+import java.util.Arrays;
+import kotlin.jvm.internal.ByteCompanionObject;
 
-@Metadata(bv = {1, 0, 3}, d1 = {"kotlinx/coroutines/BuildersKt__BuildersKt", "kotlinx/coroutines/BuildersKt__Builders_commonKt"}, k = 4, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class BuildersKt {
-    public static final <T> Deferred<T> async(CoroutineScope coroutineScope, CoroutineContext coroutineContext, CoroutineStart coroutineStart, Function2<? super CoroutineScope, ? super Continuation<? super T>, ? extends Object> function2) {
-        return BuildersKt__Builders_commonKt.async(coroutineScope, coroutineContext, coroutineStart, function2);
+class AesUtil {
+    public static final int BLOCK_SIZE = 16;
+
+    AesUtil() {
     }
 
-    public static final <T> Object invoke(CoroutineDispatcher coroutineDispatcher, Function2<? super CoroutineScope, ? super Continuation<? super T>, ? extends Object> function2, Continuation<? super T> continuation) {
-        return BuildersKt__Builders_commonKt.invoke(coroutineDispatcher, function2, continuation);
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static byte[] dbl(final byte[] value) {
+        if (value.length != 16) {
+            throw new IllegalArgumentException("value must be a block.");
+        }
+        byte[] bArr = new byte[16];
+        for (int i2 = 0; i2 < 16; i2++) {
+            bArr[i2] = (byte) ((value[i2] << 1) & 254);
+            if (i2 < 15) {
+                bArr[i2] = (byte) (bArr[i2] | ((byte) ((value[i2 + 1] >> 7) & 1)));
+            }
+        }
+        bArr[15] = (byte) (((byte) ((value[0] >> 7) & 135)) ^ bArr[15]);
+        return bArr;
     }
 
-    public static final Job launch(CoroutineScope coroutineScope, CoroutineContext coroutineContext, CoroutineStart coroutineStart, Function2<? super CoroutineScope, ? super Continuation<? super Unit>, ? extends Object> function2) {
-        return BuildersKt__Builders_commonKt.launch(coroutineScope, coroutineContext, coroutineStart, function2);
-    }
-
-    public static /* synthetic */ Job launch$default(CoroutineScope coroutineScope, CoroutineContext coroutineContext, CoroutineStart coroutineStart, Function2 function2, int i2, Object obj) {
-        return BuildersKt__Builders_commonKt.launch$default(coroutineScope, coroutineContext, coroutineStart, function2, i2, obj);
-    }
-
-    public static final <T> T runBlocking(CoroutineContext coroutineContext, Function2<? super CoroutineScope, ? super Continuation<? super T>, ? extends Object> function2) throws InterruptedException {
-        return (T) BuildersKt__BuildersKt.runBlocking(coroutineContext, function2);
-    }
-
-    public static /* synthetic */ Object runBlocking$default(CoroutineContext coroutineContext, Function2 function2, int i2, Object obj) throws InterruptedException {
-        return BuildersKt__BuildersKt.runBlocking$default(coroutineContext, function2, i2, obj);
-    }
-
-    public static final <T> Object withContext(CoroutineContext coroutineContext, Function2<? super CoroutineScope, ? super Continuation<? super T>, ? extends Object> function2, Continuation<? super T> continuation) {
-        return BuildersKt__Builders_commonKt.withContext(coroutineContext, function2, continuation);
+    /* JADX INFO: Access modifiers changed from: package-private */
+    public static byte[] cmacPad(final byte[] x2) {
+        if (x2.length >= 16) {
+            throw new IllegalArgumentException("x must be smaller than a block.");
+        }
+        byte[] copyOf = Arrays.copyOf(x2, 16);
+        copyOf[x2.length] = ByteCompanionObject.MIN_VALUE;
+        return copyOf;
     }
 }

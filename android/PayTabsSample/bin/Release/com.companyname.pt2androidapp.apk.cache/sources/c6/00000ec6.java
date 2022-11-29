@@ -1,18 +1,61 @@
-package kotlin;
+package com.google.android.material.transition;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import kotlin.annotation.AnnotationRetention;
-import kotlin.annotation.AnnotationTarget;
+import android.animation.Animator;
+import android.view.View;
+import android.view.ViewGroup;
+import androidx.transition.TransitionValues;
 
-/* compiled from: Inference.kt */
-@Target({ElementType.METHOD, ElementType.PARAMETER})
-@Metadata(d1 = {"\u0000\n\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\b\u0087\u0002\u0018\u00002\u00020\u0001B\u0000¨\u0006\u0002"}, d2 = {"Lkotlin/BuilderInference;", "", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
-@kotlin.annotation.Target(allowedTargets = {AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY})
-@Retention(RetentionPolicy.CLASS)
-@kotlin.annotation.Retention(AnnotationRetention.BINARY)
 /* loaded from: classes.dex */
-public @interface BuilderInference {
+public final class MaterialFadeThrough extends MaterialVisibility<FadeThroughProvider> {
+    private static final float DEFAULT_START_SCALE = 0.92f;
+
+    @Override // com.google.android.material.transition.MaterialVisibility
+    public /* bridge */ /* synthetic */ void addAdditionalAnimatorProvider(VisibilityAnimatorProvider visibilityAnimatorProvider) {
+        super.addAdditionalAnimatorProvider(visibilityAnimatorProvider);
+    }
+
+    @Override // com.google.android.material.transition.MaterialVisibility
+    public /* bridge */ /* synthetic */ void clearAdditionalAnimatorProvider() {
+        super.clearAdditionalAnimatorProvider();
+    }
+
+    @Override // com.google.android.material.transition.MaterialVisibility
+    public /* bridge */ /* synthetic */ VisibilityAnimatorProvider getSecondaryAnimatorProvider() {
+        return super.getSecondaryAnimatorProvider();
+    }
+
+    @Override // com.google.android.material.transition.MaterialVisibility, androidx.transition.Visibility
+    public /* bridge */ /* synthetic */ Animator onAppear(ViewGroup viewGroup, View view, TransitionValues transitionValues, TransitionValues transitionValues2) {
+        return super.onAppear(viewGroup, view, transitionValues, transitionValues2);
+    }
+
+    @Override // com.google.android.material.transition.MaterialVisibility, androidx.transition.Visibility
+    public /* bridge */ /* synthetic */ Animator onDisappear(ViewGroup viewGroup, View view, TransitionValues transitionValues, TransitionValues transitionValues2) {
+        return super.onDisappear(viewGroup, view, transitionValues, transitionValues2);
+    }
+
+    @Override // com.google.android.material.transition.MaterialVisibility
+    public /* bridge */ /* synthetic */ boolean removeAdditionalAnimatorProvider(VisibilityAnimatorProvider visibilityAnimatorProvider) {
+        return super.removeAdditionalAnimatorProvider(visibilityAnimatorProvider);
+    }
+
+    @Override // com.google.android.material.transition.MaterialVisibility
+    public /* bridge */ /* synthetic */ void setSecondaryAnimatorProvider(VisibilityAnimatorProvider visibilityAnimatorProvider) {
+        super.setSecondaryAnimatorProvider(visibilityAnimatorProvider);
+    }
+
+    public MaterialFadeThrough() {
+        super(createPrimaryAnimatorProvider(), createSecondaryAnimatorProvider());
+    }
+
+    private static FadeThroughProvider createPrimaryAnimatorProvider() {
+        return new FadeThroughProvider();
+    }
+
+    private static VisibilityAnimatorProvider createSecondaryAnimatorProvider() {
+        ScaleProvider scaleProvider = new ScaleProvider();
+        scaleProvider.setScaleOnDisappear(false);
+        scaleProvider.setIncomingStartScale(DEFAULT_START_SCALE);
+        return scaleProvider;
+    }
 }

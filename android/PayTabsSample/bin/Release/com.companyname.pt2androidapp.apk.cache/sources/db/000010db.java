@@ -1,20 +1,12 @@
-package kotlin.jvm.internal;
+package com.google.crypto.tink.proto;
 
-import kotlin.reflect.KClass;
-import kotlin.reflect.KDeclarationContainer;
+import com.google.crypto.tink.shaded.protobuf.ExtensionRegistryLite;
 
 /* loaded from: classes.dex */
-public class PropertyReference2Impl extends PropertyReference2 {
-    public PropertyReference2Impl(KDeclarationContainer kDeclarationContainer, String str, String str2) {
-        super(((ClassBasedDeclarationContainer) kDeclarationContainer).getJClass(), str, str2, !(kDeclarationContainer instanceof KClass) ? 1 : 0);
+public final class RsaSsaPkcs1 {
+    public static void registerAllExtensions(ExtensionRegistryLite registry) {
     }
 
-    public PropertyReference2Impl(Class cls, String str, String str2, int i2) {
-        super(cls, str, str2, i2);
-    }
-
-    @Override // kotlin.reflect.KProperty2
-    public Object get(Object obj, Object obj2) {
-        return getGetter().call(obj, obj2);
+    private RsaSsaPkcs1() {
     }
 }

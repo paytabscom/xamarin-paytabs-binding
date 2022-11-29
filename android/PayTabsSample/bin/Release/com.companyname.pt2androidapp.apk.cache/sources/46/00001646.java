@@ -1,46 +1,24 @@
-package mono.android.media;
+package kotlin.jvm;
 
-import android.media.AudioRouting;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+import kotlin.Metadata;
+import kotlin.annotation.AnnotationRetention;
+import kotlin.annotation.AnnotationTarget;
+import kotlin.annotation.MustBeDocumented;
 
+/* compiled from: JvmPlatformAnnotations.kt */
+@Target({ElementType.METHOD})
+@kotlin.annotation.Target(allowedTargets = {AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER, AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.FILE})
+@Retention(RetentionPolicy.CLASS)
+@kotlin.annotation.Retention(AnnotationRetention.BINARY)
+@MustBeDocumented
+@Metadata(d1 = {"\u0000\u0012\n\u0002\u0018\u0002\n\u0002\u0010\u001b\n\u0000\n\u0002\u0010\u000e\n\u0002\b\u0002\b\u0087\u0002\u0018\u00002\u00020\u0001B\b\u0012\u0006\u0010\u0002\u001a\u00020\u0003R\u000f\u0010\u0002\u001a\u00020\u0003¢\u0006\u0006\u001a\u0004\b\u0002\u0010\u0004¨\u0006\u0005"}, d2 = {"Lkotlin/jvm/JvmName;", "", "name", "", "()Ljava/lang/String;", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
+@Documented
 /* loaded from: classes.dex */
-public class AudioRouting_OnRoutingChangedListenerImplementor implements IGCUserPeer, AudioRouting.OnRoutingChangedListener {
-    public static final String __md_methods = "n_onRoutingChanged:(Landroid/media/AudioRouting;)V:GetOnRoutingChanged_Landroid_media_AudioRouting_Handler:Android.Media.IAudioRoutingOnRoutingChangedListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onRoutingChanged(AudioRouting audioRouting);
-
-    static {
-        Runtime.register("Android.Media.IAudioRoutingOnRoutingChangedListenerImplementor, Mono.Android", AudioRouting_OnRoutingChangedListenerImplementor.class, __md_methods);
-    }
-
-    public AudioRouting_OnRoutingChangedListenerImplementor() {
-        if (getClass() == AudioRouting_OnRoutingChangedListenerImplementor.class) {
-            TypeManager.Activate("Android.Media.IAudioRoutingOnRoutingChangedListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
-    }
-
-    @Override // android.media.AudioRouting.OnRoutingChangedListener
-    public void onRoutingChanged(AudioRouting audioRouting) {
-        n_onRoutingChanged(audioRouting);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
-    }
+public @interface JvmName {
+    String name();
 }

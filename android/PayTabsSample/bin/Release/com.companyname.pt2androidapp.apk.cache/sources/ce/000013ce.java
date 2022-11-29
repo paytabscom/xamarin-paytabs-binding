@@ -1,111 +1,159 @@
-package kotlinx.coroutines.flow;
+package com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera;
 
-import kotlin.Metadata;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.jvm.internal.ContinuationImpl;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-import kotlin.sequences.Sequence;
+import android.hardware.Camera;
+import android.text.TextUtils;
+import android.view.Display;
+import com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.utils.Size;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
-/* compiled from: SafeCollector.common.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0019\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0002*\u0001\u0000\b\n\u0018\u00002\b\u0012\u0004\u0012\u00028\u00000\u0001J\u001f\u0010\u0002\u001a\u00020\u00032\f\u0010\u0004\u001a\b\u0012\u0004\u0012\u00028\u00000\u0005H\u0096@ø\u0001\u0000¢\u0006\u0002\u0010\u0006\u0082\u0002\u0004\n\u0002\b\u0019¨\u0006\u0007¸\u0006\u0000"}, d2 = {"kotlinx/coroutines/flow/internal/SafeCollector_commonKt$unsafeFlow$1", "Lkotlinx/coroutines/flow/Flow;", "collect", "", "collector", "Lkotlinx/coroutines/flow/FlowCollector;", "(Lkotlinx/coroutines/flow/FlowCollector;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;", "kotlinx-coroutines-core"}, k = 1, mv = {1, 4, 2})
 /* loaded from: classes.dex */
-public final class FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$5 implements Flow<T> {
-    final /* synthetic */ Sequence $this_asFlow$inlined;
+public final class CameraUtils {
+    public static final NativeSupportedSize CAMERA_RESOLUTION = NativeSupportedSize.RESOLUTION_1280_X_720;
+    private static NativeSupportedSize sBestCameraPreviewSize;
 
-    @Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u001a\n\u0000\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0010\u0002\n\u0000\u0010\u0000\u001a\u0004\u0018\u00010\u0001\"\u0004\b\u0000\u0010\u00022\f\u0010\u0003\u001a\b\u0012\u0004\u0012\u0002H\u00020\u00042\f\u0010\u0005\u001a\b\u0012\u0004\u0012\u00020\u00070\u0006H\u0096@¨\u0006\b"}, d2 = {"collect", "", "T", "collector", "Lkotlinx/coroutines/flow/FlowCollector;", "continuation", "Lkotlin/coroutines/Continuation;", "", "kotlinx/coroutines/flow/internal/SafeCollector_commonKt$unsafeFlow$1$collect$1"}, k = 3, mv = {1, 4, 2})
-    @DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$5", f = "Builders.kt", i = {0}, l = {115}, m = "collect", n = {"$receiver"}, s = {"L$0"})
-    /* renamed from: kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$5$1  reason: invalid class name */
+    public static boolean isCameraSupported() throws BlockingOperationException {
+        NativeSupportedSize nativeSupportedSize = sBestCameraPreviewSize;
+        if (nativeSupportedSize != null) {
+            return nativeSupportedSize != NativeSupportedSize.RESOLUTION_NO_CAMERA;
+        }
+        throw new BlockingOperationException();
+    }
+
+    public static boolean isCameraSupportedBlocking() {
+        try {
+            return isCameraSupported();
+        } catch (BlockingOperationException unused) {
+            generateBestCameraPreviewSize();
+            return (sBestCameraPreviewSize == null || sBestCameraPreviewSize == NativeSupportedSize.RESOLUTION_NO_CAMERA) ? false : true;
+        }
+    }
+
+    public static NativeSupportedSize findBestCameraSupportedSize(Iterable<Camera.Size> iterable) {
+        NativeSupportedSize nativeSupportedSize = NativeSupportedSize.RESOLUTION_NO_CAMERA;
+        if (iterable == null) {
+            return NativeSupportedSize.RESOLUTION_NO_CAMERA;
+        }
+        for (Camera.Size size : iterable) {
+            NativeSupportedSize[] values = NativeSupportedSize.values();
+            int length = values.length;
+            int i2 = 0;
+            while (true) {
+                if (i2 < length) {
+                    NativeSupportedSize nativeSupportedSize2 = values[i2];
+                    if (size.width != nativeSupportedSize2.size.width || size.height != nativeSupportedSize2.size.height) {
+                        i2++;
+                    } else if (nativeSupportedSize2.compareTo(nativeSupportedSize) < 0) {
+                        nativeSupportedSize = nativeSupportedSize2;
+                    }
+                }
+            }
+        }
+        return nativeSupportedSize;
+    }
+
+    public static void generateBestCameraPreviewSize() {
+        if (sBestCameraPreviewSize == null) {
+            try {
+                Camera open = Camera.open();
+                if (open != null) {
+                    generateBestCameraPreviewSize(open, open.getParameters().getSupportedPreviewSizes());
+                    open.release();
+                }
+            } catch (Exception unused) {
+            }
+        }
+    }
+
+    static void generateBestCameraPreviewSize(Camera camera, Iterable<Camera.Size> iterable) {
+        NativeSupportedSize[] values;
+        if (iterable == null) {
+            sBestCameraPreviewSize = NativeSupportedSize.RESOLUTION_NO_CAMERA;
+            return;
+        }
+        NativeSupportedSize findBestCameraSupportedSize = findBestCameraSupportedSize(iterable);
+        sBestCameraPreviewSize = findBestCameraSupportedSize;
+        if (findBestCameraSupportedSize == NativeSupportedSize.RESOLUTION_NO_CAMERA) {
+            for (NativeSupportedSize nativeSupportedSize : NativeSupportedSize.values()) {
+                if (tryToSetCameraSize(camera, nativeSupportedSize)) {
+                    sBestCameraPreviewSize = nativeSupportedSize;
+                    return;
+                }
+            }
+            sBestCameraPreviewSize = NativeSupportedSize.RESOLUTION_NO_CAMERA;
+        }
+    }
+
+    private static boolean tryToSetCameraSize(Camera camera, NativeSupportedSize nativeSupportedSize) {
+        if (camera == null) {
+            return false;
+        }
+        Camera.Parameters parameters = camera.getParameters();
+        parameters.setPreviewSize(nativeSupportedSize.size.width, nativeSupportedSize.size.height);
+        try {
+            camera.setParameters(parameters);
+            Camera.Size previewSize = camera.getParameters().getPreviewSize();
+            if (previewSize.width != nativeSupportedSize.size.width) {
+                if (previewSize.height != nativeSupportedSize.size.height) {
+                    return false;
+                }
+            }
+            return true;
+        } catch (Exception unused) {
+            return false;
+        }
+    }
+
+    public static String getSupportedSizesDescription(List<Camera.Size> list) {
+        ArrayList arrayList = new ArrayList(list.size());
+        for (Camera.Size size : list) {
+            arrayList.add(String.format(Locale.US, "[%dx%d]", Integer.valueOf(size.width), Integer.valueOf(size.height)));
+        }
+        return TextUtils.join(", ", arrayList);
+    }
+
+    public static Camera.CameraInfo getBackCameraInfo() {
+        int numberOfCameras = Camera.getNumberOfCameras();
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+        for (int i2 = 0; i2 < numberOfCameras; i2++) {
+            Camera.getCameraInfo(i2, cameraInfo);
+            if (cameraInfo.facing == 0) {
+                return cameraInfo;
+            }
+        }
+        return null;
+    }
+
+    public static int getBackCameraSensorOrientation() {
+        Camera.CameraInfo backCameraInfo = getBackCameraInfo();
+        if (backCameraInfo == null) {
+            return 0;
+        }
+        return backCameraInfo.orientation;
+    }
+
+    public static int getBackCameraDataRotation(Display display) {
+        return getCameraDataRotation(display, getBackCameraInfo());
+    }
+
+    private static int getCameraDataRotation(Display display, Camera.CameraInfo cameraInfo) {
+        int displayRotationDegrees = OrientationHelper.getDisplayRotationDegrees(display);
+        if (cameraInfo == null) {
+            return 0;
+        }
+        return OrientationHelper.getCameraRotationToNatural(displayRotationDegrees, cameraInfo.orientation, cameraInfo.facing == 1);
+    }
+
     /* loaded from: classes.dex */
-    public static final class AnonymousClass1 extends ContinuationImpl {
-        Object L$0;
-        Object L$1;
-        int label;
-        /* synthetic */ Object result;
+    public enum NativeSupportedSize {
+        RESOLUTION_1280_X_720(1280, 720),
+        RESOLUTION_NO_CAMERA(-1, -1);
+        
+        public final Size size;
 
-        public AnonymousClass1(Continuation continuation) {
-            super(continuation);
+        NativeSupportedSize(int i2, int i3) {
+            this.size = new Size(i2, i3);
         }
-
-        @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-        public final Object invokeSuspend(Object obj) {
-            this.result = obj;
-            this.label |= Integer.MIN_VALUE;
-            return FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$5.this.collect(null, this);
-        }
-    }
-
-    public FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$5(Sequence sequence) {
-        this.$this_asFlow$inlined = sequence;
-    }
-
-    /* JADX WARN: Removed duplicated region for block: B:10:0x0024  */
-    /* JADX WARN: Removed duplicated region for block: B:14:0x003b  */
-    /* JADX WARN: Removed duplicated region for block: B:17:0x0050  */
-    @Override // kotlinx.coroutines.flow.Flow
-    /*
-        Code decompiled incorrectly, please refer to instructions dump.
-        To view partially-correct code enable 'Show inconsistent code' option in preferences
-    */
-    public java.lang.Object collect(kotlinx.coroutines.flow.FlowCollector r6, kotlin.coroutines.Continuation r7) {
-        /*
-            r5 = this;
-            boolean r0 = r7 instanceof kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$5.AnonymousClass1
-            if (r0 == 0) goto L14
-            r0 = r7
-            kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$5$1 r0 = (kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$5.AnonymousClass1) r0
-            int r1 = r0.label
-            r2 = -2147483648(0xffffffff80000000, float:-0.0)
-            r1 = r1 & r2
-            if (r1 == 0) goto L14
-            int r7 = r0.label
-            int r7 = r7 - r2
-            r0.label = r7
-            goto L19
-        L14:
-            kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$5$1 r0 = new kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$5$1
-            r0.<init>(r7)
-        L19:
-            java.lang.Object r7 = r0.result
-            java.lang.Object r1 = kotlin.coroutines.intrinsics.IntrinsicsKt.getCOROUTINE_SUSPENDED()
-            int r2 = r0.label
-            r3 = 1
-            if (r2 == 0) goto L3b
-            if (r2 != r3) goto L33
-            java.lang.Object r6 = r0.L$1
-            java.util.Iterator r6 = (java.util.Iterator) r6
-            java.lang.Object r2 = r0.L$0
-            kotlinx.coroutines.flow.FlowCollector r2 = (kotlinx.coroutines.flow.FlowCollector) r2
-            kotlin.ResultKt.throwOnFailure(r7)
-            r7 = r2
-            goto L4a
-        L33:
-            java.lang.IllegalStateException r6 = new java.lang.IllegalStateException
-            java.lang.String r7 = "call to 'resume' before 'invoke' with coroutine"
-            r6.<init>(r7)
-            throw r6
-        L3b:
-            kotlin.ResultKt.throwOnFailure(r7)
-            r7 = r0
-            kotlin.coroutines.Continuation r7 = (kotlin.coroutines.Continuation) r7
-            kotlin.sequences.Sequence r7 = r5.$this_asFlow$inlined
-            java.util.Iterator r7 = r7.iterator()
-            r4 = r7
-            r7 = r6
-            r6 = r4
-        L4a:
-            boolean r2 = r6.hasNext()
-            if (r2 == 0) goto L61
-            java.lang.Object r2 = r6.next()
-            r0.L$0 = r7
-            r0.L$1 = r6
-            r0.label = r3
-            java.lang.Object r2 = r7.emit(r2, r0)
-            if (r2 != r1) goto L4a
-            return r1
-        L61:
-            kotlin.Unit r6 = kotlin.Unit.INSTANCE
-            return r6
-        */
-        throw new UnsupportedOperationException("Method not decompiled: kotlinx.coroutines.flow.FlowKt__BuildersKt$asFlow$$inlined$unsafeFlow$5.collect(kotlinx.coroutines.flow.FlowCollector, kotlin.coroutines.Continuation):java.lang.Object");
     }
 }

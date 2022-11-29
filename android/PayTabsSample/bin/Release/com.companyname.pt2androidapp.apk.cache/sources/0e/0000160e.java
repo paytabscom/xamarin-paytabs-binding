@@ -1,46 +1,24 @@
-package mono.android.app;
+package kotlin.io;
 
-import android.app.AppOpsManager;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import java.io.File;
+import kotlin.Metadata;
+import kotlin.jvm.internal.Intrinsics;
 
+/* compiled from: Exceptions.kt */
+@Metadata(d1 = {"\u0000\u0010\n\u0000\n\u0002\u0010\u000e\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\u001a$\u0010\u0000\u001a\u00020\u00012\u0006\u0010\u0002\u001a\u00020\u00032\b\u0010\u0004\u001a\u0004\u0018\u00010\u00032\b\u0010\u0005\u001a\u0004\u0018\u00010\u0001H\u0002¨\u0006\u0006"}, d2 = {"constructMessage", "", "file", "Ljava/io/File;", "other", "reason", "kotlin-stdlib"}, k = 2, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class AppOpsManager_OnOpChangedListenerImplementor implements IGCUserPeer, AppOpsManager.OnOpChangedListener {
-    public static final String __md_methods = "n_onOpChanged:(Ljava/lang/String;Ljava/lang/String;)V:GetOnOpChanged_Ljava_lang_String_Ljava_lang_String_Handler:Android.App.AppOpsManager/IOnOpChangedListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
-
-    private native void n_onOpChanged(String str, String str2);
-
-    static {
-        Runtime.register("Android.App.AppOpsManager+IOnOpChangedListenerImplementor, Mono.Android", AppOpsManager_OnOpChangedListenerImplementor.class, __md_methods);
-    }
-
-    public AppOpsManager_OnOpChangedListenerImplementor() {
-        if (getClass() == AppOpsManager_OnOpChangedListenerImplementor.class) {
-            TypeManager.Activate("Android.App.AppOpsManager+IOnOpChangedListenerImplementor, Mono.Android", "", this, new Object[0]);
+public final class ExceptionsKt {
+    /* JADX INFO: Access modifiers changed from: private */
+    public static final String constructMessage(File file, File file2, String str) {
+        StringBuilder sb = new StringBuilder(file.toString());
+        if (file2 != null) {
+            sb.append(" -> " + file2);
         }
-    }
-
-    @Override // android.app.AppOpsManager.OnOpChangedListener
-    public void onOpChanged(String str, String str2) {
-        n_onOpChanged(str, str2);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
+        if (str != null) {
+            sb.append(": " + str);
         }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+        String sb2 = sb.toString();
+        Intrinsics.checkNotNullExpressionValue(sb2, "sb.toString()");
+        return sb2;
     }
 }

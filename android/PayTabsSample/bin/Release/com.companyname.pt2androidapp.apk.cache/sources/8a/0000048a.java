@@ -1,25 +1,31 @@
-package androidx.core.content;
+package androidx.core.app;
 
-import android.content.Intent;
-import android.os.Build;
+import android.content.res.Configuration;
 
 /* loaded from: classes.dex */
-public final class IntentCompat {
-    public static final String ACTION_CREATE_REMINDER = "android.intent.action.CREATE_REMINDER";
-    public static final String CATEGORY_LEANBACK_LAUNCHER = "android.intent.category.LEANBACK_LAUNCHER";
-    public static final String EXTRA_HTML_TEXT = "android.intent.extra.HTML_TEXT";
-    public static final String EXTRA_START_PLAYBACK = "android.intent.extra.START_PLAYBACK";
-    public static final String EXTRA_TIME = "android.intent.extra.TIME";
+public final class MultiWindowModeChangedInfo {
+    private final boolean mIsInMultiWindowMode;
+    private final Configuration mNewConfig;
 
-    private IntentCompat() {
+    public MultiWindowModeChangedInfo(boolean z2) {
+        this.mIsInMultiWindowMode = z2;
+        this.mNewConfig = null;
     }
 
-    public static Intent makeMainSelectorActivity(String str, String str2) {
-        if (Build.VERSION.SDK_INT >= 15) {
-            return Intent.makeMainSelectorActivity(str, str2);
+    public MultiWindowModeChangedInfo(boolean z2, Configuration configuration) {
+        this.mIsInMultiWindowMode = z2;
+        this.mNewConfig = configuration;
+    }
+
+    public boolean isInMultiWindowMode() {
+        return this.mIsInMultiWindowMode;
+    }
+
+    public Configuration getNewConfig() {
+        Configuration configuration = this.mNewConfig;
+        if (configuration != null) {
+            return configuration;
         }
-        Intent intent = new Intent(str);
-        intent.addCategory(str2);
-        return intent;
+        throw new IllegalStateException("MultiWindowModeChangedInfo must be constructed with the constructor that takes a Configuration to call getNewConfig(). Are you running on an API 26 or higher device that makes this information available?");
     }
 }

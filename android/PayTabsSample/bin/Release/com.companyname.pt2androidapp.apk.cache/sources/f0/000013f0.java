@@ -1,29 +1,55 @@
-package kotlinx.coroutines.flow;
+package com.paytabs.paytabscardrecognizer.cards.pay.paycardsrecognizer.sdk.camera.gles;
 
-import kotlin.Metadata;
-import kotlin.coroutines.Continuation;
-import kotlin.coroutines.jvm.internal.ContinuationImpl;
-import kotlin.coroutines.jvm.internal.DebugMetadata;
+import java.nio.FloatBuffer;
 
-/* JADX INFO: Access modifiers changed from: package-private */
-/* compiled from: Count.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000 \n\u0000\n\u0002\u0010\u0000\n\u0000\n\u0002\u0018\u0002\n\u0000\n\u0002\u0018\u0002\n\u0002\u0018\u0002\n\u0002\u0010\u000b\n\u0000\n\u0002\u0010\b\u0010\u0000\u001a\u0004\u0018\u00010\u0001\"\u0004\b\u0000\u0010\u0002*\b\u0012\u0004\u0012\u0002H\u00020\u00032\"\u0010\u0004\u001a\u001e\b\u0001\u0012\u0004\u0012\u0002H\u0002\u0012\n\u0012\b\u0012\u0004\u0012\u00020\u00070\u0006\u0012\u0006\u0012\u0004\u0018\u00010\u00010\u00052\f\u0010\b\u001a\b\u0012\u0004\u0012\u00020\t0\u0006H\u0086@"}, d2 = {"count", "", "T", "Lkotlinx/coroutines/flow/Flow;", "predicate", "Lkotlin/Function2;", "Lkotlin/coroutines/Continuation;", "", "continuation", ""}, k = 3, mv = {1, 4, 2})
-@DebugMetadata(c = "kotlinx.coroutines.flow.FlowKt__CountKt", f = "Count.kt", i = {0}, l = {42}, m = "count", n = {"i"}, s = {"L$0"})
 /* loaded from: classes.dex */
-public final class FlowKt__CountKt$count$3 extends ContinuationImpl {
-    Object L$0;
-    int label;
-    /* synthetic */ Object result;
+public final class Drawable2d {
+    private static final FloatBuffer RECTANGLE_BUF;
+    private static final float[] RECTANGLE_COORDS;
+    private static final FloatBuffer RECTANGLE_TEX_BUF;
+    private static final float[] RECTANGLE_TEX_COORDS;
+    private static final int SIZEOF_FLOAT = 4;
+    private FloatBuffer mVertexArray = RECTANGLE_BUF;
+    private FloatBuffer mTexCoordArray = RECTANGLE_TEX_BUF;
+    private int mCoordsPerVertex = 2;
+    private int mVertexStride = 2 * 4;
+    private int mVertexCount = RECTANGLE_COORDS.length / 2;
+    private int mTexCoordStride = 8;
 
-    /* JADX INFO: Access modifiers changed from: package-private */
-    public FlowKt__CountKt$count$3(Continuation continuation) {
-        super(continuation);
+    public String toString() {
+        return "[Drawable2d: Rectangle]";
     }
 
-    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
-    public final Object invokeSuspend(Object obj) {
-        this.result = obj;
-        this.label |= Integer.MIN_VALUE;
-        return FlowKt.count(null, null, this);
+    static {
+        float[] fArr = {-0.5f, -0.5f, 0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f};
+        RECTANGLE_COORDS = fArr;
+        float[] fArr2 = {0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f};
+        RECTANGLE_TEX_COORDS = fArr2;
+        RECTANGLE_BUF = GlUtil.createFloatBuffer(fArr);
+        RECTANGLE_TEX_BUF = GlUtil.createFloatBuffer(fArr2);
+    }
+
+    public FloatBuffer getVertexArray() {
+        return this.mVertexArray;
+    }
+
+    public FloatBuffer getTexCoordArray() {
+        return this.mTexCoordArray;
+    }
+
+    public int getVertexCount() {
+        return this.mVertexCount;
+    }
+
+    public int getVertexStride() {
+        return this.mVertexStride;
+    }
+
+    public int getTexCoordStride() {
+        return this.mTexCoordStride;
+    }
+
+    public int getCoordsPerVertex() {
+        return this.mCoordsPerVertex;
     }
 }

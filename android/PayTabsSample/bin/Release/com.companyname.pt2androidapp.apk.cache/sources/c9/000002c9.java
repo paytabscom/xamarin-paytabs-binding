@@ -1,23 +1,197 @@
-package androidx.collection;
+package androidx.browser.trusted;
 
-import kotlin.Metadata;
-import kotlin.Pair;
-import kotlin.jvm.internal.Intrinsics;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.Service;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ServiceInfo;
+import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Parcelable;
+import android.support.customtabs.trusted.ITrustedWebActivityService;
+import androidx.browser.trusted.TrustedWebActivityServiceConnection;
+import androidx.core.app.NotificationManagerCompat;
+import java.util.Locale;
 
-/* compiled from: ArrayMap.kt */
-@Metadata(bv = {1, 0, 3}, d1 = {"\u0000\u0016\n\u0000\n\u0002\u0018\u0002\n\u0002\b\u0003\n\u0002\u0010\u0011\n\u0002\u0018\u0002\n\u0002\b\u0002\u001a!\u0010\u0000\u001a\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00030\u0001\"\u0004\b\u0000\u0010\u0002\"\u0004\b\u0001\u0010\u0003H\u0086\b\u001aO\u0010\u0000\u001a\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00030\u0001\"\u0004\b\u0000\u0010\u0002\"\u0004\b\u0001\u0010\u00032*\u0010\u0004\u001a\u0016\u0012\u0012\b\u0001\u0012\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00030\u00060\u0005\"\u000e\u0012\u0004\u0012\u0002H\u0002\u0012\u0004\u0012\u0002H\u00030\u0006¢\u0006\u0002\u0010\u0007¨\u0006\b"}, d2 = {"arrayMapOf", "Landroidx/collection/ArrayMap;", "K", "V", "pairs", "", "Lkotlin/Pair;", "([Lkotlin/Pair;)Landroidx/collection/ArrayMap;", "collection-ktx"}, k = 2, mv = {1, 1, 13})
 /* loaded from: classes.dex */
-public final class ArrayMapKt {
-    public static final <K, V> ArrayMap<K, V> arrayMapOf() {
-        return new ArrayMap<>();
+public abstract class TrustedWebActivityService extends Service {
+    public static final String ACTION_TRUSTED_WEB_ACTIVITY_SERVICE = "android.support.customtabs.trusted.TRUSTED_WEB_ACTIVITY_SERVICE";
+    public static final String KEY_SMALL_ICON_BITMAP = "android.support.customtabs.trusted.SMALL_ICON_BITMAP";
+    public static final String KEY_SUCCESS = "androidx.browser.trusted.SUCCESS";
+    public static final String META_DATA_NAME_SMALL_ICON = "android.support.customtabs.trusted.SMALL_ICON";
+    public static final int SMALL_ICON_NOT_SET = -1;
+    private NotificationManager mNotificationManager;
+    int mVerifiedUid = -1;
+    private final ITrustedWebActivityService.Stub mBinder = new ITrustedWebActivityService.Stub() { // from class: androidx.browser.trusted.TrustedWebActivityService.1
+        @Override // android.support.customtabs.trusted.ITrustedWebActivityService
+        public Bundle areNotificationsEnabled(Bundle bundle) {
+            checkCaller();
+            return new TrustedWebActivityServiceConnection.ResultArgs(TrustedWebActivityService.this.onAreNotificationsEnabled(TrustedWebActivityServiceConnection.NotificationsEnabledArgs.fromBundle(bundle).channelName)).toBundle();
+        }
+
+        @Override // android.support.customtabs.trusted.ITrustedWebActivityService
+        public Bundle notifyNotificationWithChannel(Bundle bundle) {
+            checkCaller();
+            TrustedWebActivityServiceConnection.NotifyNotificationArgs fromBundle = TrustedWebActivityServiceConnection.NotifyNotificationArgs.fromBundle(bundle);
+            return new TrustedWebActivityServiceConnection.ResultArgs(TrustedWebActivityService.this.onNotifyNotificationWithChannel(fromBundle.platformTag, fromBundle.platformId, fromBundle.notification, fromBundle.channelName)).toBundle();
+        }
+
+        @Override // android.support.customtabs.trusted.ITrustedWebActivityService
+        public void cancelNotification(Bundle bundle) {
+            checkCaller();
+            TrustedWebActivityServiceConnection.CancelNotificationArgs fromBundle = TrustedWebActivityServiceConnection.CancelNotificationArgs.fromBundle(bundle);
+            TrustedWebActivityService.this.onCancelNotification(fromBundle.platformTag, fromBundle.platformId);
+        }
+
+        @Override // android.support.customtabs.trusted.ITrustedWebActivityService
+        public Bundle getActiveNotifications() {
+            checkCaller();
+            return new TrustedWebActivityServiceConnection.ActiveNotificationsArgs(TrustedWebActivityService.this.onGetActiveNotifications()).toBundle();
+        }
+
+        @Override // android.support.customtabs.trusted.ITrustedWebActivityService
+        public int getSmallIconId() {
+            checkCaller();
+            return TrustedWebActivityService.this.onGetSmallIconId();
+        }
+
+        @Override // android.support.customtabs.trusted.ITrustedWebActivityService
+        public Bundle getSmallIconBitmap() {
+            checkCaller();
+            return TrustedWebActivityService.this.onGetSmallIconBitmap();
+        }
+
+        @Override // android.support.customtabs.trusted.ITrustedWebActivityService
+        public Bundle extraCommand(String commandName, Bundle args, IBinder callback) {
+            checkCaller();
+            return TrustedWebActivityService.this.onExtraCommand(commandName, args, TrustedWebActivityCallbackRemote.fromBinder(callback));
+        }
+
+        private void checkCaller() {
+            if (TrustedWebActivityService.this.mVerifiedUid == -1) {
+                String[] packagesForUid = TrustedWebActivityService.this.getPackageManager().getPackagesForUid(getCallingUid());
+                int i2 = 0;
+                if (packagesForUid == null) {
+                    packagesForUid = new String[0];
+                }
+                Token load = TrustedWebActivityService.this.getTokenStore().load();
+                PackageManager packageManager = TrustedWebActivityService.this.getPackageManager();
+                if (load != null) {
+                    int length = packagesForUid.length;
+                    while (true) {
+                        if (i2 >= length) {
+                            break;
+                        } else if (load.matches(packagesForUid[i2], packageManager)) {
+                            TrustedWebActivityService.this.mVerifiedUid = getCallingUid();
+                            break;
+                        } else {
+                            i2++;
+                        }
+                    }
+                }
+            }
+            if (TrustedWebActivityService.this.mVerifiedUid != getCallingUid()) {
+                throw new SecurityException("Caller is not verified as Trusted Web Activity provider.");
+            }
+        }
+    };
+
+    public abstract TokenStore getTokenStore();
+
+    public Bundle onExtraCommand(String commandName, Bundle args, TrustedWebActivityCallbackRemote callbackRemote) {
+        return null;
     }
 
-    public static final <K, V> ArrayMap<K, V> arrayMapOf(Pair<? extends K, ? extends V>... pairs) {
-        Intrinsics.checkParameterIsNotNull(pairs, "pairs");
-        ArrayMap<K, V> arrayMap = new ArrayMap<>(pairs.length);
-        for (Pair<? extends K, ? extends V> pair : pairs) {
-            arrayMap.put(pair.getFirst(), pair.getSecond());
+    @Override // android.app.Service
+    public void onCreate() {
+        super.onCreate();
+        this.mNotificationManager = (NotificationManager) getSystemService("notification");
+    }
+
+    public boolean onAreNotificationsEnabled(String channelName) {
+        ensureOnCreateCalled();
+        if (NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+            if (Build.VERSION.SDK_INT < 26) {
+                return true;
+            }
+            return NotificationApiHelperForO.isChannelEnabled(this.mNotificationManager, channelNameToId(channelName));
         }
-        return arrayMap;
+        return false;
+    }
+
+    public boolean onNotifyNotificationWithChannel(String platformTag, int platformId, Notification notification, String channelName) {
+        ensureOnCreateCalled();
+        if (NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+            if (Build.VERSION.SDK_INT >= 26) {
+                String channelNameToId = channelNameToId(channelName);
+                notification = NotificationApiHelperForO.copyNotificationOntoChannel(this, this.mNotificationManager, notification, channelNameToId, channelName);
+                if (!NotificationApiHelperForO.isChannelEnabled(this.mNotificationManager, channelNameToId)) {
+                    return false;
+                }
+            }
+            this.mNotificationManager.notify(platformTag, platformId, notification);
+            return true;
+        }
+        return false;
+    }
+
+    public void onCancelNotification(String platformTag, int platformId) {
+        ensureOnCreateCalled();
+        this.mNotificationManager.cancel(platformTag, platformId);
+    }
+
+    public Parcelable[] onGetActiveNotifications() {
+        ensureOnCreateCalled();
+        if (Build.VERSION.SDK_INT >= 23) {
+            return NotificationApiHelperForM.getActiveNotifications(this.mNotificationManager);
+        }
+        throw new IllegalStateException("onGetActiveNotifications cannot be called pre-M.");
+    }
+
+    public Bundle onGetSmallIconBitmap() {
+        int onGetSmallIconId = onGetSmallIconId();
+        Bundle bundle = new Bundle();
+        if (onGetSmallIconId == -1) {
+            return bundle;
+        }
+        bundle.putParcelable(KEY_SMALL_ICON_BITMAP, BitmapFactory.decodeResource(getResources(), onGetSmallIconId));
+        return bundle;
+    }
+
+    public int onGetSmallIconId() {
+        try {
+            ServiceInfo serviceInfo = getPackageManager().getServiceInfo(new ComponentName(this, getClass()), 128);
+            if (serviceInfo.metaData == null) {
+                return -1;
+            }
+            return serviceInfo.metaData.getInt(META_DATA_NAME_SMALL_ICON, -1);
+        } catch (PackageManager.NameNotFoundException unused) {
+            return -1;
+        }
+    }
+
+    @Override // android.app.Service
+    public final IBinder onBind(Intent intent) {
+        return this.mBinder;
+    }
+
+    @Override // android.app.Service
+    public final boolean onUnbind(Intent intent) {
+        this.mVerifiedUid = -1;
+        return super.onUnbind(intent);
+    }
+
+    private static String channelNameToId(String name) {
+        return name.toLowerCase(Locale.ROOT).replace(' ', '_') + "_channel_id";
+    }
+
+    private void ensureOnCreateCalled() {
+        if (this.mNotificationManager == null) {
+            throw new IllegalStateException("TrustedWebActivityService has not been properly initialized. Did onCreate() call super.onCreate()?");
+        }
     }
 }

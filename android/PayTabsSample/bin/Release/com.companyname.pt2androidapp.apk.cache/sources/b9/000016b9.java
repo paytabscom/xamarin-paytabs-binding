@@ -1,53 +1,23 @@
-package mono.android.view;
+package kotlin.jvm.internal;
 
-import android.view.View;
-import java.util.ArrayList;
-import mono.android.IGCUserPeer;
-import mono.android.Runtime;
-import mono.android.TypeManager;
+import kotlin.Metadata;
 
+/* compiled from: PrimitiveCompanionObjects.kt */
+@Metadata(d1 = {"\u0000\u001c\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0002\b\u0002\n\u0002\u0010\n\n\u0002\b\u0002\n\u0002\u0010\b\n\u0002\b\u0004\bÀ\u0002\u0018\u00002\u00020\u0001B\u0007\b\u0002¢\u0006\u0002\u0010\u0002R\u000e\u0010\u0003\u001a\u00020\u0004X\u0086T¢\u0006\u0002\n\u0000R\u000e\u0010\u0005\u001a\u00020\u0004X\u0086T¢\u0006\u0002\n\u0000R\u0016\u0010\u0006\u001a\u00020\u00078\u0006X\u0087T¢\u0006\b\n\u0000\u0012\u0004\b\b\u0010\u0002R\u0016\u0010\t\u001a\u00020\u00078\u0006X\u0087T¢\u0006\b\n\u0000\u0012\u0004\b\n\u0010\u0002¨\u0006\u000b"}, d2 = {"Lkotlin/jvm/internal/ShortCompanionObject;", "", "()V", "MAX_VALUE", "", "MIN_VALUE", "SIZE_BITS", "", "getSIZE_BITS$annotations", "SIZE_BYTES", "getSIZE_BYTES$annotations", "kotlin-stdlib"}, k = 1, mv = {1, 5, 1})
 /* loaded from: classes.dex */
-public class View_OnAttachStateChangeListenerImplementor implements IGCUserPeer, View.OnAttachStateChangeListener {
-    public static final String __md_methods = "n_onViewAttachedToWindow:(Landroid/view/View;)V:GetOnViewAttachedToWindow_Landroid_view_View_Handler:Android.Views.View/IOnAttachStateChangeListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\nn_onViewDetachedFromWindow:(Landroid/view/View;)V:GetOnViewDetachedFromWindow_Landroid_view_View_Handler:Android.Views.View/IOnAttachStateChangeListenerInvoker, Mono.Android, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null\n";
-    private ArrayList refList;
+public final class ShortCompanionObject {
+    public static final ShortCompanionObject INSTANCE = new ShortCompanionObject();
+    public static final short MAX_VALUE = Short.MAX_VALUE;
+    public static final short MIN_VALUE = Short.MIN_VALUE;
+    public static final int SIZE_BITS = 16;
+    public static final int SIZE_BYTES = 2;
 
-    private native void n_onViewAttachedToWindow(View view);
-
-    private native void n_onViewDetachedFromWindow(View view);
-
-    static {
-        Runtime.register("Android.Views.View+IOnAttachStateChangeListenerImplementor, Mono.Android", View_OnAttachStateChangeListenerImplementor.class, __md_methods);
+    public static /* synthetic */ void getSIZE_BITS$annotations() {
     }
 
-    public View_OnAttachStateChangeListenerImplementor() {
-        if (getClass() == View_OnAttachStateChangeListenerImplementor.class) {
-            TypeManager.Activate("Android.Views.View+IOnAttachStateChangeListenerImplementor, Mono.Android", "", this, new Object[0]);
-        }
+    public static /* synthetic */ void getSIZE_BYTES$annotations() {
     }
 
-    @Override // android.view.View.OnAttachStateChangeListener
-    public void onViewAttachedToWindow(View view) {
-        n_onViewAttachedToWindow(view);
-    }
-
-    @Override // android.view.View.OnAttachStateChangeListener
-    public void onViewDetachedFromWindow(View view) {
-        n_onViewDetachedFromWindow(view);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidAddReference(Object obj) {
-        if (this.refList == null) {
-            this.refList = new ArrayList();
-        }
-        this.refList.add(obj);
-    }
-
-    @Override // mono.android.IGCUserPeer
-    public void monodroidClearReferences() {
-        ArrayList arrayList = this.refList;
-        if (arrayList != null) {
-            arrayList.clear();
-        }
+    private ShortCompanionObject() {
     }
 }
