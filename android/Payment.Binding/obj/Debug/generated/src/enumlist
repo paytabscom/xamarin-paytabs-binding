@@ -1,6 +1,0 @@
-com.payment.paymentsdk.integrationmodels.PaymentSdkApms:Com.Payment.Paymentsdk.Integrationmodels:PaymentSdkApms
-com.payment.paymentsdk.integrationmodels.PaymentSdkLanguageCode:Com.Payment.Paymentsdk.Integrationmodels:PaymentSdkLanguageCode
-com.payment.paymentsdk.integrationmodels.PaymentSdkRegion:Com.Payment.Paymentsdk.Integrationmodels:PaymentSdkRegion
-com.payment.paymentsdk.integrationmodels.PaymentSdkTokenise:Com.Payment.Paymentsdk.Integrationmodels:PaymentSdkTokenise
-com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionClass:Com.Payment.Paymentsdk.Integrationmodels:PaymentSdkTransactionClass
-com.payment.paymentsdk.integrationmodels.PaymentSdkTransactionType:Com.Payment.Paymentsdk.Integrationmodels:PaymentSdkTransactionType

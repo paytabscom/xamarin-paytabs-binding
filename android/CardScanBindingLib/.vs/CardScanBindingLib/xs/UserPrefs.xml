@@ -1,4 +1,4 @@
-﻿<Properties StartupConfiguration="{AD6B3757-1C74-4B74-B494-67AEE4E86FFE}|Default">
+﻿<Properties>
   <MonoDevelop.Ide.ItemProperties.CardScanBindingLib PreferredExecutionTarget="Android.Nexus_4_API_21" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Additions/AboutAdditions.txt">
     <Files>
@@ -7,18 +7,7 @@
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="CardScanBindingLib" expanded="True">
-            <Node name="CardScanBindingLib" expanded="True">
-              <Node name="References" expanded="True" />
-              <Node name="Packages" expanded="True" />
-              <Node name="Additions" expanded="True">
-                <Node name="AboutAdditions.txt" selected="True" />
-              </Node>
-              <Node name="Jars" expanded="True" />
-              <Node name="Properties" expanded="True" />
-              <Node name="Transforms" expanded="True" />
-            </Node>
-          </Node>
+          <Node name="CardScanBindingLib" expanded="True" selected="True" />
         </State>
       </Pad>
     </Pads>
