@@ -9,3 +9,7 @@ ios/PaymentSDK.Binding/PaymentSDK.Binding/obj/
 ios/PayTabsSample/PayTabsSample/bin/
 ios/PayTabsSample/PayTabsSample/obj/
 
+android/PayTabsSample/.vs/Pt2AndroidApp/xs/UserPrefs.xml
+android/PayTabsSample/.vs/Pt2AndroidApp/xs/project-cache/Pt2AndroidApp-Debug.json
+android/PayTabsSample/.vs/Pt2AndroidApp/xs/project-cache/PaymentSDK.Binding-Release.json
+android/PayTabsSample/.vs/Pt2AndroidApp/xs/project-cache/Pt2AndroidApp-Release.json
