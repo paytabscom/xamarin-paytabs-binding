@@ -14,6 +14,14 @@
          android:id="@+id/cc_btn"
          android:text="card payment"
         />
+     <Button
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:id="@+id/cc_cvv_btn"
+         android:text="Pay with CVV"
+        />
         <Button
       android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"

@@ -12,8 +12,14 @@
 	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkConfigurationDetails.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
 		   name="managedReturn">Java.Lang.Object[]</attr>
 
-	
-	
+
+	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSDKQueryConfiguration.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
+		   name="managedReturn">Java.Lang.Object</attr>
+
+   <attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSDKQueryConfiguration.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
+		   name="managedReturn">Java.Lang.Object[]</attr>
+
+
 	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkLanguageCode.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
 	   name="managedReturn">Java.Lang.Object</attr>
 
@@ -28,10 +34,10 @@
 	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='PaymentSdkShippingDetails.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
 		   name="managedReturn">Java.Lang.Object[]</attr>
 
-	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='BaseBillingShippingDetails.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
+	<attr  path="/api/package[@name='com.payment.paymentsdk.sharedclasses.base']/class[@name='BaseBillingShippingDetails.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
 	   name="managedReturn">Java.Lang.Object</attr>
 
-	<attr  path="/api/package[@name='com.payment.paymentsdk.integrationmodels']/class[@name='BaseBillingShippingDetails.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
+	<attr  path="/api/package[@name='com.payment.paymentsdk.sharedclasses.base']/class[@name='BaseBillingShippingDetails.Creator']/method[@name='newArray' and count(parameter)=1 and parameter[1][@type='int']]"
 		   name="managedReturn">Java.Lang.Object[]</attr>
 
    <attr  path="/api/package[@name='com.payment.paymentsdk.save_cards.entities']/class[@name='PaymentSDKSavedCardInfo.Creator']/method[@name='createFromParcel' and count(parameter)=1 and parameter[1][@type='android.os.Parcel']]"
