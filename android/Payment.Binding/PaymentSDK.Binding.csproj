@@ -20,7 +20,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
     <PackOnBuild>true</PackOnBuild>
     <PackageId>Paytabs.Xamarin.Android</PackageId>
-    <PackageVersion>1.0.15</PackageVersion>
+    <PackageVersion>1.0.16</PackageVersion>
     <Authors>PayTabs</Authors>
     <Description>Payment SDK</Description>
     <DevelopmentDependency>true</DevelopmentDependency>

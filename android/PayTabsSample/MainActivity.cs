@@ -34,32 +34,14 @@ namespace Pt2AndroidApp
 
         public PaymentSdkConfigurationDetails GetConfigurationDetails()
         {
-        
-            IList<PaymentSdkApms> apms = new List<PaymentSdkApms>();
-            apms.Add(PaymentSdkApms.StcPay);
-            return new PaymentSdkConfigBuilder("63904", "STJNNNTDKB-JBKWMD9Z9R-LKLNZBJLG2", "CHKMMD-6MQ962-KVNDP9-NVRM92", 44.0, "EGP")
-                .SetCartId("123")
-                .SetCartDescription("yyif")
-                .SetMerchantCountryCode("EG")
-                .SetAlternativePaymentMethods(apms)
-                //.SetBillingData(PaymentSdkBillingDetails)
-                .SetBillingData(new PaymentSdkBillingDetails("Dubai", "AE", "email@domain.com", "John Smith", "+971111111111", "Dubai", "Address line", "12345"))
-                .SetShippingData(new PaymentSdkShippingDetails("Dubai", "AE", "email@domain.com", "John Smith", "+971111111111", "Dubai", "Address line", "12345"))
-                .Build();
-
-        }
-
-        public PaymentSdkConfigurationDetails GetConfigurationDetailsForSavedCards()
-        {
 
             IList<PaymentSdkApms> apms = new List<PaymentSdkApms>();
             apms.Add(PaymentSdkApms.StcPay);
-            return new PaymentSdkConfigBuilder("63904", "STJNNNTDKB-JBKWMD9Z9R-LKLNZBJLG2", "CHKMMD-6MQ962-KVNDP9-NVRM92", 44.0, "EGP")
+            return new PaymentSdkConfigBuilder("*Profile ID*", "*Server Key*", "*Client Key*", 44.0, "USD")
                 .SetCartId("123")
                 .SetCartDescription("yyif")
-                .SetMerchantCountryCode("EG")
+                .SetMerchantCountryCode("AE")
                 .SetAlternativePaymentMethods(apms)
-                .SetTokenise(PaymentSdkTokenise.MerchantMandatory, new PaymentSdkTokenFormat.Hex32Format())
                 //.SetBillingData(PaymentSdkBillingDetails)
                 .SetBillingData(new PaymentSdkBillingDetails("Dubai", "AE", "email@domain.com", "John Smith", "+971111111111", "Dubai", "Address line", "12345"))
                 .SetShippingData(new PaymentSdkShippingDetails("Dubai", "AE", "email@domain.com", "John Smith", "+971111111111", "Dubai", "Address line", "12345"))
