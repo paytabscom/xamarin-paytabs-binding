@@ -531,6 +531,16 @@ configuration.TransactionReference = transactionreference
 configuration.HideCardScanner = true;
 ```
 
+## SamsungPay 
+1. To enable pay with samsungpay you need first to integrate with SamsungPay api.
+  Here how you can integrate with SamsungPay Api.
+  [SamsungPay Integration Guide](https://github.com/paytabscom/paytabs-android-library-sample/blob/master/samsung_pay.md).
+
+2. Pass the returned json token from samsung pay to the following  method.
+```C#
+PaymentSdkActivity.StartSamsungPayment(this, Configuration, Token, this);
+```
+
 ### Theme Customization
 
 ````xml
