@@ -107,10 +107,6 @@
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CardScanBindingLib\CardScanBindingLib.csproj">
-      <Project>{ad6b3757-1c74-4b74-b494-67aee4e86ffe}</Project>
-      <Name>CardScanBindingLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Payment.Binding\PaymentSDK.Binding.csproj">
       <Project>{07A0231B-14ED-419C-9780-53DD5458F673}</Project>
       <Name>PaymentSDK.Binding</Name>
